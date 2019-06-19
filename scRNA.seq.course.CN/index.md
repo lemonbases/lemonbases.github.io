@@ -35,7 +35,7 @@ always_allow_html: yes
 ## GitHub
 <a href="https://github.com/hemberg-lab/scRNA.seq.course" target="blank">https://github.com/hemberg-lab/scRNA.seq.course</a>
 
-<a href="https://github.com/feifei9606/scRNA.seq.course.CN" target="blank">https://github.com/feifei9606/scRNA.seq.course.CN</a>
+<a href="https://github.com/lemonbases" target="blank">https://github.com/lemonbases</a>
 
 ## Docker 镜像
 
