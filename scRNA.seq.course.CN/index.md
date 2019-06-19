@@ -1,6 +1,6 @@
 --- 
 title: "scRNA-seq数据分析"
-author: "<a href='https://github.com/sdbiodog'>碱基吃柠檬</a>"
+author: "<a href='https://github.com/lemonbases'>碱基吃柠檬</a>"
 
 date: "2019-06-19"
 knit: "bookdown::render_book"
