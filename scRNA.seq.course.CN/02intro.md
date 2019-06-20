@@ -2,7 +2,7 @@
 output: html_document
 ---
 
-# scRNA-seq 简介
+# Introduction to single-cell RNA-seq
 
 
 

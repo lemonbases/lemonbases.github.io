@@ -2,7 +2,7 @@
 title: "scRNA-seq数据分析"
 author: "<a href='https://github.com/lemonbases'>碱基吃柠檬</a>"
 
-date: "2019-06-19"
+date: "2019-06-20"
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -35,7 +35,7 @@ always_allow_html: yes
 ## GitHub
 <a href="https://github.com/hemberg-lab/scRNA.seq.course" target="blank">https://github.com/hemberg-lab/scRNA.seq.course</a>
 
-<a href="https://github.com/lemonbases" target="blank">https://github.com/lemonbases</a>
+<a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">https://github.com/lemonbases/scRNA.seq.course.CN</a>
 
 ## Docker 镜像
 
