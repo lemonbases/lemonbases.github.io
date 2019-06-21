@@ -2,7 +2,7 @@
 output: html_document
 ---
 
-# scRNA-seq介绍 {#introduction_to_single_cell_RNA_seq}
+# scRNA-seq介绍 {#introduction_to_single_cell_rna_seq}
 
 
 

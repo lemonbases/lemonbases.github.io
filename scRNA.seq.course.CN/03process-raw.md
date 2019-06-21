@@ -4,7 +4,7 @@ output: html_document
 
 
 
-# scRNA-seq原始数据处理 {#processing_raw_scRNA_seq_data}
+# scRNA-seq原始数据处理 {#processing_raw_scrna_seq_data}
 
 ## FastQC
 
