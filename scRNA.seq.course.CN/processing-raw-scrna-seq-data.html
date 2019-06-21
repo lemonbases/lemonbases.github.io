@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Processing Raw scRNA-seq Data | scRNA-seq数据分析</title>
-  <meta name="description" content="3 Processing Raw scRNA-seq Data | scRNA-seq数据分析" />
+  <title>3 scRNA-seq原始数据处理 | scRNA-seq数据分析</title>
+  <meta name="description" content="3 scRNA-seq原始数据处理 | scRNA-seq数据分析" />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Processing Raw scRNA-seq Data | scRNA-seq数据分析" />
+  <meta property="og:title" content="3 scRNA-seq原始数据处理 | scRNA-seq数据分析" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Processing Raw scRNA-seq Data | scRNA-seq数据分析" />
+  <meta name="twitter:title" content="3 scRNA-seq原始数据处理 | scRNA-seq数据分析" />
   
   
   
@@ -24,15 +24,15 @@
 <meta name="author" content="碱基吃柠檬" />
 
 
-<meta name="date" content="2019-06-20" />
+<meta name="date" content="2019-06-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introduction-to-single-cell-rna-seq.html">
-
+<link rel="prev" href="introduction-to-single-cell-RNA-seq.html">
+<link rel="next" href="references.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -54,7 +54,7 @@
 
 <!-- for Twitter -->          
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="3 Processing Raw scRNA-seq Data | scRNA-seq数据分析" />
+<meta name="twitter:title" content="3 scRNA-seq原始数据处理 | scRNA-seq数据分析" />
 <meta name="twitter:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
 <meta name="twitter:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
 
@@ -139,43 +139,44 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#section-1.7"><i class="fa fa-check"></i><b>1.7</b> 准备知识</a></li>
 <li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#section-1.8"><i class="fa fa-check"></i><b>1.8</b> 联系我们</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html"><i class="fa fa-check"></i><b>2</b> Introduction to single-cell RNA-seq</a><ul>
-<li class="chapter" data-level="2.1" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#bulk-rna-seq"><i class="fa fa-check"></i><b>2.1</b> Bulk RNA-seq</a></li>
-<li class="chapter" data-level="2.2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#scrna-seq"><i class="fa fa-check"></i><b>2.2</b> scRNA-seq</a></li>
-<li class="chapter" data-level="2.3" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-2.3"><i class="fa fa-check"></i><b>2.3</b> 工作流程</a></li>
-<li class="chapter" data-level="2.4" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-2.4"><i class="fa fa-check"></i><b>2.4</b> 计算分析</a></li>
-<li class="chapter" data-level="2.5" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-2.5"><i class="fa fa-check"></i><b>2.5</b> 挑战</a></li>
-<li class="chapter" data-level="2.6" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-2.6"><i class="fa fa-check"></i><b>2.6</b> 实验方法</a></li>
-<li class="chapter" data-level="2.7" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-2.7"><i class="fa fa-check"></i><b>2.7</b> 如何选择合适的平台</a></li>
+<li class="chapter" data-level="2" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html"><i class="fa fa-check"></i><b>2</b> scRNA-seq介绍</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html#bulk-rna-seq"><i class="fa fa-check"></i><b>2.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html#scrna-seq"><i class="fa fa-check"></i><b>2.2</b> scRNA-seq</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html#section-2.3"><i class="fa fa-check"></i><b>2.3</b> 工作流程</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html#section-2.4"><i class="fa fa-check"></i><b>2.4</b> 计算分析</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html#section-2.5"><i class="fa fa-check"></i><b>2.5</b> 挑战</a></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html#section-2.6"><i class="fa fa-check"></i><b>2.6</b> 实验方法</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-single-cell-RNA-seq.html"><a href="introduction-to-single-cell-RNA-seq.html#section-2.7"><i class="fa fa-check"></i><b>2.7</b> 如何选择合适的平台</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html"><i class="fa fa-check"></i><b>3</b> Processing Raw scRNA-seq Data</a><ul>
-<li class="chapter" data-level="3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastqc"><i class="fa fa-check"></i><b>3.1</b> FastQC</a><ul>
-<li class="chapter" data-level="3.1.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-3.1.1"><i class="fa fa-check"></i><b>3.1.1</b> 解决方案并下载报告</a></li>
+<li class="chapter" data-level="3" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html"><i class="fa fa-check"></i><b>3</b> scRNA-seq原始数据处理</a><ul>
+<li class="chapter" data-level="3.1" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#fastqc"><i class="fa fa-check"></i><b>3.1</b> FastQC</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#section-3.1.1"><i class="fa fa-check"></i><b>3.1.1</b> 解决方案并下载报告</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-3.2"><i class="fa fa-check"></i><b>3.2</b> 移除接头和低质量碱基</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#solution"><i class="fa fa-check"></i><b>3.2.1</b> Solution</a></li>
+<li class="chapter" data-level="3.2" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#section-3.2"><i class="fa fa-check"></i><b>3.2</b> 移除接头和低质量碱基</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#solution"><i class="fa fa-check"></i><b>3.2.1</b> Solution</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-3.3"><i class="fa fa-check"></i><b>3.3</b> 文件格式</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastq"><i class="fa fa-check"></i><b>3.3.1</b> FastQ</a></li>
-<li class="chapter" data-level="3.3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#bam"><i class="fa fa-check"></i><b>3.3.2</b> BAM</a></li>
-<li class="chapter" data-level="3.3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#cram"><i class="fa fa-check"></i><b>3.3.3</b> CRAM</a></li>
-<li class="chapter" data-level="3.3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-3.3.4"><i class="fa fa-check"></i><b>3.3.4</b> 手动查看文件</a></li>
-<li class="chapter" data-level="3.3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#genome-fasta-gtf"><i class="fa fa-check"></i><b>3.3.5</b> Genome (FASTA, GTF)</a></li>
+<li class="chapter" data-level="3.3" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#section-3.3"><i class="fa fa-check"></i><b>3.3</b> 文件格式</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#fastq"><i class="fa fa-check"></i><b>3.3.1</b> FastQ</a></li>
+<li class="chapter" data-level="3.3.2" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#bam"><i class="fa fa-check"></i><b>3.3.2</b> BAM</a></li>
+<li class="chapter" data-level="3.3.3" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#cram"><i class="fa fa-check"></i><b>3.3.3</b> CRAM</a></li>
+<li class="chapter" data-level="3.3.4" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#section-3.3.4"><i class="fa fa-check"></i><b>3.3.4</b> 手动查看文件</a></li>
+<li class="chapter" data-level="3.3.5" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#genome-fasta-gtf"><i class="fa fa-check"></i><b>3.3.5</b> Genome (FASTA, GTF)</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-3.4"><i class="fa fa-check"></i><b>3.4</b> 测序文库拆分</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-3.4.1"><i class="fa fa-check"></i><b>3.4.1</b> 鉴定含有细胞的液滴/微孔</a></li>
+<li class="chapter" data-level="3.4" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#section-3.4"><i class="fa fa-check"></i><b>3.4</b> 测序文库拆分</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#section-3.4.1"><i class="fa fa-check"></i><b>3.4.1</b> 鉴定含有细胞的液滴/微孔</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#starread"><i class="fa fa-check"></i><b>3.5</b> 使用STAR比对read</a><ul>
-<li class="chapter" data-level="3.5.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#star"><i class="fa fa-check"></i><b>3.5.1</b> STAR比对命令</a></li>
+<li class="chapter" data-level="3.5" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#starread"><i class="fa fa-check"></i><b>3.5</b> 使用STAR比对read</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#star"><i class="fa fa-check"></i><b>3.5.1</b> STAR比对命令</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallistopseudo-alignment"><i class="fa fa-check"></i><b>3.6</b> Kallisto和Pseudo-Alignment</a><ul>
-<li class="chapter" data-level="3.6.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-mer"><i class="fa fa-check"></i><b>3.6.1</b> k-mer是什么?</a></li>
-<li class="chapter" data-level="3.6.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-merreads"><i class="fa fa-check"></i><b>3.6.2</b> 为什么比对k-mer而不是reads?</a></li>
-<li class="chapter" data-level="3.6.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto"><i class="fa fa-check"></i><b>3.6.3</b> Kallisto伪比对模式</a></li>
-<li class="chapter" data-level="3.6.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto-pseudo-alignment"><i class="fa fa-check"></i><b>3.6.4</b> Kallisto Pseudo-Alignment命令</a></li>
-<li class="chapter" data-level="3.6.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto"><i class="fa fa-check"></i><b>3.6.5</b> 理解Kallisto输出结果</a></li>
+<li class="chapter" data-level="3.6" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#kallistopseudo-alignment"><i class="fa fa-check"></i><b>3.6</b> Kallisto和Pseudo-Alignment</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#k-mer"><i class="fa fa-check"></i><b>3.6.1</b> k-mer是什么?</a></li>
+<li class="chapter" data-level="3.6.2" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#k-merreads"><i class="fa fa-check"></i><b>3.6.2</b> 为什么比对k-mer而不是reads?</a></li>
+<li class="chapter" data-level="3.6.3" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#kallisto"><i class="fa fa-check"></i><b>3.6.3</b> Kallisto伪比对模式</a></li>
+<li class="chapter" data-level="3.6.4" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#kallisto-pseudo-alignment"><i class="fa fa-check"></i><b>3.6.4</b> Kallisto Pseudo-Alignment命令</a></li>
+<li class="chapter" data-level="3.6.5" data-path="processing-raw-scRNA-seq-data.html"><a href="processing-raw-scRNA-seq-data.html#kallisto"><i class="fa fa-check"></i><b>3.6.5</b> 理解Kallisto输出结果</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>4</b> References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">碱基吃柠檬</a></li>
 
@@ -196,15 +197,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="processing-raw-scrna-seq-data" class="section level1">
-<h1><span class="header-section-number">3</span> Processing Raw scRNA-seq Data</h1>
+<div id="processing_raw_scRNA_seq_data" class="section level1">
+<h1><span class="header-section-number">3</span> scRNA-seq原始数据处理</h1>
 <div id="fastqc" class="section level2">
 <h2><span class="header-section-number">3.1</span> FastQC</h2>
 <p>获得单细胞RNA-seq数据后，首先要做的就是检查测序质量，我们使用FastQC来完成此任务。 FastQC是用于测序数据的质量控制工具，既可以用于bulk RNA-seq，也可以用于scRNA-seq。 FastQC将测序数据作为输入，并返回测序质量的报告。访问以下链接获取更多关于FastQC的信息：</p>
 <p><a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" class="uri">https://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a></p>
 <p>该网站包含下载和安装FastQC的链接以及生成报告的文档。幸运的是，我们已经为您安装了FastQC<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>，因此这里我们将查看文档。将网页向下滚动到“示例报告”，然后单击“Good Illumina Data”。 这里给出了高质量Illumina测序数据立项报告的示例。</p>
 <p>现在让我们自己生成一份FastQC报告。</p>
-<p>今天，我们将使用<span class="citation">(Kolodziejczyk et al. 2015)</span>生成的mESC单细胞数据集进行分析。细胞使用SMART-seq2 protocol构建测序文库并进行双端测序。这些文件位于<code>Share</code>文件夹中。</p>
+<p>今天，我们将使用<span class="citation">(Kolodziejczyk et al. <a href="#ref-Kolodziejczyk2015-xy">2015</a>)</span>生成的mESC单细胞数据集进行分析。细胞使用SMART-seq2 protocol构建测序文库并进行双端测序。这些文件位于<code>Share</code>文件夹中。</p>
 <p><strong>注意</strong> 本课程的当前文本是为参加我们课程的人员编写的。您必须下载文件（<code>ERR522959_1.fastq</code>和<code>ERR522959_2.fastq</code>）并创建<code>Share</code>目录才能运行命令。你可以在这里找到这些文件：</p>
 <p><a href="https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2600/samples/" class="uri">https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2600/samples/</a></p>
 <p>现在让我们来看看文件:</p>
@@ -428,8 +429,11 @@ Recall &lt;-<span class="st"> </span><span class="kw">sum</span>(cells <span cla
 <p>另外一种方法是构建混合模型，找出重叠区域的最高和最低分布。然而数据可能并不满足假定的分布。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="op">-</span><span class="dv">92497</span>)
 <span class="co"># mixture model</span>
-<span class="kw">require</span>(<span class="st">&quot;mixtools&quot;</span>)
-mix &lt;-<span class="st"> </span><span class="kw">normalmixEM</span>(log_lib_size)</code></pre></div>
+<span class="kw">require</span>(<span class="st">&quot;mixtools&quot;</span>)</code></pre></div>
+<pre><code>## 载入需要的程辑包：mixtools</code></pre>
+<pre><code>## mixtools package, version 1.1.0, Released 2017-03-10
+## This package is based upon work supported by the National Science Foundation under Grant No. SES-0518772.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mix &lt;-<span class="st"> </span><span class="kw">normalmixEM</span>(log_lib_size)</code></pre></div>
 <pre><code>## number of iterations= 43</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mix, <span class="dt">which=</span><span class="dv">2</span>, <span class="dt">xlab2=</span><span class="st">&quot;log(mol per cell)&quot;</span>)</code></pre></div>
 <p><img src="03process-raw_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
@@ -519,7 +523,7 @@ Figure 3.1: STAR比对示意图, 来自Dobin et al.
 </div>
 <div id="kallistopseudo-alignment" class="section level2">
 <h2><span class="header-section-number">3.6</span> Kallisto和Pseudo-Alignment</h2>
-<p>STAR是read比对工具，而Kallisto是伪比对工具<span class="citation">(Bray et al. 2016)</span>。它们的主要区别是aligner比对到参考基因组或转录组上，而pseudo-aligner将k-mers比对到参考基因组或转录组上。</p>
+<p>STAR是read比对工具，而Kallisto是伪比对工具<span class="citation">(Bray et al. <a href="#ref-bray_2016">2016</a>)</span>。它们的主要区别是aligner比对到参考基因组或转录组上，而pseudo-aligner将k-mers比对到参考基因组或转录组上。</p>
 <div id="k-mer" class="section level3">
 <h3><span class="header-section-number">3.6.1</span> k-mer是什么?</h3>
 <p>k-mer是来自reads长度为k的序列。例如，假设read为ATCCCGGGTTAT，从中制作7-mer。为此，提取read的前七个碱基找到第一个7-mer。然后向下移动一个碱基得到第二个7-mer，然后计算接下来的七个碱基。图2显示了可以从read得到的所有7-mers：</p>
@@ -577,75 +581,22 @@ Figure 3.3: Kallisto等价类示意图, 来自 <a href="https://pachterlab.githu
 <li>run_info.json Kallisto执行信息，一般可忽略。</li>
 </ul>
 
-<div id="refs" class="references">
-<div>
-<p>Archer, Nathan, Mark D. Walsh, Vahid Shahrezaei, and Daniel Hebenstreit. 2016. “Modeling Enzyme Processivity Reveals That RNA-Seq Libraries Are Biased in Characteristic and Correctable Ways.” <em>Cell Systems</em> 3 (5). Elsevier BV: 467–479.e12. doi:<a href="https://doi.org/10.1016/j.cels.2016.10.012">10.1016/j.cels.2016.10.012</a>.</p>
 </div>
-<div>
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-bray_2016">
 <p>Bray, Nicolas L, Harold Pimentel, Páll Melsted, and Lior Pachter. 2016. “Near-Optimal Probabilistic Rna-Seq Quantification.” <em>Nat Biotechnol</em> 34 (5): 525–27. doi:<a href="https://doi.org/10.1038/nbt.3519">10.1038/nbt.3519</a>.</p>
 </div>
-<div>
-<p>Gierahn, Todd M, Marc H Wadsworth 2nd, Travis K Hughes, Bryan D Bryson, Andrew Butler, Rahul Satija, Sarah Fortune, J Christopher Love, and Alex K Shalek. 2017. “Seq-Well: Portable, Low-Cost RNA Sequencing of Single Cells at High Throughput.” <em>Nat. Methods</em> 14 (4): 395–98.</p>
-</div>
-<div>
-<p>Hashimshony, Tamar, Naftalie Senderovich, Gal Avital, Agnes Klochendler, Yaron de Leeuw, Leon Anavy, Dave Gennert, et al. 2016. “CEL-Seq2: Sensitive Highly-Multiplexed Single-Cell RNA-Seq.” <em>Genome Biol</em> 17 (1). Springer Nature. doi:<a href="https://doi.org/10.1186/s13059-016-0938-8">10.1186/s13059-016-0938-8</a>.</p>
-</div>
-<div>
-<p>Hashimshony, Tamar, Florian Wagner, Noa Sher, and Itai Yanai. 2012. “CEL-Seq: Single-cell RNA-Seq by Multiplexed Linear Amplification.” <em>Cell Reports</em> 2 (3). Elsevier BV: 666–73. doi:<a href="https://doi.org/10.1016/j.celrep.2012.08.003">10.1016/j.celrep.2012.08.003</a>.</p>
-</div>
-<div>
-<p>Islam, Saiful, Amit Zeisel, Simon Joost, Gioele La Manno, Pawel Zajac, Maria Kasper, Peter Lönnerberg, and Sten Linnarsson. 2013. “Quantitative Single-Cell RNA-Seq with Unique Molecular Identifiers.” <em>Nat Meth</em> 11 (2). Springer Nature: 163–66. doi:<a href="https://doi.org/10.1038/nmeth.2772">10.1038/nmeth.2772</a>.</p>
-</div>
-<div>
-<p>Jaitin, Diego Adhemar, Ephraim Kenigsberg, Hadas Keren-Shaul, Naama Elefant, Franziska Paul, Irina Zaretsky, Alexander Mildner, et al. 2014. “Massively Parallel Single-Cell RNA-seq for Marker-Free Decomposition of Tissues into Cell Types.” <em>Science</em> 343 (6172): 776–79.</p>
-</div>
-<div>
-<p>Kharchenko, Peter V, Lev Silberstein, and David T Scadden. 2014. “Bayesian Approach to Single-Cell Differential Expression Analysis.” <em>Nat Meth</em> 11 (7). Springer Nature: 740–42. doi:<a href="https://doi.org/10.1038/nmeth.2967">10.1038/nmeth.2967</a>.</p>
-</div>
-<div>
-<p>Klein, Allon M., Linas Mazutis, Ilke Akartuna, Naren Tallapragada, Adrian Veres, Victor Li, Leonid Peshkin, David A. Weitz, and Marc W. Kirschner. 2015. “Droplet Barcoding for Single-Cell Transcriptomics Applied to Embryonic Stem Cells.” <em>Cell</em> 161 (5). Elsevier BV: 1187–1201. doi:<a href="https://doi.org/10.1016/j.cell.2015.04.044">10.1016/j.cell.2015.04.044</a>.</p>
-</div>
-<div>
+<div id="ref-Kolodziejczyk2015-xy">
 <p>Kolodziejczyk, Aleksandra A., Jong Kyoung Kim, Valentine Svensson, John C. Marioni, and Sarah A. Teichmann. 2015. “The Technology and Biology of Single-Cell RNA Sequencing.” <em>Molecular Cell</em> 58 (4). Elsevier BV: 610–20. doi:<a href="https://doi.org/10.1016/j.molcel.2015.04.005">10.1016/j.molcel.2015.04.005</a>.</p>
 </div>
-<div>
-<p>Macosko, Evan Z., Anindita Basu, Rahul Satija, James Nemesh, Karthik Shekhar, Melissa Goldman, Itay Tirosh, et al. 2015. “Highly Parallel Genome-Wide Expression Profiling of Individual Cells Using Nanoliter Droplets.” <em>Cell</em> 161 (5). Elsevier BV: 1202–14. doi:<a href="https://doi.org/10.1016/j.cell.2015.05.002">10.1016/j.cell.2015.05.002</a>.</p>
 </div>
-<div>
-<p>Picelli, Simone, Åsa K Björklund, Omid R Faridani, Sven Sagasser, Gösta Winberg, and Rickard Sandberg. 2013. “Smart-Seq2 for Sensitive Full-Length Transcriptome Profiling in Single Cells.” <em>Nat Meth</em> 10 (11). Springer Nature: 1096–8. doi:<a href="https://doi.org/10.1038/nmeth.2639">10.1038/nmeth.2639</a>.</p>
-</div>
-<div>
-<p>Picelli, Simone, Omid R Faridani, Asa K Björklund, Gösta Winberg, Sven Sagasser, and Rickard Sandberg. 2014. “Full-Length RNA-seq from Single Cells Using Smart-Seq2.” <em>Nat. Protoc.</em> 9 (1): 171–81.</p>
-</div>
-<div>
-<p>Soumillon, Magali, Davide Cacchiarelli, Stefan Semrau, Alexander van Oudenaarden, and Tarjei S Mikkelsen. 2014. “Characterization of Directed Differentiation by High-Throughput Single-Cell RNA-Seq.” <em>bioRxiv</em>, March, 003236.</p>
-</div>
-<div>
-<p>Stegle, Oliver, Sarah A. Teichmann, and John C. Marioni. 2015. “Computational and Analytical Challenges in Single-Cell Transcriptomics.” <em>Nat Rev Genet</em> 16 (3). Springer Nature: 133–45. doi:<a href="https://doi.org/10.1038/nrg3833">10.1038/nrg3833</a>.</p>
-</div>
-<div>
-<p>Svensson, Valentine, Kedar Nath Natarajan, Lam-Ha Ly, Ricardo J Miragaia, Charlotte Labalette, Iain C Macaulay, Ana Cvejic, and Sarah A Teichmann. 2017. “Power Analysis of Single-Cell RNA-Sequencing Experiments.” <em>Nat Meth</em> 14 (4). Springer Nature: 381–87. doi:<a href="https://doi.org/10.1038/nmeth.4220">10.1038/nmeth.4220</a>.</p>
-</div>
-<div>
-<p>Tang, Fuchou, Catalin Barbacioru, Yangzhou Wang, Ellen Nordman, Clarence Lee, Nanlan Xu, Xiaohui Wang, et al. 2009. “mRNA-Seq Whole-Transcriptome Analysis of a Single Cell.” <em>Nat Meth</em> 6 (5). Springer Nature: 377–82. doi:<a href="https://doi.org/10.1038/nmeth.1315">10.1038/nmeth.1315</a>.</p>
-</div>
-<div>
-<p>Ziegenhain, Christoph, Beate Vieth, Swati Parekh, Björn Reinius, Amy Guillaumet-Adkins, Martha Smets, Heinrich Leonhardt, Holger Heyn, Ines Hellmann, and Wolfgang Enard. 2017. “Comparative Analysis of Single-Cell RNA Sequencing Methods.” <em>Molecular Cell</em> 65 (4). Elsevier BV: 631–643.e4. doi:<a href="https://doi.org/10.1016/j.molcel.2017.01.023">10.1016/j.molcel.2017.01.023</a>.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-
-
-
-
-
 <div class="footnotes">
 <hr />
 <ol start="1">
-<li id="fn1"><p><em>译者注:</em> Docker镜像中已经安装FastQC<a href="processing-raw-scrna-seq-data.html#fnref1">↩</a></p></li>
+<li id="fn1"><p><em>译者注:</em> Docker镜像中已经安装FastQC<a href="processing-raw-scRNA-seq-data.html#fnref1">↩</a></p></li>
 </ol>
 </div>
             </section>
@@ -653,8 +604,8 @@ Figure 3.3: Kallisto等价类示意图, 来自 <a href="https://pachterlab.githu
           </div>
         </div>
       </div>
-<a href="introduction-to-single-cell-rna-seq.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="introduction-to-single-cell-RNA-seq.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

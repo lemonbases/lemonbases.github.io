@@ -4,7 +4,7 @@ output: html_document
 
 
 
-# Processing Raw scRNA-seq Data
+# scRNA-seq原始数据处理 {#processing_raw_scRNA_seq_data}
 
 ## FastQC
 
@@ -404,6 +404,18 @@ c(TPR, Recall)
 set.seed(-92497)
 # mixture model
 require("mixtools")
+```
+
+```
+## 载入需要的程辑包：mixtools
+```
+
+```
+## mixtools package, version 1.1.0, Released 2017-03-10
+## This package is based upon work supported by the National Science Foundation under Grant No. SES-0518772.
+```
+
+```r
 mix <- normalmixEM(log_lib_size)
 ```
 
