@@ -2,7 +2,7 @@
 title: "scRNA-seq数据分析"
 author: "<a href='https://github.com/lemonbases'>碱基吃柠檬</a>"
 
-date: "2019-06-21"
+date: "2019-06-24"
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
