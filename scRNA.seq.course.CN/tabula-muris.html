@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Tabula Muris | scRNA-seq数据分析</title>
+  <meta name="description" content="6 Tabula Muris | scRNA-seq数据分析" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Tabula Muris | scRNA-seq数据分析" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Tabula Muris | scRNA-seq数据分析" />
+  
+  
+  
+
+<meta name="author" content="碱基吃柠檬" />
+
+
+<meta name="date" content="2019-06-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro-r-bioc.html">
+<link rel="next" href="references.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<!-- for Facebook -->  
+<meta property="og:url" content="https://github.com/sdbiodog" />
+<meta property="og:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
+<meta property="og:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
+
+<!-- for Twitter -->          
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="6 Tabula Muris | scRNA-seq数据分析" />
+<meta name="twitter:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
+<meta name="twitter:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71525309-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">Table of Contents</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 说在前面的话</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#section-1"><i class="fa fa-check"></i><b>1.1</b> 关于本项目</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#section-2"><i class="fa fa-check"></i><b>1.2</b> 视频</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#github"><i class="fa fa-check"></i><b>1.3</b> GitHub</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#docker-"><i class="fa fa-check"></i><b>1.4</b> Docker 镜像</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="index.html"><a href="index.html#section-3"><i class="fa fa-check"></i><b>1.4.1</b> 运行镜像</a></li>
+<li class="chapter" data-level="1.4.2" data-path="index.html"><a href="index.html#section-4"><i class="fa fa-check"></i><b>1.4.2</b> 下载数据或其它文件</a></li>
+<li class="chapter" data-level="1.4.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.4.3</b> RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#section-5"><i class="fa fa-check"></i><b>1.5</b> 手动安装</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#section-6"><i class="fa fa-check"></i><b>1.6</b> 许可</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#section-7"><i class="fa fa-check"></i><b>1.7</b> 准备知识</a></li>
+<li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#section-8"><i class="fa fa-check"></i><b>1.8</b> 联系我们</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html"><i class="fa fa-check"></i><b>2</b> scRNA-seq介绍</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#bulk-rna-seq"><i class="fa fa-check"></i><b>2.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#scrna-seq"><i class="fa fa-check"></i><b>2.2</b> scRNA-seq</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-9"><i class="fa fa-check"></i><b>2.3</b> 工作流程</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-10"><i class="fa fa-check"></i><b>2.4</b> 计算分析</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-11"><i class="fa fa-check"></i><b>2.5</b> 挑战</a></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-12"><i class="fa fa-check"></i><b>2.6</b> 实验方法</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-13"><i class="fa fa-check"></i><b>2.7</b> 如何选择合适的平台</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html"><i class="fa fa-check"></i><b>3</b> scRNA-seq原始数据处理</a><ul>
+<li class="chapter" data-level="3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastqc"><i class="fa fa-check"></i><b>3.1</b> FastQC</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-14"><i class="fa fa-check"></i><b>3.1.1</b> 解决方案并下载报告</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-15"><i class="fa fa-check"></i><b>3.2</b> 移除接头和低质量碱基</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#solution"><i class="fa fa-check"></i><b>3.2.1</b> Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-16"><i class="fa fa-check"></i><b>3.3</b> 文件格式</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastq"><i class="fa fa-check"></i><b>3.3.1</b> FastQ</a></li>
+<li class="chapter" data-level="3.3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#bam"><i class="fa fa-check"></i><b>3.3.2</b> BAM</a></li>
+<li class="chapter" data-level="3.3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#cram"><i class="fa fa-check"></i><b>3.3.3</b> CRAM</a></li>
+<li class="chapter" data-level="3.3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-17"><i class="fa fa-check"></i><b>3.3.4</b> 手动查看文件</a></li>
+<li class="chapter" data-level="3.3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#genome-fasta-gtf"><i class="fa fa-check"></i><b>3.3.5</b> Genome (FASTA, GTF)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-18"><i class="fa fa-check"></i><b>3.4</b> 测序文库拆分</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-19"><i class="fa fa-check"></i><b>3.4.1</b> 鉴定含有细胞的液滴/微孔</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#starread"><i class="fa fa-check"></i><b>3.5</b> 使用STAR比对read</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#star"><i class="fa fa-check"></i><b>3.5.1</b> STAR比对命令</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallistopseudo-alignment"><i class="fa fa-check"></i><b>3.6</b> Kallisto和Pseudo-Alignment</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-mer"><i class="fa fa-check"></i><b>3.6.1</b> k-mer是什么?</a></li>
+<li class="chapter" data-level="3.6.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-merreads"><i class="fa fa-check"></i><b>3.6.2</b> 为什么比对k-mer而不是reads?</a></li>
+<li class="chapter" data-level="3.6.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto"><i class="fa fa-check"></i><b>3.6.3</b> Kallisto伪比对模式</a></li>
+<li class="chapter" data-level="3.6.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto-pseudo-alignment"><i class="fa fa-check"></i><b>3.6.4</b> Kallisto Pseudo-Alignment命令</a></li>
+<li class="chapter" data-level="3.6.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto-1"><i class="fa fa-check"></i><b>3.6.5</b> 理解Kallisto输出结果</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html"><i class="fa fa-check"></i><b>4</b> 构建表达矩阵</a><ul>
+<li class="chapter" data-level="4.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-20"><i class="fa fa-check"></i><b>4.1</b> 质量控制</a></li>
+<li class="chapter" data-level="4.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#reads-"><i class="fa fa-check"></i><b>4.2</b> Reads 比对</a></li>
+<li class="chapter" data-level="4.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-21"><i class="fa fa-check"></i><b>4.3</b> 比对示例</a></li>
+<li class="chapter" data-level="4.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#mapping-qc"><i class="fa fa-check"></i><b>4.4</b> Mapping QC</a></li>
+<li class="chapter" data-level="4.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#reads"><i class="fa fa-check"></i><b>4.5</b> Reads定量</a></li>
+<li class="chapter" data-level="4.6" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-22"><i class="fa fa-check"></i><b>4.6</b> 唯一分子标识符</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umi"><i class="fa fa-check"></i><b>4.6.1</b> UMI介绍</a></li>
+<li class="chapter" data-level="4.6.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-23"><i class="fa fa-check"></i><b>4.6.2</b> 比对条形码序列</a></li>
+<li class="chapter" data-level="4.6.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#barcodes"><i class="fa fa-check"></i><b>4.6.3</b> Barcodes计数</a></li>
+<li class="chapter" data-level="4.6.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-24"><i class="fa fa-check"></i><b>4.6.4</b> 错误校正</a></li>
+<li class="chapter" data-level="4.6.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-25"><i class="fa fa-check"></i><b>4.6.5</b> 下游分析</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html"><i class="fa fa-check"></i><b>5</b> R/Bioconductor介绍</a><ul>
+<li class="chapter" data-level="5.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#r"><i class="fa fa-check"></i><b>5.1</b> 安装R包</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#cran"><i class="fa fa-check"></i><b>5.1.1</b> CRAN</a></li>
+<li class="chapter" data-level="5.1.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#github-1"><i class="fa fa-check"></i><b>5.1.2</b> Github</a></li>
+<li class="chapter" data-level="5.1.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor"><i class="fa fa-check"></i><b>5.1.3</b> Bioconductor</a></li>
+<li class="chapter" data-level="5.1.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#source"><i class="fa fa-check"></i><b>5.1.4</b> Source</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#installation-instructions"><i class="fa fa-check"></i><b>5.2</b> Installation instructions:</a></li>
+<li class="chapter" data-level="5.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#data-typesclasses"><i class="fa fa-check"></i><b>5.3</b> Data-types/classes</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#numeric"><i class="fa fa-check"></i><b>5.3.1</b> Numeric</a></li>
+<li class="chapter" data-level="5.3.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#characterstring"><i class="fa fa-check"></i><b>5.3.2</b> Character/String</a></li>
+<li class="chapter" data-level="5.3.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#logical"><i class="fa fa-check"></i><b>5.3.3</b> Logical</a></li>
+<li class="chapter" data-level="5.3.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#factors"><i class="fa fa-check"></i><b>5.3.4</b> Factors</a></li>
+<li class="chapter" data-level="5.3.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#checking-classtype"><i class="fa fa-check"></i><b>5.3.5</b> Checking class/type</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#basic-data-structures"><i class="fa fa-check"></i><b>5.4</b> Basic data structures</a></li>
+<li class="chapter" data-level="5.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#more-information"><i class="fa fa-check"></i><b>5.5</b> More information</a></li>
+<li class="chapter" data-level="5.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#data-types"><i class="fa fa-check"></i><b>5.6</b> Data Types</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#what-is-tidy-data"><i class="fa fa-check"></i><b>5.6.1</b> What is Tidy Data?</a></li>
+<li class="chapter" data-level="5.6.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#what-is-rich-data"><i class="fa fa-check"></i><b>5.6.2</b> What is Rich Data?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor-singlecellexperiment-and-scater"><i class="fa fa-check"></i><b>5.7</b> Bioconductor, <code>SingleCellExperiment</code> and <code>scater</code></a><ul>
+<li class="chapter" data-level="5.7.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor-1"><i class="fa fa-check"></i><b>5.7.1</b> Bioconductor</a></li>
+<li class="chapter" data-level="5.7.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#singlecellexperiment-class"><i class="fa fa-check"></i><b>5.7.2</b> <code>SingleCellExperiment</code> class</a></li>
+<li class="chapter" data-level="5.7.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#scater-package"><i class="fa fa-check"></i><b>5.7.3</b> <code>scater</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#an-introduction-to-ggplot2"><i class="fa fa-check"></i><b>5.8</b> An Introduction to ggplot2</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#what-is-ggplot2"><i class="fa fa-check"></i><b>5.8.1</b> What is ggplot2?</a></li>
+<li class="chapter" data-level="5.8.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#principles-of-ggplot2"><i class="fa fa-check"></i><b>5.8.2</b> Principles of ggplot2</a></li>
+<li class="chapter" data-level="5.8.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#using-the-aes-mapping-function"><i class="fa fa-check"></i><b>5.8.3</b> Using the <code>aes</code> mapping function</a></li>
+<li class="chapter" data-level="5.8.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#geoms"><i class="fa fa-check"></i><b>5.8.4</b> Geoms</a></li>
+<li class="chapter" data-level="5.8.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#plotting-data-from-more-than-2-cells"><i class="fa fa-check"></i><b>5.8.5</b> Plotting data from more than 2 cells</a></li>
+<li class="chapter" data-level="5.8.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#plotting-heatmaps"><i class="fa fa-check"></i><b>5.8.6</b> Plotting heatmaps</a></li>
+<li class="chapter" data-level="5.8.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#principal-component-analysis"><i class="fa fa-check"></i><b>5.8.7</b> Principal Component Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="tabula-muris.html"><a href="tabula-muris.html"><i class="fa fa-check"></i><b>6</b> Tabula Muris</a><ul>
+<li class="chapter" data-level="6.1" data-path="tabula-muris.html"><a href="tabula-muris.html#introduction"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="tabula-muris.html"><a href="tabula-muris.html#downloading-the-data"><i class="fa fa-check"></i><b>6.2</b> Downloading the data</a></li>
+<li class="chapter" data-level="6.3" data-path="tabula-muris.html"><a href="tabula-muris.html#reading-the-data-smartseq2"><i class="fa fa-check"></i><b>6.3</b> Reading the data (Smartseq2)</a></li>
+<li class="chapter" data-level="6.4" data-path="tabula-muris.html"><a href="tabula-muris.html#building-a-scater-object"><i class="fa fa-check"></i><b>6.4</b> Building a scater object</a></li>
+<li class="chapter" data-level="6.5" data-path="tabula-muris.html"><a href="tabula-muris.html#reading-the-data-10x"><i class="fa fa-check"></i><b>6.5</b> Reading the data (10X)</a></li>
+<li class="chapter" data-level="6.6" data-path="tabula-muris.html"><a href="tabula-muris.html#building-a-scater-object-1"><i class="fa fa-check"></i><b>6.6</b> Building a scater object</a></li>
+<li class="chapter" data-level="6.7" data-path="tabula-muris.html"><a href="tabula-muris.html#advanced-exercise"><i class="fa fa-check"></i><b>6.7</b> Advanced Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">碱基吃柠檬</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">scRNA-seq数据分析</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tabula_muris" class="section level1">
+<h1><span class="header-section-number">6</span> Tabula Muris</h1>
+<div id="introduction" class="section level2">
+<h2><span class="header-section-number">6.1</span> Introduction</h2>
+<p>To give you hands-on experience analyzing from start to finish a single-cell RNASeq dataset we will be using as an example, data from the <a href="https://www.biorxiv.org/content/early/2017/12/20/237446">Tabula Muris</a> initial release. The Tabula Muris
+is an international collaboration with the aim to profile every cell-type in the mouse using a standardized method. They combine highthroughput but low-coverage 10X data with lower throughput
+but high-coverage FACS-sorted cells + Smartseq2.</p>
+<p>The initial release of the data (20 Dec 2017), contain almost 100,000 cells across 20 different tissues/organs. You have been assigned one of these tissues as an example to work on over this course, and on Friday each person will have 3 minutes to present the result for their tissue.</p>
+</div>
+<div id="downloading-the-data" class="section level2">
+<h2><span class="header-section-number">6.2</span> Downloading the data</h2>
+<p>Unlike most single-cell RNASeq data Tabula Muris has release their data through the <a href="https://figshare.com/">figshare</a> platform rather than uploading it to <a href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a> or <a href="https://www.ebi.ac.uk/arrayexpress/">ArrayExpress</a>. You can find the data by using the doi’s in their paper : <a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_Smart-seq2_sequencing_of_FACS_sorted_cells/5715040">10.6084/m9.figshare.5715040</a> for FACS/Smartseq2 and <a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_microfluidic_emulsion/5715025">10.6084/m9.figshare.5715025</a> for 10X data. The data can be downloaded manually by clinking the doi links or by using the command-line commands below:</p>
+<p>Terminal-based download of FACS data:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038307
+<span class="fu">unzip</span> 10038307
+<span class="fu">wget</span> https://ndownloader.figshare.com/files/10038310
+<span class="fu">mv</span> 10038310 FACS_metadata.csv
+<span class="fu">wget</span> https://ndownloader.figshare.com/files/10039267
+<span class="fu">mv</span> 10039267 FACS_annotations.csv</code></pre>
+<p>Terminal-based download of 10X data:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038325
+<span class="fu">unzip</span> 10038325
+<span class="fu">wget</span> https://ndownloader.figshare.com/files/10038328
+<span class="fu">mv</span> 10038328 droplet_metadata.csv
+<span class="fu">wget</span> https://ndownloader.figshare.com/files/10039264
+<span class="fu">mv</span> 10039264 droplet_annotation.csv</code></pre>
+<p>Note if you download the data by hand you should unzip &amp; rename the files as above before continuing.</p>
+<p>You should now have two folders : “FACS” and “droplet” and one annotation and metadata file for each. To inspect these files you can use the <code>head</code> to see the top few lines of the text files (Press “q” to exit):</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">head</span> -n 10 data/droplet/droplet_metadata.csv</code></pre>
+<pre><code>## bash.exe: warning: could not find /tmp, please create!
+## bash.exe: warning: could not find /tmp, please create!
+## channel,mouse.id,tissue,subtissue,mouse.sex
+## 10X_P4_0,3-M-8,Tongue,NA,M
+## 10X_P4_1,3-M-9,Tongue,NA,M
+## 10X_P4_2,3-M-8/9,Liver,hepatocytes,M
+## 10X_P4_3,3-M-8,Bladder,NA,M
+## 10X_P4_4,3-M-9,Bladder,NA,M
+## 10X_P4_5,3-M-8,Kidney,NA,M
+## 10X_P4_6,3-M-9,Kidney,NA,M
+## 10X_P4_7,3-M-8,Spleen,NA,M
+## 10X_P7_0,3-F-56,Liver,NA,F</code></pre>
+<p>You can also check the number of rows in each file using:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wc</span> -l data/droplet/droplet_annotation.csv</code></pre>
+<pre><code>## bash.exe: warning: could not find /tmp, please create!
+## bash.exe: warning: could not find /tmp, please create!
+## 54838 data/droplet/droplet_annotation.csv</code></pre>
+<p><strong>Exercise</strong>
+How many cells do we have annotations for from FACS? from 10X?</p>
+<p><strong>Answer</strong>
+FACS : 54,838 cells
+Droplet : 42,193 cells</p>
+</div>
+<div id="reading-the-data-smartseq2" class="section level2">
+<h2><span class="header-section-number">6.3</span> Reading the data (Smartseq2)</h2>
+<p>We can now read in the relevant count matrix from the comma-separated file. Then inspect the resulting dataframe:</p>
+<pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/FACS/Kidney-counts.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
+dat[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre>
+<pre><code>##               X A14.MAA000545.3_8_M.1.1 E1.MAA000545.3_8_M.1.1
+## 1 0610005C13Rik                       0                      0
+## 2 0610007C21Rik                       1                      0
+## 3 0610007L01Rik                       0                      0
+## 4 0610007N19Rik                       0                      0
+## 5 0610007P08Rik                       0                      0
+##   M4.MAA000545.3_8_M.1.1 O21.MAA000545.3_8_M.1.1
+## 1                      0                       0
+## 2                      0                       0
+## 3                      0                       0
+## 4                      0                       0
+## 5                      0                       0</code></pre>
+<p>We can see that the first column in the dataframe is the gene names, so first we move these to the rownames so we have a numeric matrix:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(dat)</code></pre>
+<pre><code>## [1] 23433   866</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(dat) &lt;-<span class="st"> </span>dat[,<span class="dv">1</span>]
+dat &lt;-<span class="st"> </span>dat[,<span class="op">-</span><span class="dv">1</span>]</code></pre>
+<p>Since this is a Smartseq2 dataset it may contain spike-ins so lets check:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(dat)[<span class="kw">grep</span>(<span class="st">&quot;^ERCC-&quot;</span>, <span class="kw">rownames</span>(dat))]</code></pre>
+<pre><code>##  [1] &quot;ERCC-00002&quot; &quot;ERCC-00003&quot; &quot;ERCC-00004&quot; &quot;ERCC-00009&quot; &quot;ERCC-00012&quot;
+##  [6] &quot;ERCC-00013&quot; &quot;ERCC-00014&quot; &quot;ERCC-00016&quot; &quot;ERCC-00017&quot; &quot;ERCC-00019&quot;
+## [11] &quot;ERCC-00022&quot; &quot;ERCC-00024&quot; &quot;ERCC-00025&quot; &quot;ERCC-00028&quot; &quot;ERCC-00031&quot;
+## [16] &quot;ERCC-00033&quot; &quot;ERCC-00034&quot; &quot;ERCC-00035&quot; &quot;ERCC-00039&quot; &quot;ERCC-00040&quot;
+## [21] &quot;ERCC-00041&quot; &quot;ERCC-00042&quot; &quot;ERCC-00043&quot; &quot;ERCC-00044&quot; &quot;ERCC-00046&quot;
+## [26] &quot;ERCC-00048&quot; &quot;ERCC-00051&quot; &quot;ERCC-00053&quot; &quot;ERCC-00054&quot; &quot;ERCC-00057&quot;
+## [31] &quot;ERCC-00058&quot; &quot;ERCC-00059&quot; &quot;ERCC-00060&quot; &quot;ERCC-00061&quot; &quot;ERCC-00062&quot;
+## [36] &quot;ERCC-00067&quot; &quot;ERCC-00069&quot; &quot;ERCC-00071&quot; &quot;ERCC-00073&quot; &quot;ERCC-00074&quot;
+## [41] &quot;ERCC-00075&quot; &quot;ERCC-00076&quot; &quot;ERCC-00077&quot; &quot;ERCC-00078&quot; &quot;ERCC-00079&quot;
+## [46] &quot;ERCC-00081&quot; &quot;ERCC-00083&quot; &quot;ERCC-00084&quot; &quot;ERCC-00085&quot; &quot;ERCC-00086&quot;
+## [51] &quot;ERCC-00092&quot; &quot;ERCC-00095&quot; &quot;ERCC-00096&quot; &quot;ERCC-00097&quot; &quot;ERCC-00098&quot;
+## [56] &quot;ERCC-00099&quot; &quot;ERCC-00104&quot; &quot;ERCC-00108&quot; &quot;ERCC-00109&quot; &quot;ERCC-00111&quot;
+## [61] &quot;ERCC-00112&quot; &quot;ERCC-00113&quot; &quot;ERCC-00116&quot; &quot;ERCC-00117&quot; &quot;ERCC-00120&quot;
+## [66] &quot;ERCC-00123&quot; &quot;ERCC-00126&quot; &quot;ERCC-00130&quot; &quot;ERCC-00131&quot; &quot;ERCC-00134&quot;
+## [71] &quot;ERCC-00136&quot; &quot;ERCC-00137&quot; &quot;ERCC-00138&quot; &quot;ERCC-00142&quot; &quot;ERCC-00143&quot;
+## [76] &quot;ERCC-00144&quot; &quot;ERCC-00145&quot; &quot;ERCC-00147&quot; &quot;ERCC-00148&quot; &quot;ERCC-00150&quot;
+## [81] &quot;ERCC-00154&quot; &quot;ERCC-00156&quot; &quot;ERCC-00157&quot; &quot;ERCC-00158&quot; &quot;ERCC-00160&quot;
+## [86] &quot;ERCC-00162&quot; &quot;ERCC-00163&quot; &quot;ERCC-00164&quot; &quot;ERCC-00165&quot; &quot;ERCC-00168&quot;
+## [91] &quot;ERCC-00170&quot; &quot;ERCC-00171&quot;</code></pre>
+<p>Now we can extract much of the metadata for this data from the column names:</p>
+<pre class="sourceCode r"><code class="sourceCode r">cellIDs &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)
+cell_info &lt;-<span class="st"> </span><span class="kw">strsplit</span>(cellIDs, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>)
+Well &lt;-<span class="st"> </span><span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">1</span>]})
+Well &lt;-<span class="st"> </span><span class="kw">unlist</span>(Well)
+Plate &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">2</span>]}))
+Mouse &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">3</span>]}))</code></pre>
+<p>We can check the distributions of each of these metadata classifications:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">factor</span>(Mouse))</code></pre>
+<pre><code>## 3_10_M 3_11_M 3_38_F 3_39_F  3_8_M  3_9_M 
+##    104    196    237    169     82     77</code></pre>
+<p>We can also check if any technical factors are confounded:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(Mouse, Plate)</code></pre>
+<pre><code>##         Plate
+## Mouse    B001717 B002775 MAA000545 MAA000752 MAA000801 MAA000922
+##   3_10_M       0       0         0       104         0         0
+##   3_11_M       0       0         0         0       196         0
+##   3_38_F     237       0         0         0         0         0
+##   3_39_F       0     169         0         0         0         0
+##   3_8_M        0       0        82         0         0         0
+##   3_9_M        0       0         0         0         0        77</code></pre>
+<p>Lastly we will read the computationally inferred cell-type annotation and match them to the cell in our expression matrix:</p>
+<pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/FACS/FACS_annotations.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
+ann &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(cellIDs, ann[,<span class="dv">1</span>]),]
+celltype &lt;-<span class="st"> </span>ann[,<span class="dv">3</span>]</code></pre>
+</div>
+<div id="building-a-scater-object" class="section level2">
+<h2><span class="header-section-number">6.4</span> Building a scater object</h2>
+<p>To create a SingleCellExperiment object we must put together all the cell annotations into a single dataframe, since the experimental batch (pcr plate) is completely confounded with donor mouse we will only keep one of them.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;SingleCellExperiment&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;scater&quot;</span>)
+cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> Mouse, <span class="dt">well=</span>Well, <span class="dt">type=</span>celltype)
+<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)
+sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(<span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(dat)), <span class="dt">colData=</span>cell_anns)</code></pre>
+<p>Finally if the dataset contains spike-ins we a hidden variable in the SingleCellExperiment object to track them:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isSpike</span>(sceset, <span class="st">&quot;ERCC&quot;</span>) &lt;-<span class="st"> </span><span class="kw">grepl</span>(<span class="st">&quot;ERCC-&quot;</span>, <span class="kw">rownames</span>(sceset))</code></pre>
+</div>
+<div id="reading-the-data-10x" class="section level2">
+<h2><span class="header-section-number">6.5</span> Reading the data (10X)</h2>
+<p>Due to the large size and sparsity of 10X data (upto 90% of the expression matrix may be 0s) it is typically
+stored as a sparse matrix. The default output format for CellRanger is an .mtx file which stores this sparse
+matrix as a column of row coordinates, a column of column corodinates, and a column of expression values &gt; 0.
+Note if you look at the .mtx file you will see two header lines followed by a line detailing the
+total number of rows, columns and counts for the full matrix. Since only the coordinates are stored in the .mtx
+file, the names of each row &amp; column must be stored separately in the “genes.tsv” and “barcodes.tsv” files
+respectively.</p>
+<p>We will be using the “Matrix” package to store matrices in sparse-matrix format in R.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;Matrix&quot;</span>)</code></pre>
+<pre><code>## 
+## 载入程辑包：&#39;Matrix&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:S4Vectors&#39;:
+## 
+##     expand</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)
+genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/genes.tsv&quot;</span>)
+molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/matrix.mtx&quot;</span>)</code></pre>
+<p>Now we will add the appropriate row and column names. However, if you inspect the read cellbarcodes you will see that they are just the barcode sequence associated with each cell. This is a problem since each batch of 10X data uses the same pool of barcodes so if we need to combine data from multiple 10X batches the cellbarcodes will not be unique. Hence we will attach the batch ID to each cell barcode:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(cellbarcodes)</code></pre>
+<pre><code>##                   V1
+## 1 AAACCTGAGATGCCAG-1
+## 2 AAACCTGAGTGTCCAT-1
+## 3 AAACCTGCAAGGCTCC-1
+## 4 AAACCTGTCCTTGCCA-1
+## 5 AAACGGGAGCTGAACG-1
+## 6 AAACGGGCAGGACCCT-1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]
+<span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P4_5&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
+<p>Now lets get the metadata and computational annotations for this data:</p>
+<pre class="sourceCode r"><code class="sourceCode r">meta &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_metadata.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="kw">head</span>(meta)</code></pre>
+<pre><code>##    channel mouse.id  tissue   subtissue mouse.sex
+## 1 10X_P4_0    3-M-8  Tongue        &lt;NA&gt;         M
+## 2 10X_P4_1    3-M-9  Tongue        &lt;NA&gt;         M
+## 3 10X_P4_2  3-M-8/9   Liver hepatocytes         M
+## 4 10X_P4_3    3-M-8 Bladder        &lt;NA&gt;         M
+## 5 10X_P4_4    3-M-9 Bladder        &lt;NA&gt;         M
+## 6 10X_P4_5    3-M-8  Kidney        &lt;NA&gt;         M</code></pre>
+<p>Here we can see that we need to use “10X_P4_5” to find the metadata for this batch, also note that the format of the mouse ID is different in this metadata table with hyphens instead of underscores and with the gender in the middle of the ID. From checking the methods section of the accompanying paper we know that the same 8 mice were used for both droplet and plate-based techniques. So we need to fix the mouse IDs to be consistent with those used in the FACS experiments.</p>
+<pre class="sourceCode r"><code class="sourceCode r">meta[meta<span class="op">$</span>channel <span class="op">==</span><span class="st"> &quot;10X_P4_5&quot;</span>,]</code></pre>
+<pre><code>##    channel mouse.id tissue subtissue mouse.sex
+## 6 10X_P4_5    3-M-8 Kidney      &lt;NA&gt;         M</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mouseID &lt;-<span class="st"> &quot;3_8_M&quot;</span></code></pre>
+<p>Note: depending on the tissue you have been assigned you may have 10X data from mixed samples : e.g. mouse id = 3-M-5/6. You should still reformat these to be consistent but they will not match mouse ids from the FACS data which may affect your downstream analysis. If the mice weren’t from an inbred strain it would be possible to assign individual cells to a specific mouse using exonic-SNPs but that is beyond the scope of this course.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_annotation.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
+<span class="kw">head</span>(ann)</code></pre>
+<pre><code>##                        cell  tissue cell_ontology_class
+## 1 10X_P4_3_AAAGTAGAGATGCCAG Bladder    mesenchymal cell
+## 2 10X_P4_3_AACCGCGTCCAACCAA Bladder    mesenchymal cell
+## 3 10X_P4_3_AACTCCCGTCGGGTCT Bladder    mesenchymal cell
+## 4 10X_P4_3_AACTCTTAGTTGCAGG Bladder        bladder cell
+## 5 10X_P4_3_AACTCTTTCATAACCG Bladder    mesenchymal cell
+## 6 10X_P4_3_AAGACCTAGATCCGAG Bladder    endothelial cell
+##                      cell_ontology_term_iri cell_ontology_id
+## 1 http://purl.obolibrary.org/obo/CL_0008019       CL:0008019
+## 2 http://purl.obolibrary.org/obo/CL_0008019       CL:0008019
+## 3 http://purl.obolibrary.org/obo/CL_0008019       CL:0008019
+## 4 http://purl.obolibrary.org/obo/CL_1001319       CL:1001319
+## 5 http://purl.obolibrary.org/obo/CL_0008019       CL:0008019
+## 6 http://purl.obolibrary.org/obo/CL_0000115       CL:0000115</code></pre>
+<p>Again you will find a slight formating difference between the cellID in the annotation and the cellbarcodes which we will have to correct before matching them.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ann[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">paste</span>(ann[,<span class="dv">1</span>], <span class="st">&quot;-1&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)
+ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]
+celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]</code></pre>
+<p>Now lets build the cell-metadata dataframe:</p>
+<pre class="sourceCode r"><code class="sourceCode r">cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)
+<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules);</code></pre>
+<p><strong>Exercise</strong> Repeat the above for the other 10X batches for your tissue.</p>
+<p><strong>Answer</strong></p>
+</div>
+<div id="building-a-scater-object-1" class="section level2">
+<h2><span class="header-section-number">6.6</span> Building a scater object</h2>
+<p>Now that we have read the 10X data in multiple batches we need to combine them into a single SingleCellExperiment object. First we will check that the gene names are the same and in the same order across all batches:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules2))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules3))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now we’ll check that there aren’t any repeated cellIDs:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules2))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules2) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>Everything is ok, so we can go ahead and combine them:</p>
+<pre class="sourceCode r"><code class="sourceCode r">all_molecules &lt;-<span class="st"> </span><span class="kw">cbind</span>(molecules1, molecules2, molecules3)
+all_cell_anns &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(cell_anns1, cell_anns2, cell_anns3))
+all_cell_anns<span class="op">$</span>batch &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;10X_P4_5&quot;</span>, <span class="st">&quot;10X_P4_6&quot;</span>,<span class="st">&quot;10X_P7_5&quot;</span>), <span class="dt">times =</span> <span class="kw">c</span>(<span class="kw">nrow</span>(cell_anns1), <span class="kw">nrow</span>(cell_anns2), <span class="kw">nrow</span>(cell_anns3)))</code></pre>
+<p><strong>Exercise</strong>
+How many cells are in the whole dataset?</p>
+<p><strong>Answer</strong></p>
+<p>Now build the SingleCellExperiment object. One of the advantages of the SingleCellExperiment class is that it is capable of storing data in normal matrix or sparse matrix format, as well as HDF5 format which allows large non-sparse matrices to be stored &amp; accessed on disk in an efficient manner rather than loading the whole thing into RAM.</p>
+<pre class="sourceCode r"><code class="sourceCode r">all_molecules &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(all_molecules)
+sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(
+    <span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(all_molecules)),
+    <span class="dt">colData =</span> all_cell_anns
+)</code></pre>
+<p>Since this is 10X data it will not contain spike-ins, so we just save the data:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(sceset, <span class="st">&quot;kidney_droplet.rds&quot;</span>)</code></pre>
+</div>
+<div id="advanced-exercise" class="section level2">
+<h2><span class="header-section-number">6.7</span> Advanced Exercise</h2>
+<p>Write an R function/script which will fully automate this procedure for each data-type for any tissue.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro-r-bioc.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": true,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/lemonbases/scRNA.seq.course.CN/edit/master/06intro-TabulaMuris.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["scRNA-seq-course.pdf"],
+"toc": {
+"collapse": "section"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
