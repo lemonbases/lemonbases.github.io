@@ -6,7 +6,7 @@ output: html_document
 
 
 
-很多scRNA-seq数据分析从**表达矩**为开始。 一般来说，表达矩阵的每一行代表一个基因，每列代表一个细胞（但是一些作者会使用转置）。 每个条目代表特定基因在特定细胞的表达水平。表达量的单位取决于protocol和标准化方法。
+很多scRNA-seq数据分析从**表达矩阵**为开始。 一般来说，表达矩阵的每一行代表一个基因，每列代表一个细胞（但是一些作者会使用转置）。 每个条目代表特定基因在特定细胞的表达水平。表达量的单位取决于protocol和标准化方法。
 
 ## 质量控制
 
@@ -110,88 +110,101 @@ UMI是在反转录过程中添加到转录本中的短（4-10bp）随机条形�
 
 由于条形码数量($4^N$,$N$为UMI的长度)比细胞中RNA分子(~$10^6$)数目多，每个barcode通常会连接多个转录本。因此需要barcode和转录本比对位置来鉴定转录本分子。第一步比对UMI reads，推荐使用STAR，因为其运行速度快并且输出高质量BAM比对。此外，比对位置对鉴定转录本新的3'UTR很有帮助。
 
-UMI-sequencing typically consists of paired-end reads where one read from each pair captures the cell and UMI barcodes while the other read consists of exonic sequence from the transcript (Figure \@ref(fig:intro-umi-reads)). Note that trimming and/or filtering to remove reads containing poly-A sequence is recommended to avoid erors due to these read mapping to genes/transcripts with internal poly-A/poly-T sequences.
+UMI测序通常由双端reads组成，其中一端read捕获细胞和UMI条形码，然后另一端read包含转录本的外显子序列(Figure \@ref(fig:intro-umi-reads))。注意：推荐移除reads中poly-A序列避免比对到基因/转录本内部的poly-A/poly-T序列而产生错误。
 
-After processing the reads from a UMI experiment, the following conventions are often used:
+处理完UMI实验的reads后，通常有以下惯例：
 
-1. The UMI is added to the read name of the other paired read. 
+1. UMI加到另外一个配对read的序列名称中
 
-2. Reads are sorted into separate files by cell barcode
-	+ For extremely large, shallow datasets, the cell barcode may be added to the read name as well to reduce the number of files.
-
-<div class="figure" style="text-align: center">
-<img src="figures/UMI-Seq-reads.png" alt="UMI sequencing reads, red lightning bolts represent different fragmentation locations" width="90%" />
-<p class="caption">(\#fig:intro-umi-reads)UMI sequencing reads, red lightning bolts represent different fragmentation locations</p>
-</div>
-
-### Counting Barcodes
-
-In theory, every unique UMI-transcript pair should represent all reads originating from a single RNA molecule. However, in practice this is frequently not the case and the most common reasons are:
-
-1. __Different UMI does not necessarily mean different molecule__
-	+ Due to PCR or sequencing errors, base-pair substitution events can result in new UMI sequences. Longer UMIs give more opportunity for errors to arise and based on estimates from cell barcodes we expect 7-10% of 10bp UMIs to contain at least one error. If not corrected for, this type of error will result in an overestimate of the number of transcripts.
-
-2. __Different transcript does not necessarily mean different molecule__
-	+ Mapping errors and/or multimapping reads may result in some UMIs being assigned to the wrong gene/transcript. This type of error will also result in an overestimate of the number of transcripts.
-
-3. __Same UMI does not necessarily mean same molecule__
-	+ Biases in UMI frequency and short UMIs can result in the same UMI being attached to different mRNA molecules from the same gene. Thus, the number of transcripts may be underestimated.
+2. reads按照cell barcode归类到不同的文件，对特别大，测序深度浅的数据集，cell barcode加到read名称中以减少文件数量。
 
 <div class="figure" style="text-align: center">
-<img src="figures/UMI-Seq-errors.png" alt="Potential Errors in UMIs" width="90%" />
-<p class="caption">(\#fig:intro-umi-errors)Potential Errors in UMIs</p>
+<img src="figures/UMI-Seq-reads.png" alt="UMI测序reads, 红色闪电代表不同片段的文职" width="90%" />
+<p class="caption">(\#fig:intro-umi-reads)UMI测序reads, 红色闪电代表不同片段的文职</p>
 </div>
 
-### Correcting for Errors
+### Barcodes计数
 
-How to best account for errors in UMIs remains an active area of research. The best approaches that we are aware of for resolving the issues mentioned above are:
+理论上，每个唯一的UMI-转录本对应该对应来自一个RNA分子的所有reads，然而实际情况并非如此，常见原因如下：
 
-1. [UMI-tools'](https://github.com/CGATOxford/UMI-tools) directional-adjacency method implements a procedure which considers both the number of mismatches and the relative frequency of similar UMIs to identify likely PCR/sequencing errors.
+1. **不同UMI不一定表示为不同的分子**，由于PCR或测序错误，碱基对替换事件可产生新的UMI序列。 较长的UMI碱基替换的可能性更高。根据cell barcode测序误差估计，7-10％的10bp UMI至少会包含一个错误。如果没有纠正错误，将导致高估转录本的数量。
 
-2. Currently an open question. The problem may be mitigated by removing UMIs with few reads to support their association with a particular transcript, or by removing all multi-mapping reads.
+2. **不同转录本不一定是不同分子**，比对错误，或者multimapping reads可能导致某些UMI对应到错误的基因/转录本，这种类型的错误也会导致高估转录本的数量。
 
-3. Simple saturation (aka "collision probability") correction proposed by [Grun, Kester and van Oudenaarden (2014)](http://www.nature.com/nmeth/journal/v11/n6/full/nmeth.2930.html#methods) to estimate the true number of molecules $M$:
+3. **相同的UMI不一定是相同分子**，UMI频率和短UMI可导致相同UMI连接到相同基因的不同mRNA分子。因此，将导致低估转录本数量。
+
+<div class="figure" style="text-align: center">
+<img src="figures/UMI-Seq-errors.png" alt="UMIs中可能错误" width="90%" />
+<p class="caption">(\#fig:intro-umi-errors)UMIs中可能错误</p>
+</div>
+
+### 错误校正
+
+如何最好地解释UMI中的错误仍然是一个活跃的研究领域。我们认为解决上述问题的最佳方法是：
+
+1. [UMI-tools](https://github.com/CGATOxford/UMI-tools) 使用directional-adjacency方法，同时考虑错配数目和相似UMIs相对频率来识别可能的PCR/测序错误。
+
+2. 目前问题还没完全解决，通过删除很少reads支持的UMI-转录本对，或者移除multi-mapping reads可以减轻该问题。
+
+3. 简单饱和校正 (又称 "collision probability") [Grun, Kester and van Oudenaarden (2014)](http://www.nature.com/nmeth/journal/v11/n6/full/nmeth.2930.html#methods) 估计真实的分子数目 $M$:
 
 $$M \approx -N*log(1 - \frac{n}{N})$$ 
-where N = total number of unique UMI barcodes and n = number of observed barcodes.
- 
-An important caveat of this method is that it assumes that all UMIs are equally frequent. In most cases this is incorrect, since there is often a bias related to the GC content. 
+其中N=唯一UMI barcode的总数，n=观测barcode数目
+
+该方法的一个重要缺陷是其假设所有UMI出现频率相同。大多数情况下并不是，因为GC含量不同引入偏差。
 
 <div class="figure" style="text-align: center">
-<img src="figures/UMI-Seq-amp.png" alt="Per gene amplification rate" width="60%" />
-<p class="caption">(\#fig:intro-umi-amp)Per gene amplification rate</p>
+<img src="figures/UMI-Seq-amp.png" alt="基因扩增效率" width="60%" />
+<p class="caption">(\#fig:intro-umi-amp)基因扩增效率</p>
 </div>
 
-Determining how to best process and use UMIs is currently an active area of research in the bioinformatics community. We are aware of several methods that have recently been developed, including:
+如何最好地处理和使用UMI目前是生物信息学界的一个活跃的研究领域。最近开发的几种方法，包括：
 
 * [UMI-tools](https://github.com/CGATOxford/UMI-tools)
 * [PoissonUMIs](https://github.com/tallulandrews/PoissonUMIs)
 * [zUMIs](https://github.com/sdparekh/zUMIs)
 * [dropEst](https://github.com/hms-dbmi/dropEst)
 
-### Downstream Analysis
+### 下游分析
 
-Current UMI platforms (DropSeq, InDrop, ICell8) exhibit low and highly variable capture efficiency as shown in the figure below. 
+目前UMI平台(DropSeq, InDrop, ICell8)捕获效率从低到高差异很大，如下图所示。
 
 <div class="figure" style="text-align: center">
-<img src="figures/UMI-Seq-capture.png" alt="Variability in Capture Efficiency" width="70%" />
-<p class="caption">(\#fig:intro-umi-capture)Variability in Capture Efficiency</p>
+<img src="figures/UMI-Seq-capture.png" alt="捕获效率差异" width="70%" />
+<p class="caption">(\#fig:intro-umi-capture)捕获效率差异</p>
 </div>
 
-This variability can introduce strong biases and it needs to be considered in downstream analysis. Recent analyses often pool cells/genes together based on cell-type or biological pathway to increase the power. Robust statistical analyses of this data is still an open research question and it remains to be determined how to best adjust for biases.
+这种差异引入强烈的偏差，需要在下游分析中考虑。最近的分析通常基于细胞类型或生物通路吧细胞/基因混合在一起增强检测能力。对这些数据的稳健统计分析仍然是一个开放的研究问题，还有待确定如何最好地调整偏差。
 
-__Exercise 1__ We have provided you with UMI counts and read counts from induced pluripotent stem cells generated from three different individuals [@Tung2017-ba] (see: Chapter \@ref(exprs-qc) for details of this dataset).
+**练习1** 现提供三个不同来源的诱导多功能干细胞UMI counts和read counts数据 [@Tung2017-ba] (查看章节 \@ref(exprs-qc) 获得更多关于此数据集的信息)
 
 
 ```r
 umi_counts <- read.table("data/tung/molecules.txt", sep = "\t")
 read_counts <- read.table("data/tung/reads.txt", sep = "\t")
 ```
-Using this data:
+使用该数据:
 
-1. Plot the variability in capture efficiency
+1. 绘制捕获效率可变性
 
-2. Determine the amplification rate: average number of reads per UMI.
+2. 确定扩增率：每个UMI的平均reads数目
+Determine the amplification rate: average number of reads per UMI.
 
+**答案1** 
 
+```r
+# Exercise 1
+# Part 1
+plot(colSums(umi_counts), colSums(umi_counts > 0), xlab="Total Molecules Detected", ylab="Total Genes Detected")
+
+# Part 2
+amp_rate <- sum(read_counts)/sum(umi_counts)
+amp_rate
+```
+
+<img src="04exprs-constr_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
+
+```
+## [1] 30.87586
+```
 

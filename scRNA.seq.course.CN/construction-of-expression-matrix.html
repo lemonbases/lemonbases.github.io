@@ -24,7 +24,7 @@
 <meta name="author" content="碱基吃柠檬" />
 
 
-<meta name="date" content="2019-06-24" />
+<meta name="date" content="2019-06-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -185,9 +185,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.6" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-4.6"><i class="fa fa-check"></i><b>4.6</b> 唯一分子标识符</a><ul>
 <li class="chapter" data-level="4.6.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umi"><i class="fa fa-check"></i><b>4.6.1</b> UMI介绍</a></li>
 <li class="chapter" data-level="4.6.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-4.6.2"><i class="fa fa-check"></i><b>4.6.2</b> 比对条形码序列</a></li>
-<li class="chapter" data-level="4.6.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#counting-barcodes"><i class="fa fa-check"></i><b>4.6.3</b> Counting Barcodes</a></li>
-<li class="chapter" data-level="4.6.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#correcting-for-errors"><i class="fa fa-check"></i><b>4.6.4</b> Correcting for Errors</a></li>
-<li class="chapter" data-level="4.6.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#downstream-analysis"><i class="fa fa-check"></i><b>4.6.5</b> Downstream Analysis</a></li>
+<li class="chapter" data-level="4.6.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#barcodes"><i class="fa fa-check"></i><b>4.6.3</b> Barcodes计数</a></li>
+<li class="chapter" data-level="4.6.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-4.6.4"><i class="fa fa-check"></i><b>4.6.4</b> 错误校正</a></li>
+<li class="chapter" data-level="4.6.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-4.6.5"><i class="fa fa-check"></i><b>4.6.5</b> 下游分析</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
@@ -213,7 +213,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="construction_of_expression_matrix" class="section level1">
 <h1><span class="header-section-number">4</span> 构建表达矩阵</h1>
-<p>很多scRNA-seq数据分析从<strong>表达矩</strong>为开始。 一般来说，表达矩阵的每一行代表一个基因，每列代表一个细胞（但是一些作者会使用转置）。 每个条目代表特定基因在特定细胞的表达水平。表达量的单位取决于protocol和标准化方法。</p>
+<p>很多scRNA-seq数据分析从<strong>表达矩阵</strong>为开始。 一般来说，表达矩阵的每一行代表一个基因，每列代表一个细胞（但是一些作者会使用转置）。 每个条目代表特定基因在特定细胞的表达水平。表达量的单位取决于protocol和标准化方法。</p>
 <div id="section-4.1" class="section level2">
 <h2><span class="header-section-number">4.1</span> 质量控制</h2>
 <p>scRNA-seq实验测序结果是大量的cDNA reads。第一步是确保测序的高质量，可以使用以下标准工具执行质量控制，例如 <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> 或 <a href="http://www.ebi.ac.uk/research/enright/software/kraken">Kraken</a>.</p>
@@ -292,63 +292,51 @@ Figure 4.4: UMI sequencing protocol
 <div id="section-4.6.2" class="section level3">
 <h3><span class="header-section-number">4.6.2</span> 比对条形码序列</h3>
 <p>由于条形码数量(<span class="math inline">\(4^N\)</span>,<span class="math inline">\(N\)</span>为UMI的长度)比细胞中RNA分子(~<span class="math inline">\(10^6\)</span>)数目多，每个barcode通常会连接多个转录本。因此需要barcode和转录本比对位置来鉴定转录本分子。第一步比对UMI reads，推荐使用STAR，因为其运行速度快并且输出高质量BAM比对。此外，比对位置对鉴定转录本新的3’UTR很有帮助。</p>
-<p>UMI-sequencing typically consists of paired-end reads where one read from each pair captures the cell and UMI barcodes while the other read consists of exonic sequence from the transcript (Figure <a href="construction-of-expression-matrix.html#fig:intro-umi-reads">4.5</a>). Note that trimming and/or filtering to remove reads containing poly-A sequence is recommended to avoid erors due to these read mapping to genes/transcripts with internal poly-A/poly-T sequences.</p>
-<p>After processing the reads from a UMI experiment, the following conventions are often used:</p>
+<p>UMI测序通常由双端reads组成，其中一端read捕获细胞和UMI条形码，然后另一端read包含转录本的外显子序列(Figure <a href="construction-of-expression-matrix.html#fig:intro-umi-reads">4.5</a>)。注意：推荐移除reads中poly-A序列避免比对到基因/转录本内部的poly-A/poly-T序列而产生错误。</p>
+<p>处理完UMI实验的reads后，通常有以下惯例：</p>
 <ol style="list-style-type: decimal">
-<li><p>The UMI is added to the read name of the other paired read.</p></li>
-<li>Reads are sorted into separate files by cell barcode
-<ul>
-<li>For extremely large, shallow datasets, the cell barcode may be added to the read name as well to reduce the number of files.</li>
-</ul></li>
+<li><p>UMI加到另外一个配对read的序列名称中</p></li>
+<li><p>reads按照cell barcode归类到不同的文件，对特别大，测序深度浅的数据集，cell barcode加到read名称中以减少文件数量。</p></li>
 </ol>
 <div class="figure" style="text-align: center"><span id="fig:intro-umi-reads"></span>
-<img src="figures/UMI-Seq-reads.png" alt="UMI sequencing reads, red lightning bolts represent different fragmentation locations" width="90%" />
+<img src="figures/UMI-Seq-reads.png" alt="UMI测序reads, 红色闪电代表不同片段的文职" width="90%" />
 <p class="caption">
-Figure 4.5: UMI sequencing reads, red lightning bolts represent different fragmentation locations
+Figure 4.5: UMI测序reads, 红色闪电代表不同片段的文职
 </p>
 </div>
 </div>
-<div id="counting-barcodes" class="section level3">
-<h3><span class="header-section-number">4.6.3</span> Counting Barcodes</h3>
-<p>In theory, every unique UMI-transcript pair should represent all reads originating from a single RNA molecule. However, in practice this is frequently not the case and the most common reasons are:</p>
+<div id="barcodes" class="section level3">
+<h3><span class="header-section-number">4.6.3</span> Barcodes计数</h3>
+<p>理论上，每个唯一的UMI-转录本对应该对应来自一个RNA分子的所有reads，然而实际情况并非如此，常见原因如下：</p>
 <ol style="list-style-type: decimal">
-<li><strong>Different UMI does not necessarily mean different molecule</strong>
-<ul>
-<li>Due to PCR or sequencing errors, base-pair substitution events can result in new UMI sequences. Longer UMIs give more opportunity for errors to arise and based on estimates from cell barcodes we expect 7-10% of 10bp UMIs to contain at least one error. If not corrected for, this type of error will result in an overestimate of the number of transcripts.</li>
-</ul></li>
-<li><strong>Different transcript does not necessarily mean different molecule</strong>
-<ul>
-<li>Mapping errors and/or multimapping reads may result in some UMIs being assigned to the wrong gene/transcript. This type of error will also result in an overestimate of the number of transcripts.</li>
-</ul></li>
-<li><strong>Same UMI does not necessarily mean same molecule</strong>
-<ul>
-<li>Biases in UMI frequency and short UMIs can result in the same UMI being attached to different mRNA molecules from the same gene. Thus, the number of transcripts may be underestimated.</li>
-</ul></li>
+<li><p><strong>不同UMI不一定表示为不同的分子</strong>，由于PCR或测序错误，碱基对替换事件可产生新的UMI序列。 较长的UMI碱基替换的可能性更高。根据cell barcode测序误差估计，7-10％的10bp UMI至少会包含一个错误。如果没有纠正错误，将导致高估转录本的数量。</p></li>
+<li><p><strong>不同转录本不一定是不同分子</strong>，比对错误，或者multimapping reads可能导致某些UMI对应到错误的基因/转录本，这种类型的错误也会导致高估转录本的数量。</p></li>
+<li><p><strong>相同的UMI不一定是相同分子</strong>，UMI频率和短UMI可导致相同UMI连接到相同基因的不同mRNA分子。因此，将导致低估转录本数量。</p></li>
 </ol>
 <div class="figure" style="text-align: center"><span id="fig:intro-umi-errors"></span>
-<img src="figures/UMI-Seq-errors.png" alt="Potential Errors in UMIs" width="90%" />
+<img src="figures/UMI-Seq-errors.png" alt="UMIs中可能错误" width="90%" />
 <p class="caption">
-Figure 4.6: Potential Errors in UMIs
+Figure 4.6: UMIs中可能错误
 </p>
 </div>
 </div>
-<div id="correcting-for-errors" class="section level3">
-<h3><span class="header-section-number">4.6.4</span> Correcting for Errors</h3>
-<p>How to best account for errors in UMIs remains an active area of research. The best approaches that we are aware of for resolving the issues mentioned above are:</p>
+<div id="section-4.6.4" class="section level3">
+<h3><span class="header-section-number">4.6.4</span> 错误校正</h3>
+<p>如何最好地解释UMI中的错误仍然是一个活跃的研究领域。我们认为解决上述问题的最佳方法是：</p>
 <ol style="list-style-type: decimal">
-<li><p><a href="https://github.com/CGATOxford/UMI-tools">UMI-tools’</a> directional-adjacency method implements a procedure which considers both the number of mismatches and the relative frequency of similar UMIs to identify likely PCR/sequencing errors.</p></li>
-<li><p>Currently an open question. The problem may be mitigated by removing UMIs with few reads to support their association with a particular transcript, or by removing all multi-mapping reads.</p></li>
-<li><p>Simple saturation (aka “collision probability”) correction proposed by <a href="http://www.nature.com/nmeth/journal/v11/n6/full/nmeth.2930.html#methods">Grun, Kester and van Oudenaarden (2014)</a> to estimate the true number of molecules <span class="math inline">\(M\)</span>:</p></li>
+<li><p><a href="https://github.com/CGATOxford/UMI-tools">UMI-tools</a> 使用directional-adjacency方法，同时考虑错配数目和相似UMIs相对频率来识别可能的PCR/测序错误。</p></li>
+<li><p>目前问题还没完全解决，通过删除很少reads支持的UMI-转录本对，或者移除multi-mapping reads可以减轻该问题。</p></li>
+<li><p>简单饱和校正 (又称 “collision probability”) <a href="http://www.nature.com/nmeth/journal/v11/n6/full/nmeth.2930.html#methods">Grun, Kester and van Oudenaarden (2014)</a> 估计真实的分子数目 <span class="math inline">\(M\)</span>:</p></li>
 </ol>
-<p><span class="math display">\[M \approx -N*log(1 - \frac{n}{N})\]</span> where N = total number of unique UMI barcodes and n = number of observed barcodes.</p>
-<p>An important caveat of this method is that it assumes that all UMIs are equally frequent. In most cases this is incorrect, since there is often a bias related to the GC content.</p>
+<p><span class="math display">\[M \approx -N*log(1 - \frac{n}{N})\]</span> 其中N=唯一UMI barcode的总数，n=观测barcode数目</p>
+<p>该方法的一个重要缺陷是其假设所有UMI出现频率相同。大多数情况下并不是，因为GC含量不同引入偏差。</p>
 <div class="figure" style="text-align: center"><span id="fig:intro-umi-amp"></span>
-<img src="figures/UMI-Seq-amp.png" alt="Per gene amplification rate" width="60%" />
+<img src="figures/UMI-Seq-amp.png" alt="基因扩增效率" width="60%" />
 <p class="caption">
-Figure 4.7: Per gene amplification rate
+Figure 4.7: 基因扩增效率
 </p>
 </div>
-<p>Determining how to best process and use UMIs is currently an active area of research in the bioinformatics community. We are aware of several methods that have recently been developed, including:</p>
+<p>如何最好地处理和使用UMI目前是生物信息学界的一个活跃的研究领域。最近开发的几种方法，包括：</p>
 <ul>
 <li><a href="https://github.com/CGATOxford/UMI-tools">UMI-tools</a></li>
 <li><a href="https://github.com/tallulandrews/PoissonUMIs">PoissonUMIs</a></li>
@@ -356,24 +344,34 @@ Figure 4.7: Per gene amplification rate
 <li><a href="https://github.com/hms-dbmi/dropEst">dropEst</a></li>
 </ul>
 </div>
-<div id="downstream-analysis" class="section level3">
-<h3><span class="header-section-number">4.6.5</span> Downstream Analysis</h3>
-<p>Current UMI platforms (DropSeq, InDrop, ICell8) exhibit low and highly variable capture efficiency as shown in the figure below.</p>
+<div id="section-4.6.5" class="section level3">
+<h3><span class="header-section-number">4.6.5</span> 下游分析</h3>
+<p>目前UMI平台(DropSeq, InDrop, ICell8)捕获效率从低到高差异很大，如下图所示。</p>
 <div class="figure" style="text-align: center"><span id="fig:intro-umi-capture"></span>
-<img src="figures/UMI-Seq-capture.png" alt="Variability in Capture Efficiency" width="70%" />
+<img src="figures/UMI-Seq-capture.png" alt="捕获效率差异" width="70%" />
 <p class="caption">
-Figure 4.8: Variability in Capture Efficiency
+Figure 4.8: 捕获效率差异
 </p>
 </div>
-<p>This variability can introduce strong biases and it needs to be considered in downstream analysis. Recent analyses often pool cells/genes together based on cell-type or biological pathway to increase the power. Robust statistical analyses of this data is still an open research question and it remains to be determined how to best adjust for biases.</p>
-<p><strong>Exercise 1</strong> We have provided you with UMI counts and read counts from induced pluripotent stem cells generated from three different individuals <span class="citation">(Tung et al. <a href="#ref-Tung2017-ba">2017</a>)</span> (see: Chapter <a href="#exprs-qc"><strong>??</strong></a> for details of this dataset).</p>
+<p>这种差异引入强烈的偏差，需要在下游分析中考虑。最近的分析通常基于细胞类型或生物通路吧细胞/基因混合在一起增强检测能力。对这些数据的稳健统计分析仍然是一个开放的研究问题，还有待确定如何最好地调整偏差。</p>
+<p><strong>练习1</strong> 现提供三个不同来源的诱导多功能干细胞UMI counts和read counts数据 <span class="citation">(Tung et al. <a href="#ref-Tung2017-ba">2017</a>)</span> (查看章节 <a href="#exprs-qc"><strong>??</strong></a> 获得更多关于此数据集的信息)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">umi_counts &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/tung/molecules.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)
 read_counts &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/tung/reads.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</code></pre></div>
-<p>Using this data:</p>
+<p>使用该数据:</p>
 <ol style="list-style-type: decimal">
-<li><p>Plot the variability in capture efficiency</p></li>
-<li><p>Determine the amplification rate: average number of reads per UMI.</p></li>
+<li><p>绘制捕获效率可变性</p></li>
+<li><p>确定扩增率：每个UMI的平均reads数目 Determine the amplification rate: average number of reads per UMI.</p></li>
 </ol>
+<p><strong>答案1</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Exercise 1</span>
+<span class="co"># Part 1</span>
+<span class="kw">plot</span>(<span class="kw">colSums</span>(umi_counts), <span class="kw">colSums</span>(umi_counts <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">xlab=</span><span class="st">&quot;Total Molecules Detected&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Total Genes Detected&quot;</span>)
+
+<span class="co"># Part 2</span>
+amp_rate &lt;-<span class="st"> </span><span class="kw">sum</span>(read_counts)<span class="op">/</span><span class="kw">sum</span>(umi_counts)
+amp_rate</code></pre></div>
+<p><img src="04exprs-constr_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>## [1] 30.87586</code></pre>
 
 </div>
 </div>
