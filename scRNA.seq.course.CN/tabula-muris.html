@@ -253,13 +253,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="tabula-muris.html"><a href="tabula-muris.html"><i class="fa fa-check"></i><b>6</b> Tabula Muris</a><ul>
-<li class="chapter" data-level="6.1" data-path="tabula-muris.html"><a href="tabula-muris.html#introduction"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.2" data-path="tabula-muris.html"><a href="tabula-muris.html#downloading-the-data"><i class="fa fa-check"></i><b>6.2</b> Downloading the data</a></li>
-<li class="chapter" data-level="6.3" data-path="tabula-muris.html"><a href="tabula-muris.html#reading-the-data-smartseq2"><i class="fa fa-check"></i><b>6.3</b> Reading the data (Smartseq2)</a></li>
-<li class="chapter" data-level="6.4" data-path="tabula-muris.html"><a href="tabula-muris.html#building-a-scater-object"><i class="fa fa-check"></i><b>6.4</b> Building a scater object</a></li>
-<li class="chapter" data-level="6.5" data-path="tabula-muris.html"><a href="tabula-muris.html#reading-the-data-10x"><i class="fa fa-check"></i><b>6.5</b> Reading the data (10X)</a></li>
-<li class="chapter" data-level="6.6" data-path="tabula-muris.html"><a href="tabula-muris.html#building-a-scater-object-1"><i class="fa fa-check"></i><b>6.6</b> Building a scater object</a></li>
-<li class="chapter" data-level="6.7" data-path="tabula-muris.html"><a href="tabula-muris.html#advanced-exercise"><i class="fa fa-check"></i><b>6.7</b> Advanced Exercise</a></li>
+<li class="chapter" data-level="6.1" data-path="tabula-muris.html"><a href="tabula-muris.html#section-41"><i class="fa fa-check"></i><b>6.1</b> 介绍</a></li>
+<li class="chapter" data-level="6.2" data-path="tabula-muris.html"><a href="tabula-muris.html#section-42"><i class="fa fa-check"></i><b>6.2</b> 下载数据</a></li>
+<li class="chapter" data-level="6.3" data-path="tabula-muris.html"><a href="tabula-muris.html#smartseq2"><i class="fa fa-check"></i><b>6.3</b> 读取Smartseq2数据</a></li>
+<li class="chapter" data-level="6.4" data-path="tabula-muris.html"><a href="tabula-muris.html#scater"><i class="fa fa-check"></i><b>6.4</b> 构建scater对象</a></li>
+<li class="chapter" data-level="6.5" data-path="tabula-muris.html"><a href="tabula-muris.html#x"><i class="fa fa-check"></i><b>6.5</b> 读取10X数据</a></li>
+<li class="chapter" data-level="6.6" data-path="tabula-muris.html"><a href="tabula-muris.html#scater-1"><i class="fa fa-check"></i><b>6.6</b> 创建scater对象</a></li>
+<li class="chapter" data-level="6.7" data-path="tabula-muris.html"><a href="tabula-muris.html#section-43"><i class="fa fa-check"></i><b>6.7</b> 进阶练习</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
 <li class="divider"></li>
@@ -284,59 +284,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="tabula_muris" class="section level1">
 <h1><span class="header-section-number">6</span> Tabula Muris</h1>
-<div id="introduction" class="section level2">
-<h2><span class="header-section-number">6.1</span> Introduction</h2>
-<p>To give you hands-on experience analyzing from start to finish a single-cell RNASeq dataset we will be using as an example, data from the <a href="https://www.biorxiv.org/content/early/2017/12/20/237446">Tabula Muris</a> initial release. The Tabula Muris
-is an international collaboration with the aim to profile every cell-type in the mouse using a standardized method. They combine highthroughput but low-coverage 10X data with lower throughput
-but high-coverage FACS-sorted cells + Smartseq2.</p>
-<p>The initial release of the data (20 Dec 2017), contain almost 100,000 cells across 20 different tissues/organs. You have been assigned one of these tissues as an example to work on over this course, and on Friday each person will have 3 minutes to present the result for their tissue.</p>
+<div id="section-41" class="section level2">
+<h2><span class="header-section-number">6.1</span> 介绍</h2>
+<p>为了提供完整分析scRNA-seq数据的体验，我们以<a href="https://www.biorxiv.org/content/early/2017/12/20/237446">Tabula Muris</a>初始发布的数据为例。Tabula Muris是旨在使用标准化方法分析小鼠细胞类型的国际合作项目。其结合高通量但低覆盖率的10X数据和低通量但高覆盖率FACS分选细胞+ Smartseq2.</p>
+<p>最初发布的数据（2017年12月20日）包含20个不同组织/器官的近100,000个细胞。</p>
 </div>
-<div id="downloading-the-data" class="section level2">
-<h2><span class="header-section-number">6.2</span> Downloading the data</h2>
-<p>Unlike most single-cell RNASeq data Tabula Muris has release their data through the <a href="https://figshare.com/">figshare</a> platform rather than uploading it to <a href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a> or <a href="https://www.ebi.ac.uk/arrayexpress/">ArrayExpress</a>. You can find the data by using the doi’s in their paper : <a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_Smart-seq2_sequencing_of_FACS_sorted_cells/5715040">10.6084/m9.figshare.5715040</a> for FACS/Smartseq2 and <a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_microfluidic_emulsion/5715025">10.6084/m9.figshare.5715025</a> for 10X data. The data can be downloaded manually by clinking the doi links or by using the command-line commands below:</p>
-<p>Terminal-based download of FACS data:</p>
+<div id="section-42" class="section level2">
+<h2><span class="header-section-number">6.2</span> 下载数据</h2>
+<p>和大多数scRNA-seq数据不同，Tabula Muris在<a href="https://figshare.com/">figshare</a>上发布其数据，而不是上传到<a href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a>或<a href="https://www.ebi.ac.uk/arrayexpress/">ArrayExpress</a>。使用他们文章中doi获取数据：<a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_Smart-seq2_sequencing_of_FACS_sorted_cells/5715040">10.6084/m9.figshare.5715040</a> FACS/Smartseq2数据，<a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_microfluidic_emulsion/5715025">10.6084/m9.figshare.5715025</a> 10X数据。可以通过手动点击doi链接下载或者通过下面的命令:</p>
+<p>基于终端的FACS数据下载:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038307
 <span class="fu">unzip</span> 10038307
 <span class="fu">wget</span> https://ndownloader.figshare.com/files/10038310
 <span class="fu">mv</span> 10038310 FACS_metadata.csv
 <span class="fu">wget</span> https://ndownloader.figshare.com/files/10039267
 <span class="fu">mv</span> 10039267 FACS_annotations.csv</code></pre>
-<p>Terminal-based download of 10X data:</p>
+<p>基于终端的10X数据下载：:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038325
 <span class="fu">unzip</span> 10038325
 <span class="fu">wget</span> https://ndownloader.figshare.com/files/10038328
 <span class="fu">mv</span> 10038328 droplet_metadata.csv
 <span class="fu">wget</span> https://ndownloader.figshare.com/files/10039264
 <span class="fu">mv</span> 10039264 droplet_annotation.csv</code></pre>
-<p>Note if you download the data by hand you should unzip &amp; rename the files as above before continuing.</p>
-<p>You should now have two folders : “FACS” and “droplet” and one annotation and metadata file for each. To inspect these files you can use the <code>head</code> to see the top few lines of the text files (Press “q” to exit):</p>
+<p>注意，如果手动下载数据，则应在继续之前解压缩并重命名文件。</p>
+<p>现在应该有两个文件夹：“FACS”和“Droplet”文件夹，以及各自一个注释和元数据文件。使用<code>head</code>查看文本文件的前几行（按<code>q</code>退出）：</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">head</span> -n 10 data/droplet/droplet_metadata.csv</code></pre>
-<pre><code>## bash.exe: warning: could not find /tmp, please create!
-## bash.exe: warning: could not find /tmp, please create!
-## channel,mouse.id,tissue,subtissue,mouse.sex
-## 10X_P4_0,3-M-8,Tongue,NA,M
-## 10X_P4_1,3-M-9,Tongue,NA,M
-## 10X_P4_2,3-M-8/9,Liver,hepatocytes,M
-## 10X_P4_3,3-M-8,Bladder,NA,M
-## 10X_P4_4,3-M-9,Bladder,NA,M
-## 10X_P4_5,3-M-8,Kidney,NA,M
-## 10X_P4_6,3-M-9,Kidney,NA,M
-## 10X_P4_7,3-M-8,Spleen,NA,M
-## 10X_P7_0,3-F-56,Liver,NA,F</code></pre>
-<p>You can also check the number of rows in each file using:</p>
+<p>使用<code>wc</code>查看文件行数：</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wc</span> -l data/droplet/droplet_annotation.csv</code></pre>
-<pre><code>## bash.exe: warning: could not find /tmp, please create!
-## bash.exe: warning: could not find /tmp, please create!
-## 54838 data/droplet/droplet_annotation.csv</code></pre>
-<p><strong>Exercise</strong>
-How many cells do we have annotations for from FACS? from 10X?</p>
-<p><strong>Answer</strong>
-FACS : 54,838 cells
-Droplet : 42,193 cells</p>
+<p><strong>练习</strong>
+我们从FACS和10X注释了多少个细胞？</p>
+<p><strong>答案</strong></p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wc</span> -l FACS_annotations.csv
+<span class="fu">wc</span> -l droplet_annotation.csv
+<span class="co">#FACS : 54,838 cells</span>
+<span class="co">#Droplet : 42,193 cells</span></code></pre>
 </div>
-<div id="reading-the-data-smartseq2" class="section level2">
-<h2><span class="header-section-number">6.3</span> Reading the data (Smartseq2)</h2>
-<p>We can now read in the relevant count matrix from the comma-separated file. Then inspect the resulting dataframe:</p>
+<div id="smartseq2" class="section level2">
+<h2><span class="header-section-number">6.3</span> 读取Smartseq2数据</h2>
+<p>从逗号分隔文件中读取相应的的count矩阵。然后检查结果数据框：</p>
 <pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/FACS/Kidney-counts.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
 dat[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre>
 <pre><code>##               X A14.MAA000545.3_8_M.1.1 E1.MAA000545.3_8_M.1.1
@@ -351,12 +336,12 @@ dat[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,
 ## 3                      0                       0
 ## 4                      0                       0
 ## 5                      0                       0</code></pre>
-<p>We can see that the first column in the dataframe is the gene names, so first we move these to the rownames so we have a numeric matrix:</p>
+<p>数据框中的第一列是基因，将数据框rownames重命名为基因名</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(dat)</code></pre>
 <pre><code>## [1] 23433   866</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(dat) &lt;-<span class="st"> </span>dat[,<span class="dv">1</span>]
 dat &lt;-<span class="st"> </span>dat[,<span class="op">-</span><span class="dv">1</span>]</code></pre>
-<p>Since this is a Smartseq2 dataset it may contain spike-ins so lets check:</p>
+<p>由于这是一个Smartseq2数据集，它可能包含spike-ins，通过下述命令检查数据集：</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(dat)[<span class="kw">grep</span>(<span class="st">&quot;^ERCC-&quot;</span>, <span class="kw">rownames</span>(dat))]</code></pre>
 <pre><code>##  [1] &quot;ERCC-00002&quot; &quot;ERCC-00003&quot; &quot;ERCC-00004&quot; &quot;ERCC-00009&quot; &quot;ERCC-00012&quot;
 ##  [6] &quot;ERCC-00013&quot; &quot;ERCC-00014&quot; &quot;ERCC-00016&quot; &quot;ERCC-00017&quot; &quot;ERCC-00019&quot;
@@ -377,18 +362,18 @@ dat &lt;-<span class="st"> </span>dat[,<span class="op">-</span><span class="dv"
 ## [81] &quot;ERCC-00154&quot; &quot;ERCC-00156&quot; &quot;ERCC-00157&quot; &quot;ERCC-00158&quot; &quot;ERCC-00160&quot;
 ## [86] &quot;ERCC-00162&quot; &quot;ERCC-00163&quot; &quot;ERCC-00164&quot; &quot;ERCC-00165&quot; &quot;ERCC-00168&quot;
 ## [91] &quot;ERCC-00170&quot; &quot;ERCC-00171&quot;</code></pre>
-<p>Now we can extract much of the metadata for this data from the column names:</p>
+<p>从列名中提取这些数据的元数据：</p>
 <pre class="sourceCode r"><code class="sourceCode r">cellIDs &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)
 cell_info &lt;-<span class="st"> </span><span class="kw">strsplit</span>(cellIDs, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>)
 Well &lt;-<span class="st"> </span><span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">1</span>]})
 Well &lt;-<span class="st"> </span><span class="kw">unlist</span>(Well)
 Plate &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">2</span>]}))
 Mouse &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">3</span>]}))</code></pre>
-<p>We can check the distributions of each of these metadata classifications:</p>
+<p>查看元数据的分布信息</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">factor</span>(Mouse))</code></pre>
 <pre><code>## 3_10_M 3_11_M 3_38_F 3_39_F  3_8_M  3_9_M 
 ##    104    196    237    169     82     77</code></pre>
-<p>We can also check if any technical factors are confounded:</p>
+<p>检查是否有任何技术因素混淆：</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(Mouse, Plate)</code></pre>
 <pre><code>##         Plate
 ## Mouse    B001717 B002775 MAA000545 MAA000752 MAA000801 MAA000922
@@ -398,42 +383,31 @@ Mouse &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="
 ##   3_39_F       0     169         0         0         0         0
 ##   3_8_M        0       0        82         0         0         0
 ##   3_9_M        0       0         0         0         0        77</code></pre>
-<p>Lastly we will read the computationally inferred cell-type annotation and match them to the cell in our expression matrix:</p>
+<p>最后，读取计算推测的细胞类型注释，并与表达矩阵中的细胞进行匹配：</p>
 <pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/FACS/FACS_annotations.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
 ann &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(cellIDs, ann[,<span class="dv">1</span>]),]
 celltype &lt;-<span class="st"> </span>ann[,<span class="dv">3</span>]</code></pre>
 </div>
-<div id="building-a-scater-object" class="section level2">
-<h2><span class="header-section-number">6.4</span> Building a scater object</h2>
-<p>To create a SingleCellExperiment object we must put together all the cell annotations into a single dataframe, since the experimental batch (pcr plate) is completely confounded with donor mouse we will only keep one of them.</p>
+<div id="scater" class="section level2">
+<h2><span class="header-section-number">6.4</span> 构建scater对象</h2>
+<p>要创建SingleCellExperiment对象，必须将所有细胞注释放在一个数据框中，因为实验批处理（pcr板）与供体鼠标完全混淆，我们只保留其中一个。</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;SingleCellExperiment&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;scater&quot;</span>)
 cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> Mouse, <span class="dt">well=</span>Well, <span class="dt">type=</span>celltype)
 <span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)
 sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(<span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(dat)), <span class="dt">colData=</span>cell_anns)</code></pre>
-<p>Finally if the dataset contains spike-ins we a hidden variable in the SingleCellExperiment object to track them:</p>
+<p>如果数据集包含spike-ins，在SingleCellExperiment对象中设置一个隐藏变量来跟踪它们：</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isSpike</span>(sceset, <span class="st">&quot;ERCC&quot;</span>) &lt;-<span class="st"> </span><span class="kw">grepl</span>(<span class="st">&quot;ERCC-&quot;</span>, <span class="kw">rownames</span>(sceset))</code></pre>
 </div>
-<div id="reading-the-data-10x" class="section level2">
-<h2><span class="header-section-number">6.5</span> Reading the data (10X)</h2>
-<p>Due to the large size and sparsity of 10X data (upto 90% of the expression matrix may be 0s) it is typically
-stored as a sparse matrix. The default output format for CellRanger is an .mtx file which stores this sparse
-matrix as a column of row coordinates, a column of column corodinates, and a column of expression values &gt; 0.
-Note if you look at the .mtx file you will see two header lines followed by a line detailing the
-total number of rows, columns and counts for the full matrix. Since only the coordinates are stored in the .mtx
-file, the names of each row &amp; column must be stored separately in the “genes.tsv” and “barcodes.tsv” files
-respectively.</p>
-<p>We will be using the “Matrix” package to store matrices in sparse-matrix format in R.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;Matrix&quot;</span>)</code></pre>
-<pre><code>## 
-## 载入程辑包：&#39;Matrix&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:S4Vectors&#39;:
-## 
-##     expand</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)
+<div id="x" class="section level2">
+<h2><span class="header-section-number">6.5</span> 读取10X数据</h2>
+<p>由于10X数据的大规模和稀疏性（表达矩阵中高达90％可能是0），它通常存储为稀疏矩阵。 CellRanger的默认输出格式是.mtx文件，将稀疏矩阵存储为一列行坐标,一列列坐标，一列&gt;0的表达值。注意，如果查看.mtx文件，发现两行标题行后紧跟一行，其详细说明完整矩阵的行数，列数和计数。由于只有坐标存储在.mtx文件中，因此每行和列的名称必须分别存储在“genes.tsv”和“barcodes.tsv”文件中。</p>
+<p>使用“Matrix”包读取稀疏矩阵。</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;Matrix&quot;</span>)
+cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)
 genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/genes.tsv&quot;</span>)
 molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/matrix.mtx&quot;</span>)</code></pre>
-<p>Now we will add the appropriate row and column names. However, if you inspect the read cellbarcodes you will see that they are just the barcode sequence associated with each cell. This is a problem since each batch of 10X data uses the same pool of barcodes so if we need to combine data from multiple 10X batches the cellbarcodes will not be unique. Hence we will attach the batch ID to each cell barcode:</p>
+<p>添加适当的行名和列名。查看read的cellbarcode，发现只有与每个细胞相关的barcode序列。考虑到10X数据每一批的cellbarcodes序列可能有重复，因此在合并数据前将批次ID与cellbarcode合并。</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(cellbarcodes)</code></pre>
 <pre><code>##                   V1
 ## 1 AAACCTGAGATGCCAG-1
@@ -444,7 +418,7 @@ molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span cla
 ## 6 AAACGGGCAGGACCCT-1</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]
 <span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P4_5&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
-<p>Now lets get the metadata and computational annotations for this data:</p>
+<p>读入元数据和计算注释信息。</p>
 <pre class="sourceCode r"><code class="sourceCode r">meta &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_metadata.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
 <span class="kw">head</span>(meta)</code></pre>
 <pre><code>##    channel mouse.id  tissue   subtissue mouse.sex
@@ -454,12 +428,12 @@ molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span cla
 ## 4 10X_P4_3    3-M-8 Bladder        &lt;NA&gt;         M
 ## 5 10X_P4_4    3-M-9 Bladder        &lt;NA&gt;         M
 ## 6 10X_P4_5    3-M-8  Kidney        &lt;NA&gt;         M</code></pre>
-<p>Here we can see that we need to use “10X_P4_5” to find the metadata for this batch, also note that the format of the mouse ID is different in this metadata table with hyphens instead of underscores and with the gender in the middle of the ID. From checking the methods section of the accompanying paper we know that the same 8 mice were used for both droplet and plate-based techniques. So we need to fix the mouse IDs to be consistent with those used in the FACS experiments.</p>
+<p>需要用“10X_P4_5”获得这批数据的meta信息，注意到metadata表格中mouse ID和FACS数据集中mouse ID不同，这里用“-”而不是"_"作为分隔符，而且性别位于ID的中间。通过查阅文献得知，droplet和FACS技术使用相同的8只小鼠，所以修改小鼠ID，与FACS实验保持一致。</p>
 <pre class="sourceCode r"><code class="sourceCode r">meta[meta<span class="op">$</span>channel <span class="op">==</span><span class="st"> &quot;10X_P4_5&quot;</span>,]</code></pre>
 <pre><code>##    channel mouse.id tissue subtissue mouse.sex
 ## 6 10X_P4_5    3-M-8 Kidney      &lt;NA&gt;         M</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">mouseID &lt;-<span class="st"> &quot;3_8_M&quot;</span></code></pre>
-<p>Note: depending on the tissue you have been assigned you may have 10X data from mixed samples : e.g. mouse id = 3-M-5/6. You should still reformat these to be consistent but they will not match mouse ids from the FACS data which may affect your downstream analysis. If the mice weren’t from an inbred strain it would be possible to assign individual cells to a specific mouse using exonic-SNPs but that is beyond the scope of this course.</p>
+<p>注意：有些组织的10X数据可能来自混合样本，比如mouse id = 3-M-5/6。仍然需要格式化mouse id，但是可能与FACS数据的mouse id不一致，影响下游分析。如果小鼠不是来自近交系，那么可以使用exonic-SNP将每个细胞分配给特定小鼠，但这超出了本课程的范围。</p>
 <pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_annotation.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
 <span class="kw">head</span>(ann)</code></pre>
 <pre><code>##                        cell  tissue cell_ontology_class
@@ -476,49 +450,80 @@ molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span cla
 ## 4 http://purl.obolibrary.org/obo/CL_1001319       CL:1001319
 ## 5 http://purl.obolibrary.org/obo/CL_0008019       CL:0008019
 ## 6 http://purl.obolibrary.org/obo/CL_0000115       CL:0000115</code></pre>
-<p>Again you will find a slight formating difference between the cellID in the annotation and the cellbarcodes which we will have to correct before matching them.</p>
+<p>注释中的cellID和cellbarcode格式有些差别，在匹配前进行校正。</p>
 <pre class="sourceCode r"><code class="sourceCode r">ann[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">paste</span>(ann[,<span class="dv">1</span>], <span class="st">&quot;-1&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)
 ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]
 celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]</code></pre>
-<p>Now lets build the cell-metadata dataframe:</p>
+<p>构建cell-metadata数据框</p>
 <pre class="sourceCode r"><code class="sourceCode r">cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)
 <span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules);</code></pre>
-<p><strong>Exercise</strong> Repeat the above for the other 10X batches for your tissue.</p>
-<p><strong>Answer</strong></p>
+<p><strong>练习</strong> 使用组织的其它批次重复上述处理.</p>
+<p><strong>答案</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r">molecules1 &lt;-<span class="st"> </span>molecules
+cell_anns1 &lt;-<span class="st"> </span>cell_anns
+
+cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)
+genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/genes.tsv&quot;</span>)
+molecules &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/matrix.mtx&quot;</span>)
+<span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]
+<span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P4_6&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)
+mouseID &lt;-<span class="st"> &quot;3_9_M&quot;</span>
+ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]
+celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]
+cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)
+<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules)
+
+molecules2 &lt;-<span class="st"> </span>molecules
+cell_anns2 &lt;-<span class="st"> </span>cell_anns
+
+cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/barcodes.tsv&quot;</span>)
+genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/genes.tsv&quot;</span>)
+molecules &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/matrix.mtx&quot;</span>)
+<span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]
+<span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P7_5&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)
+mouseID &lt;-<span class="st"> &quot;3_57_F&quot;</span>
+ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]
+celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]
+cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)
+<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules)
+
+molecules3 &lt;-<span class="st"> </span>molecules
+cell_anns3 &lt;-<span class="st"> </span>cell_anns</code></pre>
 </div>
-<div id="building-a-scater-object-1" class="section level2">
-<h2><span class="header-section-number">6.6</span> Building a scater object</h2>
-<p>Now that we have read the 10X data in multiple batches we need to combine them into a single SingleCellExperiment object. First we will check that the gene names are the same and in the same order across all batches:</p>
+<div id="scater-1" class="section level2">
+<h2><span class="header-section-number">6.6</span> 创建scater对象</h2>
+<p>现在已经读入多个批次的10X数据，将其合并成一个SingleCellExperiment对象。首先检查不同批次基因名字和顺序是否一致。</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules2))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules3))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>Now we’ll check that there aren’t any repeated cellIDs:</p>
+<p>检查有无重复的cellIDs:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules2))</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules2) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</code></pre>
 <pre><code>## [1] 0</code></pre>
-<p>Everything is ok, so we can go ahead and combine them:</p>
+<p>检查没有问题后，将数据进行合并。
+Everything is ok, so we can go ahead and combine them:</p>
 <pre class="sourceCode r"><code class="sourceCode r">all_molecules &lt;-<span class="st"> </span><span class="kw">cbind</span>(molecules1, molecules2, molecules3)
 all_cell_anns &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(cell_anns1, cell_anns2, cell_anns3))
 all_cell_anns<span class="op">$</span>batch &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;10X_P4_5&quot;</span>, <span class="st">&quot;10X_P4_6&quot;</span>,<span class="st">&quot;10X_P7_5&quot;</span>), <span class="dt">times =</span> <span class="kw">c</span>(<span class="kw">nrow</span>(cell_anns1), <span class="kw">nrow</span>(cell_anns2), <span class="kw">nrow</span>(cell_anns3)))</code></pre>
-<p><strong>Exercise</strong>
-How many cells are in the whole dataset?</p>
-<p><strong>Answer</strong></p>
-<p>Now build the SingleCellExperiment object. One of the advantages of the SingleCellExperiment class is that it is capable of storing data in normal matrix or sparse matrix format, as well as HDF5 format which allows large non-sparse matrices to be stored &amp; accessed on disk in an efficient manner rather than loading the whole thing into RAM.</p>
+<p><strong>练习</strong>
+数据集中共有多少细胞？</p>
+<p><strong>答案</strong></p>
+<p>创建SingleCellExperiment对象，SingleCellExperiment类的一个优势是其可以以正常矩阵或者稀疏矩阵的格式存储数据，以及HDF5格式，以有效的方式在磁盘存储和读取大型非稀疏矩阵，而不是整个加载到内存中。</p>
 <pre class="sourceCode r"><code class="sourceCode r">all_molecules &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(all_molecules)
 sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(
     <span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(all_molecules)),
     <span class="dt">colData =</span> all_cell_anns
 )</code></pre>
-<p>Since this is 10X data it will not contain spike-ins, so we just save the data:</p>
+<p>因为这是10X数据，不包括spike-ins，可以直接存储数据。</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(sceset, <span class="st">&quot;kidney_droplet.rds&quot;</span>)</code></pre>
 </div>
-<div id="advanced-exercise" class="section level2">
-<h2><span class="header-section-number">6.7</span> Advanced Exercise</h2>
-<p>Write an R function/script which will fully automate this procedure for each data-type for any tissue.</p>
+<div id="section-43" class="section level2">
+<h2><span class="header-section-number">6.7</span> 进阶练习</h2>
+<p>编写R函数/脚本自动处理任何组织的任意数据类型。</p>
 
 </div>
 </div>

@@ -562,7 +562,7 @@ STAR是read比对工具，而Kallisto是伪比对工具[@bray_2016]。它们的�
 k-mer是来自reads长度为k的序列。例如，假设read为ATCCCGGGTTAT，从中制作7-mer。为此，提取read的前七个碱基找到第一个7-mer。然后向下移动一个碱基得到第二个7-mer，然后计算接下来的七个碱基。图2显示了可以从read得到的所有7-mers：
 
 <div class="figure" style="text-align: center">
-<img src="figures/Kmers.png" alt="示例read产生7-mer" width="1000" />
+<img src="figures/Kmers.png" alt="示例read产生7-mer"  />
 <p class="caption">(\#fig:unnamed-chunk-31)示例read产生7-mer</p>
 </div>
 
