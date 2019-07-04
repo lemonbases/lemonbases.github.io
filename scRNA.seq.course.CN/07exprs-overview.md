@@ -1,0 +1,2683 @@
+---
+output: html_document
+---
+# Cleaning the Expression Matrix
+
+## Expression QC (UMI) {#exprs-qc}
+
+### Introduction
+
+Once gene expression has been quantified it is summarized as an __expression matrix__ where each row corresponds to a gene (or transcript) and each column corresponds to a single cell. This matrix should be examined to remove poor quality cells which were not detected in either read QC or mapping QC steps. Failure to remove low quality cells at this
+stage may add technical noise which has the potential to obscure
+the biological signals of interest in the downstream analysis. 
+
+Since there is currently no standard method for performing scRNASeq the expected values for the various QC measures that will be presented here can vary substantially from experiment to experiment. Thus, to perform QC we will be looking for cells which are outliers with respect to the rest of the dataset rather than comparing to independent quality standards. Consequently, care should be taken when comparing quality metrics across datasets collected using different protocols.
+
+
+### Tung dataset
+
+To illustrate cell QC, we consider a
+[dataset](http://jdblischak.github.io/singleCellSeq/analysis/) of
+ induced pluripotent stem cells generated from three different individuals [@Tung2017-ba] in [Yoav Gilad](http://giladlab.uchicago.edu/)'s lab at the
+University of Chicago. The experiments were carried out on the
+Fluidigm C1 platform and to facilitate the quantification both unique
+molecular identifiers (UMIs) and ERCC _spike-ins_ were used. The data files are located in the `tung` folder in your working directory. These files are the copies of the original files made on the 15/03/16. We will use these copies for reproducibility purposes.
+
+
+
+
+```r
+library(SingleCellExperiment)
+library(scater)
+options(stringsAsFactors = FALSE)
+```
+
+Load the data and annotations:
+
+```r
+molecules <- read.table("data/tung/molecules.txt", sep = "\t")
+anno <- read.table("data/tung/annotation.txt", sep = "\t", header = TRUE)
+```
+
+Inspect a small portion of the expression matrix
+
+```r
+head(molecules[ , 1:3])
+```
+
+```
+##                 NA19098.r1.A01 NA19098.r1.A02 NA19098.r1.A03
+## ENSG00000237683              0              0              0
+## ENSG00000187634              0              0              0
+## ENSG00000188976              3              6              1
+## ENSG00000187961              0              0              0
+## ENSG00000187583              0              0              0
+## ENSG00000187642              0              0              0
+```
+
+```r
+head(anno)
+```
+
+```
+##   individual replicate well      batch      sample_id
+## 1    NA19098        r1  A01 NA19098.r1 NA19098.r1.A01
+## 2    NA19098        r1  A02 NA19098.r1 NA19098.r1.A02
+## 3    NA19098        r1  A03 NA19098.r1 NA19098.r1.A03
+## 4    NA19098        r1  A04 NA19098.r1 NA19098.r1.A04
+## 5    NA19098        r1  A05 NA19098.r1 NA19098.r1.A05
+## 6    NA19098        r1  A06 NA19098.r1 NA19098.r1.A06
+```
+
+The data consists of 3 individuals and 3 replicates and therefore has 9 batches in total.
+
+We standardize the analysis by using both `SingleCellExperiment` (SCE) and `scater` packages. First, create the SCE object:
+
+```r
+umi <- SingleCellExperiment(
+    assays = list(counts = as.matrix(molecules)), 
+    colData = anno
+)
+```
+
+Remove genes that are not expressed in any cell:
+
+```r
+keep_feature <- rowSums(counts(umi) > 0) > 0
+umi <- umi[keep_feature, ]
+```
+
+Define control features (genes) - ERCC spike-ins and mitochondrial genes ([provided](http://jdblischak.github.io/singleCellSeq/analysis/qc-filter-ipsc.html) by the authors):
+
+```r
+isSpike(umi, "ERCC") <- grepl("^ERCC-", rownames(umi))
+isSpike(umi, "MT") <- rownames(umi) %in% 
+    c("ENSG00000198899", "ENSG00000198727", "ENSG00000198888",
+    "ENSG00000198886", "ENSG00000212907", "ENSG00000198786",
+    "ENSG00000198695", "ENSG00000198712", "ENSG00000198804",
+    "ENSG00000198763", "ENSG00000228253", "ENSG00000198938",
+    "ENSG00000198840")
+```
+
+Calculate the quality metrics:
+
+```r
+umi <- calculateQCMetrics(
+    umi,
+    feature_controls = list(
+        ERCC = isSpike(umi, "ERCC"), 
+        MT = isSpike(umi, "MT")
+    )
+)
+```
+
+```
+## Warning in calculateQCMetrics(umi, feature_controls = list(ERCC =
+## isSpike(umi, : spike-in set 'ERCC' overwritten by feature_controls set of
+## the same name
+```
+
+
+### Cell QC
+
+#### Library size
+
+Next we consider the total number of RNA molecules detected per
+sample (if we were using read counts rather than UMI counts this would
+be the total number of reads). Wells with few reads/molecules are likely to have been broken or failed to capture a cell, and should thus be removed.
+
+
+```r
+hist(
+    umi$total_counts,
+    breaks = 100
+)
+abline(v = 25000, col = "red")
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/total-counts-hist-1.png" alt="Histogram of library sizes for all cells" width="90%" />
+<p class="caption">(\#fig:total-counts-hist)Histogram of library sizes for all cells</p>
+</div>
+
+__Exercise 1__
+
+1. How many cells does our filter remove?
+
+2. What distribution do you expect that the
+total number of molecules for each cell should follow?
+
+__Our answer__
+
+
+```
+## filter_by_total_counts
+## FALSE  TRUE 
+##    46   818
+```
+
+#### Detected genes
+
+In addition to ensuring sufficient sequencing depth for each sample, we also want to make sure that the reads are distributed across the transcriptome. Thus, we count the total number of unique genes detected in each sample.
+
+
+```r
+hist(
+    umi$total_features_by_counts,
+    breaks = 100
+)
+abline(v = 7000, col = "red")
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/total-features-hist-1.png" alt="Histogram of the number of detected genes in all cells" width="90%" />
+<p class="caption">(\#fig:total-features-hist)Histogram of the number of detected genes in all cells</p>
+</div>
+
+From the plot we conclude that most cells have between 7,000-10,000 detected genes,
+which is normal for high-depth scRNA-seq. However, this varies by
+experimental protocol and sequencing depth. For example, droplet-based methods
+or samples with lower sequencing-depth typically detect fewer genes per cell. The most notable feature in the above plot is the __"heavy tail"__ on the left hand side of the
+distribution. If detection rates were equal across the cells then the
+distribution should be approximately normal. Thus we remove those
+cells in the tail of the distribution (fewer than 7,000 detected genes).
+
+__Exercise 2__
+
+How many cells does our filter remove?
+
+__Our answer__
+
+
+```
+## filter_by_expr_features
+## FALSE  TRUE 
+##   116   748
+```
+
+#### ERCCs and MTs
+
+Another measure of cell quality is the ratio between ERCC _spike-in_
+RNAs and endogenous RNAs. This ratio can be used to estimate the total amount
+of RNA in the captured cells. Cells with a high level of _spike-in_ RNAs
+had low starting amounts of RNA, likely due to the cell being
+dead or stressed which may result in the RNA being degraded.
+
+
+```r
+plotColData(
+    umi,
+    x = "total_features_by_counts",
+    y = "pct_counts_MT",
+    colour = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/mt-vs-counts-1.png" alt="Percentage of counts in MT genes" width="90%" />
+<p class="caption">(\#fig:mt-vs-counts)Percentage of counts in MT genes</p>
+</div>
+
+
+```r
+plotColData(
+    umi,
+    x = "total_features_by_counts",
+    y = "pct_counts_ERCC",
+    colour = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/ercc-vs-counts-1.png" alt="Percentage of counts in ERCCs" width="90%" />
+<p class="caption">(\#fig:ercc-vs-counts)Percentage of counts in ERCCs</p>
+</div>
+
+The above analysis shows that majority of the cells from NA19098.r2 batch have a very high ERCC/Endo ratio. Indeed, it has been shown by the authors that this batch contains cells of smaller size. 
+
+__Exercise 3__
+
+Create filters for removing batch NA19098.r2 and cells with high expression of mitochondrial genes (>10% of total counts in a cell).
+
+__Our answer__
+
+
+```
+## filter_by_ERCC
+## FALSE  TRUE 
+##    96   768
+```
+
+```
+## filter_by_MT
+## FALSE  TRUE 
+##    31   833
+```
+
+__Exercise 4__
+
+What would you expect to see in the ERCC vs counts plot if you were examining a dataset containing cells of different sizes (eg. normal & senescent cells)?
+
+__Answer__
+
+You would expect to see a group corresponding to the smaller cells (normal) with a higher fraction of ERCC reads than a separate group corresponding to the larger cells (senescent).
+
+### Cell filtering
+
+#### Manual
+
+Now we can define a cell filter based on our previous analysis:
+
+
+```r
+umi$use <- (
+    # sufficient features (genes)
+    filter_by_expr_features &
+    # sufficient molecules counted
+    filter_by_total_counts &
+    # sufficient endogenous RNA
+    filter_by_ERCC &
+    # remove cells with unusual number of reads in MT genes
+    filter_by_MT
+)
+```
+
+
+```r
+table(umi$use)
+```
+
+```
+## 
+## FALSE  TRUE 
+##   207   657
+```
+
+#### Automatic
+
+Another option available in `scater` is to conduct PCA on a set of QC metrics and then use automatic outlier detection to identify potentially problematic cells. 
+
+By default, the following metrics are used for PCA-based outlier detection:
+
+* __pct_counts_top_100_features__
+* __total_features__
+* __pct_counts_feature_controls__
+* __n_detected_feature_controls__
+* __log10_counts_endogenous_features__
+* __log10_counts_feature_controls__
+
+`scater` first creates a matrix where the rows represent cells and the columns represent the different QC metrics. Then, outlier cells can also be identified by using the `mvoutlier` package on the QC metrics for all cells. This will identify cells that have substantially different QC metrics from the others, possibly corresponding to low-quality cells. We can visualize any outliers using a principal components plot as shown below:
+
+
+```r
+umi <- runPCA(
+    umi, 
+    use_coldata = TRUE, 
+    detect_outliers = TRUE
+)
+reducedDimNames(umi)
+```
+
+```
+## [1] "PCA_coldata"
+```
+
+Column subsetting can then be performed based on the `$outlier` slot, which indicates whether or not each cell has been designated as an outlier. Automatic outlier detection can be informative, but a close inspection of QC metrics and tailored filtering for the specifics of the dataset at hand is strongly recommended.
+
+
+```r
+table(umi$outlier)
+```
+
+```
+## 
+## FALSE  TRUE 
+##   791    73
+```
+
+Then, we can use a PCA plot to see a 2D representation of the cells ordered by their quality metrics.
+
+
+```r
+plotReducedDim(
+    umi,
+    use_dimred = "PCA_coldata",
+    size_by = "total_features_by_counts", 
+    shape_by = "use", 
+    colour_by = "outlier"
+)
+```
+
+<img src="07exprs-overview_files/figure-html/unnamed-chunk-15-1.png" width="90%" style="display: block; margin: auto;" />
+
+### Compare filterings
+
+__Exercise 5__
+
+Compare the default, automatic and manual cell filters. Plot a Venn diagram of the outlier cells from these filterings.
+
+__Hint__: Use `vennCounts` and `vennDiagram` functions from the [limma](https://bioconductor.org/packages/release/bioc/html/limma.html) package to make a Venn diagram.
+
+__Answer__
+
+
+```
+## 
+## 载入程辑包：'limma'
+```
+
+```
+## The following object is masked from 'package:scater':
+## 
+##     plotMDS
+```
+
+```
+## The following object is masked from 'package:BiocGenerics':
+## 
+##     plotMA
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/cell-filt-comp-1.png" alt="Comparison of the default, automatic and manual cell filters" width="90%" />
+<p class="caption">(\#fig:cell-filt-comp)Comparison of the default, automatic and manual cell filters</p>
+</div>
+
+### Gene analysis
+
+#### Gene expression
+
+In addition to removing cells with poor quality, it is usually a good idea to exclude genes where we suspect that technical artefacts may have skewed the results. Moreover, inspection of the gene expression profiles may provide insights about how the experimental procedures could be improved.
+
+It is often instructive to consider the number of reads consumed by the top 50 expressed genes.
+
+
+```r
+plotHighestExprs(umi, exprs_values = "counts")
+```
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-qc_files/figure-html/top50-gene-expr-1.png" alt="Number of total counts consumed by the top 50 expressed genes" width="90%" />
+<p class="caption">(\#fig:top50-gene-expr-2)Number of total counts consumed by the top 50 expressed genes</p>
+</div>
+The distributions are relatively flat indicating (but not guaranteeing!) good coverage of the full transcriptome of these cells. However, there are several spike-ins in the top 15 genes which suggests a greater dilution of the spike-ins may be preferrable if the experiment is to be repeated.
+
+
+#### Gene filtering
+
+It is typically a good idea to remove genes whose expression level is considered __"undetectable"__. We define a gene as  detectable if at least two cells contain more than 1 transcript from the gene. If we were considering read counts rather than UMI counts a reasonable threshold is to require at least five reads in at least two cells. However, in both cases the threshold strongly depends on the sequencing depth. It is important to keep in mind that genes must be filtered after cell filtering since some genes may only be detected in poor quality cells (__note__ `colData(umi)$use` filter applied to the `umi` dataset).
+
+
+```r
+keep_feature <- nexprs(
+  umi[,colData(umi)$use], 
+  byrow = TRUE, 
+  detection_limit = 1
+) >= 2
+rowData(umi)$use <- keep_feature
+```
+
+
+```r
+table(keep_feature)
+```
+
+```
+## keep_feature
+## FALSE  TRUE 
+##  4660 14066
+```
+
+Depending on the cell-type, protocol and sequencing depth, other cut-offs may be appropriate.
+
+
+### Save the data
+
+Dimensions of the QCed dataset (do not forget about the gene filter we defined above):
+
+```r
+dim(umi[rowData(umi)$use, colData(umi)$use])
+```
+
+```
+## [1] 14066   657
+```
+
+Let's create an additional slot with log-transformed counts (we will need it in the next chapters) and remove saved PCA results from the `reducedDim` slot:
+
+```r
+assay(umi, "logcounts_raw") <- log2(counts(umi) + 1)
+reducedDim(umi) <- NULL
+```
+
+Save the data:
+
+```r
+saveRDS(umi, file = "data/tung/umi.rds")
+```
+
+### Big Exercise
+
+Perform exactly the same QC analysis with read counts of the same Blischak data. Use `tung/reads.txt` file to load the reads. Once you have finished please compare your results to ours (next chapter).
+
+
+## Expression QC (Reads)
+
+
+
+
+```r
+library(SingleCellExperiment)
+library(scater)
+options(stringsAsFactors = FALSE)
+```
+
+
+```r
+reads <- read.table("data/tung/reads.txt", sep = "\t")
+anno <- read.table("data/tung/annotation.txt", sep = "\t", header = TRUE)
+```
+
+
+```r
+head(reads[ , 1:3])
+```
+
+```
+##                 NA19098.r1.A01 NA19098.r1.A02 NA19098.r1.A03
+## ENSG00000237683              0              0              0
+## ENSG00000187634              0              0              0
+## ENSG00000188976             57            140              1
+## ENSG00000187961              0              0              0
+## ENSG00000187583              0              0              0
+## ENSG00000187642              0              0              0
+```
+
+```r
+head(anno)
+```
+
+```
+##   individual replicate well      batch      sample_id
+## 1    NA19098        r1  A01 NA19098.r1 NA19098.r1.A01
+## 2    NA19098        r1  A02 NA19098.r1 NA19098.r1.A02
+## 3    NA19098        r1  A03 NA19098.r1 NA19098.r1.A03
+## 4    NA19098        r1  A04 NA19098.r1 NA19098.r1.A04
+## 5    NA19098        r1  A05 NA19098.r1 NA19098.r1.A05
+## 6    NA19098        r1  A06 NA19098.r1 NA19098.r1.A06
+```
+
+
+```r
+reads <- SingleCellExperiment(
+    assays = list(counts = as.matrix(reads)), 
+    colData = anno
+)
+```
+
+
+```r
+keep_feature <- rowSums(counts(reads) > 0) > 0
+reads <- reads[keep_feature, ]
+```
+
+
+```r
+isSpike(reads, "ERCC") <- grepl("^ERCC-", rownames(reads))
+isSpike(reads, "MT") <- rownames(reads) %in% 
+    c("ENSG00000198899", "ENSG00000198727", "ENSG00000198888",
+    "ENSG00000198886", "ENSG00000212907", "ENSG00000198786",
+    "ENSG00000198695", "ENSG00000198712", "ENSG00000198804",
+    "ENSG00000198763", "ENSG00000228253", "ENSG00000198938",
+    "ENSG00000198840")
+```
+
+
+```r
+reads <- calculateQCMetrics(
+    reads,
+    feature_controls = list(
+        ERCC = isSpike(reads, "ERCC"), 
+        MT = isSpike(reads, "MT")
+    )
+)
+```
+
+```
+## Warning in calculateQCMetrics(reads, feature_controls = list(ERCC =
+## isSpike(reads, : spike-in set 'ERCC' overwritten by feature_controls set of
+## the same name
+```
+
+
+```r
+hist(
+    reads$total_counts,
+    breaks = 100
+)
+abline(v = 1.3e6, col = "red")
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/total-counts-hist-reads-1.png" alt="Histogram of library sizes for all cells" width="90%" />
+<p class="caption">(\#fig:total-counts-hist-reads)Histogram of library sizes for all cells</p>
+</div>
+
+
+```r
+filter_by_total_counts <- (reads$total_counts > 1.3e6)
+```
+
+
+```r
+table(filter_by_total_counts)
+```
+
+```
+## filter_by_total_counts
+## FALSE  TRUE 
+##   180   684
+```
+
+
+```r
+hist(
+    reads$total_features_by_counts,
+    breaks = 100
+)
+abline(v = 7000, col = "red")
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/total-features-hist-reads-1.png" alt="Histogram of the number of detected genes in all cells" width="90%" />
+<p class="caption">(\#fig:total-features-hist-reads)Histogram of the number of detected genes in all cells</p>
+</div>
+
+
+```r
+filter_by_expr_features <- (reads$total_features_by_counts > 7000)
+```
+
+
+```r
+table(filter_by_expr_features)
+```
+
+```
+## filter_by_expr_features
+## FALSE  TRUE 
+##   116   748
+```
+
+
+```r
+plotColData(
+    reads,
+    x = "total_features_by_counts",
+    y = "pct_counts_MT",
+    colour = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/mt-vs-counts-reads-1.png" alt="Percentage of counts in MT genes" width="90%" />
+<p class="caption">(\#fig:mt-vs-counts-reads)Percentage of counts in MT genes</p>
+</div>
+
+
+```r
+plotColData(
+    reads,
+    x = "total_features_by_counts",
+    y = "pct_counts_ERCC",
+    colour = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/ercc-vs-counts-reads-1.png" alt="Percentage of counts in ERCCs" width="90%" />
+<p class="caption">(\#fig:ercc-vs-counts-reads)Percentage of counts in ERCCs</p>
+</div>
+
+
+```r
+filter_by_ERCC <- 
+    reads$batch != "NA19098.r2" & reads$pct_counts_ERCC < 25
+table(filter_by_ERCC)
+```
+
+```
+## filter_by_ERCC
+## FALSE  TRUE 
+##   103   761
+```
+
+```r
+filter_by_MT <- reads$pct_counts_MT < 30
+table(filter_by_MT)
+```
+
+```
+## filter_by_MT
+## FALSE  TRUE 
+##    18   846
+```
+
+
+```r
+reads$use <- (
+    # sufficient features (genes)
+    filter_by_expr_features &
+    # sufficient molecules counted
+    filter_by_total_counts &
+    # sufficient endogenous RNA
+    filter_by_ERCC &
+    # remove cells with unusual number of reads in MT genes
+    filter_by_MT
+)
+```
+
+
+```r
+table(reads$use)
+```
+
+```
+## 
+## FALSE  TRUE 
+##   258   606
+```
+
+
+```r
+reads <- runPCA(
+    reads,
+    use_coldata = TRUE, 
+    detect_outliers = TRUE
+)
+reducedDimNames(reads)
+```
+
+```
+## [1] "PCA_coldata"
+```
+
+
+```r
+table(reads$outlier)
+```
+
+```
+## 
+## FALSE  TRUE 
+##   753   111
+```
+
+
+```r
+plotReducedDim(
+    reads,
+    use_dimred = "PCA_coldata",
+    size_by = "total_features_by_counts", 
+    shape_by = "use", 
+    colour_by = "outlier"
+)
+```
+
+<img src="07exprs-overview_files/figure-html/unnamed-chunk-37-1.png" width="90%" style="display: block; margin: auto;" />
+
+
+```r
+library(limma)
+auto <- colnames(reads)[reads$outlier]
+man <- colnames(reads)[!reads$use]
+venn.diag <- vennCounts(
+    cbind(colnames(reads) %in% auto,
+    colnames(reads) %in% man)
+)
+vennDiagram(
+    venn.diag,
+    names = c("Automatic", "Manual"),
+    circle.col = c("blue", "green")
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/cell-filt-comp-reads-1.png" alt="Comparison of the default, automatic and manual cell filters" width="90%" />
+<p class="caption">(\#fig:cell-filt-comp-reads)Comparison of the default, automatic and manual cell filters</p>
+</div>
+
+
+```r
+plotHighestExprs(reads, exprs_values = "counts")
+```
+
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-qc-reads_files/figure-html/top50-gene-expr-reads-1.png" alt="Number of total counts consumed by the top 50 expressed genes" width="90%" />
+<p class="caption">(\#fig:top50-gene-expr-reads-2)Number of total counts consumed by the top 50 expressed genes</p>
+</div>
+
+
+```r
+keep_feature <- nexprs(
+  reads[,colData(reads)$use], 
+  byrow = TRUE, 
+  detection_limit = 1
+) >= 2
+rowData(reads)$use <- keep_feature
+```
+
+
+```r
+table(keep_feature)
+```
+
+```
+## keep_feature
+## FALSE  TRUE 
+##  2664 16062
+```
+
+
+```r
+dim(reads[rowData(reads)$use, colData(reads)$use])
+```
+
+```
+## [1] 16062   606
+```
+
+
+```r
+assay(reads, "logcounts_raw") <- log2(counts(reads) + 1)
+reducedDim(reads) <- NULL
+```
+
+
+```r
+saveRDS(reads, file = "data/tung/reads.rds")
+```
+
+By comparing Figure \@ref(fig:cell-filt-comp) and Figure \@ref(fig:cell-filt-comp-reads), it is clear that the reads based filtering removed more cells than the UMI based analysis. If you go back and compare the results you should be able to conclude that the ERCC and MT filters are more strict for the reads-based analysis.
+
+
+## Data visualization
+
+### Introduction
+
+In this chapter we will continue to work with the filtered `Tung` dataset produced in the previous chapter. We will explore different ways of visualizing the data to allow you to asses what happened to the expression matrix after the quality control step. `scater` package provides several very useful functions to simplify visualisation. 
+
+One important aspect of single-cell RNA-seq is to control for batch effects. Batch effects are technical artefacts that are added to the samples during handling. For example, if two sets of samples were prepared in different labs or even on different days in the same lab, then we may observe greater similarities between the samples that were handled together. In the worst case scenario, batch effects may be [mistaken](http://f1000research.com/articles/4-121/v1) for true biological variation. The `Tung` data allows us to explore these issues in a controlled manner since some of the salient aspects of how the samples were handled have been recorded. Ideally, we expect to see batches from the same individual grouping together and distinct groups corresponding to each individual. 
+
+
+
+
+```r
+library(SingleCellExperiment)
+library(scater)
+options(stringsAsFactors = FALSE)
+umi <- readRDS("data/tung/umi.rds")
+umi.qc <- umi[rowData(umi)$use, colData(umi)$use]
+endog_genes <- !rowData(umi.qc)$is_feature_control
+```
+
+### PCA plot {#visual-pca}
+
+The easiest way to overview the data is by transforming it using the principal component analysis and then visualize the first two principal components.
+
+[Principal component analysis (PCA)](https://en.wikipedia.org/wiki/Principal_component_analysis) is a statistical procedure that uses a transformation to convert a set of observations into a set of values of linearly uncorrelated variables called principal components (PCs). The number of principal components is less than or equal to the number of original variables.
+
+Mathematically, the PCs correspond to the eigenvectors of the covariance matrix. The eigenvectors are sorted by eigenvalue so that the first principal component accounts for as much of the variability in the data as possible, and each succeeding component in turn has the highest variance possible under the constraint that it is orthogonal to the preceding components (the figure below is taken from [here](http://www.nlpca.org/pca_principal_component_analysis.html)).
+
+<div class="figure" style="text-align: center">
+<img src="figures/pca.png" alt="Schematic representation of PCA dimensionality reduction" width="100%" />
+<p class="caption">(\#fig:clust-pca)Schematic representation of PCA dimensionality reduction</p>
+</div>
+
+#### Before QC
+
+Without log-transformation:
+
+```r
+tmp <- runPCA(
+  umi[endog_genes, ],
+  exprs_values = "counts"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-before-qc1-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:unnamed-chunk-45)PCA plot of the tung data</p>
+</div>
+
+With log-transformation:
+
+```r
+tmp <- runPCA(
+  umi[endog_genes, ],
+  exprs_values = "logcounts_raw"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+```r
+knitr::include_graphics("https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-before-qc2-1.png")
+```
+
+Clearly log-transformation is benefitial for our data - it reduces the variance on the first principal component and already separates some biological effects. Moreover, it makes the distribution of the expression values more normal. In the following analysis and chapters we will be using log-transformed raw counts by default.
+
+__However, note that just a log-transformation is not enough to account for different technical factors between the cells (e.g. sequencing depth). Therefore, please do not use `logcounts_raw` for your downstream analysis, instead as a minimum suitable data use the `logcounts` slot of the `SingleCellExperiment` object, which not just log-transformed, but also normalised by library size (e.g. CPM normalisation). In the course we use `logcounts_raw` only for demonstration purposes!__
+
+#### After QC
+
+
+```r
+tmp <- runPCA(
+  umi.qc[endog_genes, ],
+  exprs_values = "logcounts_raw"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-after-qc-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:unnamed-chunk-47)PCA plot of the tung data</p>
+</div>
+
+Comparing Figure \@ref(fig:expr-overview-pca-before-qc2) and Figure \@ref(fig:expr-overview-pca-after-qc), it is clear that after quality control the NA19098.r2 cells no longer form a group of outliers.
+
+By default only the top 500 most variable genes are used by scater to calculate the PCA. This can be adjusted by changing the `ntop` argument. 
+
+__Exercise 1__
+How do the PCA plots change if when all 14,066 genes are used? Or when only top 50 genes are used? Why does the fraction of variance accounted for by the first PC change so dramatically?
+
+__Hint__ Use `ntop` argument of the `plotPCA` function.
+
+__Our answer__
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-pca-after-qc-exercise1-1-1.png" alt="PCA plot of the tung data (14214 genes)" width="90%" />
+<p class="caption">(\#fig:expr-overview-pca-after-qc-exercise1-1)PCA plot of the tung data (14214 genes)</p>
+</div>
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-pca-after-qc-exercise1-2-1.png" alt="PCA plot of the tung data (50 genes)" width="90%" />
+<p class="caption">(\#fig:expr-overview-pca-after-qc-exercise1-2)PCA plot of the tung data (50 genes)</p>
+</div>
+
+If your answers are different please compare your code with [ours](https://github.com/hemberg-lab/scRNA.seq.course/blob/master/07-exprs-overview.Rmd) (you need to search for this exercise in the opened file).
+
+### tSNE map {#visual-tsne}
+
+An alternative to PCA for visualizing scRNASeq data is a tSNE plot. [tSNE](https://lvdmaaten.github.io/tsne/) (t-Distributed Stochastic Neighbor Embedding) combines dimensionality reduction (e.g. PCA) with random walks on the nearest-neighbour network to map high dimensional data (i.e. our 14,214 dimensional expression matrix) to a 2-dimensional space while preserving local distances between cells. In contrast with PCA, tSNE is a stochastic algorithm which means running the method multiple times on the same dataset will result in different plots. Due to the non-linear and stochastic nature of the algorithm, tSNE is more difficult to intuitively interpret tSNE. To ensure reproducibility, we fix the "seed" of the random-number generator in the code below so that we always get the same plot. 
+
+
+#### Before QC
+
+
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    umi[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 130
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-before-qc-1.png" alt="tSNE map of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-before-qc)tSNE map of the tung data</p>
+</div>
+
+#### After QC
+
+
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    umi.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 130
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-1.png" alt="tSNE map of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-after-qc)tSNE map of the tung data</p>
+</div>
+
+Interpreting PCA and tSNE plots is often challenging and due to their stochastic and non-linear nature, they are less intuitive. However, in this case it is clear that they provide a similar picture of the data. Comparing Figure \@ref(fig:expr-overview-tsne-before-qc) and \@ref(fig:expr-overview-tsne-after-qc), it is again clear that the samples from NA19098.r2 are no longer outliers after the QC filtering.
+
+Furthermore tSNE requires you to provide a value of `perplexity` which reflects the number of neighbours used to build the nearest-neighbour network; a high value creates a dense network which clumps cells together while a low value makes the network more sparse allowing groups of cells to separate from each other. `scater` uses a default perplexity of the total number of cells divided by five (rounded down).
+
+You can read more about the pitfalls of using tSNE [here](http://distill.pub/2016/misread-tsne/).
+
+__Exercise 2__
+How do the tSNE plots change when a perplexity of 10 or 200 is used? How does the choice of perplexity affect the interpretation of the results?
+
+__Our answer__
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise2-1-1.png" alt="tSNE map of the tung data (perplexity = 10)" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise2-1)tSNE map of the tung data (perplexity = 10)</p>
+</div>
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise2-2-1.png" alt="tSNE map of the tung data (perplexity = 200)" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise2-2)tSNE map of the tung data (perplexity = 200)</p>
+</div>
+
+### Big Exercise
+
+Perform the same analysis with read counts of the Blischak data. Use `tung/reads.rds` file to load the reads SCE object. Once you have finished please compare your results to ours (next chapter).
+
+## Data visualization (Reads)
+
+
+```r
+library(scater)
+options(stringsAsFactors = FALSE)
+reads <- readRDS("data/tung/reads.rds")
+reads.qc <- reads[rowData(reads)$use, colData(reads)$use]
+endog_genes <- !rowData(reads.qc)$is_feature_control
+```
+
+
+
+
+```r
+tmp <- runPCA(
+  reads[endog_genes, ],
+  exprs_values = "counts"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-pca-before-qc-reads1-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-pca-before-qc-reads1)PCA plot of the tung data</p>
+</div>
+
+
+```r
+tmp <- runPCA(
+  reads[endog_genes, ],
+  exprs_values = "logcounts_raw"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-pca-before-qc-reads2-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-pca-before-qc-reads2)PCA plot of the tung data</p>
+</div>
+
+
+```r
+tmp <- runPCA(
+  reads.qc[endog_genes, ],
+  exprs_values = "logcounts_raw"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-pca-after-qc-reads-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-pca-after-qc-reads)PCA plot of the tung data</p>
+</div>
+
+
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    reads[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 130
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-before-qc-reads-1.png" alt="tSNE map of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-before-qc-reads)tSNE map of the tung data</p>
+</div>
+
+
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    reads.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 130
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-reads-1.png" alt="tSNE map of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-after-qc-reads)tSNE map of the tung data</p>
+</div>
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise3-1-1.png" alt="tSNE map of the tung data (perplexity = 10)" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise3-1)tSNE map of the tung data (perplexity = 10)</p>
+</div>
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise3-2-1.png" alt="tSNE map of the tung data (perplexity = 200)" width="90%" />
+<p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise3-2)tSNE map of the tung data (perplexity = 200)</p>
+</div>
+
+## Identifying confounding factors
+
+### Introduction
+
+There is a large number of potential confounders, artifacts and biases in sc-RNA-seq data. One of the main challenges in analyzing scRNA-seq data stems from the fact that it is difficult to carry out a true technical replicate (why?) to distinguish biological and technical variability. In the previous chapters we considered batch effects and in this chapter we will continue to explore how experimental artifacts can be identified and removed. We will continue using the `scater` package since it provides a set of methods specifically for quality control of experimental and explanatory variables. Moreover, we will continue to work with the Blischak data that was used in the previous chapter.
+
+
+
+
+```r
+library(scater, quietly = TRUE)
+options(stringsAsFactors = FALSE)
+umi <- readRDS("data/tung/umi.rds")
+umi.qc <- umi[rowData(umi)$use, colData(umi)$use]
+endog_genes <- !rowData(umi.qc)$is_feature_control
+```
+
+The `umi.qc` dataset contains filtered cells and genes. Our next step is to explore technical drivers of variability in the data to inform data normalisation before downstream analysis.
+
+### Correlations with PCs
+
+Let's first look again at the PCA plot of the QCed dataset:
+
+```r
+tmp <- runPCA(
+  umi.qc[endog_genes, ],
+  exprs_values = "logcounts_raw"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/confound-pca-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:confound-pca)PCA plot of the tung data</p>
+</div>
+
+`scater` allows one to identify principal components that correlate with experimental and QC variables of interest (it ranks principle components by $R^2$ from a linear model regressing PC value against the variable of interest).
+
+Let's test whether some of the variables correlate with any of the PCs.
+
+#### Detected genes
+
+
+```r
+logcounts(umi.qc) <- assay(umi.qc, "logcounts_raw")
+plotExplanatoryPCs(
+  umi.qc[endog_genes, ],
+  variables = "total_features_by_counts"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/confound-find-pcs-total-features-1.png" alt="PC correlation with the number of detected genes" width="90%" />
+<p class="caption">(\#fig:confound-find-pcs-total-features)PC correlation with the number of detected genes</p>
+</div>
+
+```r
+logcounts(umi.qc) <- NULL
+```
+
+Indeed, we can see that `PC1` can be almost completely explained by the number of detected genes. In fact, it was also visible on the PCA plot above. This is a well-known issue in scRNA-seq and was described [here](http://biorxiv.org/content/early/2015/12/27/025528).
+
+### Explanatory variables
+
+`scater` can also compute the marginal $R^2$ for each variable when fitting a linear model regressing expression values for each gene against just that variable, and display a density plot of the gene-wise marginal $R^2$ values for the variables.
+
+
+```r
+plotExplanatoryVariables(
+    umi.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    variables = c(
+        "total_features_by_counts",
+        "total_counts",
+        "batch",
+        "individual",
+        "pct_counts_ERCC",
+        "pct_counts_MT"
+    )
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/confound-find-expl-vars-1.png" alt="Explanatory variables" width="90%" />
+<p class="caption">(\#fig:confound-find-expl-vars)Explanatory variables</p>
+</div>
+
+This analysis indicates that the number of detected genes (again) and also the sequencing depth (number of counts) have substantial explanatory power for many genes, so these variables are good candidates for conditioning out in a normalisation step, or including in downstream statistical models. Expression of ERCCs also appears to be an important explanatory variable and one notable feature of the above plot is that batch explains more than individual. What does that tell us about the technical and biological variability of the data?
+
+### Other confounders
+
+In addition to correcting for batch, there are other factors that one
+may want to compensate for. As with batch correction, these
+adjustments require extrinsic information. One popular method is
+[scLVM](https://github.com/PMBio/scLVM) which allows you to identify
+and subtract the effect from processes such as cell-cycle or
+apoptosis.
+
+In addition, protocols may differ in terms of their coverage of each transcript, 
+their bias based on the average content of __A/T__ nucleotides, or their ability to capture short transcripts.
+Ideally, we would like to compensate for all of these differences and biases.
+
+### Exercise
+
+Perform the same analysis with read counts of the Blischak data. Use `tung/reads.rds` file to load the reads SCESet object. Once you have finished please compare your results to ours (next chapter).
+
+
+## Identifying confounding factors (Reads)
+
+
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/confound-pca-reads-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:confound-pca-reads)PCA plot of the tung data</p>
+</div>
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/confound-find-pcs-total-features-reads-1.png" alt="PC correlation with the number of detected genes" width="90%" />
+<p class="caption">(\#fig:confound-find-pcs-total-features-reads)PC correlation with the number of detected genes</p>
+</div>
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/confound-find-expl-vars-reads-1.png" alt="Explanatory variables" width="90%" />
+<p class="caption">(\#fig:confound-find-expl-vars-reads)Explanatory variables</p>
+</div>
+
+## Normalization theory
+
+### Introduction
+
+
+
+In the previous chapter we identified important confounding factors and explanatory variables. `scater` allows one to account for these variables in subsequent statistical models or to condition them out using `normaliseExprs()`, if so desired. This can be done by providing a design matrix to `normaliseExprs()`. We are not covering this topic here, but you can try to do it yourself as an exercise.
+
+Instead we will explore how simple size-factor normalisations correcting for library size can remove the effects of some of the confounders and explanatory variables.
+
+### Library size
+
+Library sizes vary because scRNA-seq data is often sequenced on highly multiplexed platforms the total reads which are derived from each cell may differ substantially. Some quantification methods
+(eg. [`Cufflinks`](http://cole-trapnell-lab.github.io/cufflinks/), [`RSEM`](http://deweylab.github.io/RSEM/)) incorporated library size when determining gene expression estimates thus do not require this normalization.
+
+However, if another quantification method was used then library size must be corrected for by multiplying or dividing each column of the expression matrix by a "normalization factor" which is an estimate of the library size relative to the other cells. Many methods to correct for library size have been developped for bulk RNA-seq and can be equally applied to scRNA-seq (eg. __UQ__, __SF__, __CPM__, __RPKM__, __FPKM__, __TPM__). 
+
+
+### Normalisations
+
+#### CPM
+
+The simplest way to normalize this data is to convert it to counts per
+million (__CPM__) by dividing each column by its total then multiplying by
+1,000,000. Note that spike-ins should be excluded from the
+calculation of total expression in order to correct for total cell RNA
+content, therefore we will only use endogenous genes. Example of a __CPM__ function in `R`:
+
+
+```r
+calc_cpm <-
+function (expr_mat, spikes = NULL) 
+{
+    norm_factor <- colSums(expr_mat[-spikes, ])
+    return(t(t(expr_mat)/norm_factor)) * 10^6
+}
+```
+
+One potential drawback of __CPM__ is if your sample contains genes that are both very highly expressed and differentially expressed across the cells. In this case, the total molecules in the cell may depend of whether such genes are on/off in the cell and normalizing by total molecules may hide the differential expression of those genes and/or falsely create differential expression for the remaining genes. 
+
+__Note__ __RPKM__, __FPKM__ and __TPM__ are variants on __CPM__ which further adjust counts by the length of the respective gene/transcript.
+
+To deal with this potentiality several other measures were devised.
+
+#### RLE (SF)
+
+The __size factor (SF)__ was proposed and popularized by DESeq [@Anders2010-jr]. First the geometric mean of each gene across all cells is calculated. The size factor for each cell is the median across genes of the ratio of the expression to the gene's geometric mean. A drawback to this method is that since it uses the geometric mean only genes with non-zero expression values across all cells can be used in its calculation, making it unadvisable for large low-depth scRNASeq experiments. `edgeR` & `scater` call this method __RLE__ for "relative log expression". Example of a __SF__ function in `R`:
+
+
+```r
+calc_sf <-
+function (expr_mat, spikes = NULL) 
+{
+    geomeans <- exp(rowMeans(log(expr_mat[-spikes, ])))
+    SF <- function(cnts) {
+        median((cnts/geomeans)[(is.finite(geomeans) & geomeans > 
+            0)])
+    }
+    norm_factor <- apply(expr_mat[-spikes, ], 2, SF)
+    return(t(t(expr_mat)/norm_factor))
+}
+```
+
+#### UQ
+
+The __upperquartile (UQ)__ was proposed by [@Bullard2010-eb]. Here each column is divided by the 75% quantile of the counts for each library. Often the calculated quantile is scaled by the median across cells to keep the absolute level of expression relatively consistent. A drawback to this method is that for low-depth scRNASeq experiments the large number of undetected genes may result in the 75% quantile being zero (or close to it). This limitation can be overcome by generalizing the idea and using a higher quantile (eg. the 99% quantile is the default in scater) or by excluding zeros prior to calculating the 75% quantile. Example of a __UQ__ function in `R`:
+
+
+```r
+calc_uq <-
+function (expr_mat, spikes = NULL) 
+{
+    UQ <- function(x) {
+        quantile(x[x > 0], 0.75)
+    }
+    uq <- unlist(apply(expr_mat[-spikes, ], 2, UQ))
+    norm_factor <- uq/median(uq)
+    return(t(t(expr_mat)/norm_factor))
+}
+```
+
+#### TMM
+
+Another method is called __TMM__ is the weighted trimmed mean of M-values (to the reference) proposed by [@Robinson2010-hz]. The M-values in question are the gene-wise log2 fold changes between individual cells. One cell is used as the reference then the M-values for each other cell is calculated compared  to this reference. These values are then trimmed by removing the top and bottom ~30%, and the average of the remaining values is calculated by weighting them to account for the effect of the log scale on variance. Each non-reference cell is multiplied by the calculated factor. Two potential issues with this method are insufficient non-zero genes left after trimming, and the assumption that most genes are not differentially expressed.
+
+#### scran
+
+`scran` package implements a variant on __CPM__ specialized for single-cell data [@L_Lun2016-pq]. Briefly this method deals with the problem of vary large numbers of zero values per cell by pooling cells together calculating a normalization factor (similar to __CPM__) for the sum of each pool. Since each cell is found in many different pools, cell-specific factors can be deconvoluted from the collection of pool-specific factors using linear algebra. 
+
+#### Downsampling
+
+A final way to correct for library size is to downsample the expression matrix so that each cell has approximately the same total number of molecules. The benefit of this method is that zero values will be introduced by the down sampling thus eliminating any biases due to differing numbers of detected genes. However, the major drawback is that the process is not deterministic so each time the downsampling is run the resulting expression matrix is slightly different. Thus, often analyses must be run on multiple downsamplings to ensure results are robust. Example of a __downsampling__ function in `R`:
+
+
+```r
+Down_Sample_Matrix <-
+function (expr_mat) 
+{
+    min_lib_size <- min(colSums(expr_mat))
+    down_sample <- function(x) {
+        prob <- min_lib_size/sum(x)
+        return(unlist(lapply(x, function(y) {
+            rbinom(1, y, prob)
+        })))
+    }
+    down_sampled_mat <- apply(expr_mat, 2, down_sample)
+    return(down_sampled_mat)
+}
+```
+
+### Effectiveness
+
+to compare the efficiency of different normalization methods we will use visual inspection of `PCA` plots and calculation of cell-wise _relative log expression_ via `scater`'s `plotRLE()` function. Namely, cells with many (few) reads have higher (lower) than median expression for most genes resulting in a positive (negative) _RLE_ across the cell, whereas normalized cells have an _RLE_ close to zero. Example of a _RLE_ function in `R`:
+
+
+```r
+calc_cell_RLE <-
+function (expr_mat, spikes = NULL) 
+{
+    RLE_gene <- function(x) {
+        if (median(unlist(x)) > 0) {
+            log((x + 1)/(median(unlist(x)) + 1))/log(2)
+        }
+        else {
+            rep(NA, times = length(x))
+        }
+    }
+    if (!is.null(spikes)) {
+        RLE_matrix <- t(apply(expr_mat[-spikes, ], 1, RLE_gene))
+    }
+    else {
+        RLE_matrix <- t(apply(expr_mat, 1, RLE_gene))
+    }
+    cell_RLE <- apply(RLE_matrix, 2, median, na.rm = T)
+    return(cell_RLE)
+}
+```
+
+__Note__ The __RLE__, __TMM__, and __UQ__ size-factor methods were developed for bulk RNA-seq data and, depending on the experimental context, may not be appropriate for single-cell RNA-seq data, as their underlying assumptions may be problematically violated. 
+
+__Note__ `scater` acts as a wrapper for the `calcNormFactors` function from `edgeR` which implements several library size normalization methods making it easy to apply any of these methods to our data.
+
+__Note__ `edgeR` makes extra adjustments to some of the normalization methods which may result in somewhat different results than if the original methods are followed exactly, e.g. edgeR's and scater's "RLE" method which is based on the "size factor" used by [DESeq](http://bioconductor.org/packages/DESeq) may give different results to the `estimateSizeFactorsForMatrix` method in the `DESeq`/`DESeq2` packages. In addition, some versions of `edgeR` will not calculate the normalization factors correctly unless `lib.size` is set at 1 for all cells.
+
+__Note__ For __CPM__ normalisation we use `scater`'s `calculateCPM()` function. For __RLE__, __UQ__ and __TMM__ we used to use `scater`'s `normaliseExprs()` function (it is deprecated now and therefore we removed the corresponding subchapters). For __scran__ we use `scran` package to calculate size factors (it also operates on `SingleCellExperiment` class) and `scater`'s `normalize()` to normalise the data. All these normalization functions save the results to the `logcounts` slot of the `SCE` object. For __downsampling__ we use our own functions shown above.
+
+## Normalization practice (UMI)
+
+We will continue to work with the `tung` data that was used in the previous chapter.
+
+
+```r
+library(scRNA.seq.funcs)
+library(scater)
+library(scran)
+options(stringsAsFactors = FALSE)
+set.seed(1234567)
+umi <- readRDS("data/tung/umi.rds")
+umi.qc <- umi[rowData(umi)$use, colData(umi)$use]
+endog_genes <- !rowData(umi.qc)$is_feature_control
+```
+
+### Raw
+
+```r
+tmp <- runPCA(
+  umi.qc[endog_genes, ],
+  exprs_values = "logcounts_raw"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-raw-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-pca-raw)PCA plot of the tung data</p>
+</div>
+
+### CPM
+
+```r
+logcounts(umi.qc) <- log2(calculateCPM(umi.qc, use_size_factors = FALSE) + 1)
+plotPCA(
+    umi.qc[endog_genes, ],
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-cpm-1.png" alt="PCA plot of the tung data after CPM normalisation" width="90%" />
+<p class="caption">(\#fig:norm-pca-cpm)PCA plot of the tung data after CPM normalisation</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-cpm-1.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-cpm1)Cell-wise RLE of the tung data</p>
+</div><div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-cpm-2.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-cpm2)Cell-wise RLE of the tung data</p>
+</div>
+
+### scran
+
+```r
+qclust <- quickCluster(umi.qc, min.size = 30)
+```
+
+```
+## Warning: Setting 'use.ranks=TRUE' for the old defaults.
+## Set 'use.ranks=FALSE' for the new defaults.
+```
+
+```r
+umi.qc <- computeSumFactors(umi.qc, sizes = 15, clusters = qclust)
+umi.qc <- normalize(umi.qc)
+```
+
+```
+## Warning in .get_all_sf_sets(object): spike-in set 'ERCC' should have its
+## own size factors
+```
+
+```
+## Warning in .get_all_sf_sets(object): spike-in set 'MT' should have its own
+## size factors
+```
+
+```r
+plotPCA(
+    umi.qc[endog_genes, ],
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-lsf-1.png" alt="PCA plot of the tung data after LSF normalisation" width="90%" />
+<p class="caption">(\#fig:norm-pca-lsf)PCA plot of the tung data after LSF normalisation</p>
+</div>
+
+```r
+plotRLE(
+    umi.qc[endog_genes, ], 
+    exprs_values = "logcounts_raw",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-scran-1.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-scran1)Cell-wise RLE of the tung data</p>
+</div>
+
+```r
+plotRLE(
+    umi.qc[endog_genes, ], 
+    exprs_values = "logcounts",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-scran-2.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-scran2)Cell-wise RLE of the tung data</p>
+</div>
+scran sometimes calculates negative or zero size factors. These will completely distort the normalized expression matrix. 
+We can check the size factors scran has computed like so:
+
+```r
+summary(sizeFactors(umi.qc))
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.4832  0.7812  0.9535  1.0000  1.1469  3.2595
+```
+For this dataset all the size factors are reasonable so we are done. If you find scran has calculated negative size factors try increasing the cluster and pool sizes until they are all positive.
+
+### Downsampling 
+
+
+```r
+logcounts(umi.qc) <- log2(Down_Sample_Matrix(counts(umi.qc)) + 1)
+plotPCA(
+    umi.qc[endog_genes, ],
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-downsample-1.png" alt="PCA plot of the tung data after downsampling" width="90%" />
+<p class="caption">(\#fig:norm-pca-downsample)PCA plot of the tung data after downsampling</p>
+</div>
+
+```r
+plotRLE(
+    umi.qc[endog_genes, ], 
+    exprs_values = "logcounts_raw",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-downsample-1.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-downsample1)Cell-wise RLE of the tung data</p>
+</div>
+
+```r
+plotRLE(
+    umi.qc[endog_genes, ], 
+    exprs_values = "logcounts",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-downsample-2.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-downsample2)Cell-wise RLE of the tung data</p>
+</div>
+
+### Normalisation for gene/transcript length
+
+Some methods combine library size and fragment/gene length normalization such as:
+
+* __RPKM__ - Reads Per Kilobase Million (for single-end sequencing)
+* __FPKM__ - Fragments Per Kilobase Million (same as __RPKM__ but for paired-end sequencing, makes sure that paired ends mapped to the same fragment are not counted twice)
+* __TPM__ - Transcripts Per Kilobase Million (same as __RPKM__, but the order of normalizations is reversed - length first and sequencing depth second)
+
+These methods are not applicable to our dataset since the end
+of the transcript which contains the UMI was preferentially
+sequenced. Furthermore in general these should only be calculated
+using appropriate quantification software from aligned BAM files not
+from read counts since often only a portion of the entire
+gene/transcript is sequenced, not the entire length. If in doubt check 
+for a relationship between gene/transcript length and expression level.
+
+However, here we show how these normalisations can be calculated using `scater`. First, we need to find the effective transcript length in Kilobases. However, our dataset containes only gene IDs, therefore we will be using the gene lengths instead of transcripts. `scater` uses the [biomaRt](https://bioconductor.org/packages/release/bioc/html/biomaRt.html) package, which allows one to annotate genes by other attributes:
+
+```r
+umi.qc <- getBMFeatureAnnos(
+    umi.qc,
+    filters = "ensembl_gene_id", 
+    attributes = c(
+        "ensembl_gene_id",
+        "hgnc_symbol",
+        "chromosome_name",
+        "start_position",
+        "end_position"
+    ), 
+    biomart = "ENSEMBL_MART_ENSEMBL", 
+    dataset = "hsapiens_gene_ensembl",
+    host = "www.ensembl.org"
+)
+
+# If you have mouse data, change the arguments based on this example:
+# getBMFeatureAnnos(
+#     object,
+#     filters = "ensembl_transcript_id",
+#     attributes = c(
+#         "ensembl_transcript_id",
+#         "ensembl_gene_id", 
+#         "mgi_symbol",
+#         "chromosome_name",
+#         "transcript_biotype",
+#         "transcript_start",
+#         "transcript_end",
+#         "transcript_count"
+#     ),
+#     biomart = "ENSEMBL_MART_ENSEMBL",
+#     dataset = "mmusculus_gene_ensembl",
+#     host = "www.ensembl.org"
+# )
+```
+
+Some of the genes were not annotated, therefore we filter them out:
+
+```r
+umi.qc.ann <- umi.qc[!is.na(rowData(umi.qc)$ensembl_gene_id), ]
+```
+
+Now we compute the total gene length in Kilobases by using the `end_position` and `start_position` fields:
+
+```r
+eff_length <- 
+    abs(rowData(umi.qc.ann)$end_position - rowData(umi.qc.ann)$start_position) / 1000
+```
+
+
+```r
+plot(eff_length, rowMeans(counts(umi.qc.ann)))
+```
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-norm_files/figure-html/length-vs-mean-1.png" alt="Gene length vs Mean Expression for the raw data" width="90%" />
+<p class="caption">(\#fig:length-vs-mean-2)Gene length vs Mean Expression for the raw data</p>
+</div>
+
+
+There is no relationship between gene length and mean expression so __FPKM__s & __TPM__s are inappropriate for this dataset. 
+But we will demonstrate them anyway.
+
+__Note__ Here calculate the total gene length instead of the total exon length. Many genes will contain lots of introns so their `eff_length` will be very different from what we have calculated. Please consider our calculation as approximation. If you want to use the total exon lengths, please refer to [this page](https://www.biostars.org/p/83901/).
+
+Now we are ready to perform the normalisations:
+
+```r
+tpm(umi.qc.ann) <- log2(calculateTPM(umi.qc.ann, eff_length) + 1)
+```
+
+Plot the results as a PCA plot:
+
+```r
+tmp <- runPCA(
+  umi.qc.ann,
+  exprs_values = "tpm",
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-norm_files/figure-html/norm-pca-fpkm-1.png" alt="PCA plot of the tung data after TPM normalisation" width="90%" />
+<p class="caption">(\#fig:norm-pca-fpkm-2)PCA plot of the tung data after TPM normalisation</p>
+</div>
+
+
+```r
+tpm(umi.qc.ann) <- log2(calculateFPKM(umi.qc.ann, eff_length) + 1)
+```
+
+
+```r
+tmp <- runPCA(
+  umi.qc.ann,
+  exprs_values = "tpm",
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+
+```r
+knitr::include_graphics("https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-norm_files/figure-html/norm-pca-tpm-1.png")
+```
+__Note__ The `PCA` looks for differences between cells. Gene length is the same across cells for each gene thus __FPKM__ is almost identical to the __CPM__ plot (it is just rotated) since it performs __CPM__ first then normalizes gene length. Whereas, __TPM__ is different because it weights genes by their length before performing __CPM__. 
+
+### Exercise
+
+Perform the same analysis with read counts of the `tung` data. Use `tung/reads.rds` file to load the reads `SCE` object. Once you have finished please compare your results to ours (next chapter).
+
+## Normalization practice (Reads)
+
+
+```r
+library(scRNA.seq.funcs)
+library(scater)
+library(scran)
+options(stringsAsFactors = FALSE)
+set.seed(1234567)
+library(knitr)
+opts_chunk$set(out.width='90%', fig.align = 'center', echo=FALSE)
+reads <- readRDS("data/tung/reads.rds")
+reads.qc <- reads[rowData(reads)$use, colData(reads)$use]
+endog_genes <- !rowData(reads.qc)$is_feature_control
+```
+
+
+```r
+tmp <- runPCA(
+  reads.qc[endog_genes, ],
+  exprs_values = "logcounts_raw"
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-raw-reads-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-pca-raw-reads)PCA plot of the tung data</p>
+</div>
+
+
+```r
+logcounts(reads.qc) <- log2(calculateCPM(reads.qc, use_size_factors = FALSE) + 1)
+plotPCA(
+    reads.qc[endog_genes, ],
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-cpm-reads-1.png" alt="PCA plot of the tung data after CPM normalisation" width="90%" />
+<p class="caption">(\#fig:norm-pca-cpm-reads)PCA plot of the tung data after CPM normalisation</p>
+</div>
+
+```r
+plotRLE(
+    reads.qc[endog_genes, ], 
+    exprs_values = "logcounts_raw",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-cpm-reads-1.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-cpm-reads1)Cell-wise RLE of the tung data</p>
+</div>
+
+```r
+plotRLE(
+    reads.qc[endog_genes, ], 
+    exprs_values = "logcounts",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-cpm-reads-2.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-cpm-reads2)Cell-wise RLE of the tung data</p>
+</div>
+
+
+```r
+qclust <- quickCluster(reads.qc, min.size = 30)
+```
+
+```
+## Warning: Setting 'use.ranks=TRUE' for the old defaults.
+## Set 'use.ranks=FALSE' for the new defaults.
+```
+
+```r
+reads.qc <- computeSumFactors(reads.qc, sizes = 15, clusters = qclust)
+reads.qc <- normalize(reads.qc)
+```
+
+```
+## Warning in .get_all_sf_sets(object): spike-in set 'ERCC' should have its
+## own size factors
+```
+
+```
+## Warning in .get_all_sf_sets(object): spike-in set 'MT' should have its own
+## size factors
+```
+
+```r
+plotPCA(
+    reads.qc[endog_genes, ],
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-lsf-umi-1.png" alt="PCA plot of the tung data after LSF normalisation" width="90%" />
+<p class="caption">(\#fig:norm-pca-lsf-umi)PCA plot of the tung data after LSF normalisation</p>
+</div>
+
+
+```r
+plotRLE(
+    reads.qc[endog_genes, ], 
+    exprs_values = "logcounts_raw",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-scran-reads-1.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-scran-reads1)Cell-wise RLE of the tung data</p>
+</div>
+
+```r
+plotRLE(
+    reads.qc[endog_genes, ], 
+    exprs_values = "logcounts",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-scran-reads-2.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-scran-reads2)Cell-wise RLE of the tung data</p>
+</div>
+
+
+```r
+logcounts(reads.qc) <- log2(Down_Sample_Matrix(counts(reads.qc)) + 1)
+plotPCA(
+    reads.qc[endog_genes, ],
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-pca-downsample-reads-1.png" alt="PCA plot of the tung data after downsampling" width="90%" />
+<p class="caption">(\#fig:norm-pca-downsample-reads)PCA plot of the tung data after downsampling</p>
+</div>
+
+```r
+plotRLE(
+    reads.qc[endog_genes, ], 
+    exprs_values = "logcounts_raw",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-downsample-reads-1.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-downsample-reads1)Cell-wise RLE of the tung data</p>
+</div>
+
+```r
+plotRLE(
+    reads.qc[endog_genes, ], 
+    exprs_values = "logcounts",
+    colour_by = "batch"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="07exprs-overview_files/figure-html/norm-ours-rle-downsample-reads-2.png" alt="Cell-wise RLE of the tung data" width="90%" />
+<p class="caption">(\#fig:norm-ours-rle-downsample-reads2)Cell-wise RLE of the tung data</p>
+</div>
+
+
+```r
+reads.qc <- getBMFeatureAnnos(
+    reads.qc,
+    filters = "ensembl_gene_id", 
+    attributes = c(
+        "ensembl_gene_id",
+        "hgnc_symbol",
+        "chromosome_name",
+        "start_position",
+        "end_position"
+    ), 
+    biomart = "ENSEMBL_MART_ENSEMBL", 
+    dataset = "hsapiens_gene_ensembl",
+    host = "www.ensembl.org"
+)
+```
+
+
+```r
+reads.qc.ann <- reads.qc[!is.na(rowData(reads.qc)$ensembl_gene_id), ]
+```
+
+
+```r
+eff_length <- 
+    abs(rowData(reads.qc.ann)$end_position - rowData(reads.qc.ann)$start_position) / 1000
+```
+
+
+```r
+tpm(reads.qc.ann) <- log2(calculateTPM(reads.qc.ann, eff_length) + 1)
+```
+
+
+```r
+tmp <- runPCA(
+  reads.qc.ann,
+  exprs_values = "tpm",
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-norm-reads_files/figure-html/norm-pca-tpm-reads-1.png" alt="PCA plot of the tung data after TPM normalisation" width="90%" />
+<p class="caption">(\#fig:norm-pca-tpm-reads-2)PCA plot of the tung data after TPM normalisation</p>
+</div>
+
+
+```r
+tpm(reads.qc.ann) <- log2(calculateFPKM(reads.qc.ann, eff_length) + 1)
+```
+
+
+```r
+tmp <- runPCA(
+  reads.qc.ann,
+  exprs_values = "tpm",
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+
+
+## Dealing with confounders
+
+### Introduction
+
+In the previous chapter we normalized for library size, effectively removing it as a confounder. Now we will consider removing other less well defined confounders from our data. Technical confounders (aka batch effects) can arise from difference in reagents, isolation methods, the lab/experimenter who performed the experiment, even which day/time the experiment was performed. Accounting for technical confounders, and batch effects particularly, is a large topic that also involves principles of experimental design. Here we address approaches that can be taken to account for confounders when the experimental design is appropriate.
+
+Fundamentally, accounting for technical confounders involves identifying and, ideally, removing sources of variation in the expression data that are not related to (i.e. are confounding) the biological signal of interest. Various approaches exist, some of which use spike-in or housekeeping genes, and some of which use endogenous genes.
+
+#### Advantages and disadvantages of using spike-ins to remove confounders
+
+The use of spike-ins as control genes is appealing, since the same amount of ERCC (or other) spike-in was added to each cell in our experiment. In principle, all the variablity we observe for these genes is due to technical noise; whereas endogenous genes are affected by both technical noise and biological variability. Technical noise can be removed by fitting a model to the spike-ins and "substracting" this from the endogenous genes. There are several methods available based on this premise (eg. [BASiCS](https://github.com/catavallejos/BASiCS), [scLVM](https://github.com/PMBio/scLVM), [RUVg](http://bioconductor.org/packages/release/bioc/html/RUVSeq.html)); each using different noise models and different fitting procedures. Alternatively, one can identify genes which exhibit significant variation beyond technical noise (eg. Distance to median, [Highly variable genes](http://www.nature.com/nmeth/journal/v10/n11/full/nmeth.2645.html)). However, there are issues with the use of spike-ins for normalisation (particularly ERCCs, derived from bacterial sequences), including that their variability can, for various reasons, actually be *higher* than that of endogenous genes.
+
+Given the issues with using spike-ins, better results can often be obtained by using endogenous genes instead. Where we have a large number of endogenous genes that, on average, do not vary systematically between cells and where we expect technical effects to affect a large number of genes (a very common and reasonable assumption), then such methods (for example, the RUVs method) can perform well. 
+
+We explore both general approaches below.
+
+
+
+
+```r
+library(scRNA.seq.funcs)
+library(RUVSeq)
+library(scater)
+library(SingleCellExperiment)
+library(scran)
+library(kBET)
+library(sva) # Combat
+library(edgeR)
+library(harmony)
+set.seed(1234567)
+options(stringsAsFactors = FALSE)
+umi <- readRDS("data/tung/umi.rds")
+umi.qc <- umi[rowData(umi)$use, colData(umi)$use]
+endog_genes <- !rowData(umi.qc)$is_feature_control
+erccs <- rowData(umi.qc)$is_feature_control
+
+qclust <- quickCluster(umi.qc, min.size = 30)
+umi.qc <- computeSumFactors(umi.qc, sizes = 15, clusters = qclust)
+umi.qc <- normalize(umi.qc)
+```
+
+### Remove Unwanted Variation
+
+Factors contributing to technical noise frequently appear as "batch
+effects" where cells processed on different days or by different
+technicians systematically vary from one another. Removing technical
+noise and correcting for batch effects can frequently be performed
+using the same tool or slight variants on it. We will be considering
+the [Remove Unwanted Variation (RUVSeq)](http://bioconductor.org/packages/RUVSeq). Briefly, RUVSeq works as follows. For $n$ samples and $J$ genes, consider the following generalized linear model (GLM), where the RNA-Seq read counts are regressed on both the known covariates of interest and unknown factors of unwanted variation:
+\[\log E[Y|W,X,O] = W\alpha + X\beta + O\]
+Here, $Y$ is the $n \times J$ matrix of observed gene-level read counts, $W$ is an $n \times k$ matrix corresponding to the factors of “unwanted variation” and $O$ is an $n \times J$ matrix of offsets that can either be set to zero or estimated with some other normalization procedure (such as upper-quartile normalization). The simultaneous estimation of $W$, $\alpha$, $\beta$, and $k$ is infeasible. For a given $k$, instead the following three
+approaches to estimate the factors of unwanted variation $W$ are used:
+
+* _RUVg_ uses negative control genes (e.g. ERCCs), assumed to have constant expression across samples;
+* _RUVs_ uses centered (technical) replicate/negative control samples for which the covariates of interest are
+constant;
+* _RUVr_ uses residuals, e.g., from a first-pass GLM regression of the counts on the covariates of interest.
+
+We will concentrate on the first two approaches.
+
+#### RUVg
+
+
+```r
+ruvg <- RUVg(counts(umi.qc), erccs, k = 1)
+assay(umi.qc, "ruvg1") <- log2(
+    t(t(ruvg$normalizedCounts) / colSums(ruvg$normalizedCounts) * 1e6) + 1
+)
+ruvg <- RUVg(counts(umi.qc), erccs, k = 10)
+assay(umi.qc, "ruvg10") <- log2(
+    t(t(ruvg$normalizedCounts) / colSums(ruvg$normalizedCounts) * 1e6) + 1
+)
+```
+
+#### RUVs
+
+
+```r
+scIdx <- matrix(-1, ncol = max(table(umi.qc$individual)), nrow = 3)
+tmp <- which(umi.qc$individual == "NA19098")
+scIdx[1, 1:length(tmp)] <- tmp
+tmp <- which(umi.qc$individual == "NA19101")
+scIdx[2, 1:length(tmp)] <- tmp
+tmp <- which(umi.qc$individual == "NA19239")
+scIdx[3, 1:length(tmp)] <- tmp
+cIdx <- rownames(umi.qc)
+ruvs <- RUVs(counts(umi.qc), cIdx, k = 1, scIdx = scIdx, isLog = FALSE)
+assay(umi.qc, "ruvs1") <- log2(
+    t(t(ruvs$normalizedCounts) / colSums(ruvs$normalizedCounts) * 1e6) + 1
+)
+ruvs <- RUVs(counts(umi.qc), cIdx, k = 10, scIdx = scIdx, isLog = FALSE)
+assay(umi.qc, "ruvs10") <- log2(
+    t(t(ruvs$normalizedCounts) / colSums(ruvs$normalizedCounts) * 1e6) + 1
+)
+```
+
+### Combat
+
+If you have an experiment with a balanced design, `Combat` can be used to eliminate batch effects while preserving biological effects by specifying the biological effects using the `mod` parameter. However the `Tung` data contains multiple experimental replicates rather than a balanced design so using `mod1` to preserve biological variability will result in an error. 
+
+```r
+combat_data <- logcounts(umi.qc)
+mod_data <- as.data.frame(t(combat_data))
+# Basic batch removal
+mod0 = model.matrix(~ 1, data = mod_data) 
+# Preserve biological variability
+mod1 = model.matrix(~ umi.qc$individual, data = mod_data) 
+# adjust for total genes detected
+mod2 = model.matrix(~ umi.qc$total_features_by_counts, data = mod_data)
+assay(umi.qc, "combat") <- ComBat(
+    dat = t(mod_data), 
+    batch = factor(umi.qc$batch), 
+    mod = mod0,
+    par.prior = TRUE,
+    prior.plots = FALSE
+)
+```
+
+__Exercise 1__
+
+Perform `ComBat` correction accounting for total features as a co-variate. Store the corrected matrix in the `combat_tf` slot.
+
+
+```r
+assay(umi.qc, "combat_tf") <- ComBat(
+    dat = t(mod_data), 
+    batch = factor(umi.qc$batch), 
+    mod = mod2,
+    par.prior = TRUE,
+    prior.plots = FALSE
+)
+```
+
+### mnnCorrect 
+`mnnCorrect` [@Haghverdi2017-vh] assumes that each batch shares at least one biological condition with each other batch. Thus it works well for a variety of balanced experimental designs. However, the `Tung` data contains multiple replicates for each invidividual rather than balanced batches, thus we will normalized each individual separately. Note that this will remove batch effects between batches within the same individual but not the batch effects between batches in different individuals, due to the confounded experimental design. 
+
+Thus we will merge a replicate from each individual to form three batches. 
+
+```r
+do_mnn <- function(data.qc) {
+    batch1 <- logcounts(data.qc[, data.qc$replicate == "r1"])
+    batch2 <- logcounts(data.qc[, data.qc$replicate == "r2"])
+    batch3 <- logcounts(data.qc[, data.qc$replicate == "r3"])
+    
+    if (ncol(batch2) > 0) {
+        x = mnnCorrect(
+          batch1, batch2, batch3,  
+          k = 20,
+          sigma = 0.1,
+          cos.norm.in = TRUE,
+          svd.dim = 2
+        )
+        res1 <- x$corrected[[1]]
+        res2 <- x$corrected[[2]]
+        res3 <- x$corrected[[3]]
+        dimnames(res1) <- dimnames(batch1)
+        dimnames(res2) <- dimnames(batch2)
+        dimnames(res3) <- dimnames(batch3)
+        return(cbind(res1, res2, res3))
+    } else {
+        x = mnnCorrect(
+          batch1, batch3,  
+          k = 20,
+          sigma = 0.1,
+          cos.norm.in = TRUE,
+          svd.dim = 2
+        )
+        res1 <- x$corrected[[1]]
+        res3 <- x$corrected[[2]]
+        dimnames(res1) <- dimnames(batch1)
+        dimnames(res3) <- dimnames(batch3)
+        return(cbind(res1, res3))
+    }
+}
+
+indi1 <- do_mnn(umi.qc[, umi.qc$individual == "NA19098"])
+indi2 <- do_mnn(umi.qc[, umi.qc$individual == "NA19101"])
+indi3 <- do_mnn(umi.qc[, umi.qc$individual == "NA19239"])
+
+assay(umi.qc, "mnn") <- cbind(indi1, indi2, indi3)
+
+# For a balanced design: 
+#assay(umi.qc, "mnn") <- mnnCorrect(
+#    list(B1 = logcounts(batch1), B2 = logcounts(batch2), B3 = logcounts(batch3)),  
+#    k = 20,
+#    sigma = 0.1,
+#    cos.norm = TRUE,
+#    svd.dim = 2
+#)
+```
+
+### GLM
+A general linear model is a simpler version of `Combat`. It can correct for batches while preserving biological effects if you have a balanced design. In a confounded/replicate design biological effects will not be fit/preserved. Similar to `mnnCorrect` we could remove batch effects from each individual separately in order to preserve biological (and technical) variance between individuals. For demonstation purposes we will naively correct all cofounded batch effects: 
+
+
+```r
+glm_fun <- function(g, batch, indi) {
+  model <- glm(g ~ batch + indi)
+  model$coef[1] <- 0 # replace intercept with 0 to preserve reference batch.
+  return(model$coef)
+}
+effects <- apply(
+    logcounts(umi.qc), 
+    1, 
+    glm_fun, 
+    batch = umi.qc$batch, 
+    indi = umi.qc$individual
+)
+corrected <- logcounts(umi.qc) - t(effects[as.numeric(factor(umi.qc$batch)), ])
+assay(umi.qc, "glm") <- corrected
+```
+
+__Exercise 2__
+
+Perform GLM correction for each individual separately. Store the final corrected matrix in the `glm_indi` slot.
+
+
+```r
+glm_fun1 <- function(g, batch) {
+  model <- glm(g ~ batch)
+  model$coef[1] <- 0 # replace intercept with 0 to preserve reference batch.
+  return(model$coef)
+}
+
+do_glm <- function(data.qc) {
+    effects <- apply(
+        logcounts(data.qc), 
+        1, 
+        glm_fun1, 
+        batch = data.qc$batch
+    )
+    corrected <- logcounts(data.qc) - t(effects[as.numeric(factor(data.qc$batch)), ])
+    return(corrected)
+}
+indi1 <- do_glm(umi.qc[, umi.qc$individual == "NA19098"])
+indi2 <- do_glm(umi.qc[, umi.qc$individual == "NA19101"])
+indi3 <- do_glm(umi.qc[, umi.qc$individual == "NA19239"])
+
+assay(umi.qc, "glm_indi") <- cbind(indi1, indi2, indi3);
+```
+
+### Harmony
+
+Harmony [Korsunsky2018fast] is a newer batch correction method, which is designed to operate on PC space. The algorithm proceeds to iteratively cluster the cells, with the objective function formulated to promote cells from multiple datasets within each cluster. Once a clustering is obtained, the positions of the centroids of each dataset are obtained on a per-cluster basis and the coordinates are corrected. This procedure is iterated until convergence. Harmony comes with a `theta` parameter that controls the degree of batch correction (higher values lead to more dataset integration), and can account for multiple experimental and biological factors on input.
+
+Seeing how the end result of Harmony is an altered dimensional reduction space created on the basis of PCA, we plot the obtained manifold here and exclude it from the rest of the follow-ups in the section.
+
+
+```r
+umi.qc.endog = umi.qc[endog_genes,]
+umi.qc.endog = runPCA(umi.qc.endog, exprs_values = 'logcounts', ncomponents = 20)
+pca <- as.matrix(umi.qc.endog@reducedDims@listData[["PCA"]])
+harmony_emb <- HarmonyMatrix(pca, umi.qc.endog$batch, theta=2, do_pca=FALSE)
+umi.qc.endog@reducedDims@listData[['harmony']] <- harmony_emb
+
+plotReducedDim(
+    umi.qc.endog,
+    use_dimred = 'harmony',
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" />
+
+### How to evaluate and compare confounder removal strategies
+
+A key question when considering the different methods for removing confounders is how to quantitatively determine which one is the most effective. The main reason why comparisons are challenging is because it is often difficult to know what corresponds to technical counfounders and what is interesting biological variability. Here, we consider three different metrics which are all reasonable based on our knowledge of the experimental design. Depending on the biological question that you wish to address, it is important to choose a metric that allows you to evaluate the confounders that are likely to be the biggest concern for the given situation.
+
+#### Effectiveness 1
+
+We evaluate the effectiveness of the normalization by inspecting the
+PCA plot where colour corresponds the technical replicates and shape
+corresponds to different biological samples (individuals). Separation of biological samples and
+interspersed batches indicates that technical variation has been
+removed. We always use log2-cpm normalized data to match the assumptions of PCA.
+
+
+```r
+for(n in assayNames(umi.qc)) {
+    tmp <- runPCA(
+        umi.qc[endog_genes, ],
+        exprs_values = n
+    )
+    print(
+        plotPCA(
+            tmp,
+            colour_by = "batch",
+            size_by = "total_features_by_counts",
+            shape_by = "individual"
+        ) +
+        ggtitle(n)
+    )
+}
+```
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-2.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-3.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-4.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-5.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-6.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-7.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-8.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-9.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-10.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-11.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-11-12.png" width="90%" style="display: block; margin: auto;" />
+
+__Exercise 3__
+
+Consider different `ks` for RUV normalizations. Which gives the best results?
+
+#### Effectiveness 2
+
+We can also examine the effectiveness of correction using the relative log expression (RLE) across cells to confirm technical noise has been removed from the dataset. Note RLE only evaluates whether the number of genes higher and lower than average are equal for each cell - i.e. systemic technical effects. Random technical noise between batches may not be detected by RLE.
+
+
+```r
+res <- list()
+for(n in assayNames(umi.qc)) {
+	res[[n]] <- suppressWarnings(calc_cell_RLE(assay(umi.qc, n), erccs))
+}
+par(mar=c(6,4,1,1))
+boxplot(res, las=2)
+```
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" />
+#### Effectiveness 3
+
+Another method to check the efficacy of batch-effect correction is to consider the intermingling of points from different batches in local subsamples of the data. If there are no batch-effects then proportion of cells from each batch in any local region should be equal to the global proportion of cells in each batch. 
+
+`kBET` [@Buttner2017-ds] takes `kNN` networks around random cells and tests the number of cells from each batch against a binomial distribution. The rejection rate of these tests indicates the severity of batch-effects still present in the data (high rejection rate = strong batch effects). `kBET` assumes each batch contains the same complement of biological groups, thus it can only be applied to the entire dataset if a perfectly balanced design has been used. However, `kBET` can also be applied to replicate-data if it is applied to each biological group separately. In the case of the Tung data, we will apply `kBET` to each individual independently to check for residual batch effects. However, this method will not identify residual batch-effects which are confounded with biological conditions. In addition, `kBET` does not determine if biological signal has been preserved. 
+
+
+```r
+compare_kBET_results <- function(sce){
+    indiv <- unique(sce$individual)
+    norms <- assayNames(sce) # Get all normalizations
+    results <- list()
+    for (i in indiv){ 
+        for (j in norms){
+            tmp <- kBET(
+                df = t(assay(sce[,sce$individual== i], j)), 
+                batch = sce$batch[sce$individual==i], 
+                heuristic = TRUE, 
+                verbose = FALSE, 
+                addTest = FALSE, 
+                plot = FALSE)
+            results[[i]][[j]] <- tmp$summary$kBET.observed[1]
+        }
+    }
+    return(as.data.frame(results))
+}
+
+eff_debatching <- compare_kBET_results(umi.qc)
+```
+
+
+```r
+require("reshape2")
+require("RColorBrewer")
+# Plot results
+dod <- melt(as.matrix(eff_debatching),  value.name = "kBET")
+colnames(dod)[1:2] <- c("Normalisation", "Individual")
+
+colorset <- c('gray', brewer.pal(n = 9, "RdYlBu"))
+
+ggplot(dod, aes(Normalisation, Individual, fill=kBET)) +  
+    geom_tile() +
+    scale_fill_gradient2(
+        na.value = "gray",
+        low = colorset[2],
+        mid=colorset[6],
+        high = colorset[10],
+        midpoint = 0.5, limit = c(0,1)) +
+    scale_x_discrete(expand = c(0, 0)) +
+    scale_y_discrete(expand = c(0, 0)) + 
+    theme(
+        axis.text.x = element_text(
+            angle = 45, 
+            vjust = 1, 
+            size = 12, 
+            hjust = 1
+        )
+    ) + 
+    ggtitle("Effect of batch regression methods per individual")
+```
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf_files/figure-html/unnamed-chunk-14-1.png" width="90%" style="display: block; margin: auto;" />
+__Exercise 4__
+
+Why do the raw counts appear to have little batch effects?
+
+### Big Exercise
+
+Perform the same analysis with read counts of the `tung` data. Use `tung/reads.rds` file to load the reads `SCE` object. Once you have finished please compare your results to ours (next chapter). Additionally, experiment with other combinations of normalizations and compare the results.
+
+
+## Dealing with confounders (Reads)
+
+
+
+
+```r
+library(scRNA.seq.funcs)
+library(RUVSeq)
+library(scater)
+library(SingleCellExperiment)
+library(scran)
+library(kBET)
+library(sva) # Combat
+library(harmony)
+library(edgeR)
+set.seed(1234567)
+options(stringsAsFactors = FALSE)
+reads <- readRDS("data/tung/reads.rds")
+reads.qc <- reads[rowData(reads)$use, colData(reads)$use]
+endog_genes <- !rowData(reads.qc)$is_feature_control
+erccs <- rowData(reads.qc)$is_feature_control
+
+qclust <- quickCluster(reads.qc, min.size = 30)
+reads.qc <- computeSumFactors(reads.qc, sizes = 15, clusters = qclust)
+reads.qc <- normalize(reads.qc)
+```
+
+
+```r
+ruvg <- RUVg(counts(reads.qc), erccs, k = 1)
+assay(reads.qc, "ruvg1") <- log2(
+    t(t(ruvg$normalizedCounts) / colSums(ruvg$normalizedCounts) * 1e6) + 1
+)
+ruvg <- RUVg(counts(reads.qc), erccs, k = 10)
+assay(reads.qc, "ruvg10") <- log2(
+    t(t(ruvg$normalizedCounts) / colSums(ruvg$normalizedCounts) * 1e6) + 1
+)
+```
+
+
+```r
+scIdx <- matrix(-1, ncol = max(table(reads.qc$individual)), nrow = 3)
+tmp <- which(reads.qc$individual == "NA19098")
+scIdx[1, 1:length(tmp)] <- tmp
+tmp <- which(reads.qc$individual == "NA19101")
+scIdx[2, 1:length(tmp)] <- tmp
+tmp <- which(reads.qc$individual == "NA19239")
+scIdx[3, 1:length(tmp)] <- tmp
+cIdx <- rownames(reads.qc)
+ruvs <- RUVs(counts(reads.qc), cIdx, k = 1, scIdx = scIdx, isLog = FALSE)
+assay(reads.qc, "ruvs1") <- log2(
+    t(t(ruvs$normalizedCounts) / colSums(ruvs$normalizedCounts) * 1e6) + 1
+)
+ruvs <- RUVs(counts(reads.qc), cIdx, k = 10, scIdx = scIdx, isLog = FALSE)
+assay(reads.qc, "ruvs10") <- log2(
+    t(t(ruvs$normalizedCounts) / colSums(ruvs$normalizedCounts) * 1e6) + 1
+)
+```
+
+
+```r
+combat_data <- logcounts(reads.qc)
+mod_data <- as.data.frame(t(combat_data))
+# Basic batch removal
+mod0 = model.matrix(~ 1, data = mod_data) 
+# Preserve biological variability
+mod1 = model.matrix(~ reads.qc$individual, data = mod_data) 
+# adjust for total genes detected
+mod2 = model.matrix(~ reads.qc$total_features_by_counts, data = mod_data)
+assay(reads.qc, "combat") <- ComBat(
+    dat = t(mod_data), 
+    batch = factor(reads.qc$batch), 
+    mod = mod0,
+    par.prior = TRUE,
+    prior.plots = FALSE
+)
+```
+
+__Exercise 1__
+
+
+```r
+assay(reads.qc, "combat_tf") <- ComBat(
+    dat = t(mod_data), 
+    batch = factor(reads.qc$batch), 
+    mod = mod2,
+    par.prior = TRUE,
+    prior.plots = FALSE
+)
+```
+
+
+```r
+do_mnn <- function(data.qc) {
+    batch1 <- logcounts(data.qc[, data.qc$replicate == "r1"])
+    batch2 <- logcounts(data.qc[, data.qc$replicate == "r2"])
+    batch3 <- logcounts(data.qc[, data.qc$replicate == "r3"])
+    
+    if (ncol(batch2) > 0) {
+        x = mnnCorrect(
+          batch1, batch2, batch3,  
+          k = 20,
+          sigma = 0.1,
+          cos.norm.in = TRUE,
+          svd.dim = 2
+        )
+        res1 <- x$corrected[[1]]
+        res2 <- x$corrected[[2]]
+        res3 <- x$corrected[[3]]
+        dimnames(res1) <- dimnames(batch1)
+        dimnames(res2) <- dimnames(batch2)
+        dimnames(res3) <- dimnames(batch3)
+        return(cbind(res1, res2, res3))
+    } else {
+        x = mnnCorrect(
+          batch1, batch3,  
+          k = 20,
+          sigma = 0.1,
+          cos.norm.in = TRUE,
+          svd.dim = 2
+        )
+        res1 <- x$corrected[[1]]
+        res3 <- x$corrected[[2]]
+        dimnames(res1) <- dimnames(batch1)
+        dimnames(res3) <- dimnames(batch3)
+        return(cbind(res1, res3))
+    }
+}
+
+indi1 <- do_mnn(reads.qc[, reads.qc$individual == "NA19098"])
+indi2 <- do_mnn(reads.qc[, reads.qc$individual == "NA19101"])
+indi3 <- do_mnn(reads.qc[, reads.qc$individual == "NA19239"])
+
+assay(reads.qc, "mnn") <- cbind(indi1, indi2, indi3)
+
+# For a balanced design: 
+#assay(reads.qc, "mnn") <- mnnCorrect(
+#    list(B1 = logcounts(batch1), B2 = logcounts(batch2), B3 = logcounts(batch3)),  
+#    k = 20,
+#    sigma = 0.1,
+#    cos.norm = TRUE,
+#    svd.dim = 2
+#)
+```
+
+
+```r
+glm_fun <- function(g, batch, indi) {
+  model <- glm(g ~ batch + indi)
+  model$coef[1] <- 0 # replace intercept with 0 to preserve reference batch.
+  return(model$coef)
+}
+effects <- apply(
+    logcounts(reads.qc), 
+    1, 
+    glm_fun, 
+    batch = reads.qc$batch, 
+    indi = reads.qc$individual
+)
+corrected <- logcounts(reads.qc) - t(effects[as.numeric(factor(reads.qc$batch)), ])
+assay(reads.qc, "glm") <- corrected
+```
+
+__Exercise 2__
+
+
+```r
+glm_fun1 <- function(g, batch) {
+  model <- glm(g ~ batch)
+  model$coef[1] <- 0 # replace intercept with 0 to preserve reference batch.
+  return(model$coef)
+}
+
+do_glm <- function(data.qc) {
+    effects <- apply(
+        logcounts(data.qc), 
+        1, 
+        glm_fun1, 
+        batch = data.qc$batch
+    )
+    corrected <- logcounts(data.qc) - t(effects[as.numeric(factor(data.qc$batch)), ])
+    return(corrected)
+}
+indi1 <- do_glm(reads.qc[, reads.qc$individual == "NA19098"])
+indi2 <- do_glm(reads.qc[, reads.qc$individual == "NA19101"])
+indi3 <- do_glm(reads.qc[, reads.qc$individual == "NA19239"])
+
+assay(reads.qc, "glm_indi") <- cbind(indi1, indi2, indi3);
+```
+
+
+```r
+reads.qc.endog = reads.qc[endog_genes,]
+reads.qc.endog = runPCA(reads.qc.endog, exprs_values = 'logcounts', ncomponents = 20)
+pca <- as.matrix(reads.qc.endog@reducedDims@listData[["PCA"]])
+harmony_emb <- HarmonyMatrix(pca, reads.qc.endog$batch, theta=2, do_pca=FALSE)
+reads.qc.endog@reducedDims@listData[['harmony']] <- harmony_emb
+
+plotReducedDim(
+    reads.qc.endog,
+    use_dimred = 'harmony',
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" />
+
+```r
+for(n in assayNames(reads.qc)) {
+    tmp <- runPCA(
+        reads.qc[endog_genes, ],
+        exprs_values = n
+    )
+    print(
+        plotPCA(
+            tmp,
+            colour_by = "batch",
+            size_by = "total_features_by_counts",
+            shape_by = "individual"
+        ) +
+        ggtitle(n)
+    )
+}
+```
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-2.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-3.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-4.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-5.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-6.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-7.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-8.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-9.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-10.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-11.png" width="90%" style="display: block; margin: auto;" /><img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-11-12.png" width="90%" style="display: block; margin: auto;" />
+
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" />
+
+
+
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/remove-conf-reads_files/figure-html/unnamed-chunk-14-1.png" width="90%" style="display: block; margin: auto;" />
+
+```
+## R version 3.6.0 (2019-04-26)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 7 x64 (build 7601) Service Pack 1
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=Chinese (Simplified)_People's Republic of China.936 
+## [2] LC_CTYPE=Chinese (Simplified)_People's Republic of China.936   
+## [3] LC_MONETARY=Chinese (Simplified)_People's Republic of China.936
+## [4] LC_NUMERIC=C                                                   
+## [5] LC_TIME=Chinese (Simplified)_People's Republic of China.936    
+## 
+## attached base packages:
+## [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+## [8] methods   base     
+## 
+## other attached packages:
+##  [1] scran_1.12.1                scRNA.seq.funcs_0.1.0      
+##  [3] limma_3.40.2                scater_1.12.2              
+##  [5] ggplot2_3.2.0               SingleCellExperiment_1.6.0 
+##  [7] SummarizedExperiment_1.14.0 DelayedArray_0.10.0        
+##  [9] BiocParallel_1.17.18        matrixStats_0.54.0         
+## [11] Biobase_2.44.0              GenomicRanges_1.36.0       
+## [13] GenomeInfoDb_1.20.0         IRanges_2.18.1             
+## [15] S4Vectors_0.22.0            BiocGenerics_0.30.0        
+## [17] knitr_1.23                 
+## 
+## loaded via a namespace (and not attached):
+##   [1] Rtsne_0.15               ggbeeswarm_0.6.0        
+##   [3] colorspace_1.4-1         mvoutlier_2.0.9         
+##   [5] class_7.3-15             modeltools_0.2-22       
+##   [7] rio_0.5.16               dynamicTreeCut_1.63-1   
+##   [9] mclust_5.4.4             XVector_0.24.0          
+##  [11] pls_2.7-1                BiocNeighbors_1.2.0     
+##  [13] cvTools_0.3.2            flexmix_2.3-15          
+##  [15] mvtnorm_1.0-11           ranger_0.11.2           
+##  [17] codetools_0.2-16         splines_3.6.0           
+##  [19] sROC_0.1-2               robustbase_0.93-5       
+##  [21] robCompositions_2.1.0    cluster_2.1.0           
+##  [23] kernlab_0.9-27           rrcov_1.4-7             
+##  [25] compiler_3.6.0           dqrng_0.2.1             
+##  [27] assertthat_0.2.1         Matrix_1.2-17           
+##  [29] lazyeval_0.2.2           BiocSingular_1.0.0      
+##  [31] htmltools_0.3.6          tools_3.6.0             
+##  [33] igraph_1.2.4.1           rsvd_1.0.1              
+##  [35] gtable_0.3.0             glue_1.3.1              
+##  [37] GenomeInfoDbData_1.2.1   dplyr_0.8.2             
+##  [39] Rcpp_1.0.1               carData_3.0-2           
+##  [41] cellranger_1.1.0         zCompositions_1.3.2-1   
+##  [43] sgeostat_1.0-27          fpc_2.2-3               
+##  [45] DelayedMatrixStats_1.6.0 lmtest_0.9-37           
+##  [47] xfun_0.8                 laeken_0.5.0            
+##  [49] stringr_1.4.0            openxlsx_4.1.0.1        
+##  [51] irlba_2.3.3              hypergeo_1.2-13         
+##  [53] statmod_1.4.32           edgeR_3.26.5            
+##  [55] DEoptimR_1.0-8           zlibbioc_1.30.0         
+##  [57] MASS_7.3-51.4            zoo_1.8-6               
+##  [59] scales_1.0.0             VIM_4.8.0               
+##  [61] hms_0.4.2                RColorBrewer_1.1-2      
+##  [63] yaml_2.2.0               curl_3.3                
+##  [65] NADA_1.6-1               gridExtra_2.3           
+##  [67] reshape_0.8.8            stringi_1.4.3           
+##  [69] highr_0.8                pcaPP_1.9-73            
+##  [71] orthopolynom_1.0-5       e1071_1.7-2             
+##  [73] contfrac_1.1-12          boot_1.3-22             
+##  [75] zip_2.0.2                truncnorm_1.0-8         
+##  [77] moments_0.14             rlang_0.4.0             
+##  [79] pkgconfig_2.0.2          prabclus_2.3-1          
+##  [81] bitops_1.0-6             evaluate_0.14           
+##  [83] lattice_0.20-38          purrr_0.3.2             
+##  [85] labeling_0.3             cowplot_0.9.4           
+##  [87] tidyselect_0.2.5         deSolve_1.23            
+##  [89] GGally_1.4.0             plyr_1.8.4              
+##  [91] magrittr_1.5             bookdown_0.11           
+##  [93] R6_2.4.0                 pillar_1.4.2            
+##  [95] haven_2.1.0              foreign_0.8-71          
+##  [97] withr_2.1.2              survival_2.44-1.1       
+##  [99] abind_1.4-5              RCurl_1.95-4.12         
+## [101] sp_1.3-1                 nnet_7.3-12             
+## [103] tibble_2.1.3             crayon_1.3.4            
+## [105] car_3.0-3                rmarkdown_1.13          
+## [107] viridis_0.5.1            locfit_1.5-9.1          
+## [109] grid_3.6.0               readxl_1.3.1            
+## [111] data.table_1.12.2        forcats_0.4.0           
+## [113] vcd_1.4-4                digest_0.6.19           
+## [115] diptest_0.75-7           tidyr_0.8.3             
+## [117] elliptic_1.4-0           munsell_0.5.0           
+## [119] beeswarm_0.2.3           viridisLite_0.3.0       
+## [121] vipor_0.4.5
+```
