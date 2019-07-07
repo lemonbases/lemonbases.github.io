@@ -1,27 +1,19 @@
 ---
 output: html_document
 ---
-# Cleaning the Expression Matrix
+# 表达矩阵质控 {#cleaning-the-expression-matrix}
 
-## Expression QC (UMI) {#exprs-qc}
+## UMI表达质控 {#exprs-qc}
 
-### Introduction
+### 介绍
 
-Once gene expression has been quantified it is summarized as an __expression matrix__ where each row corresponds to a gene (or transcript) and each column corresponds to a single cell. This matrix should be examined to remove poor quality cells which were not detected in either read QC or mapping QC steps. Failure to remove low quality cells at this
-stage may add technical noise which has the potential to obscure
-the biological signals of interest in the downstream analysis. 
+基因表达定量后整理为**表达矩阵**文件，其中每行对应基因(转录本)，每列对应单个细胞。检查矩阵去除read QC或mapping QC中低质量细胞，否则会引入技术噪音，模糊下游感兴趣的生物信号。
 
-Since there is currently no standard method for performing scRNASeq the expected values for the various QC measures that will be presented here can vary substantially from experiment to experiment. Thus, to perform QC we will be looking for cells which are outliers with respect to the rest of the dataset rather than comparing to independent quality standards. Consequently, care should be taken when comparing quality metrics across datasets collected using different protocols.
+目前没有通用的scRNA-seq标准化方法，下文中不同质控期望值因不同实验差异很大。因此，质控时，通过比较数据集内部找到异常细胞，而不是独立的质控标准。当比较不同protocol的数据集的质控指标时，应格外注意。
 
+### Tung数据集
 
-### Tung dataset
-
-To illustrate cell QC, we consider a
-[dataset](http://jdblischak.github.io/singleCellSeq/analysis/) of
- induced pluripotent stem cells generated from three different individuals [@Tung2017-ba] in [Yoav Gilad](http://giladlab.uchicago.edu/)'s lab at the
-University of Chicago. The experiments were carried out on the
-Fluidigm C1 platform and to facilitate the quantification both unique
-molecular identifiers (UMIs) and ERCC _spike-ins_ were used. The data files are located in the `tung` folder in your working directory. These files are the copies of the original files made on the 15/03/16. We will use these copies for reproducibility purposes.
+使用芝加哥大学[Yoav Gilad](http://giladlab.uchicago.edu/)实验室三个不同个体诱导多能干细胞[数据集](http://jdblischak.github.io/singleCellSeq/analysis/) [@Tung2017-ba]。细胞分选采用Fluidigm C1平台，同时使用UMI和ERCC **spike-in**，数据文件位于工作目录下的`tung`文件夹中，这些文件15/03/16创建原始文件的拷贝。
 
 
 
@@ -32,14 +24,14 @@ library(scater)
 options(stringsAsFactors = FALSE)
 ```
 
-Load the data and annotations:
+导入数据和注释:
 
 ```r
 molecules <- read.table("data/tung/molecules.txt", sep = "\t")
 anno <- read.table("data/tung/annotation.txt", sep = "\t", header = TRUE)
 ```
 
-Inspect a small portion of the expression matrix
+查看表达矩阵
 
 ```r
 head(molecules[ , 1:3])
@@ -69,9 +61,10 @@ head(anno)
 ## 6    NA19098        r1  A06 NA19098.r1 NA19098.r1.A06
 ```
 
-The data consists of 3 individuals and 3 replicates and therefore has 9 batches in total.
+数据包括 3 个个体，3次3 重复，共 9 个批次.
 
-We standardize the analysis by using both `SingleCellExperiment` (SCE) and `scater` packages. First, create the SCE object:
+使用`SingleCellExperiment` (SCE)和`scater`标准化分析。首先创建SCE对象：
+
 
 ```r
 umi <- SingleCellExperiment(
@@ -80,14 +73,14 @@ umi <- SingleCellExperiment(
 )
 ```
 
-Remove genes that are not expressed in any cell:
+移除在任何细胞都不表达的基因:
 
 ```r
 keep_feature <- rowSums(counts(umi) > 0) > 0
 umi <- umi[keep_feature, ]
 ```
 
-Define control features (genes) - ERCC spike-ins and mitochondrial genes ([provided](http://jdblischak.github.io/singleCellSeq/analysis/qc-filter-ipsc.html) by the authors):
+定义control特征(基因) - ERCC spike-ins 和线粒体基因，(作者[提供](http://jdblischak.github.io/singleCellSeq/analysis/qc-filter-ipsc.html)):
 
 ```r
 isSpike(umi, "ERCC") <- grepl("^ERCC-", rownames(umi))
@@ -99,7 +92,7 @@ isSpike(umi, "MT") <- rownames(umi) %in%
     "ENSG00000198840")
 ```
 
-Calculate the quality metrics:
+计算质量指标:
 
 ```r
 umi <- calculateQCMetrics(
@@ -111,20 +104,12 @@ umi <- calculateQCMetrics(
 )
 ```
 
-```
-## Warning in calculateQCMetrics(umi, feature_controls = list(ERCC =
-## isSpike(umi, : spike-in set 'ERCC' overwritten by feature_controls set of
-## the same name
-```
 
+### 细胞质控
 
-### Cell QC
+#### 文库大小
 
-#### Library size
-
-Next we consider the total number of RNA molecules detected per
-sample (if we were using read counts rather than UMI counts this would
-be the total number of reads). Wells with few reads/molecules are likely to have been broken or failed to capture a cell, and should thus be removed.
+查看每个样本检测的总RNA分子数，read counts 或 UMI counts。如果样本中reads/分子数太少，可能细胞破损或捕获失败，应该移除该样本。
 
 
 ```r
@@ -140,15 +125,19 @@ abline(v = 25000, col = "red")
 <p class="caption">(\#fig:total-counts-hist)Histogram of library sizes for all cells</p>
 </div>
 
-__Exercise 1__
+**练习1**
 
-1. How many cells does our filter remove?
+1. 过滤移除多少细胞？
 
-2. What distribution do you expect that the
-total number of molecules for each cell should follow?
+2. 每个细胞总分子数应该服从什么分布？
 
-__Our answer__
+**答案**
 
+
+```r
+filter_by_total_counts <- (umi$total_counts > 25000)
+table(filter_by_total_counts)
+```
 
 ```
 ## filter_by_total_counts
@@ -156,9 +145,9 @@ __Our answer__
 ##    46   818
 ```
 
-#### Detected genes
+#### 检测基因数
 
-In addition to ensuring sufficient sequencing depth for each sample, we also want to make sure that the reads are distributed across the transcriptome. Thus, we count the total number of unique genes detected in each sample.
+除了确保每个样品的足够测序深度外，还希望确保读数均衡分布在转录组中。 因此，计算每个样品中检测到的基因数。
 
 
 ```r
@@ -174,20 +163,19 @@ abline(v = 7000, col = "red")
 <p class="caption">(\#fig:total-features-hist)Histogram of the number of detected genes in all cells</p>
 </div>
 
-From the plot we conclude that most cells have between 7,000-10,000 detected genes,
-which is normal for high-depth scRNA-seq. However, this varies by
-experimental protocol and sequencing depth. For example, droplet-based methods
-or samples with lower sequencing-depth typically detect fewer genes per cell. The most notable feature in the above plot is the __"heavy tail"__ on the left hand side of the
-distribution. If detection rates were equal across the cells then the
-distribution should be approximately normal. Thus we remove those
-cells in the tail of the distribution (fewer than 7,000 detected genes).
+从上图可以看出大多数细胞检测到7,000-10,000个基因，这对高深度scRAN-seq是正常的。然而，受实验protocol和测序深度的影响。比如基于droplet的方法或样品测序深度低时每个细胞检测基因要少。上图最明显的特征是左侧**拖尾**严重，如果细胞间检测率相同，应该服从正态分布。因此移除分布在左侧尾部的数据(检测少于7000基因的细胞)
 
-__Exercise 2__
+**联系2**
 
-How many cells does our filter remove?
+上述过滤了多少细胞？
 
-__Our answer__
+**答案**
 
+
+```r
+filter_by_expr_features <- (umi$total_features_by_counts > 7000)
+table(filter_by_expr_features)
+```
 
 ```
 ## filter_by_expr_features
@@ -195,11 +183,10 @@ __Our answer__
 ##   116   748
 ```
 
-#### ERCCs and MTs
+#### ERCCs和MTs
 
-Another measure of cell quality is the ratio between ERCC _spike-in_
-RNAs and endogenous RNAs. This ratio can be used to estimate the total amount
-of RNA in the captured cells. Cells with a high level of _spike-in_ RNAs
+细胞质量的另一个衡量标准是ERCC **spike-in** RNA和内源RNA之间的比值。其可用于估计细胞中捕获RNA的总量。 如果**spike-in** RNA较高，表明细胞内源RNA总量低，可能是由于细胞死亡或受到应激导致RNA降解。
+Cells with a high level of _spike-in_ RNAs
 had low starting amounts of RNA, likely due to the cell being
 dead or stressed which may result in the RNA being degraded.
 
@@ -233,19 +220,30 @@ plotColData(
 <p class="caption">(\#fig:ercc-vs-counts)Percentage of counts in ERCCs</p>
 </div>
 
-The above analysis shows that majority of the cells from NA19098.r2 batch have a very high ERCC/Endo ratio. Indeed, it has been shown by the authors that this batch contains cells of smaller size. 
+上述分析表明，来自NA19098.r2批次的大多数细胞具有非常高的ERCC / Endo 比。作者已经解释该批次包含较小尺寸的细胞。
 
-__Exercise 3__
 
-Create filters for removing batch NA19098.r2 and cells with high expression of mitochondrial genes (>10% of total counts in a cell).
+**练习3**
+
+移除NA19098.r2批次以及移除高表达线粒体基因的细胞(> 10%细胞总计数)
 
 __Our answer__
 
+
+```r
+filter_by_ERCC <- umi$batch != "NA19098.r2"
+table(filter_by_ERCC)
+```
 
 ```
 ## filter_by_ERCC
 ## FALSE  TRUE 
 ##    96   768
+```
+
+```r
+filter_by_MT <- umi$pct_counts_MT < 10
+table(filter_by_MT)
 ```
 
 ```
@@ -254,19 +252,19 @@ __Our answer__
 ##    31   833
 ```
 
-__Exercise 4__
+**练习4**
 
-What would you expect to see in the ERCC vs counts plot if you were examining a dataset containing cells of different sizes (eg. normal & senescent cells)?
+如果研究数据集细胞大小不同(比如正常和衰老细胞)，ERCC和counts比例会是什么分布？
 
-__Answer__
+**答案**
 
-You would expect to see a group corresponding to the smaller cells (normal) with a higher fraction of ERCC reads than a separate group corresponding to the larger cells (senescent).
+小的细胞(正常细胞)比大的细胞(衰老细胞)具有更高的ERCC/counts比。
 
-### Cell filtering
+### 细胞过滤
 
-#### Manual
+#### 手动过滤
 
-Now we can define a cell filter based on our previous analysis:
+根据之前分析定义细胞过滤器：
 
 
 ```r
@@ -293,20 +291,18 @@ table(umi$use)
 ##   207   657
 ```
 
-#### Automatic
+#### 自动过滤
 
-Another option available in `scater` is to conduct PCA on a set of QC metrics and then use automatic outlier detection to identify potentially problematic cells. 
+`scater`提供根据质控数据进行PCA自动筛选异常细胞的方法。默认情况下，下列统计量用于基于PCA的异常细胞检测：
 
-By default, the following metrics are used for PCA-based outlier detection:
+* **pct_counts_top_100_features**
+* **total_features**
+* **pct_counts_feature_controls**
+* **n_detected_feature_controls**
+* **log10_counts_endogenous_features**
+* **log10_counts_feature_controls**
 
-* __pct_counts_top_100_features__
-* __total_features__
-* __pct_counts_feature_controls__
-* __n_detected_feature_controls__
-* __log10_counts_endogenous_features__
-* __log10_counts_feature_controls__
-
-`scater` first creates a matrix where the rows represent cells and the columns represent the different QC metrics. Then, outlier cells can also be identified by using the `mvoutlier` package on the QC metrics for all cells. This will identify cells that have substantially different QC metrics from the others, possibly corresponding to low-quality cells. We can visualize any outliers using a principal components plot as shown below:
+`scater`首先创建一个行为细胞，列为不同QC统计值的矩阵，然后通过`mvoutlier`包筛选QC统计值与其它细胞显著不同的异常细胞，可能对应低质量细胞。通过PCA画图可视化异常细胞：
 
 
 ```r
@@ -322,7 +318,7 @@ reducedDimNames(umi)
 ## [1] "PCA_coldata"
 ```
 
-Column subsetting can then be performed based on the `$outlier` slot, which indicates whether or not each cell has been designated as an outlier. Automatic outlier detection can be informative, but a close inspection of QC metrics and tailored filtering for the specifics of the dataset at hand is strongly recommended.
+结果存储于umi的`$outlier`，其标识细胞是否为异常细胞。自动异常细胞检测提供丰富的信息，但是推荐特异性手动检测过滤数据集。
 
 
 ```r
@@ -335,7 +331,7 @@ table(umi$outlier)
 ##   791    73
 ```
 
-Then, we can use a PCA plot to see a 2D representation of the cells ordered by their quality metrics.
+通过PCA查看细胞质量分布
 
 
 ```r
@@ -350,16 +346,20 @@ plotReducedDim(
 
 <img src="07exprs-overview_files/figure-html/unnamed-chunk-15-1.png" width="90%" style="display: block; margin: auto;" />
 
-### Compare filterings
+### 手工过滤和自动过滤比较
 
-__Exercise 5__
+**练习5**
 
-Compare the default, automatic and manual cell filters. Plot a Venn diagram of the outlier cells from these filterings.
+用Venn图显示自动和手工筛选的异常细胞
 
-__Hint__: Use `vennCounts` and `vennDiagram` functions from the [limma](https://bioconductor.org/packages/release/bioc/html/limma.html) package to make a Venn diagram.
+**提示**：使用[limma](https://bioconductor.org/packages/release/bioc/html/limma.html)中`vennCounts`和`vennDiagram`函数绘制Venn图。
 
-__Answer__
+**答案**
 
+
+```r
+library(limma)
+```
 
 ```
 ## 
@@ -378,33 +378,45 @@ __Answer__
 ##     plotMA
 ```
 
+```r
+auto <- colnames(umi)[umi$outlier]
+man <- colnames(umi)[!umi$use]
+venn.diag <- vennCounts(
+    cbind(colnames(umi) %in% auto,
+    colnames(umi) %in% man)
+)
+vennDiagram(
+    venn.diag,
+    names = c("Automatic", "Manual"),
+    circle.col = c("blue", "green")
+)
+```
+
 <div class="figure" style="text-align: center">
 <img src="07exprs-overview_files/figure-html/cell-filt-comp-1.png" alt="Comparison of the default, automatic and manual cell filters" width="90%" />
 <p class="caption">(\#fig:cell-filt-comp)Comparison of the default, automatic and manual cell filters</p>
 </div>
 
-### Gene analysis
+### 基因分析
 
-#### Gene expression
+#### 基因表达
 
-In addition to removing cells with poor quality, it is usually a good idea to exclude genes where we suspect that technical artefacts may have skewed the results. Moreover, inspection of the gene expression profiles may provide insights about how the experimental procedures could be improved.
+除了移除低质量细胞外，通常也移除受技术误差影响较大的基因。而且查看基因表达谱可以帮助改进实验步骤。
 
-It is often instructive to consider the number of reads consumed by the top 50 expressed genes.
-
+查看Top50表达基因占reads的比例
 
 ```r
 plotHighestExprs(umi, exprs_values = "counts")
 ```
 <div class="figure" style="text-align: center">
 <img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-qc_files/figure-html/top50-gene-expr-1.png" alt="Number of total counts consumed by the top 50 expressed genes" width="90%" />
-<p class="caption">(\#fig:top50-gene-expr-2)Number of total counts consumed by the top 50 expressed genes</p>
+<p class="caption">(\#fig:top50-gene-expr-1)Number of total counts consumed by the top 50 expressed genes</p>
 </div>
-The distributions are relatively flat indicating (but not guaranteeing!) good coverage of the full transcriptome of these cells. However, there are several spike-ins in the top 15 genes which suggests a greater dilution of the spike-ins may be preferrable if the experiment is to be repeated.
+Top50表达的基因reads分布相对平缓，表明(但不保证)细胞的转录组覆盖较好。然而在Top15基因中含有spike-ins，表明如果重复实验，稀释spike-in的浓度较好。
 
+#### 基因过滤
 
-#### Gene filtering
-
-It is typically a good idea to remove genes whose expression level is considered __"undetectable"__. We define a gene as  detectable if at least two cells contain more than 1 transcript from the gene. If we were considering read counts rather than UMI counts a reasonable threshold is to require at least five reads in at least two cells. However, in both cases the threshold strongly depends on the sequencing depth. It is important to keep in mind that genes must be filtered after cell filtering since some genes may only be detected in poor quality cells (__note__ `colData(umi)$use` filter applied to the `umi` dataset).
+通常建议移除表达水平低，被认为是**未检测出的**基因。UMI数据中基因**detectable**定义为至少在两个细胞中包含至少1个基因的转录本。read counts数据，基因**detectable**定义为至少在2个细胞检测到至少5个read比对到该基因上。然而，在两种情况下阈值很大程度上取决于测序深度。另外，基因过滤需在细胞过滤之后，因为一些基因可能只在低质量细胞中检测到。（**注意** `colData(umi)$use`应用于`umi`数据集）。
 
 
 ```r
@@ -427,12 +439,11 @@ table(keep_feature)
 ##  4660 14066
 ```
 
-Depending on the cell-type, protocol and sequencing depth, other cut-offs may be appropriate.
+根据细胞类型，实验protocol，测序深度，其它阈值可能也合适。
 
+### 保存数据
 
-### Save the data
-
-Dimensions of the QCed dataset (do not forget about the gene filter we defined above):
+质控后数据集的维度(注意上述运用的基因过滤)：
 
 ```r
 dim(umi[rowData(umi)$use, colData(umi)$use])
@@ -442,25 +453,25 @@ dim(umi[rowData(umi)$use, colData(umi)$use])
 ## [1] 14066   657
 ```
 
-Let's create an additional slot with log-transformed counts (we will need it in the next chapters) and remove saved PCA results from the `reducedDim` slot:
+创建log变换的counts值(下面章节用到)，从`reducedDim`移除保存的PCA结果：
 
 ```r
 assay(umi, "logcounts_raw") <- log2(counts(umi) + 1)
 reducedDim(umi) <- NULL
 ```
 
-Save the data:
+保存数据:
 
 ```r
 saveRDS(umi, file = "data/tung/umi.rds")
 ```
 
-### Big Exercise
+### 大作业
 
-Perform exactly the same QC analysis with read counts of the same Blischak data. Use `tung/reads.txt` file to load the reads. Once you have finished please compare your results to ours (next chapter).
+使用相同的Blischak数据完成质控分析，使用`tung/reads.txt`文件读入reads，完成后将结果和我们进行对比(下一章)。
 
 
-## Expression QC (Reads)
+## Reads表达质控
 
 
 
@@ -542,12 +553,6 @@ reads <- calculateQCMetrics(
 )
 ```
 
-```
-## Warning in calculateQCMetrics(reads, feature_controls = list(ERCC =
-## isSpike(reads, : spike-in set 'ERCC' overwritten by feature_controls set of
-## the same name
-```
-
 
 ```r
 hist(
@@ -565,10 +570,6 @@ abline(v = 1.3e6, col = "red")
 
 ```r
 filter_by_total_counts <- (reads$total_counts > 1.3e6)
-```
-
-
-```r
 table(filter_by_total_counts)
 ```
 
@@ -595,10 +596,6 @@ abline(v = 7000, col = "red")
 
 ```r
 filter_by_expr_features <- (reads$total_features_by_counts > 7000)
-```
-
-
-```r
 table(filter_by_expr_features)
 ```
 
@@ -723,7 +720,7 @@ plotReducedDim(
 )
 ```
 
-<img src="07exprs-overview_files/figure-html/unnamed-chunk-37-1.png" width="90%" style="display: block; margin: auto;" />
+<img src="07exprs-overview_files/figure-html/unnamed-chunk-36-1.png" width="90%" style="display: block; margin: auto;" />
 
 
 ```r
@@ -753,7 +750,7 @@ plotHighestExprs(reads, exprs_values = "counts")
 
 <div class="figure" style="text-align: center">
 <img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-qc-reads_files/figure-html/top50-gene-expr-reads-1.png" alt="Number of total counts consumed by the top 50 expressed genes" width="90%" />
-<p class="caption">(\#fig:top50-gene-expr-reads-2)Number of total counts consumed by the top 50 expressed genes</p>
+<p class="caption">(\#fig:top50-gene-expr-reads)Number of total counts consumed by the top 50 expressed genes</p>
 </div>
 
 
@@ -797,16 +794,15 @@ reducedDim(reads) <- NULL
 saveRDS(reads, file = "data/tung/reads.rds")
 ```
 
-By comparing Figure \@ref(fig:cell-filt-comp) and Figure \@ref(fig:cell-filt-comp-reads), it is clear that the reads based filtering removed more cells than the UMI based analysis. If you go back and compare the results you should be able to conclude that the ERCC and MT filters are more strict for the reads-based analysis.
+通过比对图\@ref(fig:cell-filt-comp) 和 图\@ref(fig:cell-filt-comp-reads)发现，基于reads过滤比对基于UMI的分析去除了更多的细胞。如果返回比较结果，应该得出结论ERCC和MT过滤对基于reads的分析更严格。
 
+## 数据可视化
 
-## Data visualization
+### 介绍
 
-### Introduction
+本章继续使用之前章节产生的过滤后`Tung`数据集，我们将使用几种数据可视化方式，以便评估质量控制后表达矩阵的改变。`scater`包提供了几种有用的函数来简化可视化。
 
-In this chapter we will continue to work with the filtered `Tung` dataset produced in the previous chapter. We will explore different ways of visualizing the data to allow you to asses what happened to the expression matrix after the quality control step. `scater` package provides several very useful functions to simplify visualisation. 
-
-One important aspect of single-cell RNA-seq is to control for batch effects. Batch effects are technical artefacts that are added to the samples during handling. For example, if two sets of samples were prepared in different labs or even on different days in the same lab, then we may observe greater similarities between the samples that were handled together. In the worst case scenario, batch effects may be [mistaken](http://f1000research.com/articles/4-121/v1) for true biological variation. The `Tung` data allows us to explore these issues in a controlled manner since some of the salient aspects of how the samples were handled have been recorded. Ideally, we expect to see batches from the same individual grouping together and distinct groups corresponding to each individual. 
+scRNA-sq分析的一个重要方面是控制批次效应。批次效应是实验过程中引入的技术偏差。比如，不同实验室准备的样品或同一实验室不同时间准备的样品，同一批处理的数据相似度更高。最差的情况，批次效应可能被[误认为](http://f1000research.com/articles/4-121/v1) 真实的生物差异。`Tung`数据详细记录样品处理过程，允许探索批次效应问题。理想情况下，同一个体细胞聚集在一起，不同group对应每个个体，这说明存在批次效应。
 
 
 
@@ -822,11 +818,11 @@ endog_genes <- !rowData(umi.qc)$is_feature_control
 
 ### PCA plot {#visual-pca}
 
-The easiest way to overview the data is by transforming it using the principal component analysis and then visualize the first two principal components.
+查看数据分布的最简单方式是主成分分析，然后查看前两个主成分。
 
-[Principal component analysis (PCA)](https://en.wikipedia.org/wiki/Principal_component_analysis) is a statistical procedure that uses a transformation to convert a set of observations into a set of values of linearly uncorrelated variables called principal components (PCs). The number of principal components is less than or equal to the number of original variables.
+[主成分分析(PCA)](https://en.wikipedia.org/wiki/Principal_component_analysis) 是一种统计方法，使用正交变换将观察变量转化为一组线性无关的变量，称之为主成分。主成分的个数少于或等于原始变量数。
 
-Mathematically, the PCs correspond to the eigenvectors of the covariance matrix. The eigenvectors are sorted by eigenvalue so that the first principal component accounts for as much of the variability in the data as possible, and each succeeding component in turn has the highest variance possible under the constraint that it is orthogonal to the preceding components (the figure below is taken from [here](http://www.nlpca.org/pca_principal_component_analysis.html)).
+数学上，主成分对应协方差矩阵的特征向量，特征向量按照特征值进行排序，使得第一主成分解释最大的数据变异，后续主成分在与前面主成分正交的约下具有最高的方差。(图片来自[这里](http://www.nlpca.org/pca_principal_component_analysis.html))。
 
 <div class="figure" style="text-align: center">
 <img src="figures/pca.png" alt="Schematic representation of PCA dimensionality reduction" width="100%" />
@@ -835,7 +831,7 @@ Mathematically, the PCs correspond to the eigenvectors of the covariance matrix.
 
 #### Before QC
 
-Without log-transformation:
+对数变换前:
 
 ```r
 tmp <- runPCA(
@@ -851,10 +847,10 @@ plotPCA(
 ```
 <div class="figure" style="text-align: center">
 <img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-before-qc1-1.png" alt="PCA plot of the tung data" width="90%" />
-<p class="caption">(\#fig:unnamed-chunk-45)PCA plot of the tung data</p>
+<p class="caption">(\#fig:expr-overview-pca-before-qc1)PCA plot of the tung data</p>
 </div>
 
-With log-transformation:
+对数变换后:
 
 ```r
 tmp <- runPCA(
@@ -868,16 +864,16 @@ plotPCA(
     shape_by = "individual"
 )
 ```
+<div class="figure" style="text-align: center">
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-before-qc2-1.png" alt="PCA plot of the tung data" width="90%" />
+<p class="caption">(\#fig:expr-overview-pca-before-qc2)PCA plot of the tung data</p>
+</div>
 
-```r
-knitr::include_graphics("https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-before-qc2-1.png")
-```
+显然，对数变换更适合我们的数据，其减少了第一组成分的变异，分离出一些生物效应。而且使表达数据的分布更符合正态分布，后续分析和章节中我们默认使用log变换的counts数据。
 
-Clearly log-transformation is benefitial for our data - it reduces the variance on the first principal component and already separates some biological effects. Moreover, it makes the distribution of the expression values more normal. In the following analysis and chapters we will be using log-transformed raw counts by default.
+**然而，仅仅对数变换不足以解释细胞间不同计算因子(如测序深度)带来的差异。因此，下游分析中不要使用`logcounts_raw`，而是使用`SingleCellExperiment`对象的`logcounts`,其不仅仅对数变换，而且根据文库大小进行标准化(比如CPM标准化)。本课程中我们仅使用`logcounts_raw`进行演示！**
 
-__However, note that just a log-transformation is not enough to account for different technical factors between the cells (e.g. sequencing depth). Therefore, please do not use `logcounts_raw` for your downstream analysis, instead as a minimum suitable data use the `logcounts` slot of the `SingleCellExperiment` object, which not just log-transformed, but also normalised by library size (e.g. CPM normalisation). In the course we use `logcounts_raw` only for demonstration purposes!__
-
-#### After QC
+#### 质控后
 
 
 ```r
@@ -894,38 +890,62 @@ plotPCA(
 ```
 <div class="figure" style="text-align: center">
 <img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-after-qc-1.png" alt="PCA plot of the tung data" width="90%" />
-<p class="caption">(\#fig:unnamed-chunk-47)PCA plot of the tung data</p>
+<p class="caption">(\#fig:expr-overview-pca-after-qc)PCA plot of the tung data</p>
 </div>
 
-Comparing Figure \@ref(fig:expr-overview-pca-before-qc2) and Figure \@ref(fig:expr-overview-pca-after-qc), it is clear that after quality control the NA19098.r2 cells no longer form a group of outliers.
+比较图 \@ref(fig:expr-overview-pca-before-qc2) 和图 \@ref(fig:expr-overview-pca-after-qc), 发现质控后NA19098.r2不再是离群组。
 
-By default only the top 500 most variable genes are used by scater to calculate the PCA. This can be adjusted by changing the `ntop` argument. 
+默认情况下，scater使用500个变化最大的基因进行PCA分析，可以通过`ntop`参数进行修改。
 
-__Exercise 1__
-How do the PCA plots change if when all 14,066 genes are used? Or when only top 50 genes are used? Why does the fraction of variance accounted for by the first PC change so dramatically?
+**练习1**
+如果使用所有的14066基因，PCA图会如何？只是用50个基因呢？为什么第一主成分解释整体变异差别那么大？
 
-__Hint__ Use `ntop` argument of the `plotPCA` function.
+**提示** 使用`plotPCA`函数中`ntop`参数
 
-__Our answer__
+**答案**
 
+
+```r
+tmp <- runPCA(
+    umi.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    ntop = 14066
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-pca-after-qc-exercise1-1-1.png" alt="PCA plot of the tung data (14214 genes)" width="90%" />
+<img src="https://lemonbases.github.io/scRNA.seq.course.CN/07exprs-overview_files/figure-html/expr-overview-pca-after-qc-exercise1-1-1.png" alt="PCA plot of the tung data (14214 genes)" width="90%" />
 <p class="caption">(\#fig:expr-overview-pca-after-qc-exercise1-1)PCA plot of the tung data (14214 genes)</p>
 </div>
 
+```r
+tmp <- runPCA(
+    umi.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    ntop = 50
+)
+plotPCA(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-pca-after-qc-exercise1-2-1.png" alt="PCA plot of the tung data (50 genes)" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-pca-after-qc-exercise1-2-1.png" alt="PCA plot of the tung data (50 genes)" width="90%" />
 <p class="caption">(\#fig:expr-overview-pca-after-qc-exercise1-2)PCA plot of the tung data (50 genes)</p>
 </div>
 
-If your answers are different please compare your code with [ours](https://github.com/hemberg-lab/scRNA.seq.course/blob/master/07-exprs-overview.Rmd) (you need to search for this exercise in the opened file).
+### tSNE可视化 {#visual-tsne}
 
-### tSNE map {#visual-tsne}
+scRNA-seq数据可视化另一个常用方法是tSNE。tSNE](https://lvdmaaten.github.io/tsne/) (t-Distributed Stochastic Neighbor Embedding)整合降维(比如PCA)和最近邻网络随机游走在保持细胞间局部距离的基础上，将高维数据(比如，我们的14214维表达矩阵)映射到二维空间。和PCA不同的是，tSNE算法具有随机性，即在同一数据集上运行结果可能不同。由于非线性和随机性，tSNE结果难以直观解释。为了确保可重复性，固定随机数"seed"，以便始终得到相同结果。
 
-An alternative to PCA for visualizing scRNASeq data is a tSNE plot. [tSNE](https://lvdmaaten.github.io/tsne/) (t-Distributed Stochastic Neighbor Embedding) combines dimensionality reduction (e.g. PCA) with random walks on the nearest-neighbour network to map high dimensional data (i.e. our 14,214 dimensional expression matrix) to a 2-dimensional space while preserving local distances between cells. In contrast with PCA, tSNE is a stochastic algorithm which means running the method multiple times on the same dataset will result in different plots. Due to the non-linear and stochastic nature of the algorithm, tSNE is more difficult to intuitively interpret tSNE. To ensure reproducibility, we fix the "seed" of the random-number generator in the code below so that we always get the same plot. 
-
-
-#### Before QC
+#### 质控前
 
 
 ```r
@@ -942,13 +962,11 @@ plotTSNE(
     shape_by = "individual"
 )
 ```
-
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-before-qc-1.png" alt="tSNE map of the tung data" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-tsne-before-qc-1.png" alt="tSNE map of the tung data" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-before-qc)tSNE map of the tung data</p>
 </div>
-
-#### After QC
+#### 质控后
 
 
 ```r
@@ -965,38 +983,66 @@ plotTSNE(
     shape_by = "individual"
 )
 ```
-
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-1.png" alt="tSNE map of the tung data" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-tsne-after-qc-1.png" alt="tSNE map of the tung data" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-after-qc)tSNE map of the tung data</p>
 </div>
 
-Interpreting PCA and tSNE plots is often challenging and due to their stochastic and non-linear nature, they are less intuitive. However, in this case it is clear that they provide a similar picture of the data. Comparing Figure \@ref(fig:expr-overview-tsne-before-qc) and \@ref(fig:expr-overview-tsne-after-qc), it is again clear that the samples from NA19098.r2 are no longer outliers after the QC filtering.
+因为随机性和非线性，解释PCA和tSNE结果通常较难，不太直观，然而，在这种情况他们提供了相似的数据概览。比较图\@ref(fig:expr-overview-tsne-before-qc)和图\@ref(fig:expr-overview-tsne-after-qc)发现，质控过滤后的NA19098.r2样本不再是异常值。
 
-Furthermore tSNE requires you to provide a value of `perplexity` which reflects the number of neighbours used to build the nearest-neighbour network; a high value creates a dense network which clumps cells together while a low value makes the network more sparse allowing groups of cells to separate from each other. `scater` uses a default perplexity of the total number of cells divided by five (rounded down).
+tSNE中`perplexity`参数表示构建最近邻网络的邻居数，`perplexity`越高，网络越密集，细胞聚集在一起。`perplexity`越低，网络越稀疏，细胞群体彼此分离。`scater`使用默认perplexity为细胞总数除以5(向下取整)。
 
-You can read more about the pitfalls of using tSNE [here](http://distill.pub/2016/misread-tsne/).
+tSNE的缺点见[这里](http://distill.pub/2016/misread-tsne/)。
 
-__Exercise 2__
-How do the tSNE plots change when a perplexity of 10 or 200 is used? How does the choice of perplexity affect the interpretation of the results?
+**练习2**
+当perplexity设置为10或200时对tSNE结果的影响？
 
-__Our answer__
+**答案**
 
+
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    umi.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 10
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise2-1-1.png" alt="tSNE map of the tung data (perplexity = 10)" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise2-1-1.png" alt="tSNE map of the tung data (perplexity = 10)" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise2-1)tSNE map of the tung data (perplexity = 10)</p>
 </div>
 
+
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    umi.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 200
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise2-2-1.png" alt="tSNE map of the tung data (perplexity = 200)" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise2-2-1.png" alt="tSNE map of the tung data (perplexity = 200)" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise2-2)tSNE map of the tung data (perplexity = 200)</p>
 </div>
+### 大作业
 
-### Big Exercise
+使用Blischak数据的read counts数据完成相同的分析，使用`tung/reads.rds`文件导入reads的SCE对象。完成后的结果与我们相比较(下一章)。
 
-Perform the same analysis with read counts of the Blischak data. Use `tung/reads.rds` file to load the reads SCE object. Once you have finished please compare your results to ours (next chapter).
-
-## Data visualization (Reads)
+## Reads数据可视化
 
 
 ```r
@@ -1022,12 +1068,10 @@ plotPCA(
     shape_by = "individual"
 )
 ```
-
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-pca-before-qc-reads1-1.png" alt="PCA plot of the tung data" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview-reads_files/figure-html/expr-overview-pca-before-qc-reads1-1.png" alt="PCA plot of the tung data" width="90%" />
 <p class="caption">(\#fig:expr-overview-pca-before-qc-reads1)PCA plot of the tung data</p>
 </div>
-
 
 ```r
 tmp <- runPCA(
@@ -1041,12 +1085,10 @@ plotPCA(
     shape_by = "individual"
 )
 ```
-
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-pca-before-qc-reads2-1.png" alt="PCA plot of the tung data" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview-reads_files/figure-html/expr-overview-pca-before-qc-reads2-1.png" alt="PCA plot of the tung data" width="90%" />
 <p class="caption">(\#fig:expr-overview-pca-before-qc-reads2)PCA plot of the tung data</p>
 </div>
-
 
 ```r
 tmp <- runPCA(
@@ -1060,12 +1102,10 @@ plotPCA(
     shape_by = "individual"
 )
 ```
-
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-pca-after-qc-reads-1.png" alt="PCA plot of the tung data" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview-reads_files/figure-html/expr-overview-pca-after-qc-reads-1.png" alt="PCA plot of the tung data" width="90%" />
 <p class="caption">(\#fig:expr-overview-pca-after-qc-reads)PCA plot of the tung data</p>
 </div>
-
 
 ```r
 set.seed(123456)
@@ -1081,12 +1121,10 @@ plotTSNE(
     shape_by = "individual"
 )
 ```
-
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-before-qc-reads-1.png" alt="tSNE map of the tung data" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview-reads_files/figure-html/expr-overview-tsne-before-qc-reads-1.png" alt="tSNE map of the tung data" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-before-qc-reads)tSNE map of the tung data</p>
 </div>
-
 
 ```r
 set.seed(123456)
@@ -1102,19 +1140,46 @@ plotTSNE(
     shape_by = "individual"
 )
 ```
-
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-reads-1.png" alt="tSNE map of the tung data" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview-reads_files/figure-html/expr-overview-tsne-after-qc-reads-1.png" alt="tSNE map of the tung data" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-after-qc-reads)tSNE map of the tung data</p>
 </div>
 
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    reads.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 10
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise3-1-1.png" alt="tSNE map of the tung data (perplexity = 10)" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview-reads_files/figure-html/expr-overview-tsne-after-qc-exercise2-1-1.png" alt="tSNE map of the tung data (perplexity = 10)" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise3-1)tSNE map of the tung data (perplexity = 10)</p>
 </div>
 
+```r
+set.seed(123456)
+tmp <- runTSNE(
+    reads.qc[endog_genes, ],
+    exprs_values = "logcounts_raw",
+    perplexity = 200
+)
+plotTSNE(
+    tmp,
+    colour_by = "batch",
+    size_by = "total_features_by_counts",
+    shape_by = "individual"
+)
+```
 <div class="figure" style="text-align: center">
-<img src="07exprs-overview_files/figure-html/expr-overview-tsne-after-qc-exercise3-2-1.png" alt="tSNE map of the tung data (perplexity = 200)" width="90%" />
+<img src="https://scrnaseq-course.cog.sanger.ac.uk/website/exprs-overview-reads_files/figure-html/expr-overview-tsne-after-qc-exercise2-2-1.png" alt="tSNE map of the tung data (perplexity = 200)" width="90%" />
 <p class="caption">(\#fig:expr-overview-tsne-after-qc-exercise3-2)tSNE map of the tung data (perplexity = 200)</p>
 </div>
 
@@ -2627,57 +2692,56 @@ for(n in assayNames(reads.qc)) {
 ##  [11] pls_2.7-1                BiocNeighbors_1.2.0     
 ##  [13] cvTools_0.3.2            flexmix_2.3-15          
 ##  [15] mvtnorm_1.0-11           ranger_0.11.2           
-##  [17] codetools_0.2-16         splines_3.6.0           
-##  [19] sROC_0.1-2               robustbase_0.93-5       
-##  [21] robCompositions_2.1.0    cluster_2.1.0           
-##  [23] kernlab_0.9-27           rrcov_1.4-7             
-##  [25] compiler_3.6.0           dqrng_0.2.1             
-##  [27] assertthat_0.2.1         Matrix_1.2-17           
-##  [29] lazyeval_0.2.2           BiocSingular_1.0.0      
-##  [31] htmltools_0.3.6          tools_3.6.0             
-##  [33] igraph_1.2.4.1           rsvd_1.0.1              
-##  [35] gtable_0.3.0             glue_1.3.1              
-##  [37] GenomeInfoDbData_1.2.1   dplyr_0.8.2             
-##  [39] Rcpp_1.0.1               carData_3.0-2           
-##  [41] cellranger_1.1.0         zCompositions_1.3.2-1   
-##  [43] sgeostat_1.0-27          fpc_2.2-3               
-##  [45] DelayedMatrixStats_1.6.0 lmtest_0.9-37           
-##  [47] xfun_0.8                 laeken_0.5.0            
-##  [49] stringr_1.4.0            openxlsx_4.1.0.1        
-##  [51] irlba_2.3.3              hypergeo_1.2-13         
-##  [53] statmod_1.4.32           edgeR_3.26.5            
-##  [55] DEoptimR_1.0-8           zlibbioc_1.30.0         
-##  [57] MASS_7.3-51.4            zoo_1.8-6               
-##  [59] scales_1.0.0             VIM_4.8.0               
-##  [61] hms_0.4.2                RColorBrewer_1.1-2      
-##  [63] yaml_2.2.0               curl_3.3                
-##  [65] NADA_1.6-1               gridExtra_2.3           
-##  [67] reshape_0.8.8            stringi_1.4.3           
-##  [69] highr_0.8                pcaPP_1.9-73            
-##  [71] orthopolynom_1.0-5       e1071_1.7-2             
-##  [73] contfrac_1.1-12          boot_1.3-22             
-##  [75] zip_2.0.2                truncnorm_1.0-8         
-##  [77] moments_0.14             rlang_0.4.0             
-##  [79] pkgconfig_2.0.2          prabclus_2.3-1          
-##  [81] bitops_1.0-6             evaluate_0.14           
-##  [83] lattice_0.20-38          purrr_0.3.2             
-##  [85] labeling_0.3             cowplot_0.9.4           
-##  [87] tidyselect_0.2.5         deSolve_1.23            
-##  [89] GGally_1.4.0             plyr_1.8.4              
-##  [91] magrittr_1.5             bookdown_0.11           
-##  [93] R6_2.4.0                 pillar_1.4.2            
-##  [95] haven_2.1.0              foreign_0.8-71          
-##  [97] withr_2.1.2              survival_2.44-1.1       
-##  [99] abind_1.4-5              RCurl_1.95-4.12         
-## [101] sp_1.3-1                 nnet_7.3-12             
-## [103] tibble_2.1.3             crayon_1.3.4            
-## [105] car_3.0-3                rmarkdown_1.13          
-## [107] viridis_0.5.1            locfit_1.5-9.1          
-## [109] grid_3.6.0               readxl_1.3.1            
-## [111] data.table_1.12.2        forcats_0.4.0           
-## [113] vcd_1.4-4                digest_0.6.19           
-## [115] diptest_0.75-7           tidyr_0.8.3             
-## [117] elliptic_1.4-0           munsell_0.5.0           
-## [119] beeswarm_0.2.3           viridisLite_0.3.0       
-## [121] vipor_0.4.5
+##  [17] splines_3.6.0            sROC_0.1-2              
+##  [19] robustbase_0.93-5        robCompositions_2.1.0   
+##  [21] cluster_2.1.0            kernlab_0.9-27          
+##  [23] rrcov_1.4-7              compiler_3.6.0          
+##  [25] dqrng_0.2.1              assertthat_0.2.1        
+##  [27] Matrix_1.2-17            lazyeval_0.2.2          
+##  [29] BiocSingular_1.0.0       htmltools_0.3.6         
+##  [31] tools_3.6.0              igraph_1.2.4.1          
+##  [33] rsvd_1.0.1               gtable_0.3.0            
+##  [35] glue_1.3.1               GenomeInfoDbData_1.2.1  
+##  [37] dplyr_0.8.2              Rcpp_1.0.1              
+##  [39] carData_3.0-2            cellranger_1.1.0        
+##  [41] zCompositions_1.3.2-1    sgeostat_1.0-27         
+##  [43] fpc_2.2-3                DelayedMatrixStats_1.6.0
+##  [45] lmtest_0.9-37            xfun_0.8                
+##  [47] laeken_0.5.0             stringr_1.4.0           
+##  [49] openxlsx_4.1.0.1         irlba_2.3.3             
+##  [51] hypergeo_1.2-13          statmod_1.4.32          
+##  [53] edgeR_3.26.5             DEoptimR_1.0-8          
+##  [55] zlibbioc_1.30.0          MASS_7.3-51.4           
+##  [57] zoo_1.8-6                scales_1.0.0            
+##  [59] VIM_4.8.0                hms_0.4.2               
+##  [61] RColorBrewer_1.1-2       yaml_2.2.0              
+##  [63] curl_3.3                 NADA_1.6-1              
+##  [65] gridExtra_2.3            reshape_0.8.8           
+##  [67] stringi_1.4.3            highr_0.8               
+##  [69] pcaPP_1.9-73             orthopolynom_1.0-5      
+##  [71] e1071_1.7-2              contfrac_1.1-12         
+##  [73] boot_1.3-22              zip_2.0.2               
+##  [75] truncnorm_1.0-8          moments_0.14            
+##  [77] rlang_0.4.0              pkgconfig_2.0.2         
+##  [79] prabclus_2.3-1           bitops_1.0-6            
+##  [81] evaluate_0.14            lattice_0.20-38         
+##  [83] purrr_0.3.2              labeling_0.3            
+##  [85] cowplot_0.9.4            tidyselect_0.2.5        
+##  [87] deSolve_1.23             GGally_1.4.0            
+##  [89] plyr_1.8.4               magrittr_1.5            
+##  [91] bookdown_0.11            R6_2.4.0                
+##  [93] pillar_1.4.2             haven_2.1.0             
+##  [95] foreign_0.8-71           withr_2.1.2             
+##  [97] survival_2.44-1.1        abind_1.4-5             
+##  [99] RCurl_1.95-4.12          sp_1.3-1                
+## [101] nnet_7.3-12              tibble_2.1.3            
+## [103] crayon_1.3.4             car_3.0-3               
+## [105] rmarkdown_1.13           viridis_0.5.1           
+## [107] locfit_1.5-9.1           grid_3.6.0              
+## [109] readxl_1.3.1             data.table_1.12.2       
+## [111] forcats_0.4.0            vcd_1.4-4               
+## [113] digest_0.6.19            diptest_0.75-7          
+## [115] tidyr_0.8.3              elliptic_1.4-0          
+## [117] munsell_0.5.0            beeswarm_0.2.3          
+## [119] viridisLite_0.3.0        vipor_0.4.5
 ```
