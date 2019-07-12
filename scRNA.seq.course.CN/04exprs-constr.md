@@ -91,7 +91,7 @@ python <RSeQCpath>/split_bam.py -i input.bam -r rRNAmask.bed -o output.txt
 
 
 
-## 唯一分子标识符
+## 唯一分子标识符 {#umichapter}
 
 感谢来 [EMBL Monterotondo](https://www.embl.it/services/bioinformatics/)的Andreas Buness在本节的合作。
 
