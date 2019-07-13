@@ -328,7 +328,7 @@ table(umi$outlier)
 ```
 ## 
 ## FALSE  TRUE 
-##   791    73
+##   845    19
 ```
 
 通过PCA查看细胞质量分布
@@ -706,7 +706,7 @@ table(reads$outlier)
 ```
 ## 
 ## FALSE  TRUE 
-##   753   111
+##   831    33
 ```
 
 
@@ -2012,7 +2012,7 @@ plotPCA(
 ```
 
 
-## 处理混淆因子
+## 处理混淆因子 {#dealing-with-confounders}
 
 ### 介绍
 
@@ -2707,72 +2707,46 @@ sessionInfo()
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] scRNA.seq.funcs_0.1.0       limma_3.40.2               
-##  [3] scater_1.12.2               ggplot2_3.2.0              
-##  [5] SingleCellExperiment_1.6.0  SummarizedExperiment_1.14.0
-##  [7] DelayedArray_0.10.0         BiocParallel_1.17.18       
-##  [9] matrixStats_0.54.0          Biobase_2.44.0             
-## [11] GenomicRanges_1.36.0        GenomeInfoDb_1.20.0        
-## [13] IRanges_2.18.1              S4Vectors_0.22.0           
-## [15] BiocGenerics_0.30.0         knitr_1.23                 
+##  [1] scRNA.seq.funcs_0.1.0       limma_3.41.6               
+##  [3] scater_1.13.9               ggplot2_3.2.0              
+##  [5] SingleCellExperiment_1.7.0  SummarizedExperiment_1.15.5
+##  [7] DelayedArray_0.11.4         BiocParallel_1.19.0        
+##  [9] matrixStats_0.54.0          Biobase_2.45.0             
+## [11] GenomicRanges_1.37.14       GenomeInfoDb_1.21.1        
+## [13] IRanges_2.19.10             S4Vectors_0.23.17          
+## [15] BiocGenerics_0.31.5         knitr_1.23                 
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] Rtsne_0.15               ggbeeswarm_0.6.0        
-##   [3] colorspace_1.4-1         mvoutlier_2.0.9         
-##   [5] class_7.3-15             modeltools_0.2-22       
-##   [7] rio_0.5.16               mclust_5.4.4            
-##   [9] XVector_0.24.0           pls_2.7-1               
-##  [11] BiocNeighbors_1.2.0      cvTools_0.3.2           
-##  [13] flexmix_2.3-15           mvtnorm_1.0-11          
-##  [15] ranger_0.11.2            splines_3.6.0           
-##  [17] sROC_0.1-2               robustbase_0.93-5       
-##  [19] robCompositions_2.1.0    cluster_2.1.0           
-##  [21] kernlab_0.9-27           rrcov_1.4-7             
-##  [23] compiler_3.6.0           assertthat_0.2.1        
-##  [25] Matrix_1.2-17            lazyeval_0.2.2          
-##  [27] BiocSingular_1.0.0       htmltools_0.3.6         
-##  [29] tools_3.6.0              rsvd_1.0.1              
-##  [31] gtable_0.3.0             glue_1.3.1              
-##  [33] GenomeInfoDbData_1.2.1   dplyr_0.8.2             
-##  [35] Rcpp_1.0.1               carData_3.0-2           
-##  [37] cellranger_1.1.0         zCompositions_1.3.2-1   
-##  [39] sgeostat_1.0-27          fpc_2.2-3               
-##  [41] DelayedMatrixStats_1.6.0 lmtest_0.9-37           
-##  [43] xfun_0.8                 laeken_0.5.0            
-##  [45] stringr_1.4.0            openxlsx_4.1.0.1        
-##  [47] irlba_2.3.3              hypergeo_1.2-13         
-##  [49] statmod_1.4.32           DEoptimR_1.0-8          
-##  [51] zlibbioc_1.30.0          MASS_7.3-51.4           
-##  [53] zoo_1.8-6                scales_1.0.0            
-##  [55] VIM_4.8.0                hms_0.4.2               
-##  [57] RColorBrewer_1.1-2       yaml_2.2.0              
-##  [59] curl_3.3                 NADA_1.6-1              
-##  [61] gridExtra_2.3            reshape_0.8.8           
-##  [63] stringi_1.4.3            highr_0.8               
-##  [65] pcaPP_1.9-73             orthopolynom_1.0-5      
-##  [67] e1071_1.7-2              contfrac_1.1-12         
-##  [69] boot_1.3-22              zip_2.0.2               
-##  [71] truncnorm_1.0-8          moments_0.14            
-##  [73] rlang_0.4.0              pkgconfig_2.0.2         
-##  [75] prabclus_2.3-1           bitops_1.0-6            
-##  [77] evaluate_0.14            lattice_0.20-38         
-##  [79] purrr_0.3.2              labeling_0.3            
-##  [81] cowplot_0.9.4            tidyselect_0.2.5        
-##  [83] deSolve_1.23             GGally_1.4.0            
-##  [85] plyr_1.8.4               magrittr_1.5            
-##  [87] bookdown_0.11            R6_2.4.0                
-##  [89] pillar_1.4.2             haven_2.1.0             
-##  [91] foreign_0.8-71           withr_2.1.2             
-##  [93] survival_2.44-1.1        abind_1.4-5             
-##  [95] RCurl_1.95-4.12          sp_1.3-1                
-##  [97] nnet_7.3-12              tibble_2.1.3            
-##  [99] crayon_1.3.4             car_3.0-3               
-## [101] rmarkdown_1.13           viridis_0.5.1           
-## [103] grid_3.6.0               readxl_1.3.1            
-## [105] data.table_1.12.2        forcats_0.4.0           
-## [107] vcd_1.4-4                digest_0.6.19           
-## [109] diptest_0.75-7           tidyr_0.8.3             
-## [111] elliptic_1.4-0           munsell_0.5.0           
-## [113] beeswarm_0.2.3           viridisLite_0.3.0       
-## [115] vipor_0.4.5
+##  [1] viridis_0.5.1            BiocSingular_1.1.5      
+##  [3] viridisLite_0.3.0        DelayedMatrixStats_1.7.1
+##  [5] elliptic_1.4-0           moments_0.14            
+##  [7] assertthat_0.2.1         statmod_1.4.32          
+##  [9] highr_0.8                GenomeInfoDbData_1.2.1  
+## [11] vipor_0.4.5              yaml_2.2.0              
+## [13] robustbase_0.93-5        pillar_1.4.2            
+## [15] lattice_0.20-38          glue_1.3.1              
+## [17] digest_0.6.20            XVector_0.25.0          
+## [19] colorspace_1.4-1         cowplot_1.0.0           
+## [21] htmltools_0.3.6          Matrix_1.2-17           
+## [23] pkgconfig_2.0.2          bookdown_0.12           
+## [25] zlibbioc_1.31.0          purrr_0.3.2             
+## [27] scales_1.0.0             Rtsne_0.15              
+## [29] tibble_2.1.3             withr_2.1.2             
+## [31] lazyeval_0.2.2           magrittr_1.5            
+## [33] crayon_1.3.4             evaluate_0.14           
+## [35] MASS_7.3-51.4            beeswarm_0.2.3          
+## [37] tools_3.6.0              stringr_1.4.0           
+## [39] munsell_0.5.0            irlba_2.3.3             
+## [41] orthopolynom_1.0-5       compiler_3.6.0          
+## [43] rsvd_1.0.1               contfrac_1.1-12         
+## [45] rlang_0.4.0              grid_3.6.0              
+## [47] RCurl_1.95-4.12          BiocNeighbors_1.3.2     
+## [49] bitops_1.0-6             labeling_0.3            
+## [51] rmarkdown_1.14           hypergeo_1.2-13         
+## [53] gtable_0.3.0             deSolve_1.23            
+## [55] R6_2.4.0                 gridExtra_2.3           
+## [57] dplyr_0.8.3              stringi_1.4.3           
+## [59] ggbeeswarm_0.6.0         Rcpp_1.0.1              
+## [61] DEoptimR_1.0-8           tidyselect_0.2.5        
+## [63] xfun_0.8
 ```

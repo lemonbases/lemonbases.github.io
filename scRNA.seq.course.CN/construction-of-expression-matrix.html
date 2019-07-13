@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4 构建表达矩阵 | scRNA-seq数据分析</title>
   <meta name="description" content="4 构建表达矩阵 | scRNA-seq数据分析" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4 构建表达矩阵 | scRNA-seq数据分析" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="碱基吃柠檬" />
 
 
-<meta name="date" content="2019-07-12" />
+<meta name="date" content="2019-07-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -47,6 +47,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
 <!-- for Facebook -->  
 <meta property="og:url" content="https://github.com/sdbiodog" />
 <meta property="og:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
@@ -77,7 +84,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -311,11 +317,82 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.10.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#glm"><i class="fa fa-check"></i><b>7.10.5</b> GLM</a></li>
 <li class="chapter" data-level="7.10.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#harmony"><i class="fa fa-check"></i><b>7.10.6</b> Harmony</a></li>
 <li class="chapter" data-level="7.10.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-79"><i class="fa fa-check"></i><b>7.10.7</b> 评价和比较混淆因子去除策略</a></li>
-<li class="chapter" data-level="7.10.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-83"><i class="fa fa-check"></i><b>7.10.8</b> 大作业</a></li>
+<li class="chapter" data-level="7.10.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-82"><i class="fa fa-check"></i><b>7.10.8</b> 大作业</a></li>
 </ul></li>
 <li class="chapter" data-level="7.11" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-5"><i class="fa fa-check"></i><b>7.11</b> 处理Reads中混淆因子</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>8</b> References</a></li>
+<li class="chapter" data-level="8" data-path="biological-analysis.html"><a href="biological-analysis.html"><i class="fa fa-check"></i><b>8</b> 生物学分析</a><ul>
+<li class="chapter" data-level="8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-83"><i class="fa fa-check"></i><b>8.1</b> 聚类介绍</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-84"><i class="fa fa-check"></i><b>8.1.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.1.2" data-path="biological-analysis.html"><a href="biological-analysis.html#section-85"><i class="fa fa-check"></i><b>8.1.2</b> 降维</a></li>
+<li class="chapter" data-level="8.1.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-86"><i class="fa fa-check"></i><b>8.1.3</b> 聚类方法</a></li>
+<li class="chapter" data-level="8.1.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-89"><i class="fa fa-check"></i><b>8.1.4</b> 聚类的挑战</a></li>
+<li class="chapter" data-level="8.1.5" data-path="biological-analysis.html"><a href="biological-analysis.html#tools-for-scrna-seq-data"><i class="fa fa-check"></i><b>8.1.5</b> Tools for scRNA-seq data</a></li>
+<li class="chapter" data-level="8.1.6" data-path="biological-analysis.html"><a href="biological-analysis.html#comparing-clustering"><i class="fa fa-check"></i><b>8.1.6</b> Comparing clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#clust-methods"><i class="fa fa-check"></i><b>8.2</b> Clustering example</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="biological-analysis.html"><a href="biological-analysis.html#deng-dataset"><i class="fa fa-check"></i><b>8.2.1</b> Deng dataset</a></li>
+<li class="chapter" data-level="8.2.2" data-path="biological-analysis.html"><a href="biological-analysis.html#sc3-1"><i class="fa fa-check"></i><b>8.2.2</b> SC3</a></li>
+<li class="chapter" data-level="8.2.3" data-path="biological-analysis.html"><a href="biological-analysis.html#tsne-kmeans"><i class="fa fa-check"></i><b>8.2.3</b> tSNE + kmeans</a></li>
+<li class="chapter" data-level="8.2.4" data-path="biological-analysis.html"><a href="biological-analysis.html#sincera-1"><i class="fa fa-check"></i><b>8.2.4</b> SINCERA</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#feature-selection"><i class="fa fa-check"></i><b>8.3</b> Feature Selection</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="biological-analysis.html"><a href="biological-analysis.html#identifying-genes-vs-a-null-model"><i class="fa fa-check"></i><b>8.3.1</b> Identifying Genes vs a Null Model</a></li>
+<li class="chapter" data-level="8.3.2" data-path="biological-analysis.html"><a href="biological-analysis.html#correlated-expression"><i class="fa fa-check"></i><b>8.3.2</b> Correlated Expression</a></li>
+<li class="chapter" data-level="8.3.3" data-path="biological-analysis.html"><a href="biological-analysis.html#comparing-methods"><i class="fa fa-check"></i><b>8.3.3</b> Comparing Methods</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#pseudotime-analysis"><i class="fa fa-check"></i><b>8.4</b> Pseudotime analysis</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="biological-analysis.html"><a href="biological-analysis.html#first-look-at-deng-data"><i class="fa fa-check"></i><b>8.4.1</b> First look at Deng data</a></li>
+<li class="chapter" data-level="8.4.2" data-path="biological-analysis.html"><a href="biological-analysis.html#tscan"><i class="fa fa-check"></i><b>8.4.2</b> TSCAN</a></li>
+<li class="chapter" data-level="8.4.3" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle"><i class="fa fa-check"></i><b>8.4.3</b> monocle</a></li>
+<li class="chapter" data-level="8.4.4" data-path="biological-analysis.html"><a href="biological-analysis.html#diffusion-maps"><i class="fa fa-check"></i><b>8.4.4</b> Diffusion maps</a></li>
+<li class="chapter" data-level="8.4.5" data-path="biological-analysis.html"><a href="biological-analysis.html#slicer"><i class="fa fa-check"></i><b>8.4.5</b> SLICER</a></li>
+<li class="chapter" data-level="8.4.6" data-path="biological-analysis.html"><a href="biological-analysis.html#ouija"><i class="fa fa-check"></i><b>8.4.6</b> Ouija</a></li>
+<li class="chapter" data-level="8.4.7" data-path="biological-analysis.html"><a href="biological-analysis.html#comparison-of-the-methods"><i class="fa fa-check"></i><b>8.4.7</b> Comparison of the methods</a></li>
+<li class="chapter" data-level="8.4.8" data-path="biological-analysis.html"><a href="biological-analysis.html#expression-of-genes-through-time"><i class="fa fa-check"></i><b>8.4.8</b> Expression of genes through time</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#imputation"><i class="fa fa-check"></i><b>8.5</b> Imputation</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="biological-analysis.html"><a href="biological-analysis.html#scimpute"><i class="fa fa-check"></i><b>8.5.1</b> scImpute</a></li>
+<li class="chapter" data-level="8.5.2" data-path="biological-analysis.html"><a href="biological-analysis.html#drimpute"><i class="fa fa-check"></i><b>8.5.2</b> DrImpute</a></li>
+<li class="chapter" data-level="8.5.3" data-path="biological-analysis.html"><a href="biological-analysis.html#magic"><i class="fa fa-check"></i><b>8.5.3</b> MAGIC</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#dechapter"><i class="fa fa-check"></i><b>8.6</b> Differential Expression (DE) analysis</a><ul>
+<li class="chapter" data-level="8.6.1" data-path="biological-analysis.html"><a href="biological-analysis.html#bulk-rna-seq-1"><i class="fa fa-check"></i><b>8.6.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="8.6.2" data-path="biological-analysis.html"><a href="biological-analysis.html#single-cell-rna-seq"><i class="fa fa-check"></i><b>8.6.2</b> Single cell RNA-seq</a></li>
+<li class="chapter" data-level="8.6.3" data-path="biological-analysis.html"><a href="biological-analysis.html#differences-in-distribution"><i class="fa fa-check"></i><b>8.6.3</b> Differences in Distribution</a></li>
+<li class="chapter" data-level="8.6.4" data-path="biological-analysis.html"><a href="biological-analysis.html#models-of-single-cell-rnaseq-data"><i class="fa fa-check"></i><b>8.6.4</b> Models of single-cell RNASeq data</a></li>
+</ul></li>
+<li class="chapter" data-level="8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#de-in-a-real-dataset"><i class="fa fa-check"></i><b>8.7</b> DE in a real dataset</a><ul>
+<li class="chapter" data-level="8.7.1" data-path="biological-analysis.html"><a href="biological-analysis.html#introduction"><i class="fa fa-check"></i><b>8.7.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.7.2" data-path="biological-analysis.html"><a href="biological-analysis.html#kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>8.7.2</b> Kolmogorov-Smirnov test</a></li>
+<li class="chapter" data-level="8.7.3" data-path="biological-analysis.html"><a href="biological-analysis.html#wilcoxmann-whitney-u-test"><i class="fa fa-check"></i><b>8.7.3</b> Wilcox/Mann-Whitney-U Test</a></li>
+<li class="chapter" data-level="8.7.4" data-path="biological-analysis.html"><a href="biological-analysis.html#edger"><i class="fa fa-check"></i><b>8.7.4</b> edgeR</a></li>
+<li class="chapter" data-level="8.7.5" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle-1"><i class="fa fa-check"></i><b>8.7.5</b> Monocle</a></li>
+<li class="chapter" data-level="8.7.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mast"><i class="fa fa-check"></i><b>8.7.6</b> MAST</a></li>
+<li class="chapter" data-level="8.7.7" data-path="biological-analysis.html"><a href="biological-analysis.html#slow-methods-1h-to-run"><i class="fa fa-check"></i><b>8.7.7</b> Slow Methods (&gt;1h to run)</a></li>
+<li class="chapter" data-level="8.7.8" data-path="biological-analysis.html"><a href="biological-analysis.html#bpsc"><i class="fa fa-check"></i><b>8.7.8</b> BPSC</a></li>
+<li class="chapter" data-level="8.7.9" data-path="biological-analysis.html"><a href="biological-analysis.html#scde"><i class="fa fa-check"></i><b>8.7.9</b> SCDE</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="biological-analysis.html"><a href="biological-analysis.html#comparingcombining-scrnaseq-datasets"><i class="fa fa-check"></i><b>8.8</b> Comparing/Combining scRNASeq datasets</a><ul>
+<li class="chapter" data-level="8.8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#introduction-1"><i class="fa fa-check"></i><b>8.8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#datasets"><i class="fa fa-check"></i><b>8.8.2</b> Datasets</a></li>
+<li class="chapter" data-level="8.8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#projecting-cells-onto-annotated-cell-types-scmap"><i class="fa fa-check"></i><b>8.8.3</b> Projecting cells onto annotated cell-types (scmap)</a></li>
+<li class="chapter" data-level="8.8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#cell-to-cell-mapping"><i class="fa fa-check"></i><b>8.8.4</b> Cell-to-Cell mapping</a></li>
+<li class="chapter" data-level="8.8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#metaneighbour"><i class="fa fa-check"></i><b>8.8.5</b> Metaneighbour</a></li>
+<li class="chapter" data-level="8.8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mnncorrect-1"><i class="fa fa-check"></i><b>8.8.6</b> mnnCorrect</a></li>
+<li class="chapter" data-level="8.8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#cannonical-correlation-analysis-seurat"><i class="fa fa-check"></i><b>8.8.7</b> Cannonical Correlation Analysis (Seurat)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.9" data-path="biological-analysis.html"><a href="biological-analysis.html#search-scrna-seq-data"><i class="fa fa-check"></i><b>8.9</b> Search scRNA-Seq data</a><ul>
+<li class="chapter" data-level="8.9.1" data-path="biological-analysis.html"><a href="biological-analysis.html#about"><i class="fa fa-check"></i><b>8.9.1</b> About</a></li>
+<li class="chapter" data-level="8.9.2" data-path="biological-analysis.html"><a href="biological-analysis.html#dataset"><i class="fa fa-check"></i><b>8.9.2</b> Dataset</a></li>
+<li class="chapter" data-level="8.9.3" data-path="biological-analysis.html"><a href="biological-analysis.html#gene-index"><i class="fa fa-check"></i><b>8.9.3</b> Gene Index</a></li>
+<li class="chapter" data-level="8.9.4" data-path="biological-analysis.html"><a href="biological-analysis.html#marker-genes"><i class="fa fa-check"></i><b>8.9.4</b> Marker genes</a></li>
+<li class="chapter" data-level="8.9.5" data-path="biological-analysis.html"><a href="biological-analysis.html#search-cells-by-a-gene-list"><i class="fa fa-check"></i><b>8.9.5</b> Search cells by a gene list</a></li>
+<li class="chapter" data-level="8.9.6" data-path="biological-analysis.html"><a href="biological-analysis.html#in-silico-gating"><i class="fa fa-check"></i><b>8.9.6</b> In-silico gating</a></li>
+<li class="chapter" data-level="8.9.7" data-path="biological-analysis.html"><a href="biological-analysis.html#sessioninfo"><i class="fa fa-check"></i><b>8.9.7</b> sessionInfo()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">碱基吃柠檬</a></li>
 
@@ -481,8 +558,8 @@ Figure 4.8: 捕获效率差异
 </div>
 <p>这种差异引入强烈的偏差，需要在下游分析中考虑。最近的分析通常基于细胞类型或生物通路吧细胞/基因混合在一起增强检测能力。对这些数据的稳健统计分析仍然是一个开放的研究问题，还有待确定如何最好地调整偏差。</p>
 <p><strong>练习1</strong> 现提供三个不同来源的诱导多功能干细胞UMI counts和read counts数据 <span class="citation">(Tung et al. <a href="#ref-Tung2017-ba">2017</a>)</span> (查看章节 <a href="cleaning-the-expression-matrix.html#exprs-qc">7.1</a> 获得更多关于此数据集的信息)</p>
-<pre class="sourceCode r"><code class="sourceCode r">umi_counts &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/tung/molecules.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)
-read_counts &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/tung/reads.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">umi_counts &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/tung/molecules.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb48-2" title="2">read_counts &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/tung/reads.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</a></code></pre></div>
 <p>使用该数据:</p>
 <ol style="list-style-type: decimal">
 <li><p>绘制捕获效率可变性</p></li>
@@ -490,13 +567,13 @@ read_counts &lt;-<span class="st"> </span><span class="kw">read.table</span>(<sp
 Determine the amplification rate: average number of reads per UMI.</p></li>
 </ol>
 <p><strong>答案1</strong></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Exercise 1</span>
-<span class="co"># Part 1</span>
-<span class="kw">plot</span>(<span class="kw">colSums</span>(umi_counts), <span class="kw">colSums</span>(umi_counts <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">xlab=</span><span class="st">&quot;Total Molecules Detected&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Total Genes Detected&quot;</span>)
-
-<span class="co"># Part 2</span>
-amp_rate &lt;-<span class="st"> </span><span class="kw">sum</span>(read_counts)<span class="op">/</span><span class="kw">sum</span>(umi_counts)
-amp_rate</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># Exercise 1</span></a>
+<a class="sourceLine" id="cb49-2" title="2"><span class="co"># Part 1</span></a>
+<a class="sourceLine" id="cb49-3" title="3"><span class="kw">plot</span>(<span class="kw">colSums</span>(umi_counts), <span class="kw">colSums</span>(umi_counts <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">xlab=</span><span class="st">&quot;Total Molecules Detected&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Total Genes Detected&quot;</span>)</a>
+<a class="sourceLine" id="cb49-4" title="4"></a>
+<a class="sourceLine" id="cb49-5" title="5"><span class="co"># Part 2</span></a>
+<a class="sourceLine" id="cb49-6" title="6">amp_rate &lt;-<span class="st"> </span><span class="kw">sum</span>(read_counts)<span class="op">/</span><span class="kw">sum</span>(umi_counts)</a>
+<a class="sourceLine" id="cb49-7" title="7">amp_rate</a></code></pre></div>
 <p><img src="04exprs-constr_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>## [1] 30.87586</code></pre>
 

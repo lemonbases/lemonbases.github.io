@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6 Tabula Muris | scRNA-seq数据分析</title>
   <meta name="description" content="6 Tabula Muris | scRNA-seq数据分析" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6 Tabula Muris | scRNA-seq数据分析" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="碱基吃柠檬" />
 
 
-<meta name="date" content="2019-07-12" />
+<meta name="date" content="2019-07-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -47,6 +47,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
 <!-- for Facebook -->  
 <meta property="og:url" content="https://github.com/sdbiodog" />
 <meta property="og:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
@@ -77,7 +84,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -208,12 +214,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-21"><i class="fa fa-check"></i><b>4.3</b> 比对示例</a></li>
 <li class="chapter" data-level="4.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#mapping-qc"><i class="fa fa-check"></i><b>4.4</b> Mapping QC</a></li>
 <li class="chapter" data-level="4.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#reads"><i class="fa fa-check"></i><b>4.5</b> Reads定量</a></li>
-<li class="chapter" data-level="4.6" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-22"><i class="fa fa-check"></i><b>4.6</b> 唯一分子标识符</a><ul>
+<li class="chapter" data-level="4.6" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umichapter"><i class="fa fa-check"></i><b>4.6</b> 唯一分子标识符</a><ul>
 <li class="chapter" data-level="4.6.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umi"><i class="fa fa-check"></i><b>4.6.1</b> UMI介绍</a></li>
-<li class="chapter" data-level="4.6.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-23"><i class="fa fa-check"></i><b>4.6.2</b> 比对条形码序列</a></li>
+<li class="chapter" data-level="4.6.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-22"><i class="fa fa-check"></i><b>4.6.2</b> 比对条形码序列</a></li>
 <li class="chapter" data-level="4.6.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#barcodes"><i class="fa fa-check"></i><b>4.6.3</b> Barcodes计数</a></li>
-<li class="chapter" data-level="4.6.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-24"><i class="fa fa-check"></i><b>4.6.4</b> 错误校正</a></li>
-<li class="chapter" data-level="4.6.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-25"><i class="fa fa-check"></i><b>4.6.5</b> 下游分析</a></li>
+<li class="chapter" data-level="4.6.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-23"><i class="fa fa-check"></i><b>4.6.4</b> 错误校正</a></li>
+<li class="chapter" data-level="4.6.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-24"><i class="fa fa-check"></i><b>4.6.5</b> 下游分析</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html"><i class="fa fa-check"></i><b>5</b> R/Bioconductor介绍</a><ul>
@@ -221,20 +227,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#cran"><i class="fa fa-check"></i><b>5.1.1</b> CRAN</a></li>
 <li class="chapter" data-level="5.1.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#github-1"><i class="fa fa-check"></i><b>5.1.2</b> Github</a></li>
 <li class="chapter" data-level="5.1.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor"><i class="fa fa-check"></i><b>5.1.3</b> Bioconductor</a></li>
-<li class="chapter" data-level="5.1.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-26"><i class="fa fa-check"></i><b>5.1.4</b> 源码安装</a></li>
+<li class="chapter" data-level="5.1.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-25"><i class="fa fa-check"></i><b>5.1.4</b> 源码安装</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-27"><i class="fa fa-check"></i><b>5.2</b> 安装说明:</a></li>
-<li class="chapter" data-level="5.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-28"><i class="fa fa-check"></i><b>5.3</b> 数据类型/类</a><ul>
-<li class="chapter" data-level="5.3.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-29"><i class="fa fa-check"></i><b>5.3.1</b> 数值</a></li>
-<li class="chapter" data-level="5.3.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-30"><i class="fa fa-check"></i><b>5.3.2</b> 字符/字符串</a></li>
-<li class="chapter" data-level="5.3.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-31"><i class="fa fa-check"></i><b>5.3.3</b> 逻辑值</a></li>
-<li class="chapter" data-level="5.3.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-32"><i class="fa fa-check"></i><b>5.3.4</b> 因子</a></li>
-<li class="chapter" data-level="5.3.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-33"><i class="fa fa-check"></i><b>5.3.5</b> 检查数据类型</a></li>
+<li class="chapter" data-level="5.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-26"><i class="fa fa-check"></i><b>5.2</b> 安装说明:</a></li>
+<li class="chapter" data-level="5.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-27"><i class="fa fa-check"></i><b>5.3</b> 数据类型/类</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-28"><i class="fa fa-check"></i><b>5.3.1</b> 数值</a></li>
+<li class="chapter" data-level="5.3.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-29"><i class="fa fa-check"></i><b>5.3.2</b> 字符/字符串</a></li>
+<li class="chapter" data-level="5.3.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-30"><i class="fa fa-check"></i><b>5.3.3</b> 逻辑值</a></li>
+<li class="chapter" data-level="5.3.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-31"><i class="fa fa-check"></i><b>5.3.4</b> 因子</a></li>
+<li class="chapter" data-level="5.3.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-32"><i class="fa fa-check"></i><b>5.3.5</b> 检查数据类型</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-34"><i class="fa fa-check"></i><b>5.4</b> 基本数据结构</a></li>
-<li class="chapter" data-level="5.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-35"><i class="fa fa-check"></i><b>5.5</b> 更多信息</a></li>
-<li class="chapter" data-level="5.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-36"><i class="fa fa-check"></i><b>5.6</b> 数据类型</a><ul>
-<li class="chapter" data-level="5.6.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-37"><i class="fa fa-check"></i><b>5.6.1</b> 什么是整洁的数据</a></li>
+<li class="chapter" data-level="5.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-33"><i class="fa fa-check"></i><b>5.4</b> 基本数据结构</a></li>
+<li class="chapter" data-level="5.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-34"><i class="fa fa-check"></i><b>5.5</b> 更多信息</a></li>
+<li class="chapter" data-level="5.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-35"><i class="fa fa-check"></i><b>5.6</b> 数据类型</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-36"><i class="fa fa-check"></i><b>5.6.1</b> 什么是整洁的数据</a></li>
 <li class="chapter" data-level="5.6.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#rich-data"><i class="fa fa-check"></i><b>5.6.2</b> 什么是Rich data?</a></li>
 </ul></li>
 <li class="chapter" data-level="5.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor-singlecellexperiment--scater"><i class="fa fa-check"></i><b>5.7</b> Bioconductor, <code>SingleCellExperiment</code> 和 <code>scater</code></a><ul>
@@ -247,75 +253,146 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.8.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#ggplot2j"><i class="fa fa-check"></i><b>5.8.2</b> ggplot2j原则</a></li>
 <li class="chapter" data-level="5.8.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#aes"><i class="fa fa-check"></i><b>5.8.3</b> 使用<code>aes</code>映射函数</a></li>
 <li class="chapter" data-level="5.8.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#geoms"><i class="fa fa-check"></i><b>5.8.4</b> Geoms</a></li>
-<li class="chapter" data-level="5.8.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-38"><i class="fa fa-check"></i><b>5.8.5</b> 绘制2个以上细胞的数据</a></li>
-<li class="chapter" data-level="5.8.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-39"><i class="fa fa-check"></i><b>5.8.6</b> 绘制热图</a></li>
-<li class="chapter" data-level="5.8.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-40"><i class="fa fa-check"></i><b>5.8.7</b> 主成分分析</a></li>
+<li class="chapter" data-level="5.8.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-37"><i class="fa fa-check"></i><b>5.8.5</b> 绘制2个以上细胞的数据</a></li>
+<li class="chapter" data-level="5.8.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-38"><i class="fa fa-check"></i><b>5.8.6</b> 绘制热图</a></li>
+<li class="chapter" data-level="5.8.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-39"><i class="fa fa-check"></i><b>5.8.7</b> 主成分分析</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="tabula-muris.html"><a href="tabula-muris.html"><i class="fa fa-check"></i><b>6</b> Tabula Muris</a><ul>
-<li class="chapter" data-level="6.1" data-path="tabula-muris.html"><a href="tabula-muris.html#section-41"><i class="fa fa-check"></i><b>6.1</b> 介绍</a></li>
-<li class="chapter" data-level="6.2" data-path="tabula-muris.html"><a href="tabula-muris.html#section-42"><i class="fa fa-check"></i><b>6.2</b> 下载数据</a></li>
+<li class="chapter" data-level="6.1" data-path="tabula-muris.html"><a href="tabula-muris.html#section-40"><i class="fa fa-check"></i><b>6.1</b> 介绍</a></li>
+<li class="chapter" data-level="6.2" data-path="tabula-muris.html"><a href="tabula-muris.html#section-41"><i class="fa fa-check"></i><b>6.2</b> 下载数据</a></li>
 <li class="chapter" data-level="6.3" data-path="tabula-muris.html"><a href="tabula-muris.html#smartseq2"><i class="fa fa-check"></i><b>6.3</b> 读取Smartseq2数据</a></li>
 <li class="chapter" data-level="6.4" data-path="tabula-muris.html"><a href="tabula-muris.html#scater"><i class="fa fa-check"></i><b>6.4</b> 构建scater对象</a></li>
 <li class="chapter" data-level="6.5" data-path="tabula-muris.html"><a href="tabula-muris.html#x"><i class="fa fa-check"></i><b>6.5</b> 读取10X数据</a></li>
 <li class="chapter" data-level="6.6" data-path="tabula-muris.html"><a href="tabula-muris.html#scater-1"><i class="fa fa-check"></i><b>6.6</b> 创建scater对象</a></li>
-<li class="chapter" data-level="6.7" data-path="tabula-muris.html"><a href="tabula-muris.html#section-43"><i class="fa fa-check"></i><b>6.7</b> 进阶练习</a></li>
+<li class="chapter" data-level="6.7" data-path="tabula-muris.html"><a href="tabula-muris.html#section-42"><i class="fa fa-check"></i><b>6.7</b> 进阶练习</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html"><i class="fa fa-check"></i><b>7</b> 表达矩阵质控</a><ul>
 <li class="chapter" data-level="7.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#exprs-qc"><i class="fa fa-check"></i><b>7.1</b> UMI表达质控</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-44"><i class="fa fa-check"></i><b>7.1.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.1.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-43"><i class="fa fa-check"></i><b>7.1.1</b> 介绍</a></li>
 <li class="chapter" data-level="7.1.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#tung"><i class="fa fa-check"></i><b>7.1.2</b> Tung数据集</a></li>
-<li class="chapter" data-level="7.1.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-45"><i class="fa fa-check"></i><b>7.1.3</b> 细胞质控</a></li>
-<li class="chapter" data-level="7.1.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-48"><i class="fa fa-check"></i><b>7.1.4</b> 细胞过滤</a></li>
-<li class="chapter" data-level="7.1.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-51"><i class="fa fa-check"></i><b>7.1.5</b> 手工过滤和自动过滤比较</a></li>
-<li class="chapter" data-level="7.1.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-52"><i class="fa fa-check"></i><b>7.1.6</b> 基因分析</a></li>
-<li class="chapter" data-level="7.1.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-55"><i class="fa fa-check"></i><b>7.1.7</b> 保存数据</a></li>
-<li class="chapter" data-level="7.1.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-56"><i class="fa fa-check"></i><b>7.1.8</b> 大作业</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-44"><i class="fa fa-check"></i><b>7.1.3</b> 细胞质控</a></li>
+<li class="chapter" data-level="7.1.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-47"><i class="fa fa-check"></i><b>7.1.4</b> 细胞过滤</a></li>
+<li class="chapter" data-level="7.1.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-50"><i class="fa fa-check"></i><b>7.1.5</b> 手工过滤和自动过滤比较</a></li>
+<li class="chapter" data-level="7.1.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-51"><i class="fa fa-check"></i><b>7.1.6</b> 基因分析</a></li>
+<li class="chapter" data-level="7.1.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-54"><i class="fa fa-check"></i><b>7.1.7</b> 保存数据</a></li>
+<li class="chapter" data-level="7.1.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-55"><i class="fa fa-check"></i><b>7.1.8</b> 大作业</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-1"><i class="fa fa-check"></i><b>7.2</b> Reads表达质控</a></li>
-<li class="chapter" data-level="7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-57"><i class="fa fa-check"></i><b>7.3</b> 数据可视化</a><ul>
-<li class="chapter" data-level="7.3.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-58"><i class="fa fa-check"></i><b>7.3.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-56"><i class="fa fa-check"></i><b>7.3</b> 数据可视化</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-57"><i class="fa fa-check"></i><b>7.3.1</b> 介绍</a></li>
 <li class="chapter" data-level="7.3.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#visual-pca"><i class="fa fa-check"></i><b>7.3.2</b> PCA plot</a></li>
 <li class="chapter" data-level="7.3.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#visual-tsne"><i class="fa fa-check"></i><b>7.3.3</b> tSNE可视化</a></li>
-<li class="chapter" data-level="7.3.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-62"><i class="fa fa-check"></i><b>7.3.4</b> 大作业</a></li>
+<li class="chapter" data-level="7.3.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-61"><i class="fa fa-check"></i><b>7.3.4</b> 大作业</a></li>
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-2"><i class="fa fa-check"></i><b>7.4</b> Reads数据可视化</a></li>
-<li class="chapter" data-level="7.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-63"><i class="fa fa-check"></i><b>7.5</b> 识别混淆因子</a><ul>
-<li class="chapter" data-level="7.5.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-64"><i class="fa fa-check"></i><b>7.5.1</b> 介绍</a></li>
-<li class="chapter" data-level="7.5.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-65"><i class="fa fa-check"></i><b>7.5.2</b> 和组成分的相关性</a></li>
-<li class="chapter" data-level="7.5.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-67"><i class="fa fa-check"></i><b>7.5.3</b> 解释变量</a></li>
-<li class="chapter" data-level="7.5.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-68"><i class="fa fa-check"></i><b>7.5.4</b> 其它混淆因子</a></li>
-<li class="chapter" data-level="7.5.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-69"><i class="fa fa-check"></i><b>7.5.5</b> 练习</a></li>
+<li class="chapter" data-level="7.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-62"><i class="fa fa-check"></i><b>7.5</b> 识别混淆因子</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-63"><i class="fa fa-check"></i><b>7.5.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.5.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-64"><i class="fa fa-check"></i><b>7.5.2</b> 和组成分的相关性</a></li>
+<li class="chapter" data-level="7.5.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-66"><i class="fa fa-check"></i><b>7.5.3</b> 解释变量</a></li>
+<li class="chapter" data-level="7.5.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-67"><i class="fa fa-check"></i><b>7.5.4</b> 其它混淆因子</a></li>
+<li class="chapter" data-level="7.5.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-68"><i class="fa fa-check"></i><b>7.5.5</b> 练习</a></li>
 </ul></li>
 <li class="chapter" data-level="7.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-3"><i class="fa fa-check"></i><b>7.6</b> 识别READS中混淆因子</a></li>
-<li class="chapter" data-level="7.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-70"><i class="fa fa-check"></i><b>7.7</b> 标准化理论</a><ul>
-<li class="chapter" data-level="7.7.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-71"><i class="fa fa-check"></i><b>7.7.1</b> 介绍</a></li>
-<li class="chapter" data-level="7.7.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-72"><i class="fa fa-check"></i><b>7.7.2</b> 文库大小</a></li>
-<li class="chapter" data-level="7.7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-73"><i class="fa fa-check"></i><b>7.7.3</b> 标准化</a></li>
+<li class="chapter" data-level="7.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-69"><i class="fa fa-check"></i><b>7.7</b> 标准化理论</a><ul>
+<li class="chapter" data-level="7.7.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-70"><i class="fa fa-check"></i><b>7.7.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.7.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-71"><i class="fa fa-check"></i><b>7.7.2</b> 文库大小</a></li>
+<li class="chapter" data-level="7.7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-72"><i class="fa fa-check"></i><b>7.7.3</b> 标准化</a></li>
 <li class="chapter" data-level="7.7.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#effectiveness"><i class="fa fa-check"></i><b>7.7.4</b> Effectiveness</a></li>
 </ul></li>
 <li class="chapter" data-level="7.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#umi-1"><i class="fa fa-check"></i><b>7.8</b> UMI标准化练习</a><ul>
 <li class="chapter" data-level="7.8.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#raw"><i class="fa fa-check"></i><b>7.8.1</b> Raw</a></li>
 <li class="chapter" data-level="7.8.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#cpm-1"><i class="fa fa-check"></i><b>7.8.2</b> CPM</a></li>
 <li class="chapter" data-level="7.8.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#scran-1"><i class="fa fa-check"></i><b>7.8.3</b> scran</a></li>
-<li class="chapter" data-level="7.8.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-74"><i class="fa fa-check"></i><b>7.8.4</b> 下采样</a></li>
-<li class="chapter" data-level="7.8.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-75"><i class="fa fa-check"></i><b>7.8.5</b> 基因/转录本长度标准化</a></li>
-<li class="chapter" data-level="7.8.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-76"><i class="fa fa-check"></i><b>7.8.6</b> 练习</a></li>
+<li class="chapter" data-level="7.8.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-73"><i class="fa fa-check"></i><b>7.8.4</b> 下采样</a></li>
+<li class="chapter" data-level="7.8.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-74"><i class="fa fa-check"></i><b>7.8.5</b> 基因/转录本长度标准化</a></li>
+<li class="chapter" data-level="7.8.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-75"><i class="fa fa-check"></i><b>7.8.6</b> 练习</a></li>
 </ul></li>
 <li class="chapter" data-level="7.9" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-4"><i class="fa fa-check"></i><b>7.9</b> Reads标准化练习</a></li>
-<li class="chapter" data-level="7.10" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-77"><i class="fa fa-check"></i><b>7.10</b> 处理混淆因子</a><ul>
-<li class="chapter" data-level="7.10.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-78"><i class="fa fa-check"></i><b>7.10.1</b> 介绍</a></li>
-<li class="chapter" data-level="7.10.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-79"><i class="fa fa-check"></i><b>7.10.2</b> 移除不需要的变异</a></li>
+<li class="chapter" data-level="7.10" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-76"><i class="fa fa-check"></i><b>7.10</b> 处理混淆因子</a><ul>
+<li class="chapter" data-level="7.10.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-77"><i class="fa fa-check"></i><b>7.10.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.10.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-78"><i class="fa fa-check"></i><b>7.10.2</b> 移除不需要的变异</a></li>
 <li class="chapter" data-level="7.10.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#combat"><i class="fa fa-check"></i><b>7.10.3</b> Combat</a></li>
 <li class="chapter" data-level="7.10.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#mnncorrect"><i class="fa fa-check"></i><b>7.10.4</b> mnnCorrect</a></li>
 <li class="chapter" data-level="7.10.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#glm"><i class="fa fa-check"></i><b>7.10.5</b> GLM</a></li>
 <li class="chapter" data-level="7.10.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#harmony"><i class="fa fa-check"></i><b>7.10.6</b> Harmony</a></li>
-<li class="chapter" data-level="7.10.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-80"><i class="fa fa-check"></i><b>7.10.7</b> 评价和比较混淆因子去除策略</a></li>
-<li class="chapter" data-level="7.10.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-83"><i class="fa fa-check"></i><b>7.10.8</b> 大作业</a></li>
+<li class="chapter" data-level="7.10.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-79"><i class="fa fa-check"></i><b>7.10.7</b> 评价和比较混淆因子去除策略</a></li>
+<li class="chapter" data-level="7.10.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-82"><i class="fa fa-check"></i><b>7.10.8</b> 大作业</a></li>
 </ul></li>
 <li class="chapter" data-level="7.11" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-5"><i class="fa fa-check"></i><b>7.11</b> 处理Reads中混淆因子</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>8</b> References</a></li>
+<li class="chapter" data-level="8" data-path="biological-analysis.html"><a href="biological-analysis.html"><i class="fa fa-check"></i><b>8</b> 生物学分析</a><ul>
+<li class="chapter" data-level="8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-83"><i class="fa fa-check"></i><b>8.1</b> 聚类介绍</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-84"><i class="fa fa-check"></i><b>8.1.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.1.2" data-path="biological-analysis.html"><a href="biological-analysis.html#section-85"><i class="fa fa-check"></i><b>8.1.2</b> 降维</a></li>
+<li class="chapter" data-level="8.1.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-86"><i class="fa fa-check"></i><b>8.1.3</b> 聚类方法</a></li>
+<li class="chapter" data-level="8.1.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-89"><i class="fa fa-check"></i><b>8.1.4</b> 聚类的挑战</a></li>
+<li class="chapter" data-level="8.1.5" data-path="biological-analysis.html"><a href="biological-analysis.html#tools-for-scrna-seq-data"><i class="fa fa-check"></i><b>8.1.5</b> Tools for scRNA-seq data</a></li>
+<li class="chapter" data-level="8.1.6" data-path="biological-analysis.html"><a href="biological-analysis.html#comparing-clustering"><i class="fa fa-check"></i><b>8.1.6</b> Comparing clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#clust-methods"><i class="fa fa-check"></i><b>8.2</b> Clustering example</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="biological-analysis.html"><a href="biological-analysis.html#deng-dataset"><i class="fa fa-check"></i><b>8.2.1</b> Deng dataset</a></li>
+<li class="chapter" data-level="8.2.2" data-path="biological-analysis.html"><a href="biological-analysis.html#sc3-1"><i class="fa fa-check"></i><b>8.2.2</b> SC3</a></li>
+<li class="chapter" data-level="8.2.3" data-path="biological-analysis.html"><a href="biological-analysis.html#tsne-kmeans"><i class="fa fa-check"></i><b>8.2.3</b> tSNE + kmeans</a></li>
+<li class="chapter" data-level="8.2.4" data-path="biological-analysis.html"><a href="biological-analysis.html#sincera-1"><i class="fa fa-check"></i><b>8.2.4</b> SINCERA</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#feature-selection"><i class="fa fa-check"></i><b>8.3</b> Feature Selection</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="biological-analysis.html"><a href="biological-analysis.html#identifying-genes-vs-a-null-model"><i class="fa fa-check"></i><b>8.3.1</b> Identifying Genes vs a Null Model</a></li>
+<li class="chapter" data-level="8.3.2" data-path="biological-analysis.html"><a href="biological-analysis.html#correlated-expression"><i class="fa fa-check"></i><b>8.3.2</b> Correlated Expression</a></li>
+<li class="chapter" data-level="8.3.3" data-path="biological-analysis.html"><a href="biological-analysis.html#comparing-methods"><i class="fa fa-check"></i><b>8.3.3</b> Comparing Methods</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#pseudotime-analysis"><i class="fa fa-check"></i><b>8.4</b> Pseudotime analysis</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="biological-analysis.html"><a href="biological-analysis.html#first-look-at-deng-data"><i class="fa fa-check"></i><b>8.4.1</b> First look at Deng data</a></li>
+<li class="chapter" data-level="8.4.2" data-path="biological-analysis.html"><a href="biological-analysis.html#tscan"><i class="fa fa-check"></i><b>8.4.2</b> TSCAN</a></li>
+<li class="chapter" data-level="8.4.3" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle"><i class="fa fa-check"></i><b>8.4.3</b> monocle</a></li>
+<li class="chapter" data-level="8.4.4" data-path="biological-analysis.html"><a href="biological-analysis.html#diffusion-maps"><i class="fa fa-check"></i><b>8.4.4</b> Diffusion maps</a></li>
+<li class="chapter" data-level="8.4.5" data-path="biological-analysis.html"><a href="biological-analysis.html#slicer"><i class="fa fa-check"></i><b>8.4.5</b> SLICER</a></li>
+<li class="chapter" data-level="8.4.6" data-path="biological-analysis.html"><a href="biological-analysis.html#ouija"><i class="fa fa-check"></i><b>8.4.6</b> Ouija</a></li>
+<li class="chapter" data-level="8.4.7" data-path="biological-analysis.html"><a href="biological-analysis.html#comparison-of-the-methods"><i class="fa fa-check"></i><b>8.4.7</b> Comparison of the methods</a></li>
+<li class="chapter" data-level="8.4.8" data-path="biological-analysis.html"><a href="biological-analysis.html#expression-of-genes-through-time"><i class="fa fa-check"></i><b>8.4.8</b> Expression of genes through time</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#imputation"><i class="fa fa-check"></i><b>8.5</b> Imputation</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="biological-analysis.html"><a href="biological-analysis.html#scimpute"><i class="fa fa-check"></i><b>8.5.1</b> scImpute</a></li>
+<li class="chapter" data-level="8.5.2" data-path="biological-analysis.html"><a href="biological-analysis.html#drimpute"><i class="fa fa-check"></i><b>8.5.2</b> DrImpute</a></li>
+<li class="chapter" data-level="8.5.3" data-path="biological-analysis.html"><a href="biological-analysis.html#magic"><i class="fa fa-check"></i><b>8.5.3</b> MAGIC</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#dechapter"><i class="fa fa-check"></i><b>8.6</b> Differential Expression (DE) analysis</a><ul>
+<li class="chapter" data-level="8.6.1" data-path="biological-analysis.html"><a href="biological-analysis.html#bulk-rna-seq-1"><i class="fa fa-check"></i><b>8.6.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="8.6.2" data-path="biological-analysis.html"><a href="biological-analysis.html#single-cell-rna-seq"><i class="fa fa-check"></i><b>8.6.2</b> Single cell RNA-seq</a></li>
+<li class="chapter" data-level="8.6.3" data-path="biological-analysis.html"><a href="biological-analysis.html#differences-in-distribution"><i class="fa fa-check"></i><b>8.6.3</b> Differences in Distribution</a></li>
+<li class="chapter" data-level="8.6.4" data-path="biological-analysis.html"><a href="biological-analysis.html#models-of-single-cell-rnaseq-data"><i class="fa fa-check"></i><b>8.6.4</b> Models of single-cell RNASeq data</a></li>
+</ul></li>
+<li class="chapter" data-level="8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#de-in-a-real-dataset"><i class="fa fa-check"></i><b>8.7</b> DE in a real dataset</a><ul>
+<li class="chapter" data-level="8.7.1" data-path="biological-analysis.html"><a href="biological-analysis.html#introduction"><i class="fa fa-check"></i><b>8.7.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.7.2" data-path="biological-analysis.html"><a href="biological-analysis.html#kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>8.7.2</b> Kolmogorov-Smirnov test</a></li>
+<li class="chapter" data-level="8.7.3" data-path="biological-analysis.html"><a href="biological-analysis.html#wilcoxmann-whitney-u-test"><i class="fa fa-check"></i><b>8.7.3</b> Wilcox/Mann-Whitney-U Test</a></li>
+<li class="chapter" data-level="8.7.4" data-path="biological-analysis.html"><a href="biological-analysis.html#edger"><i class="fa fa-check"></i><b>8.7.4</b> edgeR</a></li>
+<li class="chapter" data-level="8.7.5" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle-1"><i class="fa fa-check"></i><b>8.7.5</b> Monocle</a></li>
+<li class="chapter" data-level="8.7.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mast"><i class="fa fa-check"></i><b>8.7.6</b> MAST</a></li>
+<li class="chapter" data-level="8.7.7" data-path="biological-analysis.html"><a href="biological-analysis.html#slow-methods-1h-to-run"><i class="fa fa-check"></i><b>8.7.7</b> Slow Methods (&gt;1h to run)</a></li>
+<li class="chapter" data-level="8.7.8" data-path="biological-analysis.html"><a href="biological-analysis.html#bpsc"><i class="fa fa-check"></i><b>8.7.8</b> BPSC</a></li>
+<li class="chapter" data-level="8.7.9" data-path="biological-analysis.html"><a href="biological-analysis.html#scde"><i class="fa fa-check"></i><b>8.7.9</b> SCDE</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="biological-analysis.html"><a href="biological-analysis.html#comparingcombining-scrnaseq-datasets"><i class="fa fa-check"></i><b>8.8</b> Comparing/Combining scRNASeq datasets</a><ul>
+<li class="chapter" data-level="8.8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#introduction-1"><i class="fa fa-check"></i><b>8.8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#datasets"><i class="fa fa-check"></i><b>8.8.2</b> Datasets</a></li>
+<li class="chapter" data-level="8.8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#projecting-cells-onto-annotated-cell-types-scmap"><i class="fa fa-check"></i><b>8.8.3</b> Projecting cells onto annotated cell-types (scmap)</a></li>
+<li class="chapter" data-level="8.8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#cell-to-cell-mapping"><i class="fa fa-check"></i><b>8.8.4</b> Cell-to-Cell mapping</a></li>
+<li class="chapter" data-level="8.8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#metaneighbour"><i class="fa fa-check"></i><b>8.8.5</b> Metaneighbour</a></li>
+<li class="chapter" data-level="8.8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mnncorrect-1"><i class="fa fa-check"></i><b>8.8.6</b> mnnCorrect</a></li>
+<li class="chapter" data-level="8.8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#cannonical-correlation-analysis-seurat"><i class="fa fa-check"></i><b>8.8.7</b> Cannonical Correlation Analysis (Seurat)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.9" data-path="biological-analysis.html"><a href="biological-analysis.html#search-scrna-seq-data"><i class="fa fa-check"></i><b>8.9</b> Search scRNA-Seq data</a><ul>
+<li class="chapter" data-level="8.9.1" data-path="biological-analysis.html"><a href="biological-analysis.html#about"><i class="fa fa-check"></i><b>8.9.1</b> About</a></li>
+<li class="chapter" data-level="8.9.2" data-path="biological-analysis.html"><a href="biological-analysis.html#dataset"><i class="fa fa-check"></i><b>8.9.2</b> Dataset</a></li>
+<li class="chapter" data-level="8.9.3" data-path="biological-analysis.html"><a href="biological-analysis.html#gene-index"><i class="fa fa-check"></i><b>8.9.3</b> Gene Index</a></li>
+<li class="chapter" data-level="8.9.4" data-path="biological-analysis.html"><a href="biological-analysis.html#marker-genes"><i class="fa fa-check"></i><b>8.9.4</b> Marker genes</a></li>
+<li class="chapter" data-level="8.9.5" data-path="biological-analysis.html"><a href="biological-analysis.html#search-cells-by-a-gene-list"><i class="fa fa-check"></i><b>8.9.5</b> Search cells by a gene list</a></li>
+<li class="chapter" data-level="8.9.6" data-path="biological-analysis.html"><a href="biological-analysis.html#in-silico-gating"><i class="fa fa-check"></i><b>8.9.6</b> In-silico gating</a></li>
+<li class="chapter" data-level="8.9.7" data-path="biological-analysis.html"><a href="biological-analysis.html#sessioninfo"><i class="fa fa-check"></i><b>8.9.7</b> sessionInfo()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">碱基吃柠檬</a></li>
 
@@ -338,46 +415,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="tabula_muris" class="section level1">
 <h1><span class="header-section-number">6</span> Tabula Muris</h1>
-<div id="section-41" class="section level2">
+<div id="section-40" class="section level2">
 <h2><span class="header-section-number">6.1</span> 介绍</h2>
 <p>为了提供完整分析scRNA-seq数据的体验，我们以<a href="https://www.biorxiv.org/content/early/2017/12/20/237446">Tabula Muris</a>初始发布的数据为例。Tabula Muris是旨在使用标准化方法分析小鼠细胞类型的国际合作项目。其结合高通量但低覆盖率的10X数据和低通量但高覆盖率FACS分选细胞+ Smartseq2.</p>
 <p>最初发布的数据（2017年12月20日）包含20个不同组织/器官的近100,000个细胞。</p>
 </div>
-<div id="section-42" class="section level2">
+<div id="section-41" class="section level2">
 <h2><span class="header-section-number">6.2</span> 下载数据</h2>
 <p>和大多数scRNA-seq数据不同，Tabula Muris在<a href="https://figshare.com/">figshare</a>上发布其数据，而不是上传到<a href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a>或<a href="https://www.ebi.ac.uk/arrayexpress/">ArrayExpress</a>。使用他们文章中doi获取数据：<a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_Smart-seq2_sequencing_of_FACS_sorted_cells/5715040">10.6084/m9.figshare.5715040</a> FACS/Smartseq2数据，<a href="https://figshare.com/articles/Single-cell_RNA-seq_data_from_microfluidic_emulsion/5715025">10.6084/m9.figshare.5715025</a> 10X数据。可以通过手动点击doi链接下载或者通过下面的命令:</p>
 <p>基于终端的FACS数据下载:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038307
-<span class="fu">unzip</span> 10038307
-<span class="fu">wget</span> https://ndownloader.figshare.com/files/10038310
-<span class="fu">mv</span> 10038310 FACS_metadata.csv
-<span class="fu">wget</span> https://ndownloader.figshare.com/files/10039267
-<span class="fu">mv</span> 10039267 FACS_annotations.csv</code></pre>
+<div class="sourceCode" id="cb172"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb172-1" title="1"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038307</a>
+<a class="sourceLine" id="cb172-2" title="2"><span class="fu">unzip</span> 10038307</a>
+<a class="sourceLine" id="cb172-3" title="3"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038310</a>
+<a class="sourceLine" id="cb172-4" title="4"><span class="fu">mv</span> 10038310 FACS_metadata.csv</a>
+<a class="sourceLine" id="cb172-5" title="5"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10039267</a>
+<a class="sourceLine" id="cb172-6" title="6"><span class="fu">mv</span> 10039267 FACS_annotations.csv</a></code></pre></div>
 <p>基于终端的10X数据下载：:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038325
-<span class="fu">unzip</span> 10038325
-<span class="fu">wget</span> https://ndownloader.figshare.com/files/10038328
-<span class="fu">mv</span> 10038328 droplet_metadata.csv
-<span class="fu">wget</span> https://ndownloader.figshare.com/files/10039264
-<span class="fu">mv</span> 10039264 droplet_annotation.csv</code></pre>
+<div class="sourceCode" id="cb173"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb173-1" title="1"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038325</a>
+<a class="sourceLine" id="cb173-2" title="2"><span class="fu">unzip</span> 10038325</a>
+<a class="sourceLine" id="cb173-3" title="3"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10038328</a>
+<a class="sourceLine" id="cb173-4" title="4"><span class="fu">mv</span> 10038328 droplet_metadata.csv</a>
+<a class="sourceLine" id="cb173-5" title="5"><span class="fu">wget</span> https://ndownloader.figshare.com/files/10039264</a>
+<a class="sourceLine" id="cb173-6" title="6"><span class="fu">mv</span> 10039264 droplet_annotation.csv</a></code></pre></div>
 <p>注意，如果手动下载数据，则应在继续之前解压缩并重命名文件。</p>
 <p>现在应该有两个文件夹：“FACS”和“Droplet”文件夹，以及各自一个注释和元数据文件。使用<code>head</code>查看文本文件的前几行（按<code>q</code>退出）：</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">head</span> -n 10 data/droplet/droplet_metadata.csv</code></pre>
+<div class="sourceCode" id="cb174"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb174-1" title="1"><span class="fu">head</span> -n 10 data/droplet/droplet_metadata.csv</a></code></pre></div>
 <p>使用<code>wc</code>查看文件行数：</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wc</span> -l data/droplet/droplet_annotation.csv</code></pre>
+<div class="sourceCode" id="cb175"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb175-1" title="1"><span class="fu">wc</span> -l data/droplet/droplet_annotation.csv</a></code></pre></div>
 <p><strong>练习</strong>
 我们从FACS和10X注释了多少个细胞？</p>
 <p><strong>答案</strong></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">wc</span> -l FACS_annotations.csv
-<span class="fu">wc</span> -l droplet_annotation.csv
-<span class="co">#FACS : 54,838 cells</span>
-<span class="co">#Droplet : 42,193 cells</span></code></pre>
+<div class="sourceCode" id="cb176"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb176-1" title="1"><span class="fu">wc</span> -l FACS_annotations.csv</a>
+<a class="sourceLine" id="cb176-2" title="2"><span class="fu">wc</span> -l droplet_annotation.csv</a>
+<a class="sourceLine" id="cb176-3" title="3"><span class="co">#FACS : 54,838 cells</span></a>
+<a class="sourceLine" id="cb176-4" title="4"><span class="co">#Droplet : 42,193 cells</span></a></code></pre></div>
 </div>
 <div id="smartseq2" class="section level2">
 <h2><span class="header-section-number">6.3</span> 读取Smartseq2数据</h2>
 <p>从逗号分隔文件中读取相应的的count矩阵。然后检查结果数据框：</p>
-<pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/FACS/Kidney-counts.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
-dat[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" title="1">dat =<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/FACS/Kidney-counts.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb177-2" title="2">dat[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
 <pre><code>##               X A14.MAA000545.3_8_M.1.1 E1.MAA000545.3_8_M.1.1
 ## 1 0610005C13Rik                       0                      0
 ## 2 0610007C21Rik                       1                      0
@@ -391,12 +468,12 @@ dat[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,
 ## 4                      0                       0
 ## 5                      0                       0</code></pre>
 <p>数据框中的第一列是基因，将数据框rownames重命名为基因名</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(dat)</code></pre>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" title="1"><span class="kw">dim</span>(dat)</a></code></pre></div>
 <pre><code>## [1] 23433   866</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(dat) &lt;-<span class="st"> </span>dat[,<span class="dv">1</span>]
-dat &lt;-<span class="st"> </span>dat[,<span class="op">-</span><span class="dv">1</span>]</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" title="1"><span class="kw">rownames</span>(dat) &lt;-<span class="st"> </span>dat[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb181-2" title="2">dat &lt;-<span class="st"> </span>dat[,<span class="op">-</span><span class="dv">1</span>]</a></code></pre></div>
 <p>由于这是一个Smartseq2数据集，它可能包含spike-ins，通过下述命令检查数据集：</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(dat)[<span class="kw">grep</span>(<span class="st">&quot;^ERCC-&quot;</span>, <span class="kw">rownames</span>(dat))]</code></pre>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" title="1"><span class="kw">rownames</span>(dat)[<span class="kw">grep</span>(<span class="st">&quot;^ERCC-&quot;</span>, <span class="kw">rownames</span>(dat))]</a></code></pre></div>
 <pre><code>##  [1] &quot;ERCC-00002&quot; &quot;ERCC-00003&quot; &quot;ERCC-00004&quot; &quot;ERCC-00009&quot; &quot;ERCC-00012&quot;
 ##  [6] &quot;ERCC-00013&quot; &quot;ERCC-00014&quot; &quot;ERCC-00016&quot; &quot;ERCC-00017&quot; &quot;ERCC-00019&quot;
 ## [11] &quot;ERCC-00022&quot; &quot;ERCC-00024&quot; &quot;ERCC-00025&quot; &quot;ERCC-00028&quot; &quot;ERCC-00031&quot;
@@ -417,18 +494,18 @@ dat &lt;-<span class="st"> </span>dat[,<span class="op">-</span><span class="dv"
 ## [86] &quot;ERCC-00162&quot; &quot;ERCC-00163&quot; &quot;ERCC-00164&quot; &quot;ERCC-00165&quot; &quot;ERCC-00168&quot;
 ## [91] &quot;ERCC-00170&quot; &quot;ERCC-00171&quot;</code></pre>
 <p>从列名中提取这些数据的元数据：</p>
-<pre class="sourceCode r"><code class="sourceCode r">cellIDs &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)
-cell_info &lt;-<span class="st"> </span><span class="kw">strsplit</span>(cellIDs, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>)
-Well &lt;-<span class="st"> </span><span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">1</span>]})
-Well &lt;-<span class="st"> </span><span class="kw">unlist</span>(Well)
-Plate &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">2</span>]}))
-Mouse &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">3</span>]}))</code></pre>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" title="1">cellIDs &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)</a>
+<a class="sourceLine" id="cb184-2" title="2">cell_info &lt;-<span class="st"> </span><span class="kw">strsplit</span>(cellIDs, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>)</a>
+<a class="sourceLine" id="cb184-3" title="3">Well &lt;-<span class="st"> </span><span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">1</span>]})</a>
+<a class="sourceLine" id="cb184-4" title="4">Well &lt;-<span class="st"> </span><span class="kw">unlist</span>(Well)</a>
+<a class="sourceLine" id="cb184-5" title="5">Plate &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">2</span>]}))</a>
+<a class="sourceLine" id="cb184-6" title="6">Mouse &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(cell_info, <span class="cf">function</span>(x){x[<span class="dv">3</span>]}))</a></code></pre></div>
 <p>查看元数据的分布信息</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">factor</span>(Mouse))</code></pre>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb185-1" title="1"><span class="kw">summary</span>(<span class="kw">factor</span>(Mouse))</a></code></pre></div>
 <pre><code>## 3_10_M 3_11_M 3_38_F 3_39_F  3_8_M  3_9_M 
 ##    104    196    237    169     82     77</code></pre>
 <p>检查是否有任何技术因素混淆：</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(Mouse, Plate)</code></pre>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" title="1"><span class="kw">table</span>(Mouse, Plate)</a></code></pre></div>
 <pre><code>##         Plate
 ## Mouse    B001717 B002775 MAA000545 MAA000752 MAA000801 MAA000922
 ##   3_10_M       0       0         0       104         0         0
@@ -438,31 +515,31 @@ Mouse &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="
 ##   3_8_M        0       0        82         0         0         0
 ##   3_9_M        0       0         0         0         0        77</code></pre>
 <p>最后，读取计算推测的细胞类型注释，并与表达矩阵中的细胞进行匹配：</p>
-<pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/FACS/FACS_annotations.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
-ann &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(cellIDs, ann[,<span class="dv">1</span>]),]
-celltype &lt;-<span class="st"> </span>ann[,<span class="dv">3</span>]</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb189-1" title="1">ann &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/FACS/FACS_annotations.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb189-2" title="2">ann &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(cellIDs, ann[,<span class="dv">1</span>]),]</a>
+<a class="sourceLine" id="cb189-3" title="3">celltype &lt;-<span class="st"> </span>ann[,<span class="dv">3</span>]</a></code></pre></div>
 </div>
 <div id="scater" class="section level2">
 <h2><span class="header-section-number">6.4</span> 构建scater对象</h2>
 <p>要创建SingleCellExperiment对象，必须将所有细胞注释放在一个数据框中，因为实验批处理（pcr板）与供体鼠标完全混淆，我们只保留其中一个。</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;SingleCellExperiment&quot;</span>)
-<span class="kw">library</span>(<span class="st">&quot;scater&quot;</span>)
-cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> Mouse, <span class="dt">well=</span>Well, <span class="dt">type=</span>celltype)
-<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)
-sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(<span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(dat)), <span class="dt">colData=</span>cell_anns)</code></pre>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb190-1" title="1"><span class="kw">library</span>(<span class="st">&quot;SingleCellExperiment&quot;</span>)</a>
+<a class="sourceLine" id="cb190-2" title="2"><span class="kw">library</span>(<span class="st">&quot;scater&quot;</span>)</a>
+<a class="sourceLine" id="cb190-3" title="3">cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> Mouse, <span class="dt">well=</span>Well, <span class="dt">type=</span>celltype)</a>
+<a class="sourceLine" id="cb190-4" title="4"><span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(dat)</a>
+<a class="sourceLine" id="cb190-5" title="5">sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(<span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(dat)), <span class="dt">colData=</span>cell_anns)</a></code></pre></div>
 <p>如果数据集包含spike-ins，在SingleCellExperiment对象中设置一个隐藏变量来跟踪它们：</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isSpike</span>(sceset, <span class="st">&quot;ERCC&quot;</span>) &lt;-<span class="st"> </span><span class="kw">grepl</span>(<span class="st">&quot;ERCC-&quot;</span>, <span class="kw">rownames</span>(sceset))</code></pre>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb191-1" title="1"><span class="kw">isSpike</span>(sceset, <span class="st">&quot;ERCC&quot;</span>) &lt;-<span class="st"> </span><span class="kw">grepl</span>(<span class="st">&quot;ERCC-&quot;</span>, <span class="kw">rownames</span>(sceset))</a></code></pre></div>
 </div>
 <div id="x" class="section level2">
 <h2><span class="header-section-number">6.5</span> 读取10X数据</h2>
 <p>由于10X数据的大规模和稀疏性（表达矩阵中高达90％可能是0），它通常存储为稀疏矩阵。 CellRanger的默认输出格式是.mtx文件，将稀疏矩阵存储为一列行坐标,一列列坐标，一列&gt;0的表达值。注意，如果查看.mtx文件，发现两行标题行后紧跟一行，其详细说明完整矩阵的行数，列数和计数。由于只有坐标存储在.mtx文件中，因此每行和列的名称必须分别存储在“genes.tsv”和“barcodes.tsv”文件中。</p>
 <p>使用“Matrix”包读取稀疏矩阵。</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;Matrix&quot;</span>)
-cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)
-genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/genes.tsv&quot;</span>)
-molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/matrix.mtx&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb192-1" title="1"><span class="kw">library</span>(<span class="st">&quot;Matrix&quot;</span>)</a>
+<a class="sourceLine" id="cb192-2" title="2">cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb192-3" title="3">genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/genes.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb192-4" title="4">molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/matrix.mtx&quot;</span>)</a></code></pre></div>
 <p>添加适当的行名和列名。查看read的cellbarcode，发现只有与每个细胞相关的barcode序列。考虑到10X数据每一批的cellbarcodes序列可能有重复，因此在合并数据前将批次ID与cellbarcode合并。</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(cellbarcodes)</code></pre>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" title="1"><span class="kw">head</span>(cellbarcodes)</a></code></pre></div>
 <pre><code>##                   V1
 ## 1 AAACCTGAGATGCCAG-1
 ## 2 AAACCTGAGTGTCCAT-1
@@ -470,11 +547,11 @@ molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span cla
 ## 4 AAACCTGTCCTTGCCA-1
 ## 5 AAACGGGAGCTGAACG-1
 ## 6 AAACGGGCAGGACCCT-1</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]
-<span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P4_5&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" title="1"><span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb195-2" title="2"><span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P4_5&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</a></code></pre></div>
 <p>读入元数据和计算注释信息。</p>
-<pre class="sourceCode r"><code class="sourceCode r">meta &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_metadata.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
-<span class="kw">head</span>(meta)</code></pre>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb196-1" title="1">meta &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_metadata.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb196-2" title="2"><span class="kw">head</span>(meta)</a></code></pre></div>
 <pre><code>##    channel mouse.id  tissue   subtissue mouse.sex
 ## 1 10X_P4_0    3-M-8  Tongue        &lt;NA&gt;         M
 ## 2 10X_P4_1    3-M-9  Tongue        &lt;NA&gt;         M
@@ -483,13 +560,13 @@ molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span cla
 ## 5 10X_P4_4    3-M-9 Bladder        &lt;NA&gt;         M
 ## 6 10X_P4_5    3-M-8  Kidney        &lt;NA&gt;         M</code></pre>
 <p>需要用“10X_P4_5”获得这批数据的meta信息，注意到metadata表格中mouse ID和FACS数据集中mouse ID不同，这里用“-”而不是"_"作为分隔符，而且性别位于ID的中间。通过查阅文献得知，droplet和FACS技术使用相同的8只小鼠，所以修改小鼠ID，与FACS实验保持一致。</p>
-<pre class="sourceCode r"><code class="sourceCode r">meta[meta<span class="op">$</span>channel <span class="op">==</span><span class="st"> &quot;10X_P4_5&quot;</span>,]</code></pre>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb198-1" title="1">meta[meta<span class="op">$</span>channel <span class="op">==</span><span class="st"> &quot;10X_P4_5&quot;</span>,]</a></code></pre></div>
 <pre><code>##    channel mouse.id tissue subtissue mouse.sex
 ## 6 10X_P4_5    3-M-8 Kidney      &lt;NA&gt;         M</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">mouseID &lt;-<span class="st"> &quot;3_8_M&quot;</span></code></pre>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb200-1" title="1">mouseID &lt;-<span class="st"> &quot;3_8_M&quot;</span></a></code></pre></div>
 <p>注意：有些组织的10X数据可能来自混合样本，比如mouse id = 3-M-5/6。仍然需要格式化mouse id，但是可能与FACS数据的mouse id不一致，影响下游分析。如果小鼠不是来自近交系，那么可以使用exonic-SNP将每个细胞分配给特定小鼠，但这超出了本课程的范围。</p>
-<pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_annotation.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
-<span class="kw">head</span>(ann)</code></pre>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb201-1" title="1">ann &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/droplet/droplet_annotation.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb201-2" title="2"><span class="kw">head</span>(ann)</a></code></pre></div>
 <pre><code>##                        cell  tissue cell_ontology_class
 ## 1 10X_P4_3_AAAGTAGAGATGCCAG Bladder    mesenchymal cell
 ## 2 10X_P4_3_AACCGCGTCCAACCAA Bladder    mesenchymal cell
@@ -505,77 +582,77 @@ molecules &lt;-<span class="st"> </span><span class="kw">readMM</span>(<span cla
 ## 5 http://purl.obolibrary.org/obo/CL_0008019       CL:0008019
 ## 6 http://purl.obolibrary.org/obo/CL_0000115       CL:0000115</code></pre>
 <p>注释中的cellID和cellbarcode格式有些差别，在匹配前进行校正。</p>
-<pre class="sourceCode r"><code class="sourceCode r">ann[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">paste</span>(ann[,<span class="dv">1</span>], <span class="st">&quot;-1&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)
-ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]
-celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]</code></pre>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb203-1" title="1">ann[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">paste</span>(ann[,<span class="dv">1</span>], <span class="st">&quot;-1&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb203-2" title="2">ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]</a>
+<a class="sourceLine" id="cb203-3" title="3">celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]</a></code></pre></div>
 <p>构建cell-metadata数据框</p>
-<pre class="sourceCode r"><code class="sourceCode r">cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)
-<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules);</code></pre>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" title="1">cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)</a>
+<a class="sourceLine" id="cb204-2" title="2"><span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules);</a></code></pre></div>
 <p><strong>练习</strong> 使用组织的其它批次重复上述处理.</p>
 <p><strong>答案</strong></p>
-<pre class="sourceCode r"><code class="sourceCode r">molecules1 &lt;-<span class="st"> </span>molecules
-cell_anns1 &lt;-<span class="st"> </span>cell_anns
-
-cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)
-genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/genes.tsv&quot;</span>)
-molecules &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/matrix.mtx&quot;</span>)
-<span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]
-<span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P4_6&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)
-mouseID &lt;-<span class="st"> &quot;3_9_M&quot;</span>
-ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]
-celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]
-cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)
-<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules)
-
-molecules2 &lt;-<span class="st"> </span>molecules
-cell_anns2 &lt;-<span class="st"> </span>cell_anns
-
-cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/barcodes.tsv&quot;</span>)
-genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/genes.tsv&quot;</span>)
-molecules &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/matrix.mtx&quot;</span>)
-<span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]
-<span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P7_5&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)
-mouseID &lt;-<span class="st"> &quot;3_57_F&quot;</span>
-ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]
-celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]
-cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)
-<span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules)
-
-molecules3 &lt;-<span class="st"> </span>molecules
-cell_anns3 &lt;-<span class="st"> </span>cell_anns</code></pre>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb205-1" title="1">molecules1 &lt;-<span class="st"> </span>molecules</a>
+<a class="sourceLine" id="cb205-2" title="2">cell_anns1 &lt;-<span class="st"> </span>cell_anns</a>
+<a class="sourceLine" id="cb205-3" title="3"></a>
+<a class="sourceLine" id="cb205-4" title="4">cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/barcodes.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb205-5" title="5">genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/genes.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb205-6" title="6">molecules &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P4_5/matrix.mtx&quot;</span>)</a>
+<a class="sourceLine" id="cb205-7" title="7"><span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb205-8" title="8"><span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P4_6&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</a>
+<a class="sourceLine" id="cb205-9" title="9">mouseID &lt;-<span class="st"> &quot;3_9_M&quot;</span></a>
+<a class="sourceLine" id="cb205-10" title="10">ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]</a>
+<a class="sourceLine" id="cb205-11" title="11">celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb205-12" title="12">cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)</a>
+<a class="sourceLine" id="cb205-13" title="13"><span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules)</a>
+<a class="sourceLine" id="cb205-14" title="14"></a>
+<a class="sourceLine" id="cb205-15" title="15">molecules2 &lt;-<span class="st"> </span>molecules</a>
+<a class="sourceLine" id="cb205-16" title="16">cell_anns2 &lt;-<span class="st"> </span>cell_anns</a>
+<a class="sourceLine" id="cb205-17" title="17"></a>
+<a class="sourceLine" id="cb205-18" title="18">cellbarcodes &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/barcodes.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb205-19" title="19">genenames &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/genes.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb205-20" title="20">molecules &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">readMM</span>(<span class="st">&quot;data/droplet/Kidney-10X_P7_5/matrix.mtx&quot;</span>)</a>
+<a class="sourceLine" id="cb205-21" title="21"><span class="kw">rownames</span>(molecules) &lt;-<span class="st"> </span>genenames[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb205-22" title="22"><span class="kw">colnames</span>(molecules) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;10X_P7_5&quot;</span>, cellbarcodes[,<span class="dv">1</span>], <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</a>
+<a class="sourceLine" id="cb205-23" title="23">mouseID &lt;-<span class="st"> &quot;3_57_F&quot;</span></a>
+<a class="sourceLine" id="cb205-24" title="24">ann_subset &lt;-<span class="st"> </span>ann[<span class="kw">match</span>(<span class="kw">colnames</span>(molecules), ann[,<span class="dv">1</span>]),]</a>
+<a class="sourceLine" id="cb205-25" title="25">celltype &lt;-<span class="st"> </span>ann_subset[,<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb205-26" title="26">cell_anns &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">mouse =</span> <span class="kw">rep</span>(mouseID, <span class="dt">times=</span><span class="kw">ncol</span>(molecules)), <span class="dt">type=</span>celltype)</a>
+<a class="sourceLine" id="cb205-27" title="27"><span class="kw">rownames</span>(cell_anns) &lt;-<span class="st"> </span><span class="kw">colnames</span>(molecules)</a>
+<a class="sourceLine" id="cb205-28" title="28"></a>
+<a class="sourceLine" id="cb205-29" title="29">molecules3 &lt;-<span class="st"> </span>molecules</a>
+<a class="sourceLine" id="cb205-30" title="30">cell_anns3 &lt;-<span class="st"> </span>cell_anns</a></code></pre></div>
 </div>
 <div id="scater-1" class="section level2">
 <h2><span class="header-section-number">6.6</span> 创建scater对象</h2>
 <p>现在已经读入多个批次的10X数据，将其合并成一个SingleCellExperiment对象。首先检查不同批次基因名字和顺序是否一致。</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules2))</code></pre>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb206-1" title="1"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules2))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules3))</code></pre>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb208-1" title="1"><span class="kw">identical</span>(<span class="kw">rownames</span>(molecules1), <span class="kw">rownames</span>(molecules3))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>检查有无重复的cellIDs:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules2))</code></pre>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" title="1"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules2))</a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</code></pre>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" title="1"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules2) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</code></pre>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" title="1"><span class="kw">sum</span>(<span class="kw">colnames</span>(molecules2) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(molecules3))</a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p>检查没有问题后，将数据进行合并。
 Everything is ok, so we can go ahead and combine them:</p>
-<pre class="sourceCode r"><code class="sourceCode r">all_molecules &lt;-<span class="st"> </span><span class="kw">cbind</span>(molecules1, molecules2, molecules3)
-all_cell_anns &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(cell_anns1, cell_anns2, cell_anns3))
-all_cell_anns<span class="op">$</span>batch &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;10X_P4_5&quot;</span>, <span class="st">&quot;10X_P4_6&quot;</span>,<span class="st">&quot;10X_P7_5&quot;</span>), <span class="dt">times =</span> <span class="kw">c</span>(<span class="kw">nrow</span>(cell_anns1), <span class="kw">nrow</span>(cell_anns2), <span class="kw">nrow</span>(cell_anns3)))</code></pre>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" title="1">all_molecules &lt;-<span class="st"> </span><span class="kw">cbind</span>(molecules1, molecules2, molecules3)</a>
+<a class="sourceLine" id="cb216-2" title="2">all_cell_anns &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(cell_anns1, cell_anns2, cell_anns3))</a>
+<a class="sourceLine" id="cb216-3" title="3">all_cell_anns<span class="op">$</span>batch &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;10X_P4_5&quot;</span>, <span class="st">&quot;10X_P4_6&quot;</span>,<span class="st">&quot;10X_P7_5&quot;</span>), <span class="dt">times =</span> <span class="kw">c</span>(<span class="kw">nrow</span>(cell_anns1), <span class="kw">nrow</span>(cell_anns2), <span class="kw">nrow</span>(cell_anns3)))</a></code></pre></div>
 <p><strong>练习</strong>
 数据集中共有多少细胞？</p>
 <p><strong>答案</strong></p>
 <p>创建SingleCellExperiment对象，SingleCellExperiment类的一个优势是其可以以正常矩阵或者稀疏矩阵的格式存储数据，以及HDF5格式，以有效的方式在磁盘存储和读取大型非稀疏矩阵，而不是整个加载到内存中。</p>
-<pre class="sourceCode r"><code class="sourceCode r">all_molecules &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(all_molecules)
-sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(
-    <span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(all_molecules)),
-    <span class="dt">colData =</span> all_cell_anns
-)</code></pre>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" title="1">all_molecules &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(all_molecules)</a>
+<a class="sourceLine" id="cb217-2" title="2">sceset &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(</a>
+<a class="sourceLine" id="cb217-3" title="3">    <span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> <span class="kw">as.matrix</span>(all_molecules)),</a>
+<a class="sourceLine" id="cb217-4" title="4">    <span class="dt">colData =</span> all_cell_anns</a>
+<a class="sourceLine" id="cb217-5" title="5">)</a></code></pre></div>
 <p>因为这是10X数据，不包括spike-ins，可以直接存储数据。</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(sceset, <span class="st">&quot;kidney_droplet.rds&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" title="1"><span class="kw">saveRDS</span>(sceset, <span class="st">&quot;kidney_droplet.rds&quot;</span>)</a></code></pre></div>
 </div>
-<div id="section-43" class="section level2">
+<div id="section-42" class="section level2">
 <h2><span class="header-section-number">6.7</span> 进阶练习</h2>
 <p>编写R函数/脚本自动处理任何组织的任意数据类型。</p>
 
