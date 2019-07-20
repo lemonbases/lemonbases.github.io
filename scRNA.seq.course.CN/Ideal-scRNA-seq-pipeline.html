@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>13 References | scRNA-seq数据分析</title>
-  <meta name="description" content="13 References | scRNA-seq数据分析" />
+  <title>10 “理想”scRANA-seq流程 | scRNA-seq数据分析</title>
+  <meta name="description" content="10 “理想”scRANA-seq流程 | scRNA-seq数据分析" />
   <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="13 References | scRNA-seq数据分析" />
+  <meta property="og:title" content="10 “理想”scRANA-seq流程 | scRNA-seq数据分析" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="13 References | scRNA-seq数据分析" />
+  <meta name="twitter:title" content="10 “理想”scRANA-seq流程 | scRNA-seq数据分析" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="Resources.html">
-
+<link rel="prev" href="seurat-chapter.html">
+<link rel="next" href="Advanced-exercises.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -61,7 +61,7 @@
 
 <!-- for Twitter -->          
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="13 References | scRNA-seq数据分析" />
+<meta name="twitter:title" content="10 “理想”scRANA-seq流程 | scRNA-seq数据分析" />
 <meta name="twitter:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
 <meta name="twitter:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
 
@@ -442,154 +442,123 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1">
-<h1><span class="header-section-number">13</span> References</h1>
+<div id="Ideal-scRNA-seq-pipeline" class="section level1">
+<h1><span class="header-section-number">10</span> “理想”scRANA-seq流程</h1>
+<div id="Experimental-Design" class="section level2">
+<h2><span class="header-section-number">10.1</span> 实验设计</h2>
+<ul>
+<li>避免混淆生物效应和批次效应(Figure <a href="Ideal-scRNA-seq-pipeline.html#fig:pipeline-batches">10.1</a>)
+<ul>
+<li>如果可以，同一实验多个条件</li>
+<li>每个条件多次重复，如果可以，不同条件重复一起执行</li>
+<li>统计不能完全校正完全混乱的实验!</li>
+</ul></li>
+<li>唯一分子标识符(UMI)
+<ul>
+<li>大大降低数据中的噪音</li>
+<li>可能会降低基因检测率</li>
+<li>丢失剪切信息</li>
+<li>使用更长的UMIs(~10bp)</li>
+<li>使用<a href="https://github.com/CGATOxford/UMI-tools">UMI-tools</a>校正测序误差</li>
+</ul></li>
+<li>Spike-ins
+<ul>
+<li>有助于质量控制</li>
+<li>可能对标准化read counts很有用</li>
+<li>可用于近似细胞大小/ RNA含量（如果与生物学问题相关）</li>
+<li>通常表现出比内源基因更高的噪音（移液错误，混合物质量）</li>
+<li>需要更深的测序才能获得每个细胞足够的内源性reads</li>
+</ul></li>
+<li>细胞数量 vs Read深度
+<ul>
+<li>基因检测平台每个细胞1百万reads数</li>
+<li>检测转录因子（调节网络）需要测序深度神和最敏感的protocol（比如Fluidigm C1）</li>
+<li>细胞聚类和细胞类型鉴定受益于大量细胞，并且不需要高测序深度（每个细胞约100,000个reads）</li>
+</ul></li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:pipeline-batches"></span>
+<img src="figures/Pipeline-batches.png" alt="Appropriate approaches to batch effects in scRNASeq. Red arrows indicate batch effects which are (pale) or are not (vibrant) correctable through batch-correction." width="90%" />
+<p class="caption">
+Figure 10.1: Appropriate approaches to batch effects in scRNASeq. Red arrows indicate batch effects which are (pale) or are not (vibrant) correctable through batch-correction.
+</p>
+</div>
+</div>
+<div id="Processing-Reads" class="section level2">
+<h2><span class="header-section-number">10.2</span> reads处理</h2>
+<ul>
+<li>质控 &amp; Trimming
+<ul>
+<li><a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FASTQC</a>, <a href="http://cutadapt.readthedocs.io/en/stable/index.html">cutadapt</a></li>
+</ul></li>
+<li>比对
+<ul>
+<li>小数据集或UMI数据集: 使用 <a href="https://github.com/alexdobin/STAR">STAR</a>比对到基因组/转录组</li>
+<li>大数据集:使用 <a href="http://salmon.readthedocs.io/en/latest/salmon.html">Salmon</a>或 <a href="https://pachterlab.github.io/kallisto/about">kallisto</a>进行pseudo-alignment</li>
+</ul></li>
+<li>定量
+<ul>
+<li>小数据集，不是UMIs : <a href="http://subread.sourceforge.net/">featureCounts</a></li>
+<li>大数据集，不是UMIs: <a href="http://salmon.readthedocs.io/en/latest/salmon.html">Salmon</a>, <a href="https://pachterlab.github.io/kallisto/about">kallisto</a></li>
+<li>UMI数据集: <a href="https://github.com/CGATOxford/UMI-tools">UMI-tools</a> + <a href="http://subread.sourceforge.net/">featureCounts</a></li>
+</ul></li>
+</ul>
+</div>
+<div id="Preparing-Expression-Matrix" class="section level2">
+<h2><span class="header-section-number">10.3</span> 准备表达矩阵</h2>
+<ul>
+<li>细胞质控
+<ul>
+<li><a href="http://bioconductor.org/packages/scater">scater</a></li>
+<li>考虑：mtRNA，rRNA，spike-ins（如果有的话），每个细胞检测到的基因数，每个细胞的总reads/分子数</li>
+</ul></li>
+<li>文库大小标准化
+<ul>
+<li><a href="http://bioconductor.org/packages/scran">scran</a></li>
+</ul></li>
+<li>校正批次效应
+<ul>
+<li>重复/混淆因子 <a href="http://bioconductor.org/packages/RUVSeq">RUVs</a></li>
+<li>未知或不平衡的生物群 <a href="https://bioconductor.org/packages/release/bioc/html/scran.html">mnnCorrect</a></li>
+<li>平衡设计 <a href="https://bioconductor.org/packages/release/bioc/html/sva.html">ComBat</a></li>
+</ul></li>
+</ul>
+</div>
+<div id="Biological-Interpretation" class="section level2">
+<h2><span class="header-section-number">10.4</span> 生物学解释</h2>
+<ul>
+<li>特征选择
+<ul>
+<li><a href="http://bioconductor.org/packages/M3Drop">M3Drop</a></li>
+</ul></li>
+<li>聚类和识别marker基因
+<ul>
+<li><span class="math inline">\(\le 5000\)</span> 细胞 : <a href="http://bioconductor.org/packages/SC3">SC3</a></li>
+<li><span class="math inline">\(&gt;5000\)</span> 细胞: <a href="http://satijalab.org/seurat/">Seurat</a></li>
+</ul></li>
+<li>Pseudotime
+<ul>
+<li>不同时间点: <a href="http://bioconductor.org/packages/TSCAN">TSCAN</a></li>
+<li>小数据集/未知数量的分支: <a href="https://bioconductor.org/packages/release/bioc/html/monocle.html">Monocle2</a></li>
+<li>大型连续数据集: <a href="http://bioconductor.org/packages/destiny">destiny</a></li>
+</ul></li>
+<li>差异表达
+<ul>
+<li>少量细胞和少数组 : <a href="http://hms-dbmi.github.io/scde/">scde</a></li>
+<li>批次效应的重复实验 : 混合/线性模型</li>
+<li>平衡的批次: <a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">edgeR</a> 或 <a href="https://bioconductor.org/packages/release/bioc/html/MAST.html">MAST</a></li>
+<li>大数据集: Kruskal-Wallis检验 (一次所有group), or Wilcox-test (一次比较2个group).</li>
+</ul></li>
+</ul>
 
-<div id="refs" class="references">
-<div>
-<p>Altschul, Stephen F., Warren Gish, Webb Miller, Eugene W. Myers, and David J. Lipman. 1990. “Basic Local Alignment Search Tool.” <em>Journal of Molecular Biology</em> 215 (3): 403–10. <a href="https://doi.org/10.1016/s0022-2836(05)80360-2">https://doi.org/10.1016/s0022-2836(05)80360-2</a>.</p>
-</div>
-<div>
-<p>Anders, Simon, and Wolfgang Huber. 2010. “Differential Expression Analysis for Sequence Count Data.” <em>Genome Biol</em> 11 (10): R106. <a href="https://doi.org/10.1186/gb-2010-11-10-r106">https://doi.org/10.1186/gb-2010-11-10-r106</a>.</p>
-</div>
-<div>
-<p>Archer, Nathan, Mark D. Walsh, Vahid Shahrezaei, and Daniel Hebenstreit. 2016. “Modeling Enzyme Processivity Reveals That RNA-Seq Libraries Are Biased in Characteristic and Correctable Ways.” <em>Cell Systems</em> 3 (5): 467–479.e12. <a href="https://doi.org/10.1016/j.cels.2016.10.012">https://doi.org/10.1016/j.cels.2016.10.012</a>.</p>
-</div>
-<div>
-<p>Bray, Nicolas L, Harold Pimentel, Páll Melsted, and Lior Pachter. 2016. “Near-Optimal Probabilistic Rna-Seq Quantification.” <em>Nat Biotechnol</em> 34 (5): 525–27. <a href="https://doi.org/10.1038/nbt.3519">https://doi.org/10.1038/nbt.3519</a>.</p>
-</div>
-<div>
-<p>Bullard, James H, Elizabeth Purdom, Kasper D Hansen, and Sandrine Dudoit. 2010. “Evaluation of Statistical Methods for Normalization and Differential Expression in mRNA-Seq Experiments.” <em>BMC Bioinformatics</em> 11 (1): 94. <a href="https://doi.org/10.1186/1471-2105-11-94">https://doi.org/10.1186/1471-2105-11-94</a>.</p>
-</div>
-<div>
-<p>Buttner, Maren, Zhichao Miao, Alexander Wolf, Sarah A Teichmann, and Fabian J Theis. 2017. “Assessment of Batch-Correction Methods for scRNA-seq Data with a New Test Metric.” <em>bioRxiv</em>, October, 200345.</p>
-</div>
-<div>
-<p>Cannoodt, Robrecht, Wouter Saelens, and Yvan Saeys. 2016. “Computational Methods for Trajectory Inference from Single-Cell Transcriptomics.” <em>Eur. J. Immunol.</em> 46 (11): 2496–2506. <a href="https://doi.org/10.1002/eji.201646347">https://doi.org/10.1002/eji.201646347</a>.</p>
-</div>
-<div>
-<p>Consortium, Tabula Muris, and others. 2018. “Single-Cell Transcriptomics of 20 Mouse Organs Creates a Tabula Muris.” <em>Nature</em> 562 (7727): 367.</p>
-</div>
-<div>
-<p>Deng, Q., D. Ramskold, B. Reinius, and R. Sandberg. 2014. “Single-Cell RNA-Seq Reveals Dynamic, Random Monoallelic Gene Expression in Mammalian Cells.” <em>Science</em> 343 (6167): 193–96. <a href="https://doi.org/10.1126/science.1245316">https://doi.org/10.1126/science.1245316</a>.</p>
-</div>
-<div>
-<p>Dijk, David van, Juozas Nainys, Roshan Sharma, Pooja Kathail, Ambrose J Carr, Kevin R Moon, Linas Mazutis, Guy Wolf, Smita Krishnaswamy, and Dana Pe’er. 2017. “MAGIC: A Diffusion-Based Imputation Method Reveals Gene-Gene Interactions in Single-Cell RNA-sequencing Data.” <em>bioRxiv</em>, February, 111591.</p>
-</div>
-<div>
-<p>Dobin, Alexander, Carrie A Davis, Felix Schlesinger, Jorg Drenkow, Chris Zaleski, Sonali Jha, Philippe Batut, Mark Chaisson, and Thomas R Gingeras. 2013. “STAR: Ultrafast Universal Rna-Seq Aligner.” <em>Bioinformatics</em> 29 (1): 15–21.</p>
-</div>
-<div>
-<p>Gierahn, Todd M, Marc H Wadsworth 2nd, Travis K Hughes, Bryan D Bryson, Andrew Butler, Rahul Satija, Sarah Fortune, J Christopher Love, and Alex K Shalek. 2017. “Seq-Well: Portable, Low-Cost RNA Sequencing of Single Cells at High Throughput.” <em>Nat. Methods</em> 14 (4): 395–98.</p>
-</div>
-<div>
-<p>Guo, Minzhe, Hui Wang, S. Steven Potter, Jeffrey A. Whitsett, and Yan Xu. 2015. “SINCERA: A Pipeline for Single-Cell RNA-Seq Profiling Analysis.” <em>PLoS Comput Biol</em> 11 (11): e1004575. <a href="https://doi.org/10.1371/journal.pcbi.1004575">https://doi.org/10.1371/journal.pcbi.1004575</a>.</p>
-</div>
-<div>
-<p>Haghverdi, Laleh, Aaron T L Lun, Michael D Morgan, and John C Marioni. 2017. “Correcting Batch Effects in Single-Cell RNA Sequencing Data by Matching Mutual Nearest Neighbours.” <em>bioRxiv</em>, July, 165118.</p>
-</div>
-<div>
-<p>Hashimshony, Tamar, Naftalie Senderovich, Gal Avital, Agnes Klochendler, Yaron de Leeuw, Leon Anavy, Dave Gennert, et al. 2016. “CEL-Seq2: Sensitive Highly-Multiplexed Single-Cell RNA-Seq.” <em>Genome Biol</em> 17 (1). <a href="https://doi.org/10.1186/s13059-016-0938-8">https://doi.org/10.1186/s13059-016-0938-8</a>.</p>
-</div>
-<div>
-<p>Hashimshony, Tamar, Florian Wagner, Noa Sher, and Itai Yanai. 2012. “CEL-Seq: Single-cell RNA-Seq by Multiplexed Linear Amplification.” <em>Cell Reports</em> 2 (3): 666–73. <a href="https://doi.org/10.1016/j.celrep.2012.08.003">https://doi.org/10.1016/j.celrep.2012.08.003</a>.</p>
-</div>
-<div>
-<p>Islam, Saiful, Amit Zeisel, Simon Joost, Gioele La Manno, Pawel Zajac, Maria Kasper, Peter Lönnerberg, and Sten Linnarsson. 2013. “Quantitative Single-Cell RNA-Seq with Unique Molecular Identifiers.” <em>Nat Meth</em> 11 (2): 163–66. <a href="https://doi.org/10.1038/nmeth.2772">https://doi.org/10.1038/nmeth.2772</a>.</p>
-</div>
-<div>
-<p>Jaitin, Diego Adhemar, Ephraim Kenigsberg, Hadas Keren-Shaul, Naama Elefant, Franziska Paul, Irina Zaretsky, Alexander Mildner, et al. 2014. “Massively Parallel Single-Cell RNA-seq for Marker-Free Decomposition of Tissues into Cell Types.” <em>Science</em> 343 (6172): 776–79.</p>
-</div>
-<div>
-<p>Kharchenko, Peter V, Lev Silberstein, and David T Scadden. 2014. “Bayesian Approach to Single-Cell Differential Expression Analysis.” <em>Nat Meth</em> 11 (7): 740–42. <a href="https://doi.org/10.1038/nmeth.2967">https://doi.org/10.1038/nmeth.2967</a>.</p>
-</div>
-<div>
-<p>Kiselev, Vladimir Yu, and Martin Hemberg. 2017. “Scmap - a Tool for Unsupervised Projection of Single Cell RNA-seq Data.” <em>bioRxiv</em>, July, 150292.</p>
-</div>
-<div>
-<p>Kiselev, Vladimir Yu, Kristina Kirschner, Michael T Schaub, Tallulah Andrews, Andrew Yiu, Tamir Chandra, Kedar N Natarajan, et al. 2017. “SC3: Consensus Clustering of Single-Cell RNA-Seq Data.” <em>Nat Meth</em> 14 (5): 483–86. <a href="https://doi.org/10.1038/nmeth.4236">https://doi.org/10.1038/nmeth.4236</a>.</p>
-</div>
-<div>
-<p>Klein, Allon M., Linas Mazutis, Ilke Akartuna, Naren Tallapragada, Adrian Veres, Victor Li, Leonid Peshkin, David A. Weitz, and Marc W. Kirschner. 2015. “Droplet Barcoding for Single-Cell Transcriptomics Applied to Embryonic Stem Cells.” <em>Cell</em> 161 (5): 1187–1201. <a href="https://doi.org/10.1016/j.cell.2015.04.044">https://doi.org/10.1016/j.cell.2015.04.044</a>.</p>
-</div>
-<div>
-<p>Kolodziejczyk, Aleksandra A., Jong Kyoung Kim, Valentine Svensson, John C. Marioni, and Sarah A. Teichmann. 2015. “The Technology and Biology of Single-Cell RNA Sequencing.” <em>Molecular Cell</em> 58 (4): 610–20. <a href="https://doi.org/10.1016/j.molcel.2015.04.005">https://doi.org/10.1016/j.molcel.2015.04.005</a>.</p>
-</div>
-<div>
-<p>Korsunsky, I, and others. 2018. “Fast, Sensitive, and Accurate Integration of Single Cell Data with Harmony. BioRxiv.”</p>
-</div>
-<div>
-<p>Levine, Jacob H., Erin F. Simonds, Sean C. Bendall, Kara L. Davis, El-ad D. Amir, Michelle D. Tadmor, Oren Litvin, et al. 2015. “Data-Driven Phenotypic Dissection of AML Reveals Progenitor-Like Cells That Correlate with Prognosis.” <em>Cell</em> 162 (1): 184–97. <a href="https://doi.org/10.1016/j.cell.2015.05.047">https://doi.org/10.1016/j.cell.2015.05.047</a>.</p>
-</div>
-<div>
-<p>Li, Wei Vivian, and Jingyi Jessica Li. 2017. “scImpute: Accurate and Robust Imputation for Single Cell RNA-Seq Data.” <em>bioRxiv</em>, June, 141598.</p>
-</div>
-<div>
-<p>L. Lun, Aaron T., Karsten Bach, and John C. Marioni. 2016. “Pooling Across Cells to Normalize Single-Cell RNA Sequencing Data with Many Zero Counts.” <em>Genome Biol</em> 17 (1). <a href="https://doi.org/10.1186/s13059-016-0947-7">https://doi.org/10.1186/s13059-016-0947-7</a>.</p>
-</div>
-<div>
-<p>Macosko, Evan Z., Anindita Basu, Rahul Satija, James Nemesh, Karthik Shekhar, Melissa Goldman, Itay Tirosh, et al. 2015. “Highly Parallel Genome-Wide Expression Profiling of Individual Cells Using Nanoliter Droplets.” <em>Cell</em> 161 (5): 1202–14. <a href="https://doi.org/10.1016/j.cell.2015.05.002">https://doi.org/10.1016/j.cell.2015.05.002</a>.</p>
-</div>
-<div>
-<p>McCarthy, Davis J., Kieran R. Campbell, Aaron T. L. Lun, and Quin F. Wills. 2017. “Scater: Pre-processing, Quality Control, Normalization and Visualization of Single-Cell RNA-Seq Data in R.” <em>Bioinformatics</em>, January, btw777. <a href="https://doi.org/10.1093/bioinformatics/btw777">https://doi.org/10.1093/bioinformatics/btw777</a>.</p>
-</div>
-<div>
-<p>Muraro, Mauro J., Gitanjali Dharmadhikari, Dominic Grün, Nathalie Groen, Tim Dielen, Erik Jansen, Leon van Gurp, et al. 2016. “A Single-Cell Transcriptome Atlas of the Human Pancreas.” <em>Cell Systems</em> 3 (4): 385–394.e3. <a href="https://doi.org/10.1016/j.cels.2016.09.002">https://doi.org/10.1016/j.cels.2016.09.002</a>.</p>
-</div>
-<div>
-<p>Picelli, Simone, Åsa K Björklund, Omid R Faridani, Sven Sagasser, Gösta Winberg, and Rickard Sandberg. 2013. “Smart-Seq2 for Sensitive Full-Length Transcriptome Profiling in Single Cells.” <em>Nat Meth</em> 10 (11): 1096–8. <a href="https://doi.org/10.1038/nmeth.2639">https://doi.org/10.1038/nmeth.2639</a>.</p>
-</div>
-<div>
-<p>Picelli, Simone, Omid R Faridani, Asa K Björklund, Gösta Winberg, Sven Sagasser, and Rickard Sandberg. 2014. “Full-Length RNA-seq from Single Cells Using Smart-Seq2.” <em>Nat. Protoc.</em> 9 (1): 171–81.</p>
-</div>
-<div>
-<p>Regev, Aviv, Sarah Teichmann, Eric S Lander, Ido Amit, Christophe Benoist, Ewan Birney, Bernd Bodenmiller, et al. 2017. “The Human Cell Atlas.” <em>bioRxiv</em>, May, 121202.</p>
-</div>
-<div>
-<p>Robinson, Mark D, and Alicia Oshlack. 2010. “A Scaling Normalization Method for Differential Expression Analysis of RNA-Seq Data.” <em>Genome Biol</em> 11 (3): R25. <a href="https://doi.org/10.1186/gb-2010-11-3-r25">https://doi.org/10.1186/gb-2010-11-3-r25</a>.</p>
-</div>
-<div>
-<p>Segerstolpe, Åsa, Athanasia Palasantza, Pernilla Eliasson, Eva-Marie Andersson, Anne-Christine Andréasson, Xiaoyan Sun, Simone Picelli, et al. 2016. “Single-Cell Transcriptome Profiling of Human Pancreatic Islets in Health and Type 2 Diabetes.” <em>Cell Metabolism</em> 24 (4): 593–607. <a href="https://doi.org/10.1016/j.cmet.2016.08.020">https://doi.org/10.1016/j.cmet.2016.08.020</a>.</p>
-</div>
-<div>
-<p>Soumillon, Magali, Davide Cacchiarelli, Stefan Semrau, Alexander van Oudenaarden, and Tarjei S Mikkelsen. 2014. “Characterization of Directed Differentiation by High-Throughput Single-Cell RNA-Seq.” <em>bioRxiv</em>, March, 003236.</p>
-</div>
-<div>
-<p>Stegle, Oliver, Sarah A. Teichmann, and John C. Marioni. 2015. “Computational and Analytical Challenges in Single-Cell Transcriptomics.” <em>Nat Rev Genet</em> 16 (3): 133–45. <a href="https://doi.org/10.1038/nrg3833">https://doi.org/10.1038/nrg3833</a>.</p>
-</div>
-<div>
-<p>Svensson, Valentine, Kedar Nath Natarajan, Lam-Ha Ly, Ricardo J Miragaia, Charlotte Labalette, Iain C Macaulay, Ana Cvejic, and Sarah A Teichmann. 2017. “Power Analysis of Single-Cell RNA-Sequencing Experiments.” <em>Nat Meth</em> 14 (4): 381–87. <a href="https://doi.org/10.1038/nmeth.4220">https://doi.org/10.1038/nmeth.4220</a>.</p>
-</div>
-<div>
-<p>Tang, Fuchou, Catalin Barbacioru, Yangzhou Wang, Ellen Nordman, Clarence Lee, Nanlan Xu, Xiaohui Wang, et al. 2009. “mRNA-Seq Whole-Transcriptome Analysis of a Single Cell.” <em>Nat Meth</em> 6 (5): 377–82. <a href="https://doi.org/10.1038/nmeth.1315">https://doi.org/10.1038/nmeth.1315</a>.</p>
-</div>
-<div>
-<p>Tung, Po-Yuan, John D. Blischak, Chiaowen Joyce Hsiao, David A. Knowles, Jonathan E. Burnett, Jonathan K. Pritchard, and Yoav Gilad. 2017. “Batch Effects and the Effective Design of Single-Cell Gene Expression Studies.” <em>Sci. Rep.</em> 7 (January): 39921. <a href="https://doi.org/10.1038/srep39921">https://doi.org/10.1038/srep39921</a>.</p>
-</div>
-<div>
-<p>Welch, Joshua D., Alexander J. Hartemink, and Jan F. Prins. 2016. “SLICER: Inferring Branched, Nonlinear Cellular Trajectories from Single Cell RNA-Seq Data.” <em>Genome Biol</em> 17 (1). <a href="https://doi.org/10.1186/s13059-016-0975-3">https://doi.org/10.1186/s13059-016-0975-3</a>.</p>
-</div>
-<div>
-<p>Wickham, Hadley. 2014. “Tidy Data.” <em>J Stat Softw</em> 59 (10). <a href="https://doi.org/10.18637/jss.v059.i10">https://doi.org/10.18637/jss.v059.i10</a>.</p>
-</div>
-<div>
-<p>Ziegenhain, Christoph, Beate Vieth, Swati Parekh, Björn Reinius, Amy Guillaumet-Adkins, Martha Smets, Heinrich Leonhardt, Holger Heyn, Ines Hellmann, and Wolfgang Enard. 2017. “Comparative Analysis of Single-Cell RNA Sequencing Methods.” <em>Molecular Cell</em> 65 (4): 631–643.e4. <a href="https://doi.org/10.1016/j.molcel.2017.01.023">https://doi.org/10.1016/j.molcel.2017.01.023</a>.</p>
 </div>
 </div>
-</div>
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="Resources.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="seurat-chapter.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Advanced-exercises.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -619,7 +588,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/lemonbases/scRNA.seq.course.CN/edit/master/13references.Rmd",
+"link": "https://github.com/lemonbases/scRNA.seq.course.CN/edit/master/10ideal-scrnaseq-pipeline.Rmd",
 "text": "Edit"
 },
 "history": {

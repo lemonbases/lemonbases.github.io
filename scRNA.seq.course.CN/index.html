@@ -24,7 +24,7 @@
 <meta name="author" content="碱基吃柠檬" />
 
 
-<meta name="date" content="2019-07-19" />
+<meta name="date" content="2019-07-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -362,7 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.6.3" data-path="biological-analysis.html"><a href="biological-analysis.html#Differences-in-Distribution"><i class="fa fa-check"></i><b>8.6.3</b> 分布的差异</a></li>
 <li class="chapter" data-level="8.6.4" data-path="biological-analysis.html"><a href="biological-analysis.html#Models-of-single-cell-RNASeq-data"><i class="fa fa-check"></i><b>8.6.4</b> scRNA-seq数据模型</a></li>
 </ul></li>
-<li class="chapter" data-level="8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#de-in-a-real-dataset"><i class="fa fa-check"></i><b>8.7</b> 差异表达分析实战{#DE in a real dataset}</a><ul>
+<li class="chapter" data-level="8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#DE-in-a-real-dataset"><i class="fa fa-check"></i><b>8.7</b> 差异表达分析实战</a><ul>
 <li class="chapter" data-level="8.7.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-93"><i class="fa fa-check"></i><b>8.7.1</b> 介绍</a></li>
 <li class="chapter" data-level="8.7.2" data-path="biological-analysis.html"><a href="biological-analysis.html#kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>8.7.2</b> Kolmogorov-Smirnov test</a></li>
 <li class="chapter" data-level="8.7.3" data-path="biological-analysis.html"><a href="biological-analysis.html#wilcoxmann-whitney-u-test"><i class="fa fa-check"></i><b>8.7.3</b> Wilcox/Mann-Whitney-U Test</a></li>
@@ -391,23 +391,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="seurat-chapter.html"><a href="seurat-chapter.html"><i class="fa fa-check"></i><b>9</b> Seurat</a><ul>
-<li class="chapter" data-level="9.1" data-path="seurat-chapter.html"><a href="seurat-chapter.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>9.1</b> Setup the Seurat Object</a></li>
-<li class="chapter" data-level="9.2" data-path="seurat-chapter.html"><a href="seurat-chapter.html#standard-pre-processing-workflow"><i class="fa fa-check"></i><b>9.2</b> Standard pre-processing workflow</a></li>
-<li class="chapter" data-level="9.3" data-path="seurat-chapter.html"><a href="seurat-chapter.html#qc-and-selecting-cells-for-further-analysis"><i class="fa fa-check"></i><b>9.3</b> QC and selecting cells for further analysis</a></li>
-<li class="chapter" data-level="9.4" data-path="seurat-chapter.html"><a href="seurat-chapter.html#normalizing-the-data"><i class="fa fa-check"></i><b>9.4</b> Normalizing the data</a></li>
-<li class="chapter" data-level="9.5" data-path="seurat-chapter.html"><a href="seurat-chapter.html#detection-of-variable-genes-across-the-single-cells"><i class="fa fa-check"></i><b>9.5</b> Detection of variable genes across the single cells</a></li>
-<li class="chapter" data-level="9.6" data-path="seurat-chapter.html"><a href="seurat-chapter.html#scaling-the-data-and-removing-unwanted-sources-of-variation"><i class="fa fa-check"></i><b>9.6</b> Scaling the data and removing unwanted sources of variation</a></li>
-<li class="chapter" data-level="9.7" data-path="seurat-chapter.html"><a href="seurat-chapter.html#perform-linear-dimensional-reduction"><i class="fa fa-check"></i><b>9.7</b> Perform linear dimensional reduction</a></li>
-<li class="chapter" data-level="9.8" data-path="seurat-chapter.html"><a href="seurat-chapter.html#determine-statistically-significant-principal-components"><i class="fa fa-check"></i><b>9.8</b> Determine statistically significant principal components</a></li>
-<li class="chapter" data-level="9.9" data-path="seurat-chapter.html"><a href="seurat-chapter.html#cluster-the-cells"><i class="fa fa-check"></i><b>9.9</b> Cluster the cells</a></li>
-<li class="chapter" data-level="9.10" data-path="seurat-chapter.html"><a href="seurat-chapter.html#run-non-linear-dimensional-reduction-tsne"><i class="fa fa-check"></i><b>9.10</b> Run Non-linear dimensional reduction (tSNE)</a></li>
-<li class="chapter" data-level="9.11" data-path="seurat-chapter.html"><a href="seurat-chapter.html#run-umap"><i class="fa fa-check"></i><b>9.11</b> Run UMAP</a></li>
-<li class="chapter" data-level="9.12" data-path="seurat-chapter.html"><a href="seurat-chapter.html#finding-differentially-expressed-genes-cluster-biomarkers"><i class="fa fa-check"></i><b>9.12</b> Finding differentially expressed genes (cluster biomarkers)</a></li>
-<li class="chapter" data-level="9.13" data-path="seurat-chapter.html"><a href="seurat-chapter.html#assigning-cell-type-identity-to-clusters"><i class="fa fa-check"></i><b>9.13</b> Assigning cell type identity to clusters</a></li>
-<li class="chapter" data-level="9.14" data-path="seurat-chapter.html"><a href="seurat-chapter.html#further-subdivisions-within-cell-types"><i class="fa fa-check"></i><b>9.14</b> Further subdivisions within cell types</a></li>
-<li class="chapter" data-level="9.15" data-path="seurat-chapter.html"><a href="seurat-chapter.html#sessioninfo-1"><i class="fa fa-check"></i><b>9.15</b> sessionInfo()</a></li>
+<li class="chapter" data-level="9.1" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Setup-the-Seurat-Object"><i class="fa fa-check"></i><b>9.1</b> 构建Seurat对象</a></li>
+<li class="chapter" data-level="9.2" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Standard-pre-processing-workflow"><i class="fa fa-check"></i><b>9.2</b> 标准预处理流程</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="seurat-chapter.html"><a href="seurat-chapter.html#QC-and-selecting-cells-for-further-analysis"><i class="fa fa-check"></i><b>9.2.1</b> 质控和选择细胞</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>10</b> References</a></li>
+<li class="chapter" data-level="9.3" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Normalizing-the-data"><i class="fa fa-check"></i><b>9.3</b> 数据标准化</a></li>
+<li class="chapter" data-level="9.4" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Detection-of-variable-genes-across-the-single-cells"><i class="fa fa-check"></i><b>9.4</b> 检测高可变基因</a></li>
+<li class="chapter" data-level="9.5" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Scaling-the-data-and-removing-unwanted-sources-of-variation"><i class="fa fa-check"></i><b>9.5</b> 缩放数据并删除不需要的变异来源</a></li>
+<li class="chapter" data-level="9.6" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Perform-linear-dimensional-reduction"><i class="fa fa-check"></i><b>9.6</b> 线性降维</a></li>
+<li class="chapter" data-level="9.7" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Determine-statistically-significant-principal-components"><i class="fa fa-check"></i><b>9.7</b> 统计显著主成分</a></li>
+<li class="chapter" data-level="9.8" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Cluster-the-cells"><i class="fa fa-check"></i><b>9.8</b> 聚类</a></li>
+<li class="chapter" data-level="9.9" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Run-Non-linear-dimensional-reduction-tSNE"><i class="fa fa-check"></i><b>9.9</b> 非线性降维</a></li>
+<li class="chapter" data-level="9.10" data-path="seurat-chapter.html"><a href="seurat-chapter.html#umap"><i class="fa fa-check"></i><b>9.10</b> 运行UMAP</a></li>
+<li class="chapter" data-level="9.11" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Finding-differentially-expressed-genes-cluster-biomarkers"><i class="fa fa-check"></i><b>9.11</b> 差异表达分析</a></li>
+<li class="chapter" data-level="9.12" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Assigning-cell-type-identity-to-clusters"><i class="fa fa-check"></i><b>9.12</b> 确定cluster细胞类型</a></li>
+<li class="chapter" data-level="9.13" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Further-subdivisions-within-cell-types"><i class="fa fa-check"></i><b>9.13</b> 细分细胞类型</a></li>
+<li class="chapter" data-level="9.14" data-path="seurat-chapter.html"><a href="seurat-chapter.html#sessioninfo-1"><i class="fa fa-check"></i><b>9.14</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html"><i class="fa fa-check"></i><b>10</b> “理想”scRANA-seq流程</a><ul>
+<li class="chapter" data-level="10.1" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Experimental-Design"><i class="fa fa-check"></i><b>10.1</b> 实验设计</a></li>
+<li class="chapter" data-level="10.2" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Processing-Reads"><i class="fa fa-check"></i><b>10.2</b> reads处理</a></li>
+<li class="chapter" data-level="10.3" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Preparing-Expression-Matrix"><i class="fa fa-check"></i><b>10.3</b> 准备表达矩阵</a></li>
+<li class="chapter" data-level="10.4" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Biological-Interpretation"><i class="fa fa-check"></i><b>10.4</b> 生物学解释</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="Advanced-exercises.html"><a href="Advanced-exercises.html"><i class="fa fa-check"></i><b>11</b> 进阶练习</a></li>
+<li class="chapter" data-level="12" data-path="Resources.html"><a href="Resources.html"><i class="fa fa-check"></i><b>12</b> 相关资源</a><ul>
+<li class="chapter" data-level="12.1" data-path="Resources.html"><a href="Resources.html#scRNA-seq-protocols"><i class="fa fa-check"></i><b>12.1</b> scRNA-seq protocols</a></li>
+<li class="chapter" data-level="12.2" data-path="Resources.html"><a href="Resources.html#external-rna-control-consortium-ercc"><i class="fa fa-check"></i><b>12.2</b> External RNA Control Consortium (ERCC)</a></li>
+<li class="chapter" data-level="12.3" data-path="Resources.html"><a href="Resources.html#scRNA-seq-analysis-tools"><i class="fa fa-check"></i><b>12.3</b> scRNA-seq分析工具</a></li>
+<li class="chapter" data-level="12.4" data-path="Resources.html"><a href="Resources.html#scrna-seq-4"><i class="fa fa-check"></i><b>12.4</b> scRNA-seq公共数据集</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>13</b> References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">碱基吃柠檬</a></li>
 
@@ -431,7 +445,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">scRNA-seq数据分析</h1>
 <p class="author"><em><a href='https://github.com/lemonbases'>碱基吃柠檬</a></em></p>
-<p class="date"><em>2019-07-19</em></p>
+<p class="date"><em>2019-07-20</em></p>
 </div>
 <div id="section" class="section level1">
 <h1><span class="header-section-number">1</span> 说在前面的话</h1>
