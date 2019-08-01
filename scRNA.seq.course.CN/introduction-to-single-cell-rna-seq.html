@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 scRNA-seq介绍 | scRNA-seq数据分析</title>
+  <meta name="description" content="2 scRNA-seq介绍 | scRNA-seq数据分析" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 scRNA-seq介绍 | scRNA-seq数据分析" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 scRNA-seq介绍 | scRNA-seq数据分析" />
+  
+  
+  
+
+<meta name="author" content="碱基吃柠檬" />
+
+
+<meta name="date" content="2019-07-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="processing-raw-scrna-seq-data.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<!-- for Facebook -->  
+<meta property="og:url" content="https://github.com/sdbiodog" />
+<meta property="og:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
+<meta property="og:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
+
+<!-- for Twitter -->          
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="2 scRNA-seq介绍 | scRNA-seq数据分析" />
+<meta name="twitter:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
+<meta name="twitter:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71525309-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">Table of Contents</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 说在前面的话</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#section-1"><i class="fa fa-check"></i><b>1.1</b> 关于本项目</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#section-2"><i class="fa fa-check"></i><b>1.2</b> 视频</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#github"><i class="fa fa-check"></i><b>1.3</b> GitHub</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#docker-"><i class="fa fa-check"></i><b>1.4</b> Docker 镜像</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="index.html"><a href="index.html#section-3"><i class="fa fa-check"></i><b>1.4.1</b> 运行镜像</a></li>
+<li class="chapter" data-level="1.4.2" data-path="index.html"><a href="index.html#section-4"><i class="fa fa-check"></i><b>1.4.2</b> 下载数据或其它文件</a></li>
+<li class="chapter" data-level="1.4.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.4.3</b> RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#section-5"><i class="fa fa-check"></i><b>1.5</b> 手动安装</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#section-6"><i class="fa fa-check"></i><b>1.6</b> 许可</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#section-7"><i class="fa fa-check"></i><b>1.7</b> 准备知识</a></li>
+<li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#section-8"><i class="fa fa-check"></i><b>1.8</b> 联系我们</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html"><i class="fa fa-check"></i><b>2</b> scRNA-seq介绍</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#bulk-rna-seq"><i class="fa fa-check"></i><b>2.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#scrna-seq"><i class="fa fa-check"></i><b>2.2</b> scRNA-seq</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-9"><i class="fa fa-check"></i><b>2.3</b> 工作流程</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-10"><i class="fa fa-check"></i><b>2.4</b> 计算分析</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-11"><i class="fa fa-check"></i><b>2.5</b> 挑战</a></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-12"><i class="fa fa-check"></i><b>2.6</b> 实验方法</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-13"><i class="fa fa-check"></i><b>2.7</b> 如何选择合适的平台</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html"><i class="fa fa-check"></i><b>3</b> scRNA-seq原始数据处理</a><ul>
+<li class="chapter" data-level="3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastqc"><i class="fa fa-check"></i><b>3.1</b> FastQC</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-14"><i class="fa fa-check"></i><b>3.1.1</b> 解决方案并下载报告</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-15"><i class="fa fa-check"></i><b>3.2</b> 移除接头和低质量碱基</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#solution"><i class="fa fa-check"></i><b>3.2.1</b> Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-16"><i class="fa fa-check"></i><b>3.3</b> 文件格式</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastq"><i class="fa fa-check"></i><b>3.3.1</b> FastQ</a></li>
+<li class="chapter" data-level="3.3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#bam"><i class="fa fa-check"></i><b>3.3.2</b> BAM</a></li>
+<li class="chapter" data-level="3.3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#cram"><i class="fa fa-check"></i><b>3.3.3</b> CRAM</a></li>
+<li class="chapter" data-level="3.3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-17"><i class="fa fa-check"></i><b>3.3.4</b> 手动查看文件</a></li>
+<li class="chapter" data-level="3.3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#genome-fasta-gtf"><i class="fa fa-check"></i><b>3.3.5</b> Genome (FASTA, GTF)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-18"><i class="fa fa-check"></i><b>3.4</b> 测序文库拆分</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-19"><i class="fa fa-check"></i><b>3.4.1</b> 鉴定含有细胞的液滴/微孔</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#starread"><i class="fa fa-check"></i><b>3.5</b> 使用STAR比对read</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#star"><i class="fa fa-check"></i><b>3.5.1</b> STAR比对命令</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallistopseudo-alignment"><i class="fa fa-check"></i><b>3.6</b> Kallisto和Pseudo-Alignment</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-mer"><i class="fa fa-check"></i><b>3.6.1</b> k-mer是什么?</a></li>
+<li class="chapter" data-level="3.6.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-merreads"><i class="fa fa-check"></i><b>3.6.2</b> 为什么比对k-mer而不是reads?</a></li>
+<li class="chapter" data-level="3.6.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto"><i class="fa fa-check"></i><b>3.6.3</b> Kallisto伪比对模式</a></li>
+<li class="chapter" data-level="3.6.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto-pseudo-alignment"><i class="fa fa-check"></i><b>3.6.4</b> Kallisto Pseudo-Alignment命令</a></li>
+<li class="chapter" data-level="3.6.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto-1"><i class="fa fa-check"></i><b>3.6.5</b> 理解Kallisto输出结果</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html"><i class="fa fa-check"></i><b>4</b> 构建表达矩阵</a><ul>
+<li class="chapter" data-level="4.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-20"><i class="fa fa-check"></i><b>4.1</b> 质量控制</a></li>
+<li class="chapter" data-level="4.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#reads-"><i class="fa fa-check"></i><b>4.2</b> Reads 比对</a></li>
+<li class="chapter" data-level="4.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-21"><i class="fa fa-check"></i><b>4.3</b> 比对示例</a></li>
+<li class="chapter" data-level="4.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#mapping-qc"><i class="fa fa-check"></i><b>4.4</b> Mapping QC</a></li>
+<li class="chapter" data-level="4.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#reads"><i class="fa fa-check"></i><b>4.5</b> Reads定量</a></li>
+<li class="chapter" data-level="4.6" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umichapter"><i class="fa fa-check"></i><b>4.6</b> 唯一分子标识符</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umi"><i class="fa fa-check"></i><b>4.6.1</b> UMI介绍</a></li>
+<li class="chapter" data-level="4.6.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-22"><i class="fa fa-check"></i><b>4.6.2</b> 比对条形码序列</a></li>
+<li class="chapter" data-level="4.6.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#barcodes"><i class="fa fa-check"></i><b>4.6.3</b> Barcodes计数</a></li>
+<li class="chapter" data-level="4.6.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-23"><i class="fa fa-check"></i><b>4.6.4</b> 错误校正</a></li>
+<li class="chapter" data-level="4.6.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-24"><i class="fa fa-check"></i><b>4.6.5</b> 下游分析</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html"><i class="fa fa-check"></i><b>5</b> R/Bioconductor介绍</a><ul>
+<li class="chapter" data-level="5.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#r"><i class="fa fa-check"></i><b>5.1</b> 安装R包</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#cran"><i class="fa fa-check"></i><b>5.1.1</b> CRAN</a></li>
+<li class="chapter" data-level="5.1.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#github-1"><i class="fa fa-check"></i><b>5.1.2</b> Github</a></li>
+<li class="chapter" data-level="5.1.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor"><i class="fa fa-check"></i><b>5.1.3</b> Bioconductor</a></li>
+<li class="chapter" data-level="5.1.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-25"><i class="fa fa-check"></i><b>5.1.4</b> 源码安装</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-26"><i class="fa fa-check"></i><b>5.2</b> 安装说明:</a></li>
+<li class="chapter" data-level="5.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-27"><i class="fa fa-check"></i><b>5.3</b> 数据类型/类</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-28"><i class="fa fa-check"></i><b>5.3.1</b> 数值</a></li>
+<li class="chapter" data-level="5.3.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-29"><i class="fa fa-check"></i><b>5.3.2</b> 字符/字符串</a></li>
+<li class="chapter" data-level="5.3.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-30"><i class="fa fa-check"></i><b>5.3.3</b> 逻辑值</a></li>
+<li class="chapter" data-level="5.3.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-31"><i class="fa fa-check"></i><b>5.3.4</b> 因子</a></li>
+<li class="chapter" data-level="5.3.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-32"><i class="fa fa-check"></i><b>5.3.5</b> 检查数据类型</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-33"><i class="fa fa-check"></i><b>5.4</b> 基本数据结构</a></li>
+<li class="chapter" data-level="5.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-34"><i class="fa fa-check"></i><b>5.5</b> 更多信息</a></li>
+<li class="chapter" data-level="5.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-35"><i class="fa fa-check"></i><b>5.6</b> 数据类型</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-36"><i class="fa fa-check"></i><b>5.6.1</b> 什么是整洁的数据</a></li>
+<li class="chapter" data-level="5.6.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#rich-data"><i class="fa fa-check"></i><b>5.6.2</b> 什么是Rich data?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor-singlecellexperiment--scater"><i class="fa fa-check"></i><b>5.7</b> Bioconductor, <code>SingleCellExperiment</code> 和 <code>scater</code></a><ul>
+<li class="chapter" data-level="5.7.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor-1"><i class="fa fa-check"></i><b>5.7.1</b> Bioconductor</a></li>
+<li class="chapter" data-level="5.7.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#singlecellexperiment-"><i class="fa fa-check"></i><b>5.7.2</b> <code>SingleCellExperiment</code> 类</a></li>
+<li class="chapter" data-level="5.7.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#scater-"><i class="fa fa-check"></i><b>5.7.3</b> <code>scater</code> 包</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#ggplot2"><i class="fa fa-check"></i><b>5.8</b> ggplot2介绍</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#ggplot2-1"><i class="fa fa-check"></i><b>5.8.1</b> ggplot2是什么?</a></li>
+<li class="chapter" data-level="5.8.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#ggplot2j"><i class="fa fa-check"></i><b>5.8.2</b> ggplot2j原则</a></li>
+<li class="chapter" data-level="5.8.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#aes"><i class="fa fa-check"></i><b>5.8.3</b> 使用<code>aes</code>映射函数</a></li>
+<li class="chapter" data-level="5.8.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#geoms"><i class="fa fa-check"></i><b>5.8.4</b> Geoms</a></li>
+<li class="chapter" data-level="5.8.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-37"><i class="fa fa-check"></i><b>5.8.5</b> 绘制2个以上细胞的数据</a></li>
+<li class="chapter" data-level="5.8.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-38"><i class="fa fa-check"></i><b>5.8.6</b> 绘制热图</a></li>
+<li class="chapter" data-level="5.8.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-39"><i class="fa fa-check"></i><b>5.8.7</b> 主成分分析</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="tabula-muris.html"><a href="tabula-muris.html"><i class="fa fa-check"></i><b>6</b> Tabula Muris</a><ul>
+<li class="chapter" data-level="6.1" data-path="tabula-muris.html"><a href="tabula-muris.html#section-40"><i class="fa fa-check"></i><b>6.1</b> 介绍</a></li>
+<li class="chapter" data-level="6.2" data-path="tabula-muris.html"><a href="tabula-muris.html#section-41"><i class="fa fa-check"></i><b>6.2</b> 下载数据</a></li>
+<li class="chapter" data-level="6.3" data-path="tabula-muris.html"><a href="tabula-muris.html#smartseq2"><i class="fa fa-check"></i><b>6.3</b> 读取Smartseq2数据</a></li>
+<li class="chapter" data-level="6.4" data-path="tabula-muris.html"><a href="tabula-muris.html#scater"><i class="fa fa-check"></i><b>6.4</b> 构建scater对象</a></li>
+<li class="chapter" data-level="6.5" data-path="tabula-muris.html"><a href="tabula-muris.html#x"><i class="fa fa-check"></i><b>6.5</b> 读取10X数据</a></li>
+<li class="chapter" data-level="6.6" data-path="tabula-muris.html"><a href="tabula-muris.html#scater-1"><i class="fa fa-check"></i><b>6.6</b> 创建scater对象</a></li>
+<li class="chapter" data-level="6.7" data-path="tabula-muris.html"><a href="tabula-muris.html#section-42"><i class="fa fa-check"></i><b>6.7</b> 进阶练习</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html"><i class="fa fa-check"></i><b>7</b> 表达矩阵质控</a><ul>
+<li class="chapter" data-level="7.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#exprs-qc"><i class="fa fa-check"></i><b>7.1</b> UMI表达质控</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-43"><i class="fa fa-check"></i><b>7.1.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#tung"><i class="fa fa-check"></i><b>7.1.2</b> Tung数据集</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-44"><i class="fa fa-check"></i><b>7.1.3</b> 细胞质控</a></li>
+<li class="chapter" data-level="7.1.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-47"><i class="fa fa-check"></i><b>7.1.4</b> 细胞过滤</a></li>
+<li class="chapter" data-level="7.1.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-50"><i class="fa fa-check"></i><b>7.1.5</b> 手工过滤和自动过滤比较</a></li>
+<li class="chapter" data-level="7.1.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-51"><i class="fa fa-check"></i><b>7.1.6</b> 基因分析</a></li>
+<li class="chapter" data-level="7.1.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-54"><i class="fa fa-check"></i><b>7.1.7</b> 保存数据</a></li>
+<li class="chapter" data-level="7.1.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-55"><i class="fa fa-check"></i><b>7.1.8</b> 大作业</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-1"><i class="fa fa-check"></i><b>7.2</b> Reads表达质控</a></li>
+<li class="chapter" data-level="7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-56"><i class="fa fa-check"></i><b>7.3</b> 数据可视化</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-57"><i class="fa fa-check"></i><b>7.3.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#visual-pca"><i class="fa fa-check"></i><b>7.3.2</b> PCA plot</a></li>
+<li class="chapter" data-level="7.3.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#visual-tsne"><i class="fa fa-check"></i><b>7.3.3</b> tSNE可视化</a></li>
+<li class="chapter" data-level="7.3.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-61"><i class="fa fa-check"></i><b>7.3.4</b> 大作业</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-2"><i class="fa fa-check"></i><b>7.4</b> Reads数据可视化</a></li>
+<li class="chapter" data-level="7.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-62"><i class="fa fa-check"></i><b>7.5</b> 识别混淆因子</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-63"><i class="fa fa-check"></i><b>7.5.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.5.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-64"><i class="fa fa-check"></i><b>7.5.2</b> 和组成分的相关性</a></li>
+<li class="chapter" data-level="7.5.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-66"><i class="fa fa-check"></i><b>7.5.3</b> 解释变量</a></li>
+<li class="chapter" data-level="7.5.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-67"><i class="fa fa-check"></i><b>7.5.4</b> 其它混淆因子</a></li>
+<li class="chapter" data-level="7.5.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-68"><i class="fa fa-check"></i><b>7.5.5</b> 练习</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-3"><i class="fa fa-check"></i><b>7.6</b> 识别READS中混淆因子</a></li>
+<li class="chapter" data-level="7.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-69"><i class="fa fa-check"></i><b>7.7</b> 标准化理论</a><ul>
+<li class="chapter" data-level="7.7.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-70"><i class="fa fa-check"></i><b>7.7.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.7.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-71"><i class="fa fa-check"></i><b>7.7.2</b> 文库大小</a></li>
+<li class="chapter" data-level="7.7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-72"><i class="fa fa-check"></i><b>7.7.3</b> 标准化</a></li>
+<li class="chapter" data-level="7.7.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#effectiveness"><i class="fa fa-check"></i><b>7.7.4</b> Effectiveness</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#umi-1"><i class="fa fa-check"></i><b>7.8</b> UMI标准化练习</a><ul>
+<li class="chapter" data-level="7.8.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#raw"><i class="fa fa-check"></i><b>7.8.1</b> Raw</a></li>
+<li class="chapter" data-level="7.8.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#cpm-1"><i class="fa fa-check"></i><b>7.8.2</b> CPM</a></li>
+<li class="chapter" data-level="7.8.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#scran-1"><i class="fa fa-check"></i><b>7.8.3</b> scran</a></li>
+<li class="chapter" data-level="7.8.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-73"><i class="fa fa-check"></i><b>7.8.4</b> 下采样</a></li>
+<li class="chapter" data-level="7.8.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-74"><i class="fa fa-check"></i><b>7.8.5</b> 基因/转录本长度标准化</a></li>
+<li class="chapter" data-level="7.8.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-75"><i class="fa fa-check"></i><b>7.8.6</b> 练习</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-4"><i class="fa fa-check"></i><b>7.9</b> Reads标准化练习</a></li>
+<li class="chapter" data-level="7.10" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#dealing-with-confounders"><i class="fa fa-check"></i><b>7.10</b> 处理混淆因子</a><ul>
+<li class="chapter" data-level="7.10.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-76"><i class="fa fa-check"></i><b>7.10.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.10.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-77"><i class="fa fa-check"></i><b>7.10.2</b> 移除不需要的变异</a></li>
+<li class="chapter" data-level="7.10.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#combat"><i class="fa fa-check"></i><b>7.10.3</b> Combat</a></li>
+<li class="chapter" data-level="7.10.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#mnncorrect"><i class="fa fa-check"></i><b>7.10.4</b> mnnCorrect</a></li>
+<li class="chapter" data-level="7.10.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#glm"><i class="fa fa-check"></i><b>7.10.5</b> GLM</a></li>
+<li class="chapter" data-level="7.10.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#harmony"><i class="fa fa-check"></i><b>7.10.6</b> Harmony</a></li>
+<li class="chapter" data-level="7.10.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-78"><i class="fa fa-check"></i><b>7.10.7</b> 评价和比较混淆因子去除策略</a></li>
+<li class="chapter" data-level="7.10.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-81"><i class="fa fa-check"></i><b>7.10.8</b> 大作业</a></li>
+</ul></li>
+<li class="chapter" data-level="7.11" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-5"><i class="fa fa-check"></i><b>7.11</b> 处理Reads中混淆因子</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="biological-analysis.html"><a href="biological-analysis.html"><i class="fa fa-check"></i><b>8</b> 生物学分析</a><ul>
+<li class="chapter" data-level="8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-82"><i class="fa fa-check"></i><b>8.1</b> 聚类介绍</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-83"><i class="fa fa-check"></i><b>8.1.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.1.2" data-path="biological-analysis.html"><a href="biological-analysis.html#section-84"><i class="fa fa-check"></i><b>8.1.2</b> 降维</a></li>
+<li class="chapter" data-level="8.1.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-85"><i class="fa fa-check"></i><b>8.1.3</b> 聚类方法</a></li>
+<li class="chapter" data-level="8.1.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-88"><i class="fa fa-check"></i><b>8.1.4</b> 聚类的挑战</a></li>
+<li class="chapter" data-level="8.1.5" data-path="biological-analysis.html"><a href="biological-analysis.html#scrna-seq-1"><i class="fa fa-check"></i><b>8.1.5</b> scRNA-seq数据的工具</a></li>
+<li class="chapter" data-level="8.1.6" data-path="biological-analysis.html"><a href="biological-analysis.html#section-89"><i class="fa fa-check"></i><b>8.1.6</b> 比较聚类结果</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#clust-methods"><i class="fa fa-check"></i><b>8.2</b> 聚类示例</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="biological-analysis.html"><a href="biological-analysis.html#deng-"><i class="fa fa-check"></i><b>8.2.1</b> Deng 数据集</a></li>
+<li class="chapter" data-level="8.2.2" data-path="biological-analysis.html"><a href="biological-analysis.html#sc3-1"><i class="fa fa-check"></i><b>8.2.2</b> SC3</a></li>
+<li class="chapter" data-level="8.2.3" data-path="biological-analysis.html"><a href="biological-analysis.html#tsne-kmeans"><i class="fa fa-check"></i><b>8.2.3</b> tSNE + kmeans</a></li>
+<li class="chapter" data-level="8.2.4" data-path="biological-analysis.html"><a href="biological-analysis.html#sincera-1"><i class="fa fa-check"></i><b>8.2.4</b> SINCERA</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-90"><i class="fa fa-check"></i><b>8.3</b> 特征选择</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="biological-analysis.html"><a href="biological-analysis.html#null"><i class="fa fa-check"></i><b>8.3.1</b> 识别基因与null模型</a></li>
+<li class="chapter" data-level="8.3.2" data-path="biological-analysis.html"><a href="biological-analysis.html#correlated-expression"><i class="fa fa-check"></i><b>8.3.2</b> Correlated Expression</a></li>
+<li class="chapter" data-level="8.3.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-91"><i class="fa fa-check"></i><b>8.3.3</b> 比较不同的方法</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-92"><i class="fa fa-check"></i><b>8.4</b> 伪时间分析</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="biological-analysis.html"><a href="biological-analysis.html#deng"><i class="fa fa-check"></i><b>8.4.1</b> Deng数据初探</a></li>
+<li class="chapter" data-level="8.4.2" data-path="biological-analysis.html"><a href="biological-analysis.html#tscan"><i class="fa fa-check"></i><b>8.4.2</b> TSCAN</a></li>
+<li class="chapter" data-level="8.4.3" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle"><i class="fa fa-check"></i><b>8.4.3</b> monocle</a></li>
+<li class="chapter" data-level="8.4.4" data-path="biological-analysis.html"><a href="biological-analysis.html#diffusion-maps"><i class="fa fa-check"></i><b>8.4.4</b> Diffusion maps</a></li>
+<li class="chapter" data-level="8.4.5" data-path="biological-analysis.html"><a href="biological-analysis.html#slicer"><i class="fa fa-check"></i><b>8.4.5</b> SLICER</a></li>
+<li class="chapter" data-level="8.4.6" data-path="biological-analysis.html"><a href="biological-analysis.html#ouija"><i class="fa fa-check"></i><b>8.4.6</b> Ouija</a></li>
+<li class="chapter" data-level="8.4.7" data-path="biological-analysis.html"><a href="biological-analysis.html#comparison-of-the-methods"><i class="fa fa-check"></i><b>8.4.7</b> 方法比较</a></li>
+<li class="chapter" data-level="8.4.8" data-path="biological-analysis.html"><a href="biological-analysis.html#expression-of-genes-through-time"><i class="fa fa-check"></i><b>8.4.8</b> Expression of genes through time</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#imputation"><i class="fa fa-check"></i><b>8.5</b> Imputation</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="biological-analysis.html"><a href="biological-analysis.html#scimpute"><i class="fa fa-check"></i><b>8.5.1</b> scImpute</a></li>
+<li class="chapter" data-level="8.5.2" data-path="biological-analysis.html"><a href="biological-analysis.html#drimpute"><i class="fa fa-check"></i><b>8.5.2</b> DrImpute</a></li>
+<li class="chapter" data-level="8.5.3" data-path="biological-analysis.html"><a href="biological-analysis.html#magic"><i class="fa fa-check"></i><b>8.5.3</b> MAGIC</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#dechapter"><i class="fa fa-check"></i><b>8.6</b> 差异表达分析</a><ul>
+<li class="chapter" data-level="8.6.1" data-path="biological-analysis.html"><a href="biological-analysis.html#bulk-rna-seq-1"><i class="fa fa-check"></i><b>8.6.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="8.6.2" data-path="biological-analysis.html"><a href="biological-analysis.html#single-cell-rna-seq"><i class="fa fa-check"></i><b>8.6.2</b> Single cell RNA-seq</a></li>
+<li class="chapter" data-level="8.6.3" data-path="biological-analysis.html"><a href="biological-analysis.html#Differences-in-Distribution"><i class="fa fa-check"></i><b>8.6.3</b> 分布的差异</a></li>
+<li class="chapter" data-level="8.6.4" data-path="biological-analysis.html"><a href="biological-analysis.html#Models-of-single-cell-RNASeq-data"><i class="fa fa-check"></i><b>8.6.4</b> scRNA-seq数据模型</a></li>
+</ul></li>
+<li class="chapter" data-level="8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#DE-in-a-real-dataset"><i class="fa fa-check"></i><b>8.7</b> 差异表达分析实战</a><ul>
+<li class="chapter" data-level="8.7.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-93"><i class="fa fa-check"></i><b>8.7.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.7.2" data-path="biological-analysis.html"><a href="biological-analysis.html#kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>8.7.2</b> Kolmogorov-Smirnov test</a></li>
+<li class="chapter" data-level="8.7.3" data-path="biological-analysis.html"><a href="biological-analysis.html#wilcoxmann-whitney-u-test"><i class="fa fa-check"></i><b>8.7.3</b> Wilcox/Mann-Whitney-U Test</a></li>
+<li class="chapter" data-level="8.7.4" data-path="biological-analysis.html"><a href="biological-analysis.html#edger"><i class="fa fa-check"></i><b>8.7.4</b> edgeR</a></li>
+<li class="chapter" data-level="8.7.5" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle-1"><i class="fa fa-check"></i><b>8.7.5</b> Monocle</a></li>
+<li class="chapter" data-level="8.7.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mast"><i class="fa fa-check"></i><b>8.7.6</b> MAST</a></li>
+<li class="chapter" data-level="8.7.7" data-path="biological-analysis.html"><a href="biological-analysis.html#slow-method1h"><i class="fa fa-check"></i><b>8.7.7</b> Slow method(&gt;1h)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="biological-analysis.html"><a href="biological-analysis.html#scrna-seq-2"><i class="fa fa-check"></i><b>8.8</b> 比较/组合scRNA-seq数据集</a><ul>
+<li class="chapter" data-level="8.8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-95"><i class="fa fa-check"></i><b>8.8.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#datasets"><i class="fa fa-check"></i><b>8.8.2</b> Datasets</a></li>
+<li class="chapter" data-level="8.8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#scmap"><i class="fa fa-check"></i><b>8.8.3</b> scmap</a></li>
+<li class="chapter" data-level="8.8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-98"><i class="fa fa-check"></i><b>8.8.4</b> 细胞间映射</a></li>
+<li class="chapter" data-level="8.8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#metaneighbour"><i class="fa fa-check"></i><b>8.8.5</b> Metaneighbour</a></li>
+<li class="chapter" data-level="8.8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mnncorrect-1"><i class="fa fa-check"></i><b>8.8.6</b> mnnCorrect</a></li>
+<li class="chapter" data-level="8.8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#seurat"><i class="fa fa-check"></i><b>8.8.7</b> 典型相关分析 (Seurat)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.9" data-path="biological-analysis.html"><a href="biological-analysis.html#scrna-seq-3"><i class="fa fa-check"></i><b>8.9</b> 检索scRNA-seq数据</a><ul>
+<li class="chapter" data-level="8.9.1" data-path="biological-analysis.html"><a href="biological-analysis.html#about"><i class="fa fa-check"></i><b>8.9.1</b> About</a></li>
+<li class="chapter" data-level="8.9.2" data-path="biological-analysis.html"><a href="biological-analysis.html#section-100"><i class="fa fa-check"></i><b>8.9.2</b> 数据集</a></li>
+<li class="chapter" data-level="8.9.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-101"><i class="fa fa-check"></i><b>8.9.3</b> 基因索引</a></li>
+<li class="chapter" data-level="8.9.4" data-path="biological-analysis.html"><a href="biological-analysis.html#marker"><i class="fa fa-check"></i><b>8.9.4</b> Marker基因</a></li>
+<li class="chapter" data-level="8.9.5" data-path="biological-analysis.html"><a href="biological-analysis.html#section-102"><i class="fa fa-check"></i><b>8.9.5</b> 搜索基因列表</a></li>
+<li class="chapter" data-level="8.9.6" data-path="biological-analysis.html"><a href="biological-analysis.html#in-silico-gating"><i class="fa fa-check"></i><b>8.9.6</b> In-silico gating</a></li>
+<li class="chapter" data-level="8.9.7" data-path="biological-analysis.html"><a href="biological-analysis.html#sessioninfo"><i class="fa fa-check"></i><b>8.9.7</b> sessionInfo()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="seurat-chapter.html"><a href="seurat-chapter.html"><i class="fa fa-check"></i><b>9</b> Seurat</a><ul>
+<li class="chapter" data-level="9.1" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Setup-the-Seurat-Object"><i class="fa fa-check"></i><b>9.1</b> 构建Seurat对象</a></li>
+<li class="chapter" data-level="9.2" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Standard-pre-processing-workflow"><i class="fa fa-check"></i><b>9.2</b> 标准预处理流程</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="seurat-chapter.html"><a href="seurat-chapter.html#QC-and-selecting-cells-for-further-analysis"><i class="fa fa-check"></i><b>9.2.1</b> 质控和选择细胞</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Normalizing-the-data"><i class="fa fa-check"></i><b>9.3</b> 数据标准化</a></li>
+<li class="chapter" data-level="9.4" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Detection-of-variable-genes-across-the-single-cells"><i class="fa fa-check"></i><b>9.4</b> 检测高可变基因</a></li>
+<li class="chapter" data-level="9.5" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Scaling-the-data-and-removing-unwanted-sources-of-variation"><i class="fa fa-check"></i><b>9.5</b> 缩放数据并删除不需要的变异来源</a></li>
+<li class="chapter" data-level="9.6" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Perform-linear-dimensional-reduction"><i class="fa fa-check"></i><b>9.6</b> 线性降维</a></li>
+<li class="chapter" data-level="9.7" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Determine-statistically-significant-principal-components"><i class="fa fa-check"></i><b>9.7</b> 统计显著主成分</a></li>
+<li class="chapter" data-level="9.8" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Cluster-the-cells"><i class="fa fa-check"></i><b>9.8</b> 聚类</a></li>
+<li class="chapter" data-level="9.9" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Run-Non-linear-dimensional-reduction-tSNE"><i class="fa fa-check"></i><b>9.9</b> 非线性降维</a></li>
+<li class="chapter" data-level="9.10" data-path="seurat-chapter.html"><a href="seurat-chapter.html#umap"><i class="fa fa-check"></i><b>9.10</b> 运行UMAP</a></li>
+<li class="chapter" data-level="9.11" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Finding-differentially-expressed-genes-cluster-biomarkers"><i class="fa fa-check"></i><b>9.11</b> 差异表达分析</a></li>
+<li class="chapter" data-level="9.12" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Assigning-cell-type-identity-to-clusters"><i class="fa fa-check"></i><b>9.12</b> 确定cluster细胞类型</a></li>
+<li class="chapter" data-level="9.13" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Further-subdivisions-within-cell-types"><i class="fa fa-check"></i><b>9.13</b> 细分细胞类型</a></li>
+<li class="chapter" data-level="9.14" data-path="seurat-chapter.html"><a href="seurat-chapter.html#sessioninfo-1"><i class="fa fa-check"></i><b>9.14</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html"><i class="fa fa-check"></i><b>10</b> “理想”scRANA-seq流程</a><ul>
+<li class="chapter" data-level="10.1" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Experimental-Design"><i class="fa fa-check"></i><b>10.1</b> 实验设计</a></li>
+<li class="chapter" data-level="10.2" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Processing-Reads"><i class="fa fa-check"></i><b>10.2</b> reads处理</a></li>
+<li class="chapter" data-level="10.3" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Preparing-Expression-Matrix"><i class="fa fa-check"></i><b>10.3</b> 准备表达矩阵</a></li>
+<li class="chapter" data-level="10.4" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Biological-Interpretation"><i class="fa fa-check"></i><b>10.4</b> 生物学解释</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="Advanced-exercises.html"><a href="Advanced-exercises.html"><i class="fa fa-check"></i><b>11</b> 进阶练习</a></li>
+<li class="chapter" data-level="12" data-path="Resources.html"><a href="Resources.html"><i class="fa fa-check"></i><b>12</b> 相关资源</a><ul>
+<li class="chapter" data-level="12.1" data-path="Resources.html"><a href="Resources.html#scRNA-seq-protocols"><i class="fa fa-check"></i><b>12.1</b> scRNA-seq protocols</a></li>
+<li class="chapter" data-level="12.2" data-path="Resources.html"><a href="Resources.html#external-rna-control-consortium-ercc"><i class="fa fa-check"></i><b>12.2</b> External RNA Control Consortium (ERCC)</a></li>
+<li class="chapter" data-level="12.3" data-path="Resources.html"><a href="Resources.html#scRNA-seq-analysis-tools"><i class="fa fa-check"></i><b>12.3</b> scRNA-seq分析工具</a></li>
+<li class="chapter" data-level="12.4" data-path="Resources.html"><a href="Resources.html#scrna-seq-4"><i class="fa fa-check"></i><b>12.4</b> scRNA-seq公共数据集</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>13</b> References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">碱基吃柠檬</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">scRNA-seq数据分析</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction_to_single_cell_rna_seq" class="section level1">
+<h1><span class="header-section-number">2</span> scRNA-seq介绍</h1>
+<div id="bulk-rna-seq" class="section level2">
+<h2><span class="header-section-number">2.1</span> Bulk RNA-seq</h2>
+<ul>
+<li>2000后期重大突破，取代微阵列芯片被广泛采用</li>
+<li>测量大量混合细胞的<strong>平均表达水平</strong></li>
+<li>用于比较转录组学，例如比较不同物种同一组织的样本</li>
+<li>用于量化整体表达特征，例如疾病研究</li>
+<li><strong>不足</strong>研究异质性系统，例如早起发育的研究，复杂组织(脑)的研究</li>
+<li><strong>不能</strong>呈现基因表达随机性</li>
+</ul>
+</div>
+<div id="scrna-seq" class="section level2">
+<h2><span class="header-section-number">2.2</span> scRNA-seq</h2>
+<ul>
+<li>一项<strong>新兴</strong>技术，第一篇文章为汤富酬发表在Nature method <span class="citation">(Tang et al. <a href="#ref-Tang2009-bu">2009</a>)</span></li>
+<li>直到<a href="https://www.ohio.edu/bioinformatics/upload/Single-Cell-RNA-seq-Method-of-the-Year-2013.pdf">~2014</a>年，新测序手段和更低的成本使其流行起来</li>
+<li>在大量细胞检测每个基因的表达水平</li>
+<li>可以研究新的生物学问题，其中<strong>转录组的细胞特异性变化是重要的</strong>，比如细胞类型鉴定，细胞响应的异质性，基因表达的随机性，细胞间基因调控网络的推断</li>
+<li>研究细胞数目从<strong><span class="math inline">\(10^2\)</span></strong>到<em><span class="math inline">\(10^6\)</span></em>个细胞，而且每年递增</li>
+<li>目前有不同单细胞的protocol，比如SMART-seq2 <span class="citation">(Picelli et al. <a href="#ref-Picelli2013-sb">2013</a>)</span>, CELL-seq <span class="citation">(Hashimshony et al. <a href="#ref-Hashimshony2012-kd">2012</a>)</span> 和 Drop-seq <span class="citation">(Macosko et al. <a href="#ref-Macosko2015-ix">2015</a>)</span></li>
+<li>也有商业平台, 包括 <a href="https://www.fluidigm.com/products/c1-system">Fluidigm C1</a>, <a href="https://www.wafergen.com/products/icell8-single-cell-system">Wafergen ICELL8</a> 和 <a href="https://www.10xgenomics.com/single-cell/">10X Genomics Chromium</a></li>
+<li>一些计算分析bulk RNA-seq的方法<strong>也适用于</strong> scRNA-seq</li>
+<li><strong>大多数情况下</strong> scRNA-seq计算分析需要调整已有方法或者开发新方法</li>
+</ul>
+</div>
+<div id="section-9" class="section level2">
+<h2><span class="header-section-number">2.3</span> 工作流程</h2>
+<div class="figure" style="text-align: center"><span id="fig:intro-rna-seq-workflow"></span>
+<img src="figures/RNA-Seq_workflow-5.pdf.jpg" alt="单细胞测序流程 (源自wiki)" width="90%" />
+<p class="caption">
+Figure 2.1: 单细胞测序流程 (源自wiki)
+</p>
+</div>
+<p>总体而言，scRNA-seq实验protocol和bulk RNA-seq类似，我们将在下一章讨论一些最常用的方法。</p>
+</div>
+<div id="section-10" class="section level2">
+<h2><span class="header-section-number">2.4</span> 计算分析</h2>
+<p>本课程是用scRNA-seq实验获得的数据进行计算分析。</p>
+<ol style="list-style-type: decimal">
+<li>第一步（黄色）对任何高通量测序数据都是通用的；</li>
+<li>后续步骤（橙色）需要整合现有的RNA-Seq分析方法和新方法来解决scRNA-Seq的技术差异；</li>
+<li>最后步骤（蓝色），用专门为scRNA-Seq开发的方法进行生物学解释。</li>
+</ol>
+<div class="figure" style="text-align: center"><span id="fig:intro-flowchart"></span>
+<img src="figures/flowchart.png" alt="scRNA-seq分析流程图" width="65%" />
+<p class="caption">
+Figure 2.2: scRNA-seq分析流程图
+</p>
+</div>
+<p>目前有几篇关于scRNA-seq分析的综述文章，包括 <span class="citation">(Stegle, Teichmann, and Marioni <a href="#ref-Stegle2015-uv">2015</a>)</span></p>
+<p>目前，也有不同的平台执行上述流程图的一步或多个步骤，包括:</p>
+<ul>
+<li><a href="https://github.com/VCCRI/Falco/">Falco</a> 云端单细胞RNA-seq处理框架</li>
+<li><a href="https://github.com/YosefLab/scone">SCONE</a> (Single-Cell Overview of Normalized Expression), 单细胞RNA-seq数据质量控制和标准化的包.</li>
+<li><a href="http://satijalab.org/seurat/">Seurat</a> 用于单细胞RNA-seq数据质量控制，分析和数据探索的R包.</li>
+<li><a href="https://asap.epfl.ch/">ASAP</a> (Automated Single-cell Analysis Pipeline) 是一个单细胞分析交互式webserver.</li>
+<li><a href="https://master.bioconductor.org/packages/release/workflows/html/simpleSingleCell.html">Bioconductor</a> 是一个分析高通量基因组数据开源，开放式软件项目，包括分析单细胞数据的工具包。</li>
+</ul>
+</div>
+<div id="section-11" class="section level2">
+<h2><span class="header-section-number">2.5</span> 挑战</h2>
+<p>scRNA-seq和bulk RNA-seq最大的不同在于每个测序文库是<strong>单个细胞</strong>，而不是一群细胞。因此需要各位注意来自不同细胞（测序文库）的结果的比较。文库之间差异的主要来源是:</p>
+<ul>
+<li><strong>扩增偏好性和扩增效率</strong> （高达1,000,000倍）</li>
+<li><strong>基因的’dropout’</strong>，其中一个基因在一个细胞中等表达水平，但在另外一个细胞没有检测到<span class="citation">(Kharchenko, Silberstein, and Scadden <a href="#ref-Kharchenko2014-ts">2014</a>)</span>.</li>
+</ul>
+<p>在两种情况下， 由于RNA仅来自一个细胞，因此低起始量的转录本是导致差异的主要原因。提高转录本捕获效率和减少扩增偏差是目前活跃的研究灵越。从后续的课程我们也可以看到，可以通过适当的标准化和校正方法来缓解这些问题。</p>
+</div>
+<div id="section-12" class="section level2">
+<h2><span class="header-section-number">2.6</span> 实验方法</h2>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
+<img src="figures/moores-law.png" alt="单细胞转录组学摩尔定律 (图片来自 [Svensson et al](https://arxiv.org/abs/1704.01379))" width="100%" />
+<p class="caption">
+Figure 2.3: 单细胞转录组学摩尔定律 (图片来自 <a href="https://arxiv.org/abs/1704.01379">Svensson et al</a>)
+</p>
+</div>
+<p>开发新的scRNA-seq方法和protocol是目前非常活跃的一个研究领域，在过去的几年中已经发表了一些protocol，不完全列表如下:</p>
+<ul>
+<li>CEL-seq <span class="citation">(Hashimshony et al. <a href="#ref-Hashimshony2012-kd">2012</a>)</span></li>
+<li>CEL-seq2 <span class="citation">(Hashimshony et al. <a href="#ref-Hashimshony2016-lx">2016</a>)</span></li>
+<li>Drop-seq <span class="citation">(Macosko et al. <a href="#ref-Macosko2015-ix">2015</a>)</span></li>
+<li>InDrop-seq <span class="citation">(Klein et al. <a href="#ref-Klein2015-kz">2015</a>)</span></li>
+<li>MARS-seq <span class="citation">(Jaitin et al. <a href="#ref-Jaitin2014-ko">2014</a>)</span></li>
+<li>SCRB-seq <span class="citation">(Soumillon et al. <a href="#ref-Soumillon2014-eu">2014</a>)</span></li>
+<li>Seq-well <span class="citation">(Gierahn et al. <a href="#ref-Gierahn2017-es">2017</a>)</span></li>
+<li>Smart-seq <span class="citation">(Picelli et al. <a href="#ref-Picelli2014-ic">2014</a>)</span></li>
+<li>Smart-seq2 <span class="citation">(Picelli et al. <a href="#ref-Picelli2014-ic">2014</a>)</span></li>
+<li><a href="http://www.clontech.com/US/Products/cDNA_Synthesis_and_Library_Construction/Next_Gen_Sequencing_Kits/Total_RNA-Seq/Universal_RNA_Seq_Random_Primed">SMARTer</a></li>
+<li>STRT-seq <span class="citation">(Islam et al. <a href="#ref-Islam2014-cn">2013</a>)</span></li>
+</ul>
+<p>这些方法可以按照不同方法进行归类，最重要的两个方面是<strong>定量</strong>和<strong>捕获</strong></p>
+<p>定量有两种类型，<strong>全长</strong>和<strong>基于标签</strong>。前者试图达到每个转录本均匀覆盖率；然而基于tag的protocol只捕获每个RNA的5’或3’端。量化方法的选择对于数据可用于何种类型的分析具有重要意义。理论上讲，基于全长的protocol可以对整个转录本进行均匀测序，然而通常测序覆盖有偏差。基于tag的protocol主要优势是其可以和唯一的分子标识符结合使用，提高定量准确性(查看章节 <a href="construction-of-expression-matrix.html#umichapter">4.6</a>)。另一方面，测序限制在转录组的一端，降低比对map率，并难以区分不同的异构体<span class="citation">(Archer et al. <a href="#ref-Archer2016-zq">2016</a>)</span>。</p>
+<p>捕获的策略决定了通量，细胞如何被选择以及除测序外还可以获得哪种附加信息。三种常用的方法是基于<strong>微孔(microwell)-</strong>，<strong>微流体(microfluidic)-</strong>，<strong>液滴(droplet)-</strong>的方法。</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
+<img src="figures/300px-Microplates.jpg" alt="微孔板 (图片来自wiki)"  />
+<p class="caption">
+Figure 2.4: 微孔板 (图片来自wiki)
+</p>
+</div>
+<p>对于基于微孔的平台，使用例如移液管或激光捕获分离细胞并置于微流体孔中。 基于微孔的方法的一个优点是它们可以与荧光激活细胞分选（FACS）结合，基于表面标记物分选细胞。 因此，当想要分离特定细胞群体用于测序时，该策略非常有用。 另一个优点是可以拍摄细胞的照片。 该图像提供了额外的细胞形态，适用于识别包含受损细胞或双份细胞的微孔。 这些方法的主要缺点是它们通常是通量低并且每个单细胞所需的工作量可能相当大。</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-4"></span>
+<img src="figures/fluidigmC1.jpg" alt="96孔Fluidigm C1芯片 (图片来自Fluidigm)"  />
+<p class="caption">
+Figure 2.5: 96孔Fluidigm C1芯片 (图片来自Fluidigm)
+</p>
+</div>
+<p>微流体平台, 比如 <a href="https://www.fluidigm.com/products/c1-system#workflow">Fluidigm’s C1</a>, 提供了更加集成的系统，用于捕获细胞和进行文库制备所需的过程。 因此，它们提供比基于微孔的平台更高的通量。 通常，在微流体平台中仅捕获约10％的细胞，因此不适合处理稀有细胞类型或非常少量的细胞。 此外，芯片相对昂贵，但由于反应可以以较小的体积进行，因此可以节省试剂。</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-5"></span>
+<img src="figures/drop-seq.png" alt="drop-seq方法的原理图 (图片来自Macosko et al)" width="60%" />
+<p class="caption">
+Figure 2.6: drop-seq方法的原理图 (图片来自Macosko et al)
+</p>
+</div>
+<p>基于液滴的方法将每个单独的细胞与包括建库所需酶的珠子(bead)一起封装在纳升液滴内。每个珠子都包含唯一的条形码(barcode)，加到所有来自该细胞的序列上。因此可以合并所有液滴进行测序，再基于barcode将序列分配给不同的细胞。Droplet平台通常具有最高的通量，因为建库准备成本约为<span class="math inline">\(.05\)</span> 美元/细胞。相反，测序成本成为其限制因素，通常实验覆盖率低，仅检测到几千个转录本 <span class="citation">(Ziegenhain et al. <a href="#ref-Ziegenhain2017-cu">2017</a>)</span>。</p>
+</div>
+<div id="section-13" class="section level2">
+<h2><span class="header-section-number">2.7</span> 如何选择合适的平台</h2>
+<p>最合适的平台取决于手头的生物学问题。 例如，如果研究组织的组成，那么将允许捕获非常大量细胞的基于液滴的方法可能是最合适的。 另一方面，如果人们对具有已知表面标记物的稀有细胞类群感兴趣，那么最好使用FACS进行富集，然后对较少数量的细胞进行测序。</p>
+<p>显然，如果研究不同的异构体，那么全长转录物定量将更合适。相比之下，UMI只能与基于tag的protocol一起使用，促进基因水平的量化。</p>
+<p>来自Enard group <span class="citation">(Ziegenhain et al. <a href="#ref-Ziegenhain2017-cu">2017</a>)</span>和Teichmann group <span class="citation">(Svensson et al. <a href="#ref-Svensson2017-op">2017</a>)</span>最近两项研究比较了几种不同的protocol。Ziegenhain等人在同一小鼠胚胎干细胞样本（mESCs）上比较了五种不同的protocol。通过控制细胞数量和测序深度，作者能够直接比较不同protocol的灵敏度，噪声水平和成本。 他们的结论的一个例子如下图所示，不同protocol检测的基因数量（对于给定的检测阈值）差别很大。drop-seq和Smart-seq2之间几乎有两倍的差异，这表明protocol的选择会对研究有重大影响。</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-6"></span>
+<img src="figures/ziegenhainEnardFig1.png" alt="Enard group 研究" width="60%" />
+<p class="caption">
+Figure 2.7: Enard group 研究
+</p>
+</div>
+<p>Svensson等采用了另外一种方法，通过使用已知浓度的合成转录本（<strong>spike-ins</strong>，后面详细介绍）来测量不同protocol的准确性和灵敏度。通过广泛的比较研究，他们同样发现不同protocol间区别较大。</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-7"></span>
+<img src="figures/svenssonTeichmannFig2.png" alt="Teichmann group 研究" width="100%" />
+<p class="caption">
+Figure 2.8: Teichmann group 研究
+</p>
+</div>
+<p>随着实验技术的发展和用于量化技术噪声的计算方法的改进，后续研究有助于我们进一步了解不同方法的优缺点。因为基准测试可以确定哪些策略是最有用的，这些比较研究不仅有助于研究人员决定使用哪种protocol，而且有助于开发新方法。</p>
+
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-Archer2016-zq">
+<p>Archer, Nathan, Mark D. Walsh, Vahid Shahrezaei, and Daniel Hebenstreit. 2016. “Modeling Enzyme Processivity Reveals That RNA-Seq Libraries Are Biased in Characteristic and Correctable Ways.” <em>Cell Systems</em> 3 (5): 467–479.e12. <a href="https://doi.org/10.1016/j.cels.2016.10.012">https://doi.org/10.1016/j.cels.2016.10.012</a>.</p>
+</div>
+<div id="ref-Gierahn2017-es">
+<p>Gierahn, Todd M, Marc H Wadsworth 2nd, Travis K Hughes, Bryan D Bryson, Andrew Butler, Rahul Satija, Sarah Fortune, J Christopher Love, and Alex K Shalek. 2017. “Seq-Well: Portable, Low-Cost RNA Sequencing of Single Cells at High Throughput.” <em>Nat. Methods</em> 14 (4): 395–98.</p>
+</div>
+<div id="ref-Hashimshony2016-lx">
+<p>Hashimshony, Tamar, Naftalie Senderovich, Gal Avital, Agnes Klochendler, Yaron de Leeuw, Leon Anavy, Dave Gennert, et al. 2016. “CEL-Seq2: Sensitive Highly-Multiplexed Single-Cell RNA-Seq.” <em>Genome Biol</em> 17 (1). <a href="https://doi.org/10.1186/s13059-016-0938-8">https://doi.org/10.1186/s13059-016-0938-8</a>.</p>
+</div>
+<div id="ref-Hashimshony2012-kd">
+<p>Hashimshony, Tamar, Florian Wagner, Noa Sher, and Itai Yanai. 2012. “CEL-Seq: Single-cell RNA-Seq by Multiplexed Linear Amplification.” <em>Cell Reports</em> 2 (3): 666–73. <a href="https://doi.org/10.1016/j.celrep.2012.08.003">https://doi.org/10.1016/j.celrep.2012.08.003</a>.</p>
+</div>
+<div id="ref-Islam2014-cn">
+<p>Islam, Saiful, Amit Zeisel, Simon Joost, Gioele La Manno, Pawel Zajac, Maria Kasper, Peter Lönnerberg, and Sten Linnarsson. 2013. “Quantitative Single-Cell RNA-Seq with Unique Molecular Identifiers.” <em>Nat Meth</em> 11 (2): 163–66. <a href="https://doi.org/10.1038/nmeth.2772">https://doi.org/10.1038/nmeth.2772</a>.</p>
+</div>
+<div id="ref-Jaitin2014-ko">
+<p>Jaitin, Diego Adhemar, Ephraim Kenigsberg, Hadas Keren-Shaul, Naama Elefant, Franziska Paul, Irina Zaretsky, Alexander Mildner, et al. 2014. “Massively Parallel Single-Cell RNA-seq for Marker-Free Decomposition of Tissues into Cell Types.” <em>Science</em> 343 (6172): 776–79.</p>
+</div>
+<div id="ref-Kharchenko2014-ts">
+<p>Kharchenko, Peter V, Lev Silberstein, and David T Scadden. 2014. “Bayesian Approach to Single-Cell Differential Expression Analysis.” <em>Nat Meth</em> 11 (7): 740–42. <a href="https://doi.org/10.1038/nmeth.2967">https://doi.org/10.1038/nmeth.2967</a>.</p>
+</div>
+<div id="ref-Klein2015-kz">
+<p>Klein, Allon M., Linas Mazutis, Ilke Akartuna, Naren Tallapragada, Adrian Veres, Victor Li, Leonid Peshkin, David A. Weitz, and Marc W. Kirschner. 2015. “Droplet Barcoding for Single-Cell Transcriptomics Applied to Embryonic Stem Cells.” <em>Cell</em> 161 (5): 1187–1201. <a href="https://doi.org/10.1016/j.cell.2015.04.044">https://doi.org/10.1016/j.cell.2015.04.044</a>.</p>
+</div>
+<div id="ref-Macosko2015-ix">
+<p>Macosko, Evan Z., Anindita Basu, Rahul Satija, James Nemesh, Karthik Shekhar, Melissa Goldman, Itay Tirosh, et al. 2015. “Highly Parallel Genome-Wide Expression Profiling of Individual Cells Using Nanoliter Droplets.” <em>Cell</em> 161 (5): 1202–14. <a href="https://doi.org/10.1016/j.cell.2015.05.002">https://doi.org/10.1016/j.cell.2015.05.002</a>.</p>
+</div>
+<div id="ref-Picelli2013-sb">
+<p>Picelli, Simone, Åsa K Björklund, Omid R Faridani, Sven Sagasser, Gösta Winberg, and Rickard Sandberg. 2013. “Smart-Seq2 for Sensitive Full-Length Transcriptome Profiling in Single Cells.” <em>Nat Meth</em> 10 (11): 1096–8. <a href="https://doi.org/10.1038/nmeth.2639">https://doi.org/10.1038/nmeth.2639</a>.</p>
+</div>
+<div id="ref-Picelli2014-ic">
+<p>Picelli, Simone, Omid R Faridani, Asa K Björklund, Gösta Winberg, Sven Sagasser, and Rickard Sandberg. 2014. “Full-Length RNA-seq from Single Cells Using Smart-Seq2.” <em>Nat. Protoc.</em> 9 (1): 171–81.</p>
+</div>
+<div id="ref-Soumillon2014-eu">
+<p>Soumillon, Magali, Davide Cacchiarelli, Stefan Semrau, Alexander van Oudenaarden, and Tarjei S Mikkelsen. 2014. “Characterization of Directed Differentiation by High-Throughput Single-Cell RNA-Seq.” <em>bioRxiv</em>, March, 003236.</p>
+</div>
+<div id="ref-Stegle2015-uv">
+<p>Stegle, Oliver, Sarah A. Teichmann, and John C. Marioni. 2015. “Computational and Analytical Challenges in Single-Cell Transcriptomics.” <em>Nat Rev Genet</em> 16 (3): 133–45. <a href="https://doi.org/10.1038/nrg3833">https://doi.org/10.1038/nrg3833</a>.</p>
+</div>
+<div id="ref-Svensson2017-op">
+<p>Svensson, Valentine, Kedar Nath Natarajan, Lam-Ha Ly, Ricardo J Miragaia, Charlotte Labalette, Iain C Macaulay, Ana Cvejic, and Sarah A Teichmann. 2017. “Power Analysis of Single-Cell RNA-Sequencing Experiments.” <em>Nat Meth</em> 14 (4): 381–87. <a href="https://doi.org/10.1038/nmeth.4220">https://doi.org/10.1038/nmeth.4220</a>.</p>
+</div>
+<div id="ref-Tang2009-bu">
+<p>Tang, Fuchou, Catalin Barbacioru, Yangzhou Wang, Ellen Nordman, Clarence Lee, Nanlan Xu, Xiaohui Wang, et al. 2009. “mRNA-Seq Whole-Transcriptome Analysis of a Single Cell.” <em>Nat Meth</em> 6 (5): 377–82. <a href="https://doi.org/10.1038/nmeth.1315">https://doi.org/10.1038/nmeth.1315</a>.</p>
+</div>
+<div id="ref-Ziegenhain2017-cu">
+<p>Ziegenhain, Christoph, Beate Vieth, Swati Parekh, Björn Reinius, Amy Guillaumet-Adkins, Martha Smets, Heinrich Leonhardt, Holger Heyn, Ines Hellmann, and Wolfgang Enard. 2017. “Comparative Analysis of Single-Cell RNA Sequencing Methods.” <em>Molecular Cell</em> 65 (4): 631–643.e4. <a href="https://doi.org/10.1016/j.molcel.2017.01.023">https://doi.org/10.1016/j.molcel.2017.01.023</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="processing-raw-scrna-seq-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": true,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/lemonbases/scRNA.seq.course.CN/edit/master/02intro.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["scRNA-seq-course.pdf"],
+"toc": {
+"collapse": "section"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 R/Bioconductor介绍 | scRNA-seq数据分析</title>
+  <meta name="description" content="5 R/Bioconductor介绍 | scRNA-seq数据分析" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 R/Bioconductor介绍 | scRNA-seq数据分析" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 R/Bioconductor介绍 | scRNA-seq数据分析" />
+  
+  
+  
+
+<meta name="author" content="碱基吃柠檬" />
+
+
+<meta name="date" content="2019-07-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="construction-of-expression-matrix.html">
+<link rel="next" href="tabula-muris.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<!-- for Facebook -->  
+<meta property="og:url" content="https://github.com/sdbiodog" />
+<meta property="og:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
+<meta property="og:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
+
+<!-- for Twitter -->          
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="5 R/Bioconductor介绍 | scRNA-seq数据分析" />
+<meta name="twitter:description" content="本项目是将github上经典的scRNA-seq分析教程进行汉化，源项目参见hemberg-lab/scRNA.seq.course" />
+<meta name="twitter:image" content="http://hemberg-lab.github.io/scRNA.seq.course/figures/RNA-Seq_workflow-5.pdf.jpg" />
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-71525309-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">Table of Contents</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 说在前面的话</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#section-1"><i class="fa fa-check"></i><b>1.1</b> 关于本项目</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#section-2"><i class="fa fa-check"></i><b>1.2</b> 视频</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#github"><i class="fa fa-check"></i><b>1.3</b> GitHub</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#docker-"><i class="fa fa-check"></i><b>1.4</b> Docker 镜像</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="index.html"><a href="index.html#section-3"><i class="fa fa-check"></i><b>1.4.1</b> 运行镜像</a></li>
+<li class="chapter" data-level="1.4.2" data-path="index.html"><a href="index.html#section-4"><i class="fa fa-check"></i><b>1.4.2</b> 下载数据或其它文件</a></li>
+<li class="chapter" data-level="1.4.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.4.3</b> RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#section-5"><i class="fa fa-check"></i><b>1.5</b> 手动安装</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#section-6"><i class="fa fa-check"></i><b>1.6</b> 许可</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#section-7"><i class="fa fa-check"></i><b>1.7</b> 准备知识</a></li>
+<li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#section-8"><i class="fa fa-check"></i><b>1.8</b> 联系我们</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html"><i class="fa fa-check"></i><b>2</b> scRNA-seq介绍</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#bulk-rna-seq"><i class="fa fa-check"></i><b>2.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#scrna-seq"><i class="fa fa-check"></i><b>2.2</b> scRNA-seq</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-9"><i class="fa fa-check"></i><b>2.3</b> 工作流程</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-10"><i class="fa fa-check"></i><b>2.4</b> 计算分析</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-11"><i class="fa fa-check"></i><b>2.5</b> 挑战</a></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-12"><i class="fa fa-check"></i><b>2.6</b> 实验方法</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-single-cell-rna-seq.html"><a href="introduction-to-single-cell-rna-seq.html#section-13"><i class="fa fa-check"></i><b>2.7</b> 如何选择合适的平台</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html"><i class="fa fa-check"></i><b>3</b> scRNA-seq原始数据处理</a><ul>
+<li class="chapter" data-level="3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastqc"><i class="fa fa-check"></i><b>3.1</b> FastQC</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-14"><i class="fa fa-check"></i><b>3.1.1</b> 解决方案并下载报告</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-15"><i class="fa fa-check"></i><b>3.2</b> 移除接头和低质量碱基</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#solution"><i class="fa fa-check"></i><b>3.2.1</b> Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-16"><i class="fa fa-check"></i><b>3.3</b> 文件格式</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#fastq"><i class="fa fa-check"></i><b>3.3.1</b> FastQ</a></li>
+<li class="chapter" data-level="3.3.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#bam"><i class="fa fa-check"></i><b>3.3.2</b> BAM</a></li>
+<li class="chapter" data-level="3.3.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#cram"><i class="fa fa-check"></i><b>3.3.3</b> CRAM</a></li>
+<li class="chapter" data-level="3.3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-17"><i class="fa fa-check"></i><b>3.3.4</b> 手动查看文件</a></li>
+<li class="chapter" data-level="3.3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#genome-fasta-gtf"><i class="fa fa-check"></i><b>3.3.5</b> Genome (FASTA, GTF)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-18"><i class="fa fa-check"></i><b>3.4</b> 测序文库拆分</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#section-19"><i class="fa fa-check"></i><b>3.4.1</b> 鉴定含有细胞的液滴/微孔</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#starread"><i class="fa fa-check"></i><b>3.5</b> 使用STAR比对read</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#star"><i class="fa fa-check"></i><b>3.5.1</b> STAR比对命令</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallistopseudo-alignment"><i class="fa fa-check"></i><b>3.6</b> Kallisto和Pseudo-Alignment</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-mer"><i class="fa fa-check"></i><b>3.6.1</b> k-mer是什么?</a></li>
+<li class="chapter" data-level="3.6.2" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#k-merreads"><i class="fa fa-check"></i><b>3.6.2</b> 为什么比对k-mer而不是reads?</a></li>
+<li class="chapter" data-level="3.6.3" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto"><i class="fa fa-check"></i><b>3.6.3</b> Kallisto伪比对模式</a></li>
+<li class="chapter" data-level="3.6.4" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto-pseudo-alignment"><i class="fa fa-check"></i><b>3.6.4</b> Kallisto Pseudo-Alignment命令</a></li>
+<li class="chapter" data-level="3.6.5" data-path="processing-raw-scrna-seq-data.html"><a href="processing-raw-scrna-seq-data.html#kallisto-1"><i class="fa fa-check"></i><b>3.6.5</b> 理解Kallisto输出结果</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html"><i class="fa fa-check"></i><b>4</b> 构建表达矩阵</a><ul>
+<li class="chapter" data-level="4.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-20"><i class="fa fa-check"></i><b>4.1</b> 质量控制</a></li>
+<li class="chapter" data-level="4.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#reads-"><i class="fa fa-check"></i><b>4.2</b> Reads 比对</a></li>
+<li class="chapter" data-level="4.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-21"><i class="fa fa-check"></i><b>4.3</b> 比对示例</a></li>
+<li class="chapter" data-level="4.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#mapping-qc"><i class="fa fa-check"></i><b>4.4</b> Mapping QC</a></li>
+<li class="chapter" data-level="4.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#reads"><i class="fa fa-check"></i><b>4.5</b> Reads定量</a></li>
+<li class="chapter" data-level="4.6" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umichapter"><i class="fa fa-check"></i><b>4.6</b> 唯一分子标识符</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#umi"><i class="fa fa-check"></i><b>4.6.1</b> UMI介绍</a></li>
+<li class="chapter" data-level="4.6.2" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-22"><i class="fa fa-check"></i><b>4.6.2</b> 比对条形码序列</a></li>
+<li class="chapter" data-level="4.6.3" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#barcodes"><i class="fa fa-check"></i><b>4.6.3</b> Barcodes计数</a></li>
+<li class="chapter" data-level="4.6.4" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-23"><i class="fa fa-check"></i><b>4.6.4</b> 错误校正</a></li>
+<li class="chapter" data-level="4.6.5" data-path="construction-of-expression-matrix.html"><a href="construction-of-expression-matrix.html#section-24"><i class="fa fa-check"></i><b>4.6.5</b> 下游分析</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html"><i class="fa fa-check"></i><b>5</b> R/Bioconductor介绍</a><ul>
+<li class="chapter" data-level="5.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#r"><i class="fa fa-check"></i><b>5.1</b> 安装R包</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#cran"><i class="fa fa-check"></i><b>5.1.1</b> CRAN</a></li>
+<li class="chapter" data-level="5.1.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#github-1"><i class="fa fa-check"></i><b>5.1.2</b> Github</a></li>
+<li class="chapter" data-level="5.1.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor"><i class="fa fa-check"></i><b>5.1.3</b> Bioconductor</a></li>
+<li class="chapter" data-level="5.1.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-25"><i class="fa fa-check"></i><b>5.1.4</b> 源码安装</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-26"><i class="fa fa-check"></i><b>5.2</b> 安装说明:</a></li>
+<li class="chapter" data-level="5.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-27"><i class="fa fa-check"></i><b>5.3</b> 数据类型/类</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-28"><i class="fa fa-check"></i><b>5.3.1</b> 数值</a></li>
+<li class="chapter" data-level="5.3.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-29"><i class="fa fa-check"></i><b>5.3.2</b> 字符/字符串</a></li>
+<li class="chapter" data-level="5.3.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-30"><i class="fa fa-check"></i><b>5.3.3</b> 逻辑值</a></li>
+<li class="chapter" data-level="5.3.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-31"><i class="fa fa-check"></i><b>5.3.4</b> 因子</a></li>
+<li class="chapter" data-level="5.3.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-32"><i class="fa fa-check"></i><b>5.3.5</b> 检查数据类型</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-33"><i class="fa fa-check"></i><b>5.4</b> 基本数据结构</a></li>
+<li class="chapter" data-level="5.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-34"><i class="fa fa-check"></i><b>5.5</b> 更多信息</a></li>
+<li class="chapter" data-level="5.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-35"><i class="fa fa-check"></i><b>5.6</b> 数据类型</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-36"><i class="fa fa-check"></i><b>5.6.1</b> 什么是整洁的数据</a></li>
+<li class="chapter" data-level="5.6.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#rich-data"><i class="fa fa-check"></i><b>5.6.2</b> 什么是Rich data?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor-singlecellexperiment--scater"><i class="fa fa-check"></i><b>5.7</b> Bioconductor, <code>SingleCellExperiment</code> 和 <code>scater</code></a><ul>
+<li class="chapter" data-level="5.7.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#bioconductor-1"><i class="fa fa-check"></i><b>5.7.1</b> Bioconductor</a></li>
+<li class="chapter" data-level="5.7.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#singlecellexperiment-"><i class="fa fa-check"></i><b>5.7.2</b> <code>SingleCellExperiment</code> 类</a></li>
+<li class="chapter" data-level="5.7.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#scater-"><i class="fa fa-check"></i><b>5.7.3</b> <code>scater</code> 包</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#ggplot2"><i class="fa fa-check"></i><b>5.8</b> ggplot2介绍</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#ggplot2-1"><i class="fa fa-check"></i><b>5.8.1</b> ggplot2是什么?</a></li>
+<li class="chapter" data-level="5.8.2" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#ggplot2j"><i class="fa fa-check"></i><b>5.8.2</b> ggplot2j原则</a></li>
+<li class="chapter" data-level="5.8.3" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#aes"><i class="fa fa-check"></i><b>5.8.3</b> 使用<code>aes</code>映射函数</a></li>
+<li class="chapter" data-level="5.8.4" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#geoms"><i class="fa fa-check"></i><b>5.8.4</b> Geoms</a></li>
+<li class="chapter" data-level="5.8.5" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-37"><i class="fa fa-check"></i><b>5.8.5</b> 绘制2个以上细胞的数据</a></li>
+<li class="chapter" data-level="5.8.6" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-38"><i class="fa fa-check"></i><b>5.8.6</b> 绘制热图</a></li>
+<li class="chapter" data-level="5.8.7" data-path="intro-r-bioc.html"><a href="intro-r-bioc.html#section-39"><i class="fa fa-check"></i><b>5.8.7</b> 主成分分析</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="tabula-muris.html"><a href="tabula-muris.html"><i class="fa fa-check"></i><b>6</b> Tabula Muris</a><ul>
+<li class="chapter" data-level="6.1" data-path="tabula-muris.html"><a href="tabula-muris.html#section-40"><i class="fa fa-check"></i><b>6.1</b> 介绍</a></li>
+<li class="chapter" data-level="6.2" data-path="tabula-muris.html"><a href="tabula-muris.html#section-41"><i class="fa fa-check"></i><b>6.2</b> 下载数据</a></li>
+<li class="chapter" data-level="6.3" data-path="tabula-muris.html"><a href="tabula-muris.html#smartseq2"><i class="fa fa-check"></i><b>6.3</b> 读取Smartseq2数据</a></li>
+<li class="chapter" data-level="6.4" data-path="tabula-muris.html"><a href="tabula-muris.html#scater"><i class="fa fa-check"></i><b>6.4</b> 构建scater对象</a></li>
+<li class="chapter" data-level="6.5" data-path="tabula-muris.html"><a href="tabula-muris.html#x"><i class="fa fa-check"></i><b>6.5</b> 读取10X数据</a></li>
+<li class="chapter" data-level="6.6" data-path="tabula-muris.html"><a href="tabula-muris.html#scater-1"><i class="fa fa-check"></i><b>6.6</b> 创建scater对象</a></li>
+<li class="chapter" data-level="6.7" data-path="tabula-muris.html"><a href="tabula-muris.html#section-42"><i class="fa fa-check"></i><b>6.7</b> 进阶练习</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html"><i class="fa fa-check"></i><b>7</b> 表达矩阵质控</a><ul>
+<li class="chapter" data-level="7.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#exprs-qc"><i class="fa fa-check"></i><b>7.1</b> UMI表达质控</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-43"><i class="fa fa-check"></i><b>7.1.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#tung"><i class="fa fa-check"></i><b>7.1.2</b> Tung数据集</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-44"><i class="fa fa-check"></i><b>7.1.3</b> 细胞质控</a></li>
+<li class="chapter" data-level="7.1.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-47"><i class="fa fa-check"></i><b>7.1.4</b> 细胞过滤</a></li>
+<li class="chapter" data-level="7.1.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-50"><i class="fa fa-check"></i><b>7.1.5</b> 手工过滤和自动过滤比较</a></li>
+<li class="chapter" data-level="7.1.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-51"><i class="fa fa-check"></i><b>7.1.6</b> 基因分析</a></li>
+<li class="chapter" data-level="7.1.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-54"><i class="fa fa-check"></i><b>7.1.7</b> 保存数据</a></li>
+<li class="chapter" data-level="7.1.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-55"><i class="fa fa-check"></i><b>7.1.8</b> 大作业</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-1"><i class="fa fa-check"></i><b>7.2</b> Reads表达质控</a></li>
+<li class="chapter" data-level="7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-56"><i class="fa fa-check"></i><b>7.3</b> 数据可视化</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-57"><i class="fa fa-check"></i><b>7.3.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#visual-pca"><i class="fa fa-check"></i><b>7.3.2</b> PCA plot</a></li>
+<li class="chapter" data-level="7.3.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#visual-tsne"><i class="fa fa-check"></i><b>7.3.3</b> tSNE可视化</a></li>
+<li class="chapter" data-level="7.3.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-61"><i class="fa fa-check"></i><b>7.3.4</b> 大作业</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-2"><i class="fa fa-check"></i><b>7.4</b> Reads数据可视化</a></li>
+<li class="chapter" data-level="7.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-62"><i class="fa fa-check"></i><b>7.5</b> 识别混淆因子</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-63"><i class="fa fa-check"></i><b>7.5.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.5.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-64"><i class="fa fa-check"></i><b>7.5.2</b> 和组成分的相关性</a></li>
+<li class="chapter" data-level="7.5.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-66"><i class="fa fa-check"></i><b>7.5.3</b> 解释变量</a></li>
+<li class="chapter" data-level="7.5.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-67"><i class="fa fa-check"></i><b>7.5.4</b> 其它混淆因子</a></li>
+<li class="chapter" data-level="7.5.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-68"><i class="fa fa-check"></i><b>7.5.5</b> 练习</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-3"><i class="fa fa-check"></i><b>7.6</b> 识别READS中混淆因子</a></li>
+<li class="chapter" data-level="7.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-69"><i class="fa fa-check"></i><b>7.7</b> 标准化理论</a><ul>
+<li class="chapter" data-level="7.7.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-70"><i class="fa fa-check"></i><b>7.7.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.7.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-71"><i class="fa fa-check"></i><b>7.7.2</b> 文库大小</a></li>
+<li class="chapter" data-level="7.7.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-72"><i class="fa fa-check"></i><b>7.7.3</b> 标准化</a></li>
+<li class="chapter" data-level="7.7.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#effectiveness"><i class="fa fa-check"></i><b>7.7.4</b> Effectiveness</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#umi-1"><i class="fa fa-check"></i><b>7.8</b> UMI标准化练习</a><ul>
+<li class="chapter" data-level="7.8.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#raw"><i class="fa fa-check"></i><b>7.8.1</b> Raw</a></li>
+<li class="chapter" data-level="7.8.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#cpm-1"><i class="fa fa-check"></i><b>7.8.2</b> CPM</a></li>
+<li class="chapter" data-level="7.8.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#scran-1"><i class="fa fa-check"></i><b>7.8.3</b> scran</a></li>
+<li class="chapter" data-level="7.8.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-73"><i class="fa fa-check"></i><b>7.8.4</b> 下采样</a></li>
+<li class="chapter" data-level="7.8.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-74"><i class="fa fa-check"></i><b>7.8.5</b> 基因/转录本长度标准化</a></li>
+<li class="chapter" data-level="7.8.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-75"><i class="fa fa-check"></i><b>7.8.6</b> 练习</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-4"><i class="fa fa-check"></i><b>7.9</b> Reads标准化练习</a></li>
+<li class="chapter" data-level="7.10" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#dealing-with-confounders"><i class="fa fa-check"></i><b>7.10</b> 处理混淆因子</a><ul>
+<li class="chapter" data-level="7.10.1" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-76"><i class="fa fa-check"></i><b>7.10.1</b> 介绍</a></li>
+<li class="chapter" data-level="7.10.2" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-77"><i class="fa fa-check"></i><b>7.10.2</b> 移除不需要的变异</a></li>
+<li class="chapter" data-level="7.10.3" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#combat"><i class="fa fa-check"></i><b>7.10.3</b> Combat</a></li>
+<li class="chapter" data-level="7.10.4" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#mnncorrect"><i class="fa fa-check"></i><b>7.10.4</b> mnnCorrect</a></li>
+<li class="chapter" data-level="7.10.5" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#glm"><i class="fa fa-check"></i><b>7.10.5</b> GLM</a></li>
+<li class="chapter" data-level="7.10.6" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#harmony"><i class="fa fa-check"></i><b>7.10.6</b> Harmony</a></li>
+<li class="chapter" data-level="7.10.7" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-78"><i class="fa fa-check"></i><b>7.10.7</b> 评价和比较混淆因子去除策略</a></li>
+<li class="chapter" data-level="7.10.8" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#section-81"><i class="fa fa-check"></i><b>7.10.8</b> 大作业</a></li>
+</ul></li>
+<li class="chapter" data-level="7.11" data-path="cleaning-the-expression-matrix.html"><a href="cleaning-the-expression-matrix.html#reads-5"><i class="fa fa-check"></i><b>7.11</b> 处理Reads中混淆因子</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="biological-analysis.html"><a href="biological-analysis.html"><i class="fa fa-check"></i><b>8</b> 生物学分析</a><ul>
+<li class="chapter" data-level="8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-82"><i class="fa fa-check"></i><b>8.1</b> 聚类介绍</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-83"><i class="fa fa-check"></i><b>8.1.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.1.2" data-path="biological-analysis.html"><a href="biological-analysis.html#section-84"><i class="fa fa-check"></i><b>8.1.2</b> 降维</a></li>
+<li class="chapter" data-level="8.1.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-85"><i class="fa fa-check"></i><b>8.1.3</b> 聚类方法</a></li>
+<li class="chapter" data-level="8.1.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-88"><i class="fa fa-check"></i><b>8.1.4</b> 聚类的挑战</a></li>
+<li class="chapter" data-level="8.1.5" data-path="biological-analysis.html"><a href="biological-analysis.html#scrna-seq-1"><i class="fa fa-check"></i><b>8.1.5</b> scRNA-seq数据的工具</a></li>
+<li class="chapter" data-level="8.1.6" data-path="biological-analysis.html"><a href="biological-analysis.html#section-89"><i class="fa fa-check"></i><b>8.1.6</b> 比较聚类结果</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#clust-methods"><i class="fa fa-check"></i><b>8.2</b> 聚类示例</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="biological-analysis.html"><a href="biological-analysis.html#deng-"><i class="fa fa-check"></i><b>8.2.1</b> Deng 数据集</a></li>
+<li class="chapter" data-level="8.2.2" data-path="biological-analysis.html"><a href="biological-analysis.html#sc3-1"><i class="fa fa-check"></i><b>8.2.2</b> SC3</a></li>
+<li class="chapter" data-level="8.2.3" data-path="biological-analysis.html"><a href="biological-analysis.html#tsne-kmeans"><i class="fa fa-check"></i><b>8.2.3</b> tSNE + kmeans</a></li>
+<li class="chapter" data-level="8.2.4" data-path="biological-analysis.html"><a href="biological-analysis.html#sincera-1"><i class="fa fa-check"></i><b>8.2.4</b> SINCERA</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-90"><i class="fa fa-check"></i><b>8.3</b> 特征选择</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="biological-analysis.html"><a href="biological-analysis.html#null"><i class="fa fa-check"></i><b>8.3.1</b> 识别基因与null模型</a></li>
+<li class="chapter" data-level="8.3.2" data-path="biological-analysis.html"><a href="biological-analysis.html#correlated-expression"><i class="fa fa-check"></i><b>8.3.2</b> Correlated Expression</a></li>
+<li class="chapter" data-level="8.3.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-91"><i class="fa fa-check"></i><b>8.3.3</b> 比较不同的方法</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-92"><i class="fa fa-check"></i><b>8.4</b> 伪时间分析</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="biological-analysis.html"><a href="biological-analysis.html#deng"><i class="fa fa-check"></i><b>8.4.1</b> Deng数据初探</a></li>
+<li class="chapter" data-level="8.4.2" data-path="biological-analysis.html"><a href="biological-analysis.html#tscan"><i class="fa fa-check"></i><b>8.4.2</b> TSCAN</a></li>
+<li class="chapter" data-level="8.4.3" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle"><i class="fa fa-check"></i><b>8.4.3</b> monocle</a></li>
+<li class="chapter" data-level="8.4.4" data-path="biological-analysis.html"><a href="biological-analysis.html#diffusion-maps"><i class="fa fa-check"></i><b>8.4.4</b> Diffusion maps</a></li>
+<li class="chapter" data-level="8.4.5" data-path="biological-analysis.html"><a href="biological-analysis.html#slicer"><i class="fa fa-check"></i><b>8.4.5</b> SLICER</a></li>
+<li class="chapter" data-level="8.4.6" data-path="biological-analysis.html"><a href="biological-analysis.html#ouija"><i class="fa fa-check"></i><b>8.4.6</b> Ouija</a></li>
+<li class="chapter" data-level="8.4.7" data-path="biological-analysis.html"><a href="biological-analysis.html#comparison-of-the-methods"><i class="fa fa-check"></i><b>8.4.7</b> 方法比较</a></li>
+<li class="chapter" data-level="8.4.8" data-path="biological-analysis.html"><a href="biological-analysis.html#expression-of-genes-through-time"><i class="fa fa-check"></i><b>8.4.8</b> Expression of genes through time</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#imputation"><i class="fa fa-check"></i><b>8.5</b> Imputation</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="biological-analysis.html"><a href="biological-analysis.html#scimpute"><i class="fa fa-check"></i><b>8.5.1</b> scImpute</a></li>
+<li class="chapter" data-level="8.5.2" data-path="biological-analysis.html"><a href="biological-analysis.html#drimpute"><i class="fa fa-check"></i><b>8.5.2</b> DrImpute</a></li>
+<li class="chapter" data-level="8.5.3" data-path="biological-analysis.html"><a href="biological-analysis.html#magic"><i class="fa fa-check"></i><b>8.5.3</b> MAGIC</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#dechapter"><i class="fa fa-check"></i><b>8.6</b> 差异表达分析</a><ul>
+<li class="chapter" data-level="8.6.1" data-path="biological-analysis.html"><a href="biological-analysis.html#bulk-rna-seq-1"><i class="fa fa-check"></i><b>8.6.1</b> Bulk RNA-seq</a></li>
+<li class="chapter" data-level="8.6.2" data-path="biological-analysis.html"><a href="biological-analysis.html#single-cell-rna-seq"><i class="fa fa-check"></i><b>8.6.2</b> Single cell RNA-seq</a></li>
+<li class="chapter" data-level="8.6.3" data-path="biological-analysis.html"><a href="biological-analysis.html#Differences-in-Distribution"><i class="fa fa-check"></i><b>8.6.3</b> 分布的差异</a></li>
+<li class="chapter" data-level="8.6.4" data-path="biological-analysis.html"><a href="biological-analysis.html#Models-of-single-cell-RNASeq-data"><i class="fa fa-check"></i><b>8.6.4</b> scRNA-seq数据模型</a></li>
+</ul></li>
+<li class="chapter" data-level="8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#DE-in-a-real-dataset"><i class="fa fa-check"></i><b>8.7</b> 差异表达分析实战</a><ul>
+<li class="chapter" data-level="8.7.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-93"><i class="fa fa-check"></i><b>8.7.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.7.2" data-path="biological-analysis.html"><a href="biological-analysis.html#kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>8.7.2</b> Kolmogorov-Smirnov test</a></li>
+<li class="chapter" data-level="8.7.3" data-path="biological-analysis.html"><a href="biological-analysis.html#wilcoxmann-whitney-u-test"><i class="fa fa-check"></i><b>8.7.3</b> Wilcox/Mann-Whitney-U Test</a></li>
+<li class="chapter" data-level="8.7.4" data-path="biological-analysis.html"><a href="biological-analysis.html#edger"><i class="fa fa-check"></i><b>8.7.4</b> edgeR</a></li>
+<li class="chapter" data-level="8.7.5" data-path="biological-analysis.html"><a href="biological-analysis.html#monocle-1"><i class="fa fa-check"></i><b>8.7.5</b> Monocle</a></li>
+<li class="chapter" data-level="8.7.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mast"><i class="fa fa-check"></i><b>8.7.6</b> MAST</a></li>
+<li class="chapter" data-level="8.7.7" data-path="biological-analysis.html"><a href="biological-analysis.html#slow-method1h"><i class="fa fa-check"></i><b>8.7.7</b> Slow method(&gt;1h)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="biological-analysis.html"><a href="biological-analysis.html#scrna-seq-2"><i class="fa fa-check"></i><b>8.8</b> 比较/组合scRNA-seq数据集</a><ul>
+<li class="chapter" data-level="8.8.1" data-path="biological-analysis.html"><a href="biological-analysis.html#section-95"><i class="fa fa-check"></i><b>8.8.1</b> 介绍</a></li>
+<li class="chapter" data-level="8.8.2" data-path="biological-analysis.html"><a href="biological-analysis.html#datasets"><i class="fa fa-check"></i><b>8.8.2</b> Datasets</a></li>
+<li class="chapter" data-level="8.8.3" data-path="biological-analysis.html"><a href="biological-analysis.html#scmap"><i class="fa fa-check"></i><b>8.8.3</b> scmap</a></li>
+<li class="chapter" data-level="8.8.4" data-path="biological-analysis.html"><a href="biological-analysis.html#section-98"><i class="fa fa-check"></i><b>8.8.4</b> 细胞间映射</a></li>
+<li class="chapter" data-level="8.8.5" data-path="biological-analysis.html"><a href="biological-analysis.html#metaneighbour"><i class="fa fa-check"></i><b>8.8.5</b> Metaneighbour</a></li>
+<li class="chapter" data-level="8.8.6" data-path="biological-analysis.html"><a href="biological-analysis.html#mnncorrect-1"><i class="fa fa-check"></i><b>8.8.6</b> mnnCorrect</a></li>
+<li class="chapter" data-level="8.8.7" data-path="biological-analysis.html"><a href="biological-analysis.html#seurat"><i class="fa fa-check"></i><b>8.8.7</b> 典型相关分析 (Seurat)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.9" data-path="biological-analysis.html"><a href="biological-analysis.html#scrna-seq-3"><i class="fa fa-check"></i><b>8.9</b> 检索scRNA-seq数据</a><ul>
+<li class="chapter" data-level="8.9.1" data-path="biological-analysis.html"><a href="biological-analysis.html#about"><i class="fa fa-check"></i><b>8.9.1</b> About</a></li>
+<li class="chapter" data-level="8.9.2" data-path="biological-analysis.html"><a href="biological-analysis.html#section-100"><i class="fa fa-check"></i><b>8.9.2</b> 数据集</a></li>
+<li class="chapter" data-level="8.9.3" data-path="biological-analysis.html"><a href="biological-analysis.html#section-101"><i class="fa fa-check"></i><b>8.9.3</b> 基因索引</a></li>
+<li class="chapter" data-level="8.9.4" data-path="biological-analysis.html"><a href="biological-analysis.html#marker"><i class="fa fa-check"></i><b>8.9.4</b> Marker基因</a></li>
+<li class="chapter" data-level="8.9.5" data-path="biological-analysis.html"><a href="biological-analysis.html#section-102"><i class="fa fa-check"></i><b>8.9.5</b> 搜索基因列表</a></li>
+<li class="chapter" data-level="8.9.6" data-path="biological-analysis.html"><a href="biological-analysis.html#in-silico-gating"><i class="fa fa-check"></i><b>8.9.6</b> In-silico gating</a></li>
+<li class="chapter" data-level="8.9.7" data-path="biological-analysis.html"><a href="biological-analysis.html#sessioninfo"><i class="fa fa-check"></i><b>8.9.7</b> sessionInfo()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="seurat-chapter.html"><a href="seurat-chapter.html"><i class="fa fa-check"></i><b>9</b> Seurat</a><ul>
+<li class="chapter" data-level="9.1" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Setup-the-Seurat-Object"><i class="fa fa-check"></i><b>9.1</b> 构建Seurat对象</a></li>
+<li class="chapter" data-level="9.2" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Standard-pre-processing-workflow"><i class="fa fa-check"></i><b>9.2</b> 标准预处理流程</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="seurat-chapter.html"><a href="seurat-chapter.html#QC-and-selecting-cells-for-further-analysis"><i class="fa fa-check"></i><b>9.2.1</b> 质控和选择细胞</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Normalizing-the-data"><i class="fa fa-check"></i><b>9.3</b> 数据标准化</a></li>
+<li class="chapter" data-level="9.4" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Detection-of-variable-genes-across-the-single-cells"><i class="fa fa-check"></i><b>9.4</b> 检测高可变基因</a></li>
+<li class="chapter" data-level="9.5" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Scaling-the-data-and-removing-unwanted-sources-of-variation"><i class="fa fa-check"></i><b>9.5</b> 缩放数据并删除不需要的变异来源</a></li>
+<li class="chapter" data-level="9.6" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Perform-linear-dimensional-reduction"><i class="fa fa-check"></i><b>9.6</b> 线性降维</a></li>
+<li class="chapter" data-level="9.7" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Determine-statistically-significant-principal-components"><i class="fa fa-check"></i><b>9.7</b> 统计显著主成分</a></li>
+<li class="chapter" data-level="9.8" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Cluster-the-cells"><i class="fa fa-check"></i><b>9.8</b> 聚类</a></li>
+<li class="chapter" data-level="9.9" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Run-Non-linear-dimensional-reduction-tSNE"><i class="fa fa-check"></i><b>9.9</b> 非线性降维</a></li>
+<li class="chapter" data-level="9.10" data-path="seurat-chapter.html"><a href="seurat-chapter.html#umap"><i class="fa fa-check"></i><b>9.10</b> 运行UMAP</a></li>
+<li class="chapter" data-level="9.11" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Finding-differentially-expressed-genes-cluster-biomarkers"><i class="fa fa-check"></i><b>9.11</b> 差异表达分析</a></li>
+<li class="chapter" data-level="9.12" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Assigning-cell-type-identity-to-clusters"><i class="fa fa-check"></i><b>9.12</b> 确定cluster细胞类型</a></li>
+<li class="chapter" data-level="9.13" data-path="seurat-chapter.html"><a href="seurat-chapter.html#Further-subdivisions-within-cell-types"><i class="fa fa-check"></i><b>9.13</b> 细分细胞类型</a></li>
+<li class="chapter" data-level="9.14" data-path="seurat-chapter.html"><a href="seurat-chapter.html#sessioninfo-1"><i class="fa fa-check"></i><b>9.14</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html"><i class="fa fa-check"></i><b>10</b> “理想”scRANA-seq流程</a><ul>
+<li class="chapter" data-level="10.1" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Experimental-Design"><i class="fa fa-check"></i><b>10.1</b> 实验设计</a></li>
+<li class="chapter" data-level="10.2" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Processing-Reads"><i class="fa fa-check"></i><b>10.2</b> reads处理</a></li>
+<li class="chapter" data-level="10.3" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Preparing-Expression-Matrix"><i class="fa fa-check"></i><b>10.3</b> 准备表达矩阵</a></li>
+<li class="chapter" data-level="10.4" data-path="Ideal-scRNA-seq-pipeline.html"><a href="Ideal-scRNA-seq-pipeline.html#Biological-Interpretation"><i class="fa fa-check"></i><b>10.4</b> 生物学解释</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="Advanced-exercises.html"><a href="Advanced-exercises.html"><i class="fa fa-check"></i><b>11</b> 进阶练习</a></li>
+<li class="chapter" data-level="12" data-path="Resources.html"><a href="Resources.html"><i class="fa fa-check"></i><b>12</b> 相关资源</a><ul>
+<li class="chapter" data-level="12.1" data-path="Resources.html"><a href="Resources.html#scRNA-seq-protocols"><i class="fa fa-check"></i><b>12.1</b> scRNA-seq protocols</a></li>
+<li class="chapter" data-level="12.2" data-path="Resources.html"><a href="Resources.html#external-rna-control-consortium-ercc"><i class="fa fa-check"></i><b>12.2</b> External RNA Control Consortium (ERCC)</a></li>
+<li class="chapter" data-level="12.3" data-path="Resources.html"><a href="Resources.html#scRNA-seq-analysis-tools"><i class="fa fa-check"></i><b>12.3</b> scRNA-seq分析工具</a></li>
+<li class="chapter" data-level="12.4" data-path="Resources.html"><a href="Resources.html#scrna-seq-4"><i class="fa fa-check"></i><b>12.4</b> scRNA-seq公共数据集</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>13</b> References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/lemonbases/scRNA.seq.course.CN" target="blank">碱基吃柠檬</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">scRNA-seq数据分析</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="intro_r_bioc" class="section level1">
+<h1><span class="header-section-number">5</span> R/Bioconductor介绍</h1>
+<div id="r" class="section level2">
+<h2><span class="header-section-number">5.1</span> 安装R包</h2>
+<div id="cran" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> CRAN</h3>
+<p>The Comprehensive R Archive Network <a href="https://cran.r-project.org/">CRAN</a> 是最大的R包库。除了成功build和安装之外，对上传R包要求很少，因此文档和相关支持通常很少，弄清楚如何使用这些R包本身成为一个挑战。CRAN是R搜索安装R包的默认库：</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
+<a class="sourceLine" id="cb51-2" title="2"><span class="kw">require</span>(<span class="st">&quot;devtools&quot;</span>)</a></code></pre></div>
+</div>
+<div id="github-1" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> Github</h3>
+<p><a href="https://github.com/">Github</a> 并不特定于R，任何状态的任何类型的代码都可以上传。但无法保证上传到github的软件包可以安装，也不保证它声称做的事情。可以使用上述安装的“devtools”软件包直接从github下载和安装R软件包。</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;tallulandrews/M3Drop&quot;</span>)</a></code></pre></div>
+<p>Github同时也是一个版本控制系统，可以存储任何软件包的多个版本。默认情况下，会安装最新的“master”版本的软件包。如果您想使用旧版本或开发分支，可以使用“ref”参数指定：</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="co"># different branch</span></a>
+<a class="sourceLine" id="cb53-2" title="2">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;tallulandrews/M3D&quot;</span>, <span class="dt">ref=</span><span class="st">&quot;nbumi&quot;</span>)</a>
+<a class="sourceLine" id="cb53-3" title="3"><span class="co"># previous commit</span></a>
+<a class="sourceLine" id="cb53-4" title="4">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;tallulandrews/M3Drop&quot;</span>, <span class="dt">ref=</span><span class="st">&quot;434d2da28254acc8de4940c1dc3907ac72973135&quot;</span>)</a></code></pre></div>
+<p>注意: 确保重新安装M3Drop master分支以便后续课堂使用。</p>
+</div>
+<div id="bioconductor" class="section level3">
+<h3><span class="header-section-number">5.1.3</span> Bioconductor</h3>
+<p>Bioconductor是专门用于生物分析的R包库。它对提交有最严格的要求，包括在各平台上安装，以及完整的文档和教程（称为vignette），解释如何使用包。Bioconductor还鼓励使用标准数据结构/类。</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1"><span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)</a>
+<a class="sourceLine" id="cb54-2" title="2"><span class="kw">biocLite</span>(<span class="st">&quot;edgeR&quot;</span>)</a></code></pre></div>
+<p>注意: 某些情况下有必要将上述的“<a href="http://" class="uri">http://</a>” 替换为 “<a href="https://" class="uri">https://</a>” ,这取决于网络连接的安全属性。</p>
+<p>Bioconductor还要求作者维护他们的R包，并定期6个月发布更新。 在尝试安装课程所需R包之前，请确保使用最新版本的bioconductor。</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)</a>
+<a class="sourceLine" id="cb55-2" title="2"><span class="kw">biocLite</span>(<span class="st">&quot;BiocUpgrade&quot;</span>)</a></code></pre></div>
+</div>
+<div id="section-25" class="section level3">
+<h3><span class="header-section-number">5.1.4</span> 源码安装</h3>
+<p>安装包的最后一种方法是直接从源码安装。 在这种情况下，必须下载完整构建的源代码文件，通常是packagename.tar.gz，或克隆github仓并重新build软件包。通常，只有在编辑包或者由于某种原因前一种方法失败时才会这样做。</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;M3Drop_3.05.00.tar.gz&quot;</span>, <span class="dt">type=</span><span class="st">&quot;source&quot;</span>)</a></code></pre></div>
+</div>
+</div>
+<div id="section-26" class="section level2">
+<h2><span class="header-section-number">5.2</span> 安装说明:</h2>
+<p>本课程所需的所有软件包都可以在<a href="https://github.com/hemberg-lab/scRNA.seq.course/blob/master/Dockerfile">这里</a>获得。从“RUN Rscript -e”install.packages(‘devtools’)" “开始，在命令行或者R session运行引号内的命令(移除”RUN")。注意，某些情况下安装顺序也很重要，请确保按顺序执行。</p>
+</div>
+<div id="section-27" class="section level2">
+<h2><span class="header-section-number">5.3</span> 数据类型/类</h2>
+<p>R是一种高级语言，因此底层数据类型通常并不重要。 如果您使用其他语言（如C）直接访问R数据，则需要考虑，但这超出了本课程的范围。 相反，我们将考虑基本数据类型：数值(numeric)，整数(integer)，逻辑(logical)和字符(character)，以及高级数据类“因子”。 使用“class（）”函数检查数据的类型。</p>
+<p>除此之外：R还可以将数据存储为“复数(complex)”，但通常这与生物分析无关。</p>
+<div id="section-28" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> 数值</h3>
+<p>“数值”类型是存储任何数值数据的默认类 - 整数，十进制数，科学计数法中的数字等…</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1">x =<span class="st"> </span><span class="fl">1.141</span></a>
+<a class="sourceLine" id="cb57-2" title="2"><span class="kw">class</span>(x)</a></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">y =<span class="st"> </span><span class="dv">42</span></a>
+<a class="sourceLine" id="cb59-2" title="2"><span class="kw">class</span>(y)</a></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1">z =<span class="st"> </span><span class="fl">6.02e23</span></a>
+<a class="sourceLine" id="cb61-2" title="2"><span class="kw">class</span>(z)</a></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<p>即使R有一个“整数”类型，42可以更有效地存储为整数，默认是将其存储为“数值”类型。 如果我们想要将42存储为整数，我们必须<code>强制</code>类型转换：</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1">y =<span class="st"> </span><span class="kw">as.integer</span>(<span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb63-2" title="2"><span class="kw">class</span>(y)</a></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<p>强制R将数据存储为特定类，如果我们的数据与该类不兼容，它仍将执行此操作，但数据将转换为NA：</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1"><span class="kw">as.numeric</span>(<span class="st">&quot;H&quot;</span>)</a></code></pre></div>
+<pre><code>## Warning: 强制改变过程中产生了NA</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>上述将“字符”数据强制转换为无意义的数值，因此触发（“抛出”）警告消息。 由于这只是一个警告信息，R将继续执行脚本/函数中的后续命令，而“错误”将导致R停止执行。</p>
+</div>
+<div id="section-29" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> 字符/字符串</h3>
+<p>“character”类型存储各种文本数据。 编程约定将包含多个字母的数据称为“字符串”，因此大多数作用于字符数据的R函数将数据称为“字符串”，并且通常在其名称中包含“str”或“string”。字符串通过双引号标识，而变量/函数名称则不是：</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1">x =<span class="st"> </span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb68-2" title="2"></a>
+<a class="sourceLine" id="cb68-3" title="3">a =<span class="st"> &quot;x&quot;</span> <span class="co"># character &quot;x&quot;</span></a>
+<a class="sourceLine" id="cb68-4" title="4">a</a></code></pre></div>
+<pre><code>## [1] &quot;x&quot;</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1">b =<span class="st"> </span>x <span class="co"># variable x</span></a>
+<a class="sourceLine" id="cb70-2" title="2">b</a></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>除了标准的字母数字字符外，字符串还可以存储各种特殊字符。 特殊字符后跟单个字符进行标识，最常见的是tab的特殊字符：<code>\t</code>和换行符：<code>\n</code>。 为了演示这些特殊字符，用特殊字符将两个字符串连接起来：</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">cat</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;World&quot;</span>, <span class="dt">sep=</span> <span class="st">&quot; &quot;</span>)</a></code></pre></div>
+<pre><code>## Hello World</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">cat</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;World&quot;</span>, <span class="dt">sep=</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</a></code></pre></div>
+<pre><code>## Hello    World</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1"><span class="kw">cat</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;World&quot;</span>, <span class="dt">sep=</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+<pre><code>## Hello
+## World</code></pre>
+<p>注意：特殊字符在不同函数中工作方式不同。比如<code>paste</code>函数和<code>cat</code>函数功能相同，但是不识别特殊字符。</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1"><span class="kw">paste</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;World&quot;</span>, <span class="dt">sep=</span> <span class="st">&quot; &quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;Hello World&quot;</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="kw">paste</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;World&quot;</span>, <span class="dt">sep=</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;Hello\tWorld&quot;</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1"><span class="kw">paste</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;World&quot;</span>, <span class="dt">sep=</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;Hello\nWorld&quot;</code></pre>
+<p>单反斜杠或双反斜杠也用作<code>转义</code>字符来关闭特殊字符功能或允许引号包含在字符串中：</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1"><span class="kw">cat</span>(<span class="st">&quot;This </span><span class="ch">\&quot;</span><span class="st">string</span><span class="ch">\&quot;</span><span class="st"> contains quotation marks.&quot;</span>)</a></code></pre></div>
+<pre><code>## This &quot;string&quot; contains quotation marks.</code></pre>
+<p>特殊字符通常仅用于模式匹配，以及将数据读取/写入文件 例如，将tab分隔文件读入R。</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">dat =<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;file.tsv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</a></code></pre></div>
+<p>另一种特殊类型的字符数据是颜色。 颜色可以通过三种主要方式指定：<a href="http://bxhorn.com/r-color-tables/">名字</a>，使用<code>rgb</code>功能的红色，绿色，蓝色值以及使用<code>hsv</code>函数的色调，饱和度和亮度。 默认情况下，rgb和hsvs三个值在0-1之间，透明度可选的第四个值。或者，可以从许多不同的包中加载预定颜色组，其中<a href="http://colorbrewer2.org/">RColorBrewer</a>是最受欢迎的一种。</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1">reds =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="kw">rgb</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="kw">hsv</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb87-2" title="2">reds</a></code></pre></div>
+<pre><code>## [1] &quot;red&quot;     &quot;#FF0000&quot; &quot;#FF0000&quot;</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1"><span class="kw">barplot</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">col=</span>reds, <span class="dt">names=</span><span class="kw">c</span>(<span class="st">&quot;by_name&quot;</span>, <span class="st">&quot;by_rgb&quot;</span>, <span class="st">&quot;by_hsv&quot;</span>))</a></code></pre></div>
+<p><img src="05intro-R-Bioc_files/figure-html/unnamed-chunk-16-1.png" width="90%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="section-30" class="section level3">
+<h3><span class="header-section-number">5.3.3</span> 逻辑值</h3>
+<p><code>logical</code>类型存储布尔值，即TRUE和FALSE。它用于存储逻辑运算的结果，条件语句将被强制转换为此类。 大多数其他数据类型可以强制转换为布尔值而不会触发（或“抛出”）错误消息，但这可能会导致意料之外的情况。</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1">x =<span class="st"> </span><span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb90-2" title="2"><span class="kw">class</span>(x)</a></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" title="1">y =<span class="st"> &quot;T&quot;</span></a>
+<a class="sourceLine" id="cb92-2" title="2"><span class="kw">as.logical</span>(y)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" title="1">z =<span class="st"> </span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb94-2" title="2"><span class="kw">as.logical</span>(z)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" title="1">x =<span class="st"> </span><span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb96-2" title="2"><span class="kw">class</span>(x)</a></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" title="1">y =<span class="st"> &quot;F&quot;</span></a>
+<a class="sourceLine" id="cb98-2" title="2"><span class="kw">as.logical</span>(y)</a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" title="1">z =<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb100-2" title="2"><span class="kw">as.logical</span>(z)</a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p><strong>练习1</strong>
+试验其他字符和数值，其中哪些被强制为TRUE或FALSE？哪些都不是？
+有没有抛出警告/错误信息？</p>
+</div>
+<div id="section-31" class="section level3">
+<h3><span class="header-section-number">5.3.4</span> 因子</h3>
+<p>字符串/字符数据存储效率非常低，每个字母通常需要与整数相同的内存。 因此，当存储具有重复元素的字符串向量时，更有效的方式是将每个元素分配给整数，将向量存储为整数和字符串到整数关联表。 因此，默认情况下，R将读取数据表的文本列作为因子。</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" title="1">str_vector =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;Banana&quot;</span>, <span class="st">&quot;Banana&quot;</span>, <span class="st">&quot;Banana&quot;</span>, <span class="st">&quot;Carrot&quot;</span>, <span class="st">&quot;Carrot&quot;</span>, <span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;Banana&quot;</span>) </a>
+<a class="sourceLine" id="cb102-2" title="2">factored_vector =<span class="st"> </span><span class="kw">factor</span>(str_vector)</a>
+<a class="sourceLine" id="cb102-3" title="3">factored_vector</a></code></pre></div>
+<pre><code>## [1] Apple  Apple  Banana Banana Banana Carrot Carrot Apple  Banana
+## Levels: Apple Banana Carrot</code></pre>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" title="1"><span class="kw">as.numeric</span>(factored_vector)</a></code></pre></div>
+<pre><code>## [1] 1 1 2 2 2 3 3 1 2</code></pre>
+<p>因子的双重性质可能导致一些不直观的行为。例如，连接两个因子会将它们转换为数字形式，丢失原始字符串。</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" title="1"><span class="kw">c</span>(factored_vector, factored_vector)</a></code></pre></div>
+<pre><code>##  [1] 1 1 2 2 2 3 3 1 2 1 1 2 2 2 3 3 1 2</code></pre>
+<p>同样，如果由于格式化问题，数值数据被错误地解释为字符串，那么在强制转换为数值之前必须将因子转换回字符串：</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" title="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;20&quot;</span>, <span class="st">&quot;25&quot;</span>, <span class="st">&quot;23&quot;</span>, <span class="st">&quot;38&quot;</span>, <span class="st">&quot;20&quot;</span>, <span class="st">&quot;40&quot;</span>, <span class="st">&quot;25&quot;</span>, <span class="st">&quot;30&quot;</span>)</a>
+<a class="sourceLine" id="cb108-2" title="2">x =<span class="st"> </span><span class="kw">factor</span>(x)</a>
+<a class="sourceLine" id="cb108-3" title="3"><span class="kw">as.numeric</span>(x)</a></code></pre></div>
+<pre><code>## [1] 1 3 2 5 1 6 3 4</code></pre>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" title="1"><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(x))</a></code></pre></div>
+<pre><code>## [1] 20 25 23 38 20 40 25 30</code></pre>
+<p>要使R读取文本作为字符数据而不是因子，在每个R会话开始s时，设置环境选项<code>stringsAsFactors = FALSE</code>。</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1"><span class="kw">options</span>(<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<p><strong>练习</strong></p>
+<p>使用因子为任意长的水果矢量创建一个颜色矢量，如上面的’str_vector`？
+<strong>答案</strong></p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" title="1">long_str_vector =<span class="st"> </span><span class="kw">c</span>(str_vector, str_vector, str_vector)</a>
+<a class="sourceLine" id="cb113-2" title="2">fruit_cols =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;orange&quot;</span>)</a>
+<a class="sourceLine" id="cb113-3" title="3">fruit_colour_vec =<span class="st"> </span>fruit_cols[<span class="kw">as.numeric</span>(<span class="kw">factor</span>(long_str_vector, <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;Banana&quot;</span>, <span class="st">&quot;Carrot&quot;</span>)))]</a></code></pre></div>
+</div>
+<div id="section-32" class="section level3">
+<h3><span class="header-section-number">5.3.5</span> 检查数据类型</h3>
+<p>建议在读取文件后检查数类型据是否正确：</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" title="1">x =<span class="st"> </span><span class="fl">1.4</span></a>
+<a class="sourceLine" id="cb114-2" title="2"><span class="kw">is.numeric</span>(x)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" title="1"><span class="kw">is.character</span>(x)</a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" title="1"><span class="kw">is.logical</span>(x)</a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" title="1"><span class="kw">is.factor</span>(x)</a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+</div>
+<div id="section-33" class="section level2">
+<h2><span class="header-section-number">5.4</span> 基本数据结构</h2>
+<p>到目前为止，我们只关注单个值和向量。向量是R中最简单的数据结构。它们是所有相同类型数据的一维数组。 如果创建向量时的输入具有不同类型，则它将被强制转换为与数据最一致的数据类型。</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" title="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Hello&quot;</span>, <span class="dv">5</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb122-2" title="2">x</a></code></pre></div>
+<pre><code>## [1] &quot;Hello&quot; &quot;5&quot;     &quot;TRUE&quot;</code></pre>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" title="1"><span class="kw">class</span>(x)</a></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>在这里，尝试将字符，数值和逻辑数据放入单个向量中，所有值强制转换为<code>character</code>数据。</p>
+<p><code>矩阵</code>是二维向量，它也要求所有数据都是相同的类型。
+如果将字符向量和数字向量组合成矩阵，所有数据都将被强制转换为字符类型：</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" title="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)</a>
+<a class="sourceLine" id="cb126-2" title="2">y =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb126-3" title="3"><span class="kw">class</span>(x)</a></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" title="1"><span class="kw">class</span>(y)</a></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" title="1">m =<span class="st"> </span><span class="kw">cbind</span>(x, y)</a>
+<a class="sourceLine" id="cb130-2" title="2">m</a></code></pre></div>
+<pre><code>##      x   y  
+## [1,] &quot;A&quot; &quot;1&quot;
+## [2,] &quot;B&quot; &quot;2&quot;
+## [3,] &quot;C&quot; &quot;3&quot;</code></pre>
+<p>引号表示数字向量已被强制转换为字符类型。或者，使用数据框用不同数据类型的列存储数据。</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" title="1">z =<span class="st"> </span><span class="kw">data.frame</span>(x, y)</a>
+<a class="sourceLine" id="cb132-2" title="2">z</a></code></pre></div>
+<pre><code>##   x y
+## 1 A 1
+## 2 B 2
+## 3 C 3</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" title="1"><span class="kw">class</span>(z[,<span class="dv">1</span>])</a></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" title="1"><span class="kw">class</span>(z[,<span class="dv">2</span>])</a></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<p>如果已经设置stringsAsFactors = FALSE，会发现第一列仍然是字类型符，否则它将自动转换为因子。</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" title="1"><span class="kw">options</span>(<span class="dt">stringsAsFactors=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb138-2" title="2">z =<span class="st"> </span><span class="kw">data.frame</span>(x, y)</a>
+<a class="sourceLine" id="cb138-3" title="3"><span class="kw">class</span>(z[,<span class="dv">1</span>])</a></code></pre></div>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<p>矩阵和数据框之间的另一个区别是能够使用<code>$</code>运算符选择列：</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" title="1">m<span class="op">$</span>x <span class="co"># throws an error</span></a>
+<a class="sourceLine" id="cb140-2" title="2">z<span class="op">$</span>x <span class="co"># ok</span></a></code></pre></div>
+<p>最后的基本数据结构是<code>list</code>。列表允许将不同类型和不同长度的数据存储在单个对象中。 列表的每个元素可以是任何其他R对象：任何类型的数据，任何数据结构，甚至其他列表或函数。</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" title="1">l =<span class="st"> </span><span class="kw">list</span>(m, z)</a>
+<a class="sourceLine" id="cb141-2" title="2">ll =<span class="st"> </span><span class="kw">list</span>(<span class="dt">sublist=</span>l, <span class="dt">a_matrix=</span>m, <span class="dt">numeric_value=</span><span class="dv">42</span>, <span class="dt">this_string=</span><span class="st">&quot;Hello World&quot;</span>, <span class="dt">even_a_function=</span>cbind)</a>
+<a class="sourceLine" id="cb141-3" title="3">ll</a></code></pre></div>
+<pre><code>## $sublist
+## $sublist[[1]]
+##      x   y  
+## [1,] &quot;A&quot; &quot;1&quot;
+## [2,] &quot;B&quot; &quot;2&quot;
+## [3,] &quot;C&quot; &quot;3&quot;
+## 
+## $sublist[[2]]
+##   x y
+## 1 A 1
+## 2 B 2
+## 3 C 3
+## 
+## 
+## $a_matrix
+##      x   y  
+## [1,] &quot;A&quot; &quot;1&quot;
+## [2,] &quot;B&quot; &quot;2&quot;
+## [3,] &quot;C&quot; &quot;3&quot;
+## 
+## $numeric_value
+## [1] 42
+## 
+## $this_string
+## [1] &quot;Hello World&quot;
+## 
+## $even_a_function
+## function (..., deparse.level = 1) 
+## .Internal(cbind(deparse.level, ...))
+## &lt;bytecode: 0x00000000082cbfa8&gt;
+## &lt;environment: namespace:base&gt;</code></pre>
+<p>列表最常用于从不适合任何先前数据结构的函数返回大量结果时。</p>
+</div>
+<div id="section-34" class="section level2">
+<h2><span class="header-section-number">5.5</span> 更多信息</h2>
+<p>通过在交互式会话中键入<code>?function</code>，可以获得这些数据类型相关的R命令的更多信息。</p>
+</div>
+<div id="section-35" class="section level2">
+<h2><span class="header-section-number">5.6</span> 数据类型</h2>
+<div id="section-36" class="section level3">
+<h3><span class="header-section-number">5.6.1</span> 什么是整洁的数据</h3>
+<p>整洁的数据主要是Hadley Wickham <span class="citation">(Wickham <a href="#ref-wickham_2014">2014</a>)</span>定义的概念。整洁的数据具有以下三个特征：</p>
+<ol style="list-style-type: decimal">
+<li>每个变量都有自己的列;</li>
+<li>每个观测都有自己的行;</li>
+<li>每个值都有自己的单元格。</li>
+</ol>
+<p>以下是一些整洁数据的示例：</p>
+<pre><code>##   Students   Subject Years Score
+## 1     Mark     Maths     1     5
+## 2     Jane   Biology     2     6
+## 3 Mohammed   Physics     3     4
+## 4      Tom     Maths     2     7
+## 5    Celia Computing     3     9</code></pre>
+<p>以下是一些不整洁数据的示例：</p>
+<pre><code>##    Students    Sport Category Counts
+## 1      Matt   Tennis     Wins      0
+## 2      Matt   Tennis   Losses      1
+## 3     Ellie    Rugby     Wins      3
+## 4     Ellie    Rugby   Losses      2
+## 5       Tim Football     Wins      1
+## 6       Tim Football   Losses      4
+## 7    Louise Swimming     Wins      2
+## 8    Louise Swimming   Losses      2
+## 9     Kelly  Running     Wins      5
+## 10    Kelly  Running   Losses      1</code></pre>
+<p>任务1：不整洁的数据在哪些方面不整洁？ z怎么整理数据？</p>
+<p>整洁的数据通常比不整齐的数据更容易使用，特别是使用ggplot等软件包。 幸运的是，可以使用软件包来整理不整洁的数据。 今天将探讨tidyr包中一些整理数据的函数。如果有兴趣了解有关整理数据的更多信息，建议阅读Garrett Grolemund和Hadley Wickham撰写的“R for Data Science”。 电子版可在此处获取：<a href="http://r4ds.had.co.nz/">http://r4ds.had.co.nz/</a></p>
+<p>上面不整洁的数据因为两个变量（<code>Wins</code>和<code>Lossses</code>）存储在一列（<code>Category</code>）中。这是数据不整洁的常见方式。 为了整理这些数据，我们需要将<code>Wins</code>和<code>Lossses</code>分成两列，并将<code>Counts</code>中的值拆分到这两列。 幸运的是，tidyverse包中有一个函数来执行此操作。<code>spread</code>有两个参数，<code>key</code>和<code>value</code>。 将包含多个变量的列的名称传递给<code>key</code>，并将包含多个变量值的列的名称传递给<code>value</code>。 例如：</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" title="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb145-2" title="2">sports&lt;-<span class="kw">data.frame</span>(<span class="dt">Students=</span><span class="kw">c</span>(<span class="st">&quot;Matt&quot;</span>, <span class="st">&quot;Matt&quot;</span>, <span class="st">&quot;Ellie&quot;</span>, <span class="st">&quot;Ellie&quot;</span>, <span class="st">&quot;Tim&quot;</span>, <span class="st">&quot;Tim&quot;</span>, <span class="st">&quot;Louise&quot;</span>, <span class="st">&quot;Louise&quot;</span>, <span class="st">&quot;Kelly&quot;</span>, <span class="st">&quot;Kelly&quot;</span>), <span class="dt">Sport=</span><span class="kw">c</span>(<span class="st">&quot;Tennis&quot;</span>,<span class="st">&quot;Tennis&quot;</span>, <span class="st">&quot;Rugby&quot;</span>, <span class="st">&quot;Rugby&quot;</span>,<span class="st">&quot;Football&quot;</span>, <span class="st">&quot;Football&quot;</span>,<span class="st">&quot;Swimming&quot;</span>,<span class="st">&quot;Swimming&quot;</span>, <span class="st">&quot;Running&quot;</span>, <span class="st">&quot;Running&quot;</span>), <span class="dt">Category=</span><span class="kw">c</span>(<span class="st">&quot;Wins&quot;</span>, <span class="st">&quot;Losses&quot;</span>, <span class="st">&quot;Wins&quot;</span>, <span class="st">&quot;Losses&quot;</span>, <span class="st">&quot;Wins&quot;</span>, <span class="st">&quot;Losses&quot;</span>, <span class="st">&quot;Wins&quot;</span>, <span class="st">&quot;Losses&quot;</span>, <span class="st">&quot;Wins&quot;</span>, <span class="st">&quot;Losses&quot;</span>), <span class="dt">Counts=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb145-3" title="3">sports</a></code></pre></div>
+<pre><code>##    Students    Sport Category Counts
+## 1      Matt   Tennis     Wins      0
+## 2      Matt   Tennis   Losses      1
+## 3     Ellie    Rugby     Wins      3
+## 4     Ellie    Rugby   Losses      2
+## 5       Tim Football     Wins      1
+## 6       Tim Football   Losses      4
+## 7    Louise Swimming     Wins      2
+## 8    Louise Swimming   Losses      2
+## 9     Kelly  Running     Wins      5
+## 10    Kelly  Running   Losses      1</code></pre>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" title="1"><span class="kw">spread</span>(sports, <span class="dt">key=</span>Category, <span class="dt">value=</span>Counts)</a></code></pre></div>
+<pre><code>##   Students    Sport Losses Wins
+## 1    Ellie    Rugby      2    3
+## 2    Kelly  Running      1    5
+## 3   Louise Swimming      2    2
+## 4     Matt   Tennis      1    0
+## 5      Tim Football      4    1</code></pre>
+<p>任务2：下面定义的数据框<code>foods</code>不是整洁的数据，找出不整洁的原因并用<code>spread()</code>整理数据。</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" title="1">foods&lt;-<span class="kw">data.frame</span>(<span class="dt">student=</span><span class="kw">c</span>(<span class="st">&quot;Antoinette&quot;</span>,<span class="st">&quot;Antoinette&quot;</span>,<span class="st">&quot;Taylor&quot;</span>, <span class="st">&quot;Taylor&quot;</span>, <span class="st">&quot;Alexa&quot;</span>, <span class="st">&quot;Alexa&quot;</span>), <span class="dt">Category=</span><span class="kw">c</span>(<span class="st">&quot;Dinner&quot;</span>, <span class="st">&quot;Dessert&quot;</span>, <span class="st">&quot;Dinner&quot;</span>, <span class="st">&quot;Dessert&quot;</span>, <span class="st">&quot;Dinner&quot;</span>,<span class="st">&quot;Dessert&quot;</span>), <span class="dt">Frequency=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>))</a></code></pre></div>
+<p>数据不整洁的另一种常见方式为列是值而不是变量。例如，下面的数据框显示了一些学生在5月和6月的测试中获得的分数。 数据不整洁，因为“May”和“June”列是值，而不是变量。</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" title="1">percentages&lt;-<span class="kw">data.frame</span>(<span class="dt">student=</span><span class="kw">c</span>(<span class="st">&quot;Alejandro&quot;</span>, <span class="st">&quot;Pietro&quot;</span>, <span class="st">&quot;Jane&quot;</span>), <span class="st">&quot;May&quot;</span>=<span class="kw">c</span>(<span class="dv">90</span>,<span class="dv">12</span>,<span class="dv">45</span>), <span class="st">&quot;June&quot;</span>=<span class="kw">c</span>(<span class="dv">80</span>,<span class="dv">30</span>,<span class="dv">100</span>))</a></code></pre></div>
+<p>tidyverse包中有一个函数来处理这种问题。<code>gather()</code>获取列为值的名称，<code>key</code>和<code>value</code>作为参数。 <code>key</code>是变量的名称，值为列名，<code>value</code>是变量的名称，其值分布在多个列上。即：</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb151-1" title="1"><span class="kw">gather</span>(percentages, <span class="st">&quot;May&quot;</span>, <span class="st">&quot;June&quot;</span>, <span class="dt">key=</span><span class="st">&quot;Month&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;Percentage&quot;</span>)</a></code></pre></div>
+<pre><code>##     student Month Percentage
+## 1 Alejandro   May         90
+## 2    Pietro   May         12
+## 3      Jane   May         45
+## 4 Alejandro  June         80
+## 5    Pietro  June         30
+## 6      Jane  June        100</code></pre>
+<p>这些例子与scRNA-seq分析没有多大关系，但旨在帮助说明整洁和不整洁数据的特征。 如果数据以整齐的格式存储，会发现分析单细胞RNA-seq数据要容易得多。通常鼓励以整齐的方式存储数据促进单细胞RNA-seq分析。</p>
+</div>
+<div id="rich-data" class="section level3">
+<h3><span class="header-section-number">5.6.2</span> 什么是Rich data?</h3>
+<p>如果你谷歌“Rich datga”，会发现这个术语有很多不同的定义。在本课程中，我们将使用“Rich data”来表示通过整合多个来源的信息生成的数据。例如，在R中创建一个对象来生成Rich data，该对象包含scRNA-seq实验中细胞的基因表达矩阵，还有关于如何进行实验的信息。 下面讨论的<code>SingleCellExperiment</code>类的对象是Rich data的一个例子。</p>
+</div>
+</div>
+<div id="bioconductor-singlecellexperiment--scater" class="section level2">
+<h2><span class="header-section-number">5.7</span> Bioconductor, <code>SingleCellExperiment</code> 和 <code>scater</code></h2>
+<div id="bioconductor-1" class="section level3">
+<h3><span class="header-section-number">5.7.1</span> Bioconductor</h3>
+<p>来自<a href="https://en.wikipedia.org/wiki/Bioconductor">Wikipedia</a>:
+<a href="https://www.bioconductor.org/">Bioconductor</a>是一个免费的，开源的开放式开发软件项目，用于分析和理解湿实验室产生的基因组数据。Bioconductor主要基于统计R编程语言，但也包含其他编程语言的贡献。 它每年有两个版本，伴随R的半年一个版本。在任何时候都存在一个发布版本，它对应于R的发布版本，以及一个开发版本，它对应于R的开发版本。大多数用户可以找到适合他们需求的发布版本。</p>
+<p>我们强烈建议所有新成员，甚至经验丰富的高通量数据分析师使用<a href="https://www.bioconductor.org/developers/how-to/commonMethodsAndClasses/">Bioconductor方法和类</a>。</p>
+</div>
+<div id="singlecellexperiment-" class="section level3">
+<h3><span class="header-section-number">5.7.2</span> <code>SingleCellExperiment</code> 类</h3>
+<p><a href="http://bioconductor.org/packages/SingleCellExperiment"><code>SingleCellExperiment</code></a>(SCE)是用于存储单细胞实验数据的S4类。 这包括存储和检索spike-in信息，细胞的降维坐标和尺寸因子，以及基因和文库的常用元数据。</p>
+<p>可以使用其构造函数创建此类的对象：</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb153-1" title="1"><span class="kw">library</span>(SingleCellExperiment)</a>
+<a class="sourceLine" id="cb153-2" title="2">counts &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100</span>, <span class="dt">lambda =</span> <span class="dv">10</span>), <span class="dt">ncol=</span><span class="dv">10</span>, <span class="dt">nrow=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb153-3" title="3"><span class="kw">rownames</span>(counts) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;gene&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb153-4" title="4"><span class="kw">colnames</span>(counts) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;cell&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb153-5" title="5">sce &lt;-<span class="st"> </span><span class="kw">SingleCellExperiment</span>(</a>
+<a class="sourceLine" id="cb153-6" title="6">    <span class="dt">assays =</span> <span class="kw">list</span>(<span class="dt">counts =</span> counts),</a>
+<a class="sourceLine" id="cb153-7" title="7">    <span class="dt">rowData =</span> <span class="kw">data.frame</span>(<span class="dt">gene_names =</span> <span class="kw">paste</span>(<span class="st">&quot;gene_name&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)),</a>
+<a class="sourceLine" id="cb153-8" title="8">    <span class="dt">colData =</span> <span class="kw">data.frame</span>(<span class="dt">cell_names =</span> <span class="kw">paste</span>(<span class="st">&quot;cell_name&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>))</a>
+<a class="sourceLine" id="cb153-9" title="9">)</a>
+<a class="sourceLine" id="cb153-10" title="10">sce</a></code></pre></div>
+<pre><code>## class: SingleCellExperiment 
+## dim: 10 10 
+## metadata(0):
+## assays(1): counts
+## rownames(10): gene1 gene2 ... gene9 gene10
+## rowData names(1): gene_names
+## colnames(10): cell1 cell2 ... cell9 cell10
+## colData names(1): cell_names
+## reducedDimNames(0):
+## spikeNames(0):</code></pre>
+<p><code>SingleCellExperiment</code>中, 用户可以为实验条目指定任意名称。 为了协助软件包之间的互操作性，作者提供了针对特定类型数据的名称的一些建议：</p>
+<ul>
+<li><strong>counts</strong>: 原始count数据，比如特定基因或转录本的reads数目;</li>
+<li><strong>normcounts</strong>: 标准化的值与原始counts具有相同的尺度。比如，counts除以细胞特异尺寸因子;</li>
+<li><strong>logcounts</strong>: 对数转换counts或类似counts的值。在大多数情况下，这被定义为对数转换的标准值，例如使用log2(count+1);</li>
+<li><strong>cpm</strong>: Counts-per-million，<span class="math inline">\(CPM=A*10^6/mappedreads\)</span>, A为比对到某基因的reads数（read count）;</li>
+<li><strong>tpm</strong>: Transcripts-per-million。<span class="math inline">\(TPM_i=(N_i/L_i)*10^6/sum(N_i/L_i+……..+ N_m/L_m)\)</span>. Ni：mapping到基因i上的read数； Li：基因i的外显子长度的总和.</li>
+</ul>
+<p>上述建议命名都有其getter/setter方法，方便操作<code>SingleCellExperiment</code>。比如，可以将<code>counts</code>标准化并赋值给<code>normcounts</code>：</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" title="1"><span class="kw">normcounts</span>(sce) &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">counts</span>(sce) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb155-2" title="2">sce</a></code></pre></div>
+<pre><code>## class: SingleCellExperiment 
+## dim: 10 10 
+## metadata(0):
+## assays(2): counts normcounts
+## rownames(10): gene1 gene2 ... gene9 gene10
+## rowData names(1): gene_names
+## colnames(10): cell1 cell2 ... cell9 cell10
+## colData names(1): cell_names
+## reducedDimNames(0):
+## spikeNames(0):</code></pre>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" title="1"><span class="kw">dim</span>(<span class="kw">normcounts</span>(sce))</a></code></pre></div>
+<pre><code>## [1] 10 10</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" title="1"><span class="kw">head</span>(<span class="kw">normcounts</span>(sce))</a></code></pre></div>
+<pre><code>##          cell1    cell2    cell3    cell4    cell5    cell6    cell7
+## gene1 3.169925 3.169925 2.000000 2.584963 2.584963 3.321928 3.584963
+## gene2 3.459432 1.584963 3.584963 3.807355 3.700440 3.700440 3.000000
+## gene3 3.000000 3.169925 3.807355 3.169925 3.321928 3.321928 3.321928
+## gene4 3.584963 3.459432 3.000000 3.807355 3.700440 3.700440 3.700440
+## gene5 3.906891 3.000000 3.169925 3.321928 3.584963 3.459432 3.807355
+## gene6 3.700440 3.700440 3.584963 4.000000 3.169925 3.000000 3.459432
+##          cell8    cell9   cell10
+## gene1 3.321928 3.807355 2.807355
+## gene2 3.807355 3.700440 4.000000
+## gene3 2.584963 4.000000 3.700440
+## gene4 3.169925 3.584963 3.700440
+## gene5 3.807355 2.584963 3.584963
+## gene6 3.321928 3.459432 4.000000</code></pre>
+</div>
+<div id="scater-" class="section level3">
+<h3><span class="header-section-number">5.7.3</span> <code>scater</code> 包</h3>
+<p><a href="http://bioconductor.org/packages/scater/"><code>scater</code></a>是用于scRNA-seq分析的R包<span class="citation">(McCarthy et al. <a href="#ref-McCarthy2017-kb">2017</a>)</span>。
+其包括下游分析前的质量控制，可视化和预处理等方法。</p>
+<p><code>scater</code>具有以下功能：</p>
+<ul>
+<li>自动计算QC指标</li>
+<li>定量来自pseudo-alignment read数据转录本</li>
+<li>数据格式标准化</li>
+<li>丰富的探索性分析可视化</li>
+<li>无缝集成到Bioconductor环境</li>
+<li>简单的规范化方法</li>
+</ul>
+<p>建议对所有scRNA-seq分析使用<code>scater</code>，而<code>scater</code>是课程第一部分的基础。</p>
+<p>如下图所示，<code>scater</code>在比对后对表达矩阵进行质量控制，过滤和标准化。<span style =“color：red”>注意，此图为<code>scater</code>的原始版本，其中使用<code>SCESet</code>类。 在最新版本中，该图仍然适用，除了<code>SCESet</code>用<code>SingleCellExperiment</code>替代。&lt;/ span&gt;</p>
+<p><img src="figures/scater_qc_workflow.png" /></p>
+</div>
+</div>
+<div id="ggplot2" class="section level2">
+<h2><span class="header-section-number">5.8</span> ggplot2介绍</h2>
+<div id="ggplot2-1" class="section level3">
+<h3><span class="header-section-number">5.8.1</span> ggplot2是什么?</h3>
+<p>ggplot2是由Hadley Wickham开发用于数据绘图的R软件包。在本实验中，我们将简要介绍该软件包的一些功能。 如果想了解更多关于如何使用ggplot2的信息，建议阅读Hadley Wickham撰写的“ggplot2 Elegant graphics for data analysis”。</p>
+</div>
+<div id="ggplot2j" class="section level3">
+<h3><span class="header-section-number">5.8.2</span> ggplot2j原则</h3>
+<ul>
+<li>ggplot2数据类型为数据框(dataframe)</li>
+<li>使用<code>aes</code>映射函数指定数据框中的变量如何映射到绘图上的要素</li>
+<li>使用geoms指定数据在图表中的表示方式，例如，散点图，条形图，箱形图等。</li>
+</ul>
+</div>
+<div id="aes" class="section level3">
+<h3><span class="header-section-number">5.8.3</span> 使用<code>aes</code>映射函数</h3>
+<p><code>aes</code>函数指定数据框中的变量如何映射到绘图上的元素。了解其工作原理，先看一个例子：</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" title="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb161-2" title="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb161-3" title="3"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb161-4" title="4">counts &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100</span>, <span class="dt">lambda =</span> <span class="dv">10</span>), <span class="dt">ncol=</span><span class="dv">10</span>, <span class="dt">nrow=</span><span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb161-5" title="5">Gene_ids &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;gene&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb161-6" title="6"><span class="kw">colnames</span>(counts) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;cell&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb161-7" title="7">counts&lt;-<span class="kw">data.frame</span>(Gene_ids, counts)</a>
+<a class="sourceLine" id="cb161-8" title="8">counts</a></code></pre></div>
+<pre><code>##    Gene_ids cell1 cell2 cell3 cell4 cell5 cell6 cell7 cell8 cell9 cell10
+## 1     gene1     8     8     3     5     5     9    11     9    13      6
+## 2     gene2    10     2    11    13    12    12     7    13    12     15
+## 3     gene3     7     8    13     8     9     9     9     5    15     12
+## 4     gene4    11    10     7    13    12    12    12     8    11     12
+## 5     gene5    14     7     8     9    11    10    13    13     5     11
+## 6     gene6    12    12    11    15     8     7    10     9    10     15
+## 7     gene7    11    11    14    11    11     5     9    13    13      7
+## 8     gene8     9    12     9     8     6    14     7    12    12     10
+## 9     gene9    14    12    11     7    10    10     8    14     7     10
+## 10   gene10    11    10     9     7    11    16     8     7     7      4</code></pre>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb163-1" title="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> counts, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cell1, <span class="dt">y =</span> cell2))</a></code></pre></div>
+<p><img src="05intro-R-Bioc_files/figure-html/unnamed-chunk-40-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>最后一条命令，<code>ggplot(data = counts，mapping = aes(x = cell1，y = cell2))</code>，<code>ggplot()</code>初始化一个ggplot对象并接受参数<code>data</code>和<code>mapping</code>。 将<code>counts</code>数据框传递给<code>data</code>并使用<code>aes()</code>函数来指定将变量cell1用作x变量而将变量cell2用作y变量。</p>
+<p>任务1：修改上述命令，初始化ggplot对象，其中cell10是x变量，cell8是y变量。</p>
+<p>然而刚刚创建的图表信息量不大，因为它们上没有显示数据。要显示数据，我们需要使用geoms。</p>
+</div>
+<div id="geoms" class="section level3">
+<h3><span class="header-section-number">5.8.4</span> Geoms</h3>
+<p>使用geoms来指定希望数据在图表上显示的方式。例如，可以指定数据显示为散点图，条形图或箱形图。</p>
+<p>下面是一个散点图的例子</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" title="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> counts, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cell1, <span class="dt">y =</span> cell2)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
+<p><img src="05intro-R-Bioc_files/figure-html/unnamed-chunk-41-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>可以看到，cell1和cell2中的基因表达之间似乎没有任何相关性。鉴于<code>counts</code>为随机生成数据，这并不令人奇怪。</p>
+<p>任务2：修改上述命令创建折线图。提示：执行<code>?ggplot</code>查看帮助页面。底部是ggplot包索引的链接，滚动索引，直到找到geom选项。</p>
+</div>
+<div id="section-37" class="section level3">
+<h3><span class="header-section-number">5.8.5</span> 绘制2个以上细胞的数据</h3>
+<p>到目前为止，我们一直在考虑数据框中2个细胞的基因counts。但是实际上数据框中有10个细胞，最好同时比较所有这些细胞的gene count会。如果同时绘制来自所有10个细胞的数据怎么办？</p>
+<p>目前不能这样做，因为将每个单独的细胞视为变量并将该变量分配给x轴或y轴。 可以创建一个10维图来绘制来自所有10个细胞的数据，但这a)不能用ggplot实现和b)不容易解释。</p>
+<p>可以整理数据，使用表示细胞ID的变量和表示基因counts的变量。</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" title="1">counts&lt;-<span class="kw">gather</span>(counts, <span class="kw">colnames</span>(counts)[<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>], <span class="dt">key =</span> <span class="st">&#39;Cell_ID&#39;</span>, <span class="dt">value=</span><span class="st">&#39;Counts&#39;</span>)</a>
+<a class="sourceLine" id="cb165-2" title="2"><span class="kw">head</span>(counts)</a></code></pre></div>
+<pre><code>##   Gene_ids Cell_ID Counts
+## 1    gene1   cell1      8
+## 2    gene2   cell1     10
+## 3    gene3   cell1      7
+## 4    gene4   cell1     11
+## 5    gene5   cell1     14
+## 6    gene6   cell1     12</code></pre>
+<p>基本上，之前的问题是数据不整洁，变量（Cell_ID）分布在多列上。 现在解决了这个问题，更容易在一个图上绘制来自所有10个单元格的数据。</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" title="1"><span class="kw">ggplot</span>(counts,<span class="kw">aes</span>(<span class="dt">x=</span>Cell_ID, <span class="dt">y=</span>Counts)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</a></code></pre></div>
+<p><img src="05intro-R-Bioc_files/figure-html/unnamed-chunk-43-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>任务3：使用更新的<code>counts</code>数据框绘制条形图，其中Cell_ID为x变量，Counts为y变量。 提示：<code>?geom_bar</code>查看帮助文档。</p>
+<p>任务4：使用更新的<code>counts</code>数据框绘制散点图，其中Gene_ids为x变量，Counts为y变量。</p>
+</div>
+<div id="section-38" class="section level3">
+<h3><span class="header-section-number">5.8.6</span> 绘制热图</h3>
+<p>可视化基因表达数据的常用方法是使用热图，这里使用R包<code>pheatmap</code>来进行分析。</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" title="1"><span class="kw">library</span>(pheatmap)</a>
+<a class="sourceLine" id="cb168-2" title="2"><span class="kw">set.seed</span>(<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb168-3" title="3">test =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">200</span>), <span class="dv">20</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb168-4" title="4">test[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">2</span>)] =<span class="st"> </span>test[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">2</span>)] <span class="op">+</span><span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb168-5" title="5">test[<span class="dv">11</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">seq</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">2</span>)] =<span class="st"> </span>test[<span class="dv">11</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">seq</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">2</span>)] <span class="op">+</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb168-6" title="6">test[<span class="dv">15</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">seq</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">2</span>)] =<span class="st"> </span>test[<span class="dv">15</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">seq</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">2</span>)] <span class="op">+</span><span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb168-7" title="7"><span class="kw">colnames</span>(test) =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;Cell&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb168-8" title="8"><span class="kw">rownames</span>(test) =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;Gene&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb168-9" title="9"><span class="kw">pheatmap</span>(test)</a></code></pre></div>
+<p><img src="05intro-R-Bioc_files/figure-html/unnamed-chunk-44-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>上面热图每行代表一个基因，每列代表一个细胞。细胞中基因表达量用相应框的颜色表示。 例如，从该图中看出，基因18在细胞10中高表达，但在细胞1中低表达。</p>
+<p>该图还提供了聚类结果的信息。通常，聚类算法旨在将数据点(比如细胞)拆分成cluster，其中cluster中点的相似性比cluster间的点相似性高。在图的顶部和左侧为层次聚类结果，可以看出，细胞4,8,2,6和10彼此更相似。</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" title="1"><span class="kw">pheatmap</span>(test, <span class="dt">kmeans_k =</span> <span class="dv">2</span>)</a></code></pre></div>
+<p><img src="05intro-R-Bioc_files/figure-html/unnamed-chunk-45-1.png" width="90%" style="display: block; margin: auto;" />
+现在可以看到这些基因分为两个簇 - Cluster1中8个基因在细胞2,10,6,4和8表达上调，Cluster2中12个基因在细胞2,10,6,4,8中表达下调。</p>
+<p>任务5：将cluster数量设置为3.哪个cluster数目提供更多有用信息？</p>
+</div>
+<div id="section-39" class="section level3">
+<h3><span class="header-section-number">5.8.7</span> 主成分分析</h3>
+<p>主成分分析（PCA）是一种统计方法，使用变换将一组观察值转换为一组线性不相关变量值，称之为主成分。 变换使得第一主成分解释最大数据的变异，并且每个后续主成分在与之前主成分正交的约束下解释最大方差。</p>
+<p>PCA图可以很好地对数据进行概览，有时可以帮助识别解释数据变异的干扰因子。 在将来的实验中我们将研究如何更深入地使用单细胞RNA-seq分析中的PCA图，这里的目的是概述PCA图以及如何生成。</p>
+<p>为<code>test</code>数据生成PCA图，使用<code>ggfortify</code>包让ggplot解释主成分。</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" title="1"><span class="kw">library</span>(ggfortify)</a>
+<a class="sourceLine" id="cb170-2" title="2">Principal_Components&lt;-<span class="kw">prcomp</span>(test)</a>
+<a class="sourceLine" id="cb170-3" title="3"><span class="kw">autoplot</span>(Principal_Components, <span class="dt">label=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="05intro-R-Bioc_files/figure-html/unnamed-chunk-46-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>任务6：将Cluster与pheatmap的Cluster进行比较。它们有关系吗？（提示：绘制的第一个pheatmap的基因树）</p>
+<p>任务7：为<code>counts</code>生成热图和PCA图：</p>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" title="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb171-2" title="2">counts &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100</span>, <span class="dt">lambda =</span> <span class="dv">10</span>), <span class="dt">ncol=</span><span class="dv">10</span>, <span class="dt">nrow=</span><span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb171-3" title="3"><span class="kw">rownames</span>(counts) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;gene&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb171-4" title="4"><span class="kw">colnames</span>(counts) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;cell&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a></code></pre></div>
+
+</div>
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-McCarthy2017-kb">
+<p>McCarthy, Davis J., Kieran R. Campbell, Aaron T. L. Lun, and Quin F. Wills. 2017. “Scater: Pre-processing, Quality Control, Normalization and Visualization of Single-Cell RNA-Seq Data in R.” <em>Bioinformatics</em>, January, btw777. <a href="https://doi.org/10.1093/bioinformatics/btw777">https://doi.org/10.1093/bioinformatics/btw777</a>.</p>
+</div>
+<div id="ref-wickham_2014">
+<p>Wickham, Hadley. 2014. “Tidy Data.” <em>J Stat Softw</em> 59 (10). <a href="https://doi.org/10.18637/jss.v059.i10">https://doi.org/10.18637/jss.v059.i10</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="construction-of-expression-matrix.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="tabula-muris.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": true,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/lemonbases/scRNA.seq.course.CN/edit/master/05intro-R-Bioc.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["scRNA-seq-course.pdf"],
+"toc": {
+"collapse": "section"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
