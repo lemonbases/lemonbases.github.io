@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World - Lemonbase的博客</title>
+    <title>jekyll, gitpage搭建博客 - Lemonbase的博客</title>
     <meta name="author"  content="碱基吃柠檬">
-    <meta name="description" content="Hello World">
-    <meta name="keywords"  content="thoughts">
+    <meta name="description" content="jekyll, gitpage搭建博客">
+    <meta name="keywords"  content="gitpage, jekyll">
     <!-- Open Graph -->
-    <meta property="og:title" content="Hello World - Lemonbase的博客">
+    <meta property="og:title" content="jekyll, gitpage搭建博客 - Lemonbase的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="/2019/08/01/Hello-World.html">
+    <meta property="og:url" content="/2019/08/01/Build-Site.html">
     <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
     <meta property="og:site_name" content="Lemonbase的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -118,11 +118,13 @@ Author: Ray-Eldath
       <div class="post-tags">
         
           
-            <a href="/tags.html#thoughts" class="post-tag">thoughts</a>
+            <a href="/tags.html#gitpage" class="post-tag">gitpage</a>
+          
+            <a href="/tags.html#jekyll" class="post-tag">jekyll</a>
           
         
       </div>
-      <h1>Hello World</h1>
+      <h1>jekyll, gitpage搭建博客</h1>
       <div class="post-meta">
         <span class="post-meta-item"><i class="iconfont icon-author"></i>feifei</span>
         <time class="post-meta-item" datetime="19-08-01"><i class="iconfont icon-date"></i>01 Aug 2019</time>
@@ -136,16 +138,106 @@ Author: Ray-Eldath
 
     <article class="markdown-body">
       <blockquote>
-  <p>第一篇博文，Hello World~</p>
+  <p>使用jekyll, gitpage搭建博客</p>
 </blockquote>
 
-<h3 id="说在前面的话">说在前面的话</h3>
+<h2 id="gitpage">Gitpage</h2>
 
-<p>种一棵树最好的时间是十年前，其次是现在。这对博客来说，依然是如此，done is better than perfect。</p>
+<p><img src="https://hw311.me/assets/imgs/Octocat.png" alt="https://hw311.me/assets/imgs/Octocat.png" />
+github Pages可以被认为是用户编写的、托管在github上的静态网页。github提供模板，允许站内生成网页，但也允许用户自己编写网页，然后上传。</p>
 
-<p>本博客主要以生物信息学技术分享为主，同时分享一些近期的文献以及科研路上的小插曲，记录成长的过程，分享学习的点滴，一起向前冲呀，少年~</p>
+<h2 id="jekyll">Jekyll</h2>
 
-<p>碱基吃柠檬，人面桃花相映红。</p>
+<p><img src="https://hw311.me/assets/imgs/jekyll-logo-light-transparent.png" alt="https://hw311.me/assets/imgs/jekyll-logo-light-transparent.png" />
+<a href="https://jekyllcn.com/">Jekyll</a>是一个静态站点生成器，它会根据网页源码生成静态文件。它提供了模板、变量、插件等功能。</p>
+
+<h2 id="快速安装">快速安装</h2>
+
+<p><strong>1 安装ruby开发环境</strong></p>
+
+<pre><code class="language-C-like">// for win
+// download Ruby+Devkit exe https://rubyinstaller.org/downloads/
+
+// for ubuntu
+sudo apt-get install ruby-full build-essential zlib1g-dev
+
+// for mac
+// 参考https://www.jekyll.com.cn/docs/installation/macos/
+</code></pre>
+<p><strong>2 安装 Jekyll及jekyll-paginate</strong></p>
+
+<pre><code class="language-C-like">gem install jekyll
+gem install jekyll-paginate
+</code></pre>
+<p><strong>3 将目标主题<code class="highlighter-rouge">clone</code>到本地</strong></p>
+
+<pre><code class="language-C-like">git clone https://github.com/kaeyleo/jekyll-theme-H2O.git
+</code></pre>
+<p><strong>4 进入目录，开启服务</strong></p>
+
+<pre><code class="language-C-like">jekyll server
+</code></pre>
+<p><strong>5 通过<code class="highlighter-rouge">127.0.0.1:4000</code>预览主题</strong></p>
+
+<h2 id="博文写作">博文写作</h2>
+
+<p><strong>目录树</strong></p>
+
+<pre><code class="language-C-like">	.
+	├── _config.yml # 配置文件
+	├── _includes # 页面组件方便重用
+	|   ├── footer.html # 页脚
+	|   └── head.html # html文档的头部内容
+	|   └── header.html # 顶部菜单栏
+	|   └── pageNav.html # 文章列表分页组件
+	├── _layouts # 布局模板
+	|   ├── default.html # 默认模板
+	|   └── post.html # 文章页面模板
+	├── _posts # 这里放文章
+	|   └── 2007-02-21-life-on-mars.md # 命名格式：年-月-日-文章标题.md
+	├── _site # Jekyll将源码处理后生成的站点文件，里面的内容可直接发布
+	├── assets # 存放用于线上环境的静态资源，如需修改css和js文件请到dev文件夹
+	|   ├── css # dev文件夹中sass编译后的样式文件
+	|   └── fonts # 字体文件
+	|   └── icons # 图标文件
+	|   └── img #  图片文件
+	|   └── js # dev文件夹中处理后的脚本文件
+	├── dev # 开发文件
+	|   ├── js # 存放脚本源码
+	|   └── sass # 样式源码
+	|       └── app.scss # 整合下面的所有样式文件
+	|       └── base.scss # 引入字体、Reset部分样式
+	|       └── common.scss # 模板的主要样式
+	|       └── helper.scss # 工具样式
+	|       └── layouts.scss # 响应式布局
+	└── gulpfile.js # 自动化任务脚本
+	└── index.html # 模板首页
+	└── tags.html # 标签页面
+	└── 404.html # 404页面
+	└── package.json # 管理项目的依赖项
+</code></pre>
+
+<p>博文的markdown文件存储于<code class="highlighter-rouge">_post</code>文件夹，每篇博文需设置头信息：</p>
+<pre><code class="language-C-like">layout: default
+home-title: lemonbases blog
+description: Hello World
+header-img: assets/img/banner.jpg
+</code></pre>
+
+<p>写作完成后，使用</p>
+<pre><code class="language-C-like">jekyll s 
+// or
+jekyll buld
+</code></pre>
+<p>生成目标网页</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://github.com/kaeyleo/jekyll-theme-H2O">https://github.com/kaeyleo/jekyll-theme-H2O</a></li>
+  <li><a href="https://hw311.me/zh/jekyll/2019/01/21/blog-jekyll-github-pages/">使用Jekyll和GitHub Pages搭建博客</a></li>
+  <li><a href="https://jekyllrb.com/docs/">Jekyll quickstart</a></li>
+</ul>
 
     </article>
 
@@ -185,16 +277,16 @@ Author: Ray-Eldath
     </section>
     <section class="post-footer-item read-next">
       
-
-      
       <div class="read-next-item">
-        <a href="/2019/08/01/Build-Site.html" class="read-next-link"></a>
-          <section>
-            <span>jekyll, gitpage搭建博客</span>
-            <p>  使用jekyll, gitpage搭建博客</p>
-          </section>
-          
-      </div>
+        <a href="/2019/08/01/Hello-World.html" class="read-next-link"></a>
+        <section>
+          <span>Hello World</span>
+          <p>  第一篇博文，Hello World~</p>
+        </section>
+        
+     </div>
+      
+
       
     </section>
     

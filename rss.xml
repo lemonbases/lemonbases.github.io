@@ -5,8 +5,8 @@
     <description>碱基吃柠檬，人面桃花相映红，生物信息工作者</description>
     <link>//</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 01 Aug 2019 21:36:39 +0800</pubDate>
-    <lastBuildDate>Thu, 01 Aug 2019 21:36:39 +0800</lastBuildDate>
+    <pubDate>Thu, 01 Aug 2019 22:45:21 +0800</pubDate>
+    <lastBuildDate>Thu, 01 Aug 2019 22:45:21 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -28,6 +28,121 @@
         <guid isPermaLink="true">/2019/08/01/Hello-World.html</guid>
         
         <category>thoughts</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>jekyll, gitpage搭建博客</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;使用jekyll, gitpage搭建博客&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;gitpage&quot;&gt;Gitpage&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://hw311.me/assets/imgs/Octocat.png&quot; alt=&quot;https://hw311.me/assets/imgs/Octocat.png&quot; /&gt;
+github Pages可以被认为是用户编写的、托管在github上的静态网页。github提供模板，允许站内生成网页，但也允许用户自己编写网页，然后上传。&lt;/p&gt;
+
+&lt;h2 id=&quot;jekyll&quot;&gt;Jekyll&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://hw311.me/assets/imgs/jekyll-logo-light-transparent.png&quot; alt=&quot;https://hw311.me/assets/imgs/jekyll-logo-light-transparent.png&quot; /&gt;
+&lt;a href=&quot;https://jekyllcn.com/&quot;&gt;Jekyll&lt;/a&gt;是一个静态站点生成器，它会根据网页源码生成静态文件。它提供了模板、变量、插件等功能。&lt;/p&gt;
+
+&lt;h2 id=&quot;快速安装&quot;&gt;快速安装&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;1 安装ruby开发环境&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;// for win
+// download Ruby+Devkit exe https://rubyinstaller.org/downloads/
+
+// for ubuntu
+sudo apt-get install ruby-full build-essential zlib1g-dev
+
+// for mac
+// 参考https://www.jekyll.com.cn/docs/installation/macos/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;2 安装 Jekyll及jekyll-paginate&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;gem install jekyll
+gem install jekyll-paginate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3 将目标主题&lt;code class=&quot;highlighter-rouge&quot;&gt;clone&lt;/code&gt;到本地&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;git clone https://github.com/kaeyleo/jekyll-theme-H2O.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;4 进入目录，开启服务&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;jekyll server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;5 通过&lt;code class=&quot;highlighter-rouge&quot;&gt;127.0.0.1:4000&lt;/code&gt;预览主题&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;博文写作&quot;&gt;博文写作&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;目录树&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;	.
+	├── _config.yml # 配置文件
+	├── _includes # 页面组件方便重用
+	|   ├── footer.html # 页脚
+	|   └── head.html # html文档的头部内容
+	|   └── header.html # 顶部菜单栏
+	|   └── pageNav.html # 文章列表分页组件
+	├── _layouts # 布局模板
+	|   ├── default.html # 默认模板
+	|   └── post.html # 文章页面模板
+	├── _posts # 这里放文章
+	|   └── 2007-02-21-life-on-mars.md # 命名格式：年-月-日-文章标题.md
+	├── _site # Jekyll将源码处理后生成的站点文件，里面的内容可直接发布
+	├── assets # 存放用于线上环境的静态资源，如需修改css和js文件请到dev文件夹
+	|   ├── css # dev文件夹中sass编译后的样式文件
+	|   └── fonts # 字体文件
+	|   └── icons # 图标文件
+	|   └── img #  图片文件
+	|   └── js # dev文件夹中处理后的脚本文件
+	├── dev # 开发文件
+	|   ├── js # 存放脚本源码
+	|   └── sass # 样式源码
+	|       └── app.scss # 整合下面的所有样式文件
+	|       └── base.scss # 引入字体、Reset部分样式
+	|       └── common.scss # 模板的主要样式
+	|       └── helper.scss # 工具样式
+	|       └── layouts.scss # 响应式布局
+	└── gulpfile.js # 自动化任务脚本
+	└── index.html # 模板首页
+	└── tags.html # 标签页面
+	└── 404.html # 404页面
+	└── package.json # 管理项目的依赖项
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;博文的markdown文件存储于&lt;code class=&quot;highlighter-rouge&quot;&gt;_post&lt;/code&gt;文件夹，每篇博文需设置头信息：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;layout: default
+home-title: lemonbases blog
+description: Hello World
+header-img: assets/img/banner.jpg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;写作完成后，使用&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;jekyll s 
+// or
+jekyll buld
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;生成目标网页&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kaeyleo/jekyll-theme-H2O&quot;&gt;https://github.com/kaeyleo/jekyll-theme-H2O&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://hw311.me/zh/jekyll/2019/01/21/blog-jekyll-github-pages/&quot;&gt;使用Jekyll和GitHub Pages搭建博客&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/&quot;&gt;Jekyll quickstart&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 01 Aug 2019 00:00:00 +0800</pubDate>
+        <link>/2019/08/01/Build-Site.html</link>
+        <guid isPermaLink="true">/2019/08/01/Build-Site.html</guid>
+        
+        <category>gitpage</category>
+        
+        <category>jekyll</category>
         
         
       </item>

@@ -4,6 +4,12 @@
       "title"    : "Hello World",
       "tags"     : "thoughts",
       "url"      : "/2019/08/01/Hello-World.html"
+    } ,
+  
+    {
+      "title"    : "jekyll, gitpage搭建博客",
+      "tags"     : "gitpage jekyll",
+      "url"      : "/2019/08/01/Build-Site.html"
     } 
   
 ]
