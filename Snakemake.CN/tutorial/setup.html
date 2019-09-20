@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setup &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basics: An example workflow" href="basics.html" />
+    <link rel="prev" title="Snakemake Tutorial" href="tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">Snakemake Tutorial</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-a-linux-vm-with-vagrant-under-windows">Setup a Linux VM with Vagrant under Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-installing-miniconda-3">Step 1: Installing Miniconda 3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-preparing-a-working-directory">Step 2: Preparing a working directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-creating-an-environment-with-the-required-software">Step 3: Creating an environment with the required software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-activating-the-environment">Step 4: Activating the environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html">Basics: An example workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html">Advanced: Decorating the example workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="additional_features.html">Additional features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="tutorial.html">Snakemake Tutorial</a> &raquo;</li>
+        
+      <li>Setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorial/setup.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="setup">
+<span id="tutorial-setup"></span><h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>To go through this tutorial, you need the following software installed:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.python.org">Python</a> ≥3.5</li>
+<li><a class="reference external" href="http://snakemake.readthedocs.io">Snakemake</a> 5.2.3</li>
+<li><a class="reference external" href="http://bio-bwa.sourceforge.net">BWA</a> 0.7.12</li>
+<li><a class="reference external" href="http://www.htslib.org">SAMtools</a> 1.3.1</li>
+<li><a class="reference external" href="https://pysam.readthedocs.io">Pysam</a> 0.15.0</li>
+<li><a class="reference external" href="http://www.htslib.org">BCFtools</a> 1.3.1</li>
+<li><a class="reference external" href="http://www.graphviz.org">Graphviz</a> 2.38.0</li>
+<li><a class="reference external" href="http://jinja.pocoo.org">Jinja2</a> 2.10</li>
+<li><a class="reference external" href="https://networkx.github.io">NetworkX</a> 2.1</li>
+<li><a class="reference external" href="https://matplotlib.org">Matplotlib</a> 2.2.3</li>
+</ul>
+<p>The easiest way to setup these prerequisites is to use the <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a> Python 3 distribution.
+The tutorial assumes that you are using either Linux or MacOS X.
+Both Snakemake and Miniconda work also under Windows, but the Windows shell is too different to be able to provide generic examples.</p>
+</div>
+<div class="section" id="setup-a-linux-vm-with-vagrant-under-windows">
+<h2>Setup a Linux VM with Vagrant under Windows<a class="headerlink" href="#setup-a-linux-vm-with-vagrant-under-windows" title="Permalink to this headline">¶</a></h2>
+<p>If you already use Linux or MacOS X, go on with <strong>Step 1</strong>.
+If you use Windows, you can setup a Linux virtual machine (VM) with <a class="reference external" href="https://www.vagrantup.com">Vagrant</a>.
+First, install Vagrant following the installation instructions in the <a class="reference external" href="https://docs.vagrantup.com">Vagrant Documentation</a>.
+Then, create a reasonable new directory you want to share with your Linux VM, e.g., create a folder <code class="docutils literal notranslate"><span class="pre">vagrant-linux</span></code> somewhere.
+Open a command line prompt, and change into that directory.
+Here, you create a 64-bit Ubuntu Linux environment with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> vagrant init hashicorp/precise64
+<span class="gp">&gt;</span> vagrant up
+</pre></div>
+</div>
+<p>If you decide to use a 32-bit image, you will need to download the 32-bit version of Miniconda in the next step.
+The contents of the <code class="docutils literal notranslate"><span class="pre">vagrant-linux</span></code> folder will be shared with the virtual machine that is set up by vagrant.
+You can log into the virtual machine via</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> vagrant ssh
+</pre></div>
+</div>
+<p>If this command tells you to install an SSH client, you can follow the instructions in this <a class="reference external" href="http://blog.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html">Blogpost</a>.
+Now, you can follow the steps of our tutorial from within your Linux VM.</p>
+</div>
+<div class="section" id="step-1-installing-miniconda-3">
+<h2>Step 1: Installing Miniconda 3<a class="headerlink" href="#step-1-installing-miniconda-3" title="Permalink to this headline">¶</a></h2>
+<p>First, please <strong>open a terminal</strong> or make sure you are logged into your Vagrant Linux VM.
+Assuming that you have a 64-bit system, on Linux, download and install Miniconda 3 with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+<span class="gp">$</span> bash Miniconda3-latest-Linux-x86_64.sh
+</pre></div>
+</div>
+<p>On MacOS X, download and install with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o Miniconda3-latest-MacOSX-x86_64.sh
+<span class="gp">$</span> bash Miniconda3-latest-MacOSX-x86_64.sh
+</pre></div>
+</div>
+<p>For a 32-bit system, URLs and file names are analogous but without the <code class="docutils literal notranslate"><span class="pre">_64</span></code>.
+When you are asked the question</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Do you wish the installer to prepend the Miniconda3 install location to PATH ...? [yes|no]
+</pre></div>
+</div>
+<p>answer with <strong>yes</strong>.
+Along with a minimal Python 3 environment, Miniconda contains the package manager <a class="reference external" href="http://conda.pydata.org">Conda</a>.
+After opening a <strong>new terminal</strong>, you can use the new <code class="docutils literal notranslate"><span class="pre">conda</span></code> command to install software packages and create isolated environments to, e.g., use different versions of the same package.
+We will later use <a class="reference external" href="http://conda.pydata.org">Conda</a> to create an isolated environment with all required software for this tutorial.</p>
+</div>
+<div class="section" id="step-2-preparing-a-working-directory">
+<h2>Step 2: Preparing a working directory<a class="headerlink" href="#step-2-preparing-a-working-directory" title="Permalink to this headline">¶</a></h2>
+<p>First, <strong>create a new directory</strong> <code class="docutils literal notranslate"><span class="pre">snakemake-tutorial</span></code> at a <strong>reasonable place</strong> and change into that directory in your terminal:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir snakemake-tutorial
+<span class="gp">$</span> <span class="nb">cd</span> snakemake-tutorial
+</pre></div>
+</div>
+<p>If you use a Vagrant Linux VM from Windows as described above, create that directory under <code class="docutils literal notranslate"><span class="pre">/vagrant/</span></code>, so that the contents are shared with your host system (you can then edit all files from within Windows with an editor that supports Unix line breaks).
+Then, <strong>change to the newly created directory</strong>.
+In this directory, we will later create an example workflow that illustrates the Snakemake syntax and execution environment.
+First, we download some example data on which the workflow shall be executed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> wget https://bitbucket.org/snakemake/snakemake-tutorial/get/v5.2.3.tar.bz2
+<span class="gp">$</span> tar -xf v5.2.3.tar.bz2 --strip <span class="m">1</span>
+</pre></div>
+</div>
+<p>This will create a folder <code class="docutils literal notranslate"><span class="pre">data</span></code> and a file <code class="docutils literal notranslate"><span class="pre">environment.yaml</span></code> in the working directory.</p>
+</div>
+<div class="section" id="step-3-creating-an-environment-with-the-required-software">
+<h2>Step 3: Creating an environment with the required software<a class="headerlink" href="#step-3-creating-an-environment-with-the-required-software" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">environment.yaml</span></code> file can be used to install all required software into an isolated Conda environment with the name <code class="docutils literal notranslate"><span class="pre">snakemake-tutorial</span></code> via</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda env create --name snakemake-tutorial --file environment.yaml
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-4-activating-the-environment">
+<h2>Step 4: Activating the environment<a class="headerlink" href="#step-4-activating-the-environment" title="Permalink to this headline">¶</a></h2>
+<p>To activate the <code class="docutils literal notranslate"><span class="pre">snakemake-tutorial</span></code> environment, execute</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda activate snakemake-tutorial
+</pre></div>
+</div>
+<p>Now you can use the installed tools.
+Execute</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --help
+</pre></div>
+</div>
+<p>to test this and get information about the command-line interface of Snakemake.
+To exit the environment, you can execute</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda deactivate
+</pre></div>
+</div>
+<p>but <strong>don’t do that now</strong>, since we finally want to start working with Snakemake :-).</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basics.html" class="btn btn-neutral float-right" title="Basics: An example workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Snakemake Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

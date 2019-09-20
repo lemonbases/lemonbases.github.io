@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Overview: module code &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Overview: module code</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="snakemake.html">snakemake</a></li>
+<ul><li><a href="snakemake/benchmark.html">snakemake.benchmark</a></li>
+<li><a href="snakemake/checkpoints.html">snakemake.checkpoints</a></li>
+<li><a href="snakemake/common.html">snakemake.common</a></li>
+<li><a href="snakemake/conda.html">snakemake.conda</a></li>
+<li><a href="snakemake/cwl.html">snakemake.cwl</a></li>
+<li><a href="snakemake/dag.html">snakemake.dag</a></li>
+<li><a href="snakemake/decorators.html">snakemake.decorators</a></li>
+<li><a href="snakemake/exceptions.html">snakemake.exceptions</a></li>
+<li><a href="snakemake/executors.html">snakemake.executors</a></li>
+<li><a href="snakemake/io.html">snakemake.io</a></li>
+<li><a href="snakemake/jobs.html">snakemake.jobs</a></li>
+<li><a href="snakemake/logging.html">snakemake.logging</a></li>
+<li><a href="snakemake/output_index.html">snakemake.output_index</a></li>
+<li><a href="snakemake/parser.html">snakemake.parser</a></li>
+<li><a href="snakemake/persistence.html">snakemake.persistence</a></li>
+<li><a href="snakemake/remote.html">snakemake.remote</a></li>
+<ul><li><a href="snakemake/remote/EGA.html">snakemake.remote.EGA</a></li>
+<li><a href="snakemake/remote/HTTP.html">snakemake.remote.HTTP</a></li>
+<li><a href="snakemake/remote/NCBI.html">snakemake.remote.NCBI</a></li>
+</ul><li><a href="snakemake/report.html">snakemake.report</a></li>
+<li><a href="snakemake/rules.html">snakemake.rules</a></li>
+<li><a href="snakemake/scheduler.html">snakemake.scheduler</a></li>
+<li><a href="snakemake/script.html">snakemake.script</a></li>
+<li><a href="snakemake/shell.html">snakemake.shell</a></li>
+<li><a href="snakemake/singularity.html">snakemake.singularity</a></li>
+<li><a href="snakemake/stats.html">snakemake.stats</a></li>
+<li><a href="snakemake/utils.html">snakemake.utils</a></li>
+<li><a href="snakemake/workflow.html">snakemake.workflow</a></li>
+<li><a href="snakemake/wrapper.html">snakemake.wrapper</a></li>
+</ul></ul>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

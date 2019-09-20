@@ -1,0 +1,1241 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Rules &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="Writing Workflows" href="writing_snakefiles.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#wildcards">Wildcards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#targets">Targets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#threads">Threads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resources">Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#messages">Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#priorities">Priorities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#log-files">Log-Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#non-file-parameters-for-rules">Non-file parameters for rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-scripts">External scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#protected-and-temporary-files">Protected and Temporary Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#directories-as-outputs">Directories as outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ignoring-timestamps">Ignoring timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shadow-rules">Shadow rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flag-files">Flag files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#job-properties">Job Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dynamic-files">Dynamic Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functions-as-input-files">Functions as Input Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#input-functions-and-unpack">Input Functions and <code class="docutils literal notranslate"><span class="pre">unpack()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-tracking">Version Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-tracking">Code Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#onstart-onsuccess-and-onerror-handlers">Onstart, onsuccess and onerror handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rule-dependencies">Rule dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-ambiguous-rules">Handling Ambiguous Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-rules">Local Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmark-rules">Benchmark Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-groups-for-execution">Defining groups for execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#piped-output">Piped output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-dependent-conditional-execution">Data-dependent conditional execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Rules</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snakefiles/rules.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rules">
+<span id="snakefiles-rules"></span><h1>Rules<a class="headerlink" href="#rules" title="Permalink to this headline">¶</a></h1>
+<p>Most importantly, a rule can consist of a name (the name is optional and can be left out, creating an anonymous rule), input files, output files, and a shell command to generate the output from the input, i.e.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/another/outputfile&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;somecommand {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>Inside the shell command, all local and global variables, especially input and output files can be accessed via their names in the <a class="reference external" href="http://docs.python.org/py3k/library/string.html#formatspec">python format minilanguage</a>. Here input and output (and in general any list or tuple) automatically evaluate to a space-separated list of files (i.e. <code class="docutils literal notranslate"><span class="pre">path/to/inputfile</span> <span class="pre">path/to/other/inputfile</span></code>).
+From Snakemake 3.8.0 on, adding the special formatting instruction <code class="docutils literal notranslate"><span class="pre">:q</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;somecommand</span> <span class="pre">{input:q}</span> <span class="pre">{output:q}&quot;)</span></code>) will let Snakemake quote each of the list or tuple elements that contains whitespace.
+Instead of a shell command, a rule can run some python code to generate the output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">,</span> <span class="n">somename</span> <span class="o">=</span> <span class="s2">&quot;path/to/another/outputfile&quot;</span>
+    <span class="n">run</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+            <span class="o">...</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">somename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As can be seen, instead of accessing input and output as a whole, we can also access by index (<code class="docutils literal notranslate"><span class="pre">output[0]</span></code>) or by keyword (<code class="docutils literal notranslate"><span class="pre">output.somename</span></code>).
+Note that, when adding keywords or names for input or output files, their order won’t be preserved when accessing them as a whole via e.g. <code class="docutils literal notranslate"><span class="pre">{output}</span></code> in a shell command.</p>
+<p>Shell commands like above can also be invoked inside a python based rule, via the function <code class="docutils literal notranslate"><span class="pre">shell</span></code> that takes a string with the command and allows the same formatting like in the rule above, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shell</span><span class="p">(</span><span class="s2">&quot;somecommand {output.somename}&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Further, this combination of python and shell commands, allows to iterate over the output of the shell command, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">shell</span><span class="p">(</span><span class="s2">&quot;somecommand {output.somename}&quot;</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="o">...</span> <span class="c1"># do something in python</span>
+</pre></div>
+</div>
+<p>Note that shell commands in Snakemake use the bash shell in <a class="reference external" href="http://redsymbol.net/articles/unofficial-bash-strict-mode/">strict mode</a> by default.</p>
+<div class="section" id="wildcards">
+<span id="snakefiles-wildcards"></span><h2>Wildcards<a class="headerlink" href="#wildcards" title="Permalink to this headline">¶</a></h2>
+<p>Usually, it is useful to generalize a rule to be applicable to a number of e.g. datasets. For this purpose, wildcards can be used.
+Automatically resolved multiple named wildcards are a key feature and strength of Snakemake in comparison to other systems.
+Consider the following example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">complex_conversion</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;{dataset}/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;{dataset}/file.{group}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand --group {wildcards.group} &lt; {input} &gt; {output}&quot;</span>
+</pre></div>
+</div>
+<p>Here, we define two wildcards, <code class="docutils literal notranslate"><span class="pre">dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">group</span></code>. By this, the rule can produce all files that follow the regular expression pattern <code class="docutils literal notranslate"><span class="pre">.+/file\..+\.txt</span></code>, i.e. the wildcards are replaced by the regular expression <code class="docutils literal notranslate"><span class="pre">.+</span></code>. If the rule’s output matches a requested file, the substrings matched by the wildcards are propagated to the input files and to the variable wildcards, that is here also used in the shell command. The wildcards object can be accessed in the same way as input and output, which is described above.</p>
+<p>For example, if another rule in the workflow requires the file the file <code class="docutils literal notranslate"><span class="pre">101/file.A.txt</span></code>, Snakemake recognizes that this rule is able to produce it by setting <code class="docutils literal notranslate"><span class="pre">dataset=101</span></code> and <code class="docutils literal notranslate"><span class="pre">group=A</span></code>.
+Thus, it requests file <code class="docutils literal notranslate"><span class="pre">101/inputfile</span></code> as input and executes the command <code class="docutils literal notranslate"><span class="pre">somecommand</span> <span class="pre">--group</span> <span class="pre">A</span>&#160; <span class="pre">&lt;</span> <span class="pre">101/inputfile</span>&#160; <span class="pre">&gt;</span> <span class="pre">101/file.A.txt</span></code>.
+Of course, the input file might have to be generated by another rule with different wildcards.</p>
+<p>Importantly, the wildcard names in input and output must be named identically. Most typically, the same wildcard is present in both input and output, but it is of course also possible to have wildcards only in the output but not the input section.</p>
+<p>Multiple wildcards in one filename can cause ambiguity.
+Consider the pattern <code class="docutils literal notranslate"><span class="pre">{dataset}.{group}.txt</span></code> and assume that a file <code class="docutils literal notranslate"><span class="pre">101.B.normal.txt</span></code> is available.
+It is not clear whether <code class="docutils literal notranslate"><span class="pre">dataset=101.B</span></code> and <code class="docutils literal notranslate"><span class="pre">group=normal</span></code> or <code class="docutils literal notranslate"><span class="pre">dataset=101</span></code> and <code class="docutils literal notranslate"><span class="pre">group=B.normal</span></code> in this case.</p>
+<p>Hence wildcards can be constrained to given regular expressions.
+Here we could restrict the wildcard <code class="docutils literal notranslate"><span class="pre">dataset</span></code> to consist of digits only using <code class="docutils literal notranslate"><span class="pre">\d+</span></code> as the corresponding regular expression.
+With Snakemake 3.8.0, there are three ways to constrain wildcards.
+First, a wildcard can be constrained within the file pattern, by appending a regular expression separated by a comma:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="p">:</span> <span class="s2">&quot;{dataset,\d+}.{group}.txt&quot;</span>
+</pre></div>
+</div>
+<p>Second, a wildcard can be constrained within the rule via the keyword <code class="docutils literal notranslate"><span class="pre">wildcard_constraints</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">complex_conversion</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;{dataset}/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;{dataset}/file.{group}.txt&quot;</span>
+    <span class="n">wildcard_constraints</span><span class="p">:</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;\d+&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand --group {wildcards.group}  &lt; {input}  &gt; {output}&quot;</span>
+</pre></div>
+</div>
+<p>Finally, you can also define global wildcard constraints that apply for all rules:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wildcard_constraints</span><span class="p">:</span>
+    <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;\d+&quot;</span>
+
+<span class="n">rule</span> <span class="n">a</span><span class="p">:</span>
+    <span class="o">...</span>
+
+<span class="n">rule</span> <span class="n">b</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="http://docs.python.org/py3k/library/re.html">Python documentation on regular expressions</a> for detailed information on regular expression syntax.</p>
+</div>
+<div class="section" id="targets">
+<span id="snakefiles-targets"></span><h2>Targets<a class="headerlink" href="#targets" title="Permalink to this headline">¶</a></h2>
+<p>By default snakemake executes the first rule in the snakefile. This gives rise to pseudo-rules at the beginning of the file that can be used to define build-targets similar to GNU Make:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+  <span class="nb">input</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;{dataset}/file.A.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span> <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">DATASETS</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Here, for each dataset in a python list <code class="docutils literal notranslate"><span class="pre">DATASETS</span></code> defined before, the file <code class="docutils literal notranslate"><span class="pre">{dataset}/file.A.txt</span></code> is requested. In this example, Snakemake recognizes automatically that these can be created by multiple applications of the rule <code class="docutils literal notranslate"><span class="pre">complex_conversion</span></code> shown above.</p>
+<p>Above expression can be simplified to the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+  <span class="nb">input</span><span class="p">:</span> <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;{dataset}/file.A.txt&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">DATASETS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This may be used for “aggregation” rules for which files from multiple or all datasets are needed to produce a specific output (say, <em>allSamplesSummary.pdf</em>).
+Note that <em>dataset</em> is NOT a wildcard here because it is resolved by Snakemake due to the <code class="docutils literal notranslate"><span class="pre">expand</span></code> statement (see below also for more information).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">expand</span></code> function thereby allows also to combine different variables, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+  <span class="nb">input</span><span class="p">:</span> <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;{dataset}/file.A.{ext}&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">DATASETS</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">PLOTFORMATS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If now <code class="docutils literal notranslate"><span class="pre">PLOTFORMATS=[&quot;pdf&quot;,</span> <span class="pre">&quot;png&quot;]</span></code> contains a list of desired output formats then expand will automatically combine any dataset with any of these extensions.</p>
+<p>Further, the first argument can also be a list of strings. In that case, the transformation is applied to all elements of the list. E.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">expand</span><span class="p">([</span><span class="s2">&quot;{dataset}/plot1.{ext}&quot;</span><span class="p">,</span> <span class="s2">&quot;{dataset}/plot2.{ext}&quot;</span><span class="p">],</span> <span class="n">dataset</span><span class="o">=</span><span class="n">DATASETS</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">PLOTFORMATS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>leads to</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;ds1/plot1.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;ds1/plot2.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;ds2/plot1.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;ds2/plot2.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;ds1/plot1.png&quot;</span><span class="p">,</span> <span class="s2">&quot;ds1/plot2.png&quot;</span><span class="p">,</span> <span class="s2">&quot;ds2/plot1.png&quot;</span><span class="p">,</span> <span class="s2">&quot;ds2/plot2.png&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Per default, <code class="docutils literal notranslate"><span class="pre">expand</span></code> uses the python itertools function <code class="docutils literal notranslate"><span class="pre">product</span></code> that yields all combinations of the provided wildcard values. However by inserting a second positional argument this can be replaced by any combinatoric function, e.g. <code class="docutils literal notranslate"><span class="pre">zip</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">expand</span><span class="p">(</span><span class="s2">&quot;{dataset}/plot1.{ext} {dataset}/plot2.{ext}&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="nb">zip</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">DATASETS</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">PLOTFORMATS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>leads to</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;ds1/plot1.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;ds1/plot2.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;ds2/plot1.png&quot;</span><span class="p">,</span> <span class="s2">&quot;ds2/plot2.png&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can also mask a wildcard expression in expand such that it will be kept, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">expand</span><span class="p">(</span><span class="s2">&quot;{{dataset}}/plot1.{ext}&quot;</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">PLOTFORMATS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will create strings with all values for ext but starting with <code class="docutils literal notranslate"><span class="pre">&quot;{dataset}&quot;</span></code>.</p>
+</div>
+<div class="section" id="threads">
+<span id="snakefiles-threads"></span><h2>Threads<a class="headerlink" href="#threads" title="Permalink to this headline">¶</a></h2>
+<p>Further, a rule can be given a number of threads to use, i.e.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/another/outputfile&quot;</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;somecommand --threads {threads} {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>Snakemake can alter the number of cores available based on command line options. Therefore it is useful to propagate it via the built in variable <code class="docutils literal notranslate"><span class="pre">threads</span></code> rather than hardcoding it into the shell command.
+In particular, it should be noted that the specified threads have to be seen as a maximum. When Snakemake is executed with fewer cores, the number of threads will be adjusted, i.e. <code class="docutils literal notranslate"><span class="pre">threads</span> <span class="pre">=</span> <span class="pre">min(threads,</span> <span class="pre">cores)</span></code> with <code class="docutils literal notranslate"><span class="pre">cores</span></code> being the number of cores specified at the command line (option <code class="docutils literal notranslate"><span class="pre">--cores</span></code>). On a cluster node, Snakemake uses as many cores as available on that node. Hence, the number of threads used by a rule never exceeds the number of physically available cores on the node. Note: This behavior is not affected by <code class="docutils literal notranslate"><span class="pre">--local-cores</span></code>, which only applies to jobs running on the master node.</p>
+<p>Starting from version 3.7, threads can also be a callable that returns an <code class="docutils literal notranslate"><span class="pre">int</span></code> value. The signature of the callable should be <code class="docutils literal notranslate"><span class="pre">callable(wildcards[,</span> <span class="pre">input])</span></code> (input is an optional parameter).  It is also possible to refer to a predefined variable (e.g, <code class="docutils literal notranslate"><span class="pre">threads:</span> <span class="pre">threads_max</span></code>) so that the number of cores for a set of rules can be changed with one change only by altering the value of the variable <code class="docutils literal notranslate"><span class="pre">threads_max</span></code>.</p>
+</div>
+<div class="section" id="resources">
+<span id="snakefiles-resources"></span><h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<p>In addition to threads, a rule can use arbitrary user-defined resources by specifying them with the resources-keyword:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>     <span class="o">...</span>
+    <span class="n">output</span><span class="p">:</span>    <span class="o">...</span>
+    <span class="n">resources</span><span class="p">:</span>
+        <span class="n">mem_mb</span><span class="o">=</span><span class="mi">100</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+<p>If limits for the resources are given via the command line, e.g.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --resources <span class="nv">mem_mb</span><span class="o">=</span><span class="m">100</span>
+</pre></div>
+</div>
+<p>the scheduler will ensure that the given resources are not exceeded by running jobs.
+If no limits are given, the resources are ignored in local execution.
+In cluster or cloud execution, resources are always passed to the backend, even if <code class="docutils literal notranslate"><span class="pre">--resources</span></code> is not specified.
+Apart from making Snakemake aware of hybrid-computing architectures (e.g. with a limited number of additional devices like GPUs) this allows to control scheduling in various ways, e.g. to limit IO-heavy jobs by assigning an artificial IO-resource to them and limiting it via the <code class="docutils literal notranslate"><span class="pre">--resources</span></code> flag.
+Resources must be <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</p>
+<p>Note that you are free to choose any names for the given resources.
+There are two <strong>standard resources</strong> for memory and disk usage though: <code class="docutils literal notranslate"><span class="pre">mem_mb</span></code> and <code class="docutils literal notranslate"><span class="pre">disk_mb</span></code>.
+When defining memory constraints, it is advised to use <code class="docutils literal notranslate"><span class="pre">mem_mb</span></code>, because there are
+Some execution modes make direct use of this information (e.g., when using <a class="reference internal" href="../executable.html#kubernetes"><span class="std std-ref">Kubernetes</span></a>).
+Since it would be cumbersome to define them for every rule, you can set default values at the terminal or in a <a class="reference internal" href="../executable.html#profiles"><span class="std std-ref">profile</span></a>.
+This works via the command line flag <code class="docutils literal notranslate"><span class="pre">--default-resources</span></code>, see <code class="docutils literal notranslate"><span class="pre">snakemake</span> <span class="pre">--help</span></code> for more information.
+If those resource definitions are mandatory for a certain execution mode, Snakemake will fail with a hint if they are missing.
+Any resource definitions inside a rule override what has been defined with <code class="docutils literal notranslate"><span class="pre">--default-resources</span></code>.</p>
+<p>Resources can also be callables that return <code class="docutils literal notranslate"><span class="pre">int</span></code> values.
+The signature of the callable has to be <code class="docutils literal notranslate"><span class="pre">callable(wildcards</span> <span class="pre">[,</span> <span class="pre">input]</span> <span class="pre">[,</span> <span class="pre">threads]</span> <span class="pre">[,</span> <span class="pre">attempt])</span></code> (<code class="docutils literal notranslate"><span class="pre">input</span></code>, <code class="docutils literal notranslate"><span class="pre">threads</span></code>, and <code class="docutils literal notranslate"><span class="pre">attempt</span></code> are optional parameters).</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">attempt</span></code> allows to adjust resources based on how often the job has been restarted (see <a class="reference internal" href="../executable.html#all-options"><span class="std std-ref">All Options</span></a>, option <code class="docutils literal notranslate"><span class="pre">--restart-times</span></code>).
+This is handy when executing a Snakemake workflow in a cluster environment, where jobs can e.g. fail because of too limited resources.
+When Snakemake is executed with <code class="docutils literal notranslate"><span class="pre">--restart-times</span> <span class="pre">3</span></code>, it will try to restart a failed job 3 times before it gives up.
+Thereby, the parameter <code class="docutils literal notranslate"><span class="pre">attempt</span></code> will contain the current attempt number (starting from <code class="docutils literal notranslate"><span class="pre">1</span></code>).
+This can be used to adjust the required memory as follows</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>    <span class="o">...</span>
+    <span class="n">output</span><span class="p">:</span>   <span class="o">...</span>
+    <span class="n">resources</span><span class="p">:</span>
+        <span class="n">mem_mb</span><span class="o">=</span><span class="k">lambda</span> <span class="n">wildcards</span><span class="p">,</span> <span class="n">attempt</span><span class="p">:</span> <span class="n">attempt</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+<p>Here, the first attempt will require 100 MB memory, the second attempt will require 200 MB memory and so on.
+When passing memory requirements to the cluster engine, you can by this automatically try out larger nodes if it turns out to be necessary.</p>
+</div>
+<div class="section" id="messages">
+<h2>Messages<a class="headerlink" href="#messages" title="Permalink to this headline">¶</a></h2>
+<p>When executing snakemake, a short summary for each running rule is given to the console. This can be overridden by specifying a message for a rule:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/another/outputfile&quot;</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="n">message</span><span class="p">:</span> <span class="s2">&quot;Executing somecommand with {threads} threads on the following files {input}.&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;somecommand --threads {threads} {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>Note that access to wildcards is also possible via the variable <code class="docutils literal notranslate"><span class="pre">wildcards</span></code> (e.g, <code class="docutils literal notranslate"><span class="pre">{wildcards.sample}</span></code>), which is the same as with shell commands. It is important to have a namespace around wildcards in order to avoid clashes with other variable names.</p>
+</div>
+<div class="section" id="priorities">
+<h2>Priorities<a class="headerlink" href="#priorities" title="Permalink to this headline">¶</a></h2>
+<p>Snakemake allows rules to specify numeric priorities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="p">:</span>
+  <span class="nb">input</span><span class="p">:</span> <span class="o">...</span>
+  <span class="n">output</span><span class="p">:</span> <span class="o">...</span>
+  <span class="n">priority</span><span class="p">:</span> <span class="mi">50</span>
+  <span class="n">shell</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Per default, each rule has a priority of 0. Any rule that specifies a higher priority, will be preferred by the scheduler over all rules that are ready to execute at the same time without having at least the same priority.</p>
+<p>Furthermore, the <code class="docutils literal notranslate"><span class="pre">--prioritize</span></code> or <code class="docutils literal notranslate"><span class="pre">-P</span></code> command line flag allows to specify files (or rules) that shall be created with highest priority during the workflow execution. This means that the scheduler will assign the specified target and all its dependencies highest priority, such that the target is finished as soon as possible.
+The <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> (equivalently <code class="docutils literal notranslate"><span class="pre">--dryrun</span></code>) or <code class="docutils literal notranslate"><span class="pre">-n</span></code> option allows you to see the scheduling plan including the assigned priorities.</p>
+</div>
+<div class="section" id="log-files">
+<h2>Log-Files<a class="headerlink" href="#log-files" title="Permalink to this headline">¶</a></h2>
+<p>Each rule can specify a log file where information about the execution is written to:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">abc</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;input.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;output.txt&quot;</span>
+    <span class="n">log</span><span class="p">:</span> <span class="s2">&quot;logs/abc.log&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;somecommand --log {log} {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>Log files can be used as input for other rules, just like any other output file.
+However, unlike output files, log files are not deleted upon error.
+This is obviously necessary in order to discover causes of errors which might become visible in the log file.</p>
+<p>The variable <code class="docutils literal notranslate"><span class="pre">log</span></code> can be used inside a shell command to tell the used tool to which file to write the logging information.
+The log file has to use the same wildcards as output files, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">log</span><span class="p">:</span> <span class="s2">&quot;logs/abc.{dataset}.log&quot;</span>
+</pre></div>
+</div>
+<p>For programs that do not have an explicit <code class="docutils literal notranslate"><span class="pre">log</span></code> parameter, you may always use <code class="docutils literal notranslate"><span class="pre">2&gt;</span> <span class="pre">{log}</span></code> to redirect standard output to a file (here, the <code class="docutils literal notranslate"><span class="pre">log</span></code> file) in Linux-based systems.
+Note that it is also supported to have multiple (named) log files being specified:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">abc</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;input.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;output.txt&quot;</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">log1</span><span class="o">=</span><span class="s2">&quot;logs/abc.log&quot;</span><span class="p">,</span> <span class="n">log2</span><span class="o">=</span><span class="s2">&quot;logs/xyz.log&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;somecommand --log {log.log1} METRICS_FILE={log.log2} {input} {output}&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="non-file-parameters-for-rules">
+<h2>Non-file parameters for rules<a class="headerlink" href="#non-file-parameters-for-rules" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you may want to define certain parameters separately from the rule body. Snakemake provides the <code class="docutils literal notranslate"><span class="pre">params</span></code> keyword for this purpose:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="o">...</span>
+    <span class="n">params</span><span class="p">:</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;somedir/{sample}&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;somedir/{sample}.csv&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand -o {params.prefix}&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">params</span></code> keyword allows you to specify additional parameters depending on the wildcards values. This allows you to circumvent the need to use <code class="docutils literal notranslate"><span class="pre">run:</span></code> and python code for non-standard commands like in the above case.
+Here, the command <code class="docutils literal notranslate"><span class="pre">somecommand</span></code> expects the prefix of the output file instead of the actual one. The <code class="docutils literal notranslate"><span class="pre">params</span></code> keyword helps here since you cannot simply add the prefix as an output file (as the file won’t be created, Snakemake would throw an error after execution of the rule).</p>
+<p>Furthermore, for enhanced readability and clarity, the <code class="docutils literal notranslate"><span class="pre">params</span></code> section is also an excellent place to name and assign parameters and variables for your subsequent command.</p>
+<p>Similar to <code class="docutils literal notranslate"><span class="pre">input</span></code>, <code class="docutils literal notranslate"><span class="pre">params</span></code> can take functions as well (see <a class="reference internal" href="#snakefiles-input-functions"><span class="std std-ref">Functions as Input Files</span></a>), e.g. you can write</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="o">...</span>
+    <span class="n">params</span><span class="p">:</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="k">lambda</span> <span class="n">wildcards</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;somedir/{sample}.csv&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand -o {params.prefix}&quot;</span>
+</pre></div>
+</div>
+<p>to get the same effect as above. Note that in contrast to the <code class="docutils literal notranslate"><span class="pre">input</span></code> directive, the
+<code class="docutils literal notranslate"><span class="pre">params</span></code> directive can optionally take more arguments than only <code class="docutils literal notranslate"><span class="pre">wildcards</span></code>, namely <code class="docutils literal notranslate"><span class="pre">input</span></code>, <code class="docutils literal notranslate"><span class="pre">output</span></code>, <code class="docutils literal notranslate"><span class="pre">threads</span></code>, and <code class="docutils literal notranslate"><span class="pre">resources</span></code>.
+From the Python perspective, they can be seen as optional keyword arguments without a default value.
+Their order does not matter, apart from the fact that <code class="docutils literal notranslate"><span class="pre">wildcards</span></code> has to be the first argument.
+In the example above, this allows you to derive the prefix name from the output file.</p>
+</div>
+<div class="section" id="external-scripts">
+<span id="snakefiles-external-scripts"></span><h2>External scripts<a class="headerlink" href="#external-scripts" title="Permalink to this headline">¶</a></h2>
+<p>A rule can also point to an external script instead of a shell command or inline Python code, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path/to/another/outputfile&quot;</span>
+    <span class="n">script</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/script.py&quot;</span>
+</pre></div>
+</div>
+<p>The script path is always relative to the Snakefile (in contrast to the input and output file paths, which are relative to the working directory).
+Inside the script, you have access to an object <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> that provides access to the same objects that are available in the <code class="docutils literal notranslate"><span class="pre">run</span></code> and <code class="docutils literal notranslate"><span class="pre">shell</span></code> directives (input, output, params, wildcards, log, threads, resources, config), e.g. you can use <code class="docutils literal notranslate"><span class="pre">snakemake.input[0]</span></code> to access the first input file of above rule.</p>
+<p>Apart from Python scripts, this mechanism also allows you to integrate <a class="reference external" href="https://www.r-project.org">R</a> and R <a class="reference external" href="http://rmarkdown.rstudio.com">Markdown</a> scripts with Snakemake, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path/to/another/outputfile&quot;</span>
+    <span class="n">script</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/script.R&quot;</span>
+</pre></div>
+</div>
+<p>In the R script, an S4 object named <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> analog to the Python case above is available and allows access to input and output files and other parameters. Here the syntax follows that of S4 classes with attributes that are R lists, e.g. we can access the first input file with <code class="docutils literal notranslate"><span class="pre">snakemake&#64;input[[1]]</span></code> (note that the first file does not have index <code class="docutils literal notranslate"><span class="pre">0</span></code> here, because R starts counting from <code class="docutils literal notranslate"><span class="pre">1</span></code>). Named input and output files can be accessed in the same way, by just providing the name instead of an index, e.g. <code class="docutils literal notranslate"><span class="pre">snakemake&#64;input[[&quot;myfile&quot;]]</span></code>.</p>
+<p>Finally, it is possible to integrate <a class="reference external" href="https://julialang.org">Julia</a> scripts, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path/to/another/outputfile&quot;</span>
+    <span class="n">script</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/script.jl&quot;</span>
+</pre></div>
+</div>
+<p>In the <a class="reference external" href="https://julialang.org">Julia</a> script, a <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> object is available, which can be accessed similar to the Python case (see above), with the only difference that you have to index from 1 instead of 0.</p>
+<p>For technical reasons, scripts are executed in <code class="docutils literal notranslate"><span class="pre">.snakemake/scripts</span></code>. The original script directory is available as <code class="docutils literal notranslate"><span class="pre">scriptdir</span></code> in the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> object. A convenience method, <code class="docutils literal notranslate"><span class="pre">snakemake&#64;source()</span></code>, acts as a wrapper for the normal R <code class="docutils literal notranslate"><span class="pre">source()</span></code> function, and can be used to source files relative to the original script directory.</p>
+<p>An example external Python script would could look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">out_path</span><span class="p">,</span> <span class="n">threads</span><span class="p">,</span> <span class="n">myparam</span><span class="p">):</span>
+    <span class="c1"># python code</span>
+
+<span class="n">do_something</span><span class="p">(</span><span class="n">snakemake</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snakemake</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snakemake</span><span class="o">.</span><span class="n">threads</span><span class="p">,</span> <span class="n">snakemake</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;myparam&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You can use the Python debugger from within the script if you invoke Snakemake with <code class="docutils literal notranslate"><span class="pre">--debug</span></code>.
+An equivalent script written in R would look like this:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">do_something</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">out_path</span><span class="p">,</span> <span class="n">threads</span><span class="p">,</span> <span class="n">myparam</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1"># R code</span>
+<span class="p">}</span>
+
+<span class="nf">do_something</span><span class="p">(</span><span class="n">snakemake</span><span class="o">@</span><span class="n">input[[1]]</span><span class="p">,</span> <span class="n">snakemake</span><span class="o">@</span><span class="n">output[[1]]</span><span class="p">,</span> <span class="n">snakemake</span><span class="o">@</span><span class="n">threads</span><span class="p">,</span> <span class="n">snakemake</span><span class="o">@</span><span class="n">config[[</span><span class="s">&quot;myparam&quot;</span><span class="n">]]</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To debug R scripts, you can save the workspace with <code class="docutils literal notranslate"><span class="pre">save.image()</span></code>, and invoke R after Snakemake has terminated. Then you can use the usual R debugging facilities while having access to the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> variable.
+It is best practice to wrap the actual code into a separate function. This increases the portability if the code shall be invoked outside of Snakemake or from a different rule.</p>
+<p>An R Markdown file can be integrated in the same way as R and Python scripts, but only a single output (html) file can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path/to/other/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/report.html&quot;</span><span class="p">,</span>
+    <span class="n">script</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/report.Rmd&quot;</span>
+</pre></div>
+</div>
+<p>In the R Markdown file you can insert output from a R command, and access variables stored in the S4 object named <code class="docutils literal notranslate"><span class="pre">snakemake</span></code></p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="o">---</span>
+<span class="n">title</span><span class="o">:</span> <span class="s">&quot;Test Report&quot;</span>
+<span class="n">author</span><span class="o">:</span>
+    <span class="o">-</span> <span class="s">&quot;Your Name&quot;</span>
+<span class="n">date</span><span class="o">:</span> <span class="s">&quot;`r format(Sys.time(), &#39;%d %B, %Y&#39;)`&quot;</span>
+<span class="n">params</span><span class="o">:</span>
+   <span class="n">rmd</span><span class="o">:</span> <span class="s">&quot;report.Rmd&quot;</span>
+<span class="n">output</span><span class="o">:</span>
+  <span class="n">html_document</span><span class="o">:</span>
+  <span class="n">highlight</span><span class="o">:</span> <span class="n">tango</span>
+  <span class="n">number_sections</span><span class="o">:</span> <span class="n">no</span>
+  <span class="n">theme</span><span class="o">:</span> <span class="n">default</span>
+  <span class="n">toc</span><span class="o">:</span> <span class="n">yes</span>
+  <span class="n">toc_depth</span><span class="o">:</span> <span class="m">3</span>
+  <span class="n">toc_float</span><span class="o">:</span>
+    <span class="n">collapsed</span><span class="o">:</span> <span class="n">no</span>
+    <span class="n">smooth_scroll</span><span class="o">:</span> <span class="n">yes</span>
+<span class="o">---</span>
+
+<span class="c1">## R Markdown</span>
+
+<span class="n">This</span> <span class="n">is</span> <span class="n">an</span> <span class="n">R</span> <span class="n">Markdown</span> <span class="n">document.</span>
+
+<span class="n">Test</span> <span class="n">include</span> <span class="n">from</span> <span class="n">snakemake</span> <span class="n">`r snakemake@input`.</span>
+
+<span class="c1">## Source</span>
+<span class="o">&lt;</span><span class="n">a</span> <span class="n">download</span><span class="o">=</span><span class="s">&quot;report.Rmd&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;`r base64enc::dataURI(file = params$rmd, mime = &#39;text/rmd&#39;, encoding = &#39;base64&#39;)`&quot;</span><span class="o">&gt;</span><span class="n">R</span> <span class="n">Markdown</span> <span class="n">source</span> <span class="nf">file </span><span class="p">(</span><span class="n">to</span> <span class="n">produce</span> <span class="n">this</span> <span class="n">document</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>A link to the R Markdown document with the snakemake object can be inserted. Therefore a variable called <code class="docutils literal notranslate"><span class="pre">rmd</span></code> needs to be added to the <code class="docutils literal notranslate"><span class="pre">params</span></code> section in the header of the <code class="docutils literal notranslate"><span class="pre">report.Rmd</span></code> file. The generated R Markdown file with snakemake object will be saved in the file specified in this <code class="docutils literal notranslate"><span class="pre">rmd</span></code> variable. This file can be embedded into the HTML document using base64 encoding and a link can be inserted as shown in the example above.
+Also other input and output files can be embedded in this way to make a portable report. Note that the above method with a data URI only works for small files. An experimental technology to embed larger files is using Javascript Blob <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/Blob">object</a>.</p>
+</div>
+<div class="section" id="protected-and-temporary-files">
+<h2>Protected and Temporary Files<a class="headerlink" href="#protected-and-temporary-files" title="Permalink to this headline">¶</a></h2>
+<p>A particular output file may require a huge amount of computation time. Hence one might want to protect it against accidental deletion or overwriting. Snakemake allows this by marking such a file as <code class="docutils literal notranslate"><span class="pre">protected</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="n">protected</span><span class="p">(</span><span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>A protected file will be write-protected after the rule that produces it is completed.</p>
+<p>Further, an output file marked as <code class="docutils literal notranslate"><span class="pre">temp</span></code> is deleted after all rules that use it as an input are completed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="n">temp</span><span class="p">(</span><span class="s2">&quot;path/to/outputfile&quot;</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand {input} {output}&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="directories-as-outputs">
+<h2>Directories as outputs<a class="headerlink" href="#directories-as-outputs" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it can be convenient to have directories, rather than files, as outputs of a rule. As of version 5.2.0, directories as outputs have to be explicitly marked with <code class="docutils literal notranslate"><span class="pre">directory</span></code>. This is primarily for safety reasons; since all outputs are deleted before a job is executed, we don’t want to risk deleting important directories if the user makes some mistake. Marking the output as <code class="docutils literal notranslate"><span class="pre">directory</span></code> makes the intent clear, and the output can be safely removed. Another reason comes down to how modification time for directories work. The modification time on a directory changes when a file or a subdirectory is added, removed or renamed. This can easily happen in not-quite-intended ways, such as when Apple macOS or MS Windows add <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> or <code class="docutils literal notranslate"><span class="pre">thumbs.db</span></code> files to store parameters for how the directory contents should be displayed. When the <code class="docutils literal notranslate"><span class="pre">directory</span></code> flag is used a hidden file called <code class="docutils literal notranslate"><span class="pre">.snakemake_timestamp</span></code> is created in the output directory, and the modification time of that file is used when determining whether the rule output is up to date or if it needs to be rerun. Always consider if you can’t formulate your workflow using normal files before resorting to using <code class="docutils literal notranslate"><span class="pre">directory()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="n">directory</span><span class="p">(</span><span class="s2">&quot;path/to/outputdir&quot;</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand {input} {output}&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ignoring-timestamps">
+<h2>Ignoring timestamps<a class="headerlink" href="#ignoring-timestamps" title="Permalink to this headline">¶</a></h2>
+<p>For determining whether output files have to be re-created, Snakemake checks whether the file modification date (i.e. the timestamp) of any input file of the same job is newer than the timestamp of the output file.
+This behavior can be overridden by marking an input file as <code class="docutils literal notranslate"><span class="pre">ancient</span></code>.
+The timestamp of such files is ignored and always assumed to be older than any of the output files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">ancient</span><span class="p">(</span><span class="s2">&quot;path/to/inputfile&quot;</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/outputfile&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>Here, this means that the file <code class="docutils literal notranslate"><span class="pre">path/to/outputfile</span></code> will not be triggered for re-creation after it has been generated once, even when the input file is modified in the future.
+Note that any flag that forces re-creation of files still also applies to files marked as <code class="docutils literal notranslate"><span class="pre">ancient</span></code>.</p>
+</div>
+<div class="section" id="shadow-rules">
+<h2>Shadow rules<a class="headerlink" href="#shadow-rules" title="Permalink to this headline">¶</a></h2>
+<p>Shadow rules result in each execution of the rule to be run in isolated temporary directories. This “shadow” directory contains symlinks to files and directories in the current workdir. This is useful for running programs that generate lots of unused files which you don’t want to manually cleanup in your snakemake workflow. It can also be useful if you want to keep your workdir clean while the program executes, or simplify your workflow by not having to worry about unique filenames for all outputs of all rules.</p>
+<p>By setting <code class="docutils literal notranslate"><span class="pre">shadow:</span> <span class="pre">&quot;shallow&quot;</span></code>, the top level files and directories are symlinked, so that any relative paths in a subdirectory will be real paths in the filesystem. The setting <code class="docutils literal notranslate"><span class="pre">shadow:</span> <span class="pre">&quot;full&quot;</span></code> fully shadows the entire subdirectory structure of the current workdir. The setting <code class="docutils literal notranslate"><span class="pre">shadow:</span> <span class="pre">&quot;minimal&quot;</span></code> only symlinks the inputs to the rule. Once the rule successfully executes, the output file will be moved if necessary to the real path as indicated by <code class="docutils literal notranslate"><span class="pre">output</span></code>.</p>
+<p>Typically, you will not need to modify your rule for compatibility with <code class="docutils literal notranslate"><span class="pre">shadow</span></code>, unless you reference parent directories relative to your workdir in a rule.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">NAME</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;path/to/inputfile&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/outputfile&quot;</span>
+    <span class="n">shadow</span><span class="p">:</span> <span class="s2">&quot;shallow&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;somecommand --other_outputs other.txt {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>Shadow directories are stored one per rule execution in <code class="docutils literal notranslate"><span class="pre">.snakemake/shadow/</span></code>, and are cleared on successful execution. Consider running with the <code class="docutils literal notranslate"><span class="pre">--cleanup-shadow</span></code> argument every now and then to remove any remaining shadow directories from aborted jobs. The base shadow directory can be changed with the <code class="docutils literal notranslate"><span class="pre">--shadow-prefix</span></code> command line argument.</p>
+</div>
+<div class="section" id="flag-files">
+<h2>Flag files<a class="headerlink" href="#flag-files" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it is necessary to enforce some rule execution order without real file dependencies. This can be achieved by “touching” empty files that denote that a certain task was completed. Snakemake supports this via the <cite>touch</cite> flag:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;mytask.done&quot;</span>
+
+<span class="n">rule</span> <span class="n">mytask</span><span class="p">:</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">touch</span><span class="p">(</span><span class="s2">&quot;mytask.done&quot;</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;mycommand ...&quot;</span>
+</pre></div>
+</div>
+<p>With the <code class="docutils literal notranslate"><span class="pre">touch</span></code> flag, Snakemake touches (i.e. creates or updates) the file <code class="docutils literal notranslate"><span class="pre">mytask.done</span></code> after <code class="docutils literal notranslate"><span class="pre">mycommand</span></code> has finished successfully.</p>
+</div>
+<div class="section" id="job-properties">
+<span id="snakefiles-job-properties"></span><h2>Job Properties<a class="headerlink" href="#job-properties" title="Permalink to this headline">¶</a></h2>
+<p>When executing a workflow on a cluster using the <code class="docutils literal notranslate"><span class="pre">--cluster</span></code> parameter (see below), Snakemake creates a job script for each job to execute.
+This script is then invoked using the provided cluster submission command (e.g. <code class="docutils literal notranslate"><span class="pre">qsub</span></code>).
+Sometimes you want to provide a custom wrapper for the cluster submission command that decides about additional parameters.
+As this might be based on properties of the job, Snakemake stores the job properties (e.g. rule name, threads, input files, params etc.) as JSON inside the job script.
+For convenience, there exists a parser function <code class="docutils literal notranslate"><span class="pre">snakemake.utils.read_job_properties</span></code> that can be used to access the properties.
+The following shows an example job submission wrapper:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">snakemake.utils</span> <span class="kn">import</span> <span class="n">read_job_properties</span>
+
+<span class="n">jobscript</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">job_properties</span> <span class="o">=</span> <span class="n">read_job_properties</span><span class="p">(</span><span class="n">jobscript</span><span class="p">)</span>
+
+<span class="c1"># do something useful with the threads</span>
+<span class="n">threads</span> <span class="o">=</span> <span class="n">job_properties</span><span class="p">[</span><span class="n">threads</span><span class="p">]</span>
+
+<span class="c1"># access property defined in the cluster configuration file (Snakemake &gt;=3.6.0)</span>
+<span class="n">job_properties</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">][</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;qsub -t {threads} {script}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span> <span class="n">script</span><span class="o">=</span><span class="n">jobscript</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dynamic-files">
+<span id="snakefiles-dynamic-files"></span><h2>Dynamic Files<a class="headerlink" href="#dynamic-files" title="Permalink to this headline">¶</a></h2>
+<p>Snakemake provides experimental support for dynamic files.
+Dynamic files can be used whenever one has a rule, for which the number of output files is unknown before the rule was executed.
+This is useful for example with certain clustering algorithms:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">cluster</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;afile.csv&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">dynamic</span><span class="p">(</span><span class="s2">&quot;{clusterid}.cluster.csv&quot;</span><span class="p">)</span>
+    <span class="n">run</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Now the results of the rule can be used in Snakemake although it does not know how many files will be present before executing the rule <cite>cluster</cite>, e.g. by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">dynamic</span><span class="p">(</span><span class="s2">&quot;{clusterid}.cluster.plot.pdf&quot;</span><span class="p">)</span>
+
+<span class="n">rule</span> <span class="n">plot</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;{clusterid}.cluster.csv&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;{clusterid}.cluster.plot.pdf&quot;</span>
+    <span class="n">run</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Here, Snakemake determines the input files for the rule <cite>all</cite> after the rule <cite>cluster</cite> was executed, and then dynamically inserts jobs of the rule <cite>plot</cite> into the DAG to create the desired plots.</p>
+</div>
+<div class="section" id="functions-as-input-files">
+<span id="snakefiles-input-functions"></span><h2>Functions as Input Files<a class="headerlink" href="#functions-as-input-files" title="Permalink to this headline">¶</a></h2>
+<p>Instead of specifying strings or lists of strings as input files, snakemake can also make use of functions that return single <strong>or</strong> lists of input files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">wildcards</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="o">...</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="nb">input</span> <span class="n">files</span> <span class="n">depending</span> <span class="n">on</span> <span class="n">given</span> <span class="n">wildcards</span> <span class="o">...</span><span class="p">]</span>
+
+<span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">myfunc</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;someoutput.{somewildcard}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+<p>The function has to accept a single argument that will be the wildcards object generated from the application of the rule to create some requested output files.
+Note that you can also use <a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions">lambda expressions</a> instead of full function definitions.
+By this, rules can have entirely different input files (both in form and number) depending on the inferred wildcards. E.g. you can assign input files that appear in entirely different parts of your filesystem based on some wildcard value and a dictionary that maps the wildcard value to file paths.</p>
+<p>Note that the function will be executed when the rule is evaluated and before the workflow actually starts to execute. Further note that using a function as input overrides the default mechanism of replacing wildcards with their values inferred from the output files. You have to take care of that yourself with the given wildcards object.</p>
+<p>Finally, when implementing the input function, it is best practice to make sure that it can properly handle all possible wildcard values your rule can have.
+In particular, input files should not be combined with very general rules that can be applied to create almost any file: Snakemake will try to apply the rule, and will report the exceptions of your input function as errors.</p>
+<p>For a practical example, see the <a class="reference internal" href="../tutorial/tutorial.html#tutorial"><span class="std std-ref">Snakemake Tutorial</span></a> (<a class="reference internal" href="../tutorial/advanced.html#tutorial-input-functions"><span class="std std-ref">Step 3: Input functions</span></a>).</p>
+</div>
+<div class="section" id="input-functions-and-unpack">
+<span id="snakefiles-unpack"></span><h2>Input Functions and <code class="docutils literal notranslate"><span class="pre">unpack()</span></code><a class="headerlink" href="#input-functions-and-unpack" title="Permalink to this headline">¶</a></h2>
+<p>In some cases, you might want to have your input functions return named input files.
+This can be done by having them return <code class="docutils literal notranslate"><span class="pre">dict()</span></code> objects with the names as the dict keys and the file names as the dict values and using the <code class="docutils literal notranslate"><span class="pre">unpack()</span></code> keyword.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">wildcards</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;{wildcards.token}.txt&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wildcards</span><span class="o">=</span><span class="n">wildcards</span><span class="p">)</span>
+
+<span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">unpack</span><span class="p">(</span><span class="n">myfunc</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;someoutput.{token}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">unpack()</span></code> only necessary for input functions returning <code class="docutils literal notranslate"><span class="pre">dict</span></code>.
+While it also works for <code class="docutils literal notranslate"><span class="pre">list</span></code>, remember that lists (and nested lists) of strings are automatically flattened.</p>
+<p>Also note that if you do not pass in a <em>function</em> into the input list but you directly <em>call a function</em> then you don’t use <code class="docutils literal notranslate"><span class="pre">unpack()</span></code> either.
+Here, you can simply use Python’s double-star (<code class="docutils literal notranslate"><span class="pre">**</span></code>) operator for unpacking the parameters.</p>
+<p>Note that as Snakefiles are translated into Python for execution, the same rules as for using the <a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists">star and double-star unpacking Python operators</a> apply.
+These restrictions do not apply when using <code class="docutils literal notranslate"><span class="pre">unpack()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myfunc1</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;foo.txt&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">myfunc2</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;nowildcards.txt&#39;</span><span class="p">}</span>
+
+<span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="o">*</span><span class="n">myfunc1</span><span class="p">(),</span>
+        <span class="o">**</span><span class="n">myfunc2</span><span class="p">(),</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="version-tracking">
+<span id="snakefiles-version-tracking"></span><h2>Version Tracking<a class="headerlink" href="#version-tracking" title="Permalink to this headline">¶</a></h2>
+<p>Rules can specify a version that is tracked by Snakemake together with the output files. When the version changes snakemake informs you when using the flag <code class="docutils literal notranslate"><span class="pre">--summary</span></code> or <code class="docutils literal notranslate"><span class="pre">--list-version-changes</span></code>.
+The version can be specified by the version directive, which takes a string:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>   <span class="o">...</span>
+    <span class="n">output</span><span class="p">:</span>  <span class="o">...</span>
+    <span class="n">version</span><span class="p">:</span> <span class="s2">&quot;1.0&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>   <span class="o">...</span>
+</pre></div>
+</div>
+<p>The version can of course also be filled with the output of a shell command, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SOMECOMMAND_VERSION</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s2">&quot;somecommand --version&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">rule</span><span class="p">:</span>
+    <span class="n">version</span><span class="p">:</span> <span class="n">SOMECOMMAND_VERSION</span>
+</pre></div>
+</div>
+<p>Alternatively, you might want to use file modification times in case of local scripts:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SOMECOMMAND_VERSION</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="s2">&quot;path/to/somescript&quot;</span><span class="p">))</span>
+
+<span class="n">rule</span><span class="p">:</span>
+    <span class="n">version</span><span class="p">:</span> <span class="n">SOMECOMMAND_VERSION</span>
+</pre></div>
+</div>
+<p>A re-run can be automated by invoking Snakemake as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake -R <span class="sb">`</span>snakemake --list-version-changes<span class="sb">`</span>
+</pre></div>
+</div>
+<p>With the availability of the <code class="docutils literal notranslate"><span class="pre">conda</span></code> directive (see <a class="reference internal" href="deployment.html#integrated-package-management"><span class="std std-ref">Integrated Package Management</span></a>)
+the <code class="docutils literal notranslate"><span class="pre">version</span></code> directive has become <strong>obsolete</strong> in favor of defining isolated
+software environments that can be automatically deployed via the conda package
+manager.</p>
+</div>
+<div class="section" id="code-tracking">
+<span id="snakefiles-code-tracking"></span><h2>Code Tracking<a class="headerlink" href="#code-tracking" title="Permalink to this headline">¶</a></h2>
+<p>Snakemake tracks the code that was used to create your files.
+In combination with <code class="docutils literal notranslate"><span class="pre">--summary</span></code> or <code class="docutils literal notranslate"><span class="pre">--list-code-changes</span></code> this can be used to see what files may need a re-run because the implementation changed.
+Re-run can be automated by invoking Snakemake as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake -R <span class="sb">`</span>snakemake --list-code-changes<span class="sb">`</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="onstart-onsuccess-and-onerror-handlers">
+<span id="snakefiles-job-lifetime-handlers"></span><h2>Onstart, onsuccess and onerror handlers<a class="headerlink" href="#onstart-onsuccess-and-onerror-handlers" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, it is necessary to specify code that shall be executed when the workflow execution is finished (e.g. cleanup, or notification of the user).
+With Snakemake 3.2.1, this is possible via the <code class="docutils literal notranslate"><span class="pre">onsuccess</span></code> and <code class="docutils literal notranslate"><span class="pre">onerror</span></code> keywords:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">onsuccess</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Workflow finished, no error&quot;</span><span class="p">)</span>
+
+<span class="n">onerror</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;An error occurred&quot;</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">(</span><span class="s2">&quot;mail -s &quot;</span><span class="n">an</span> <span class="n">error</span> <span class="n">occurred</span><span class="s2">&quot; youremail@provider.com &lt; {log}&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">onsuccess</span></code> handler is executed if the workflow finished without error. Else, the <code class="docutils literal notranslate"><span class="pre">onerror</span></code> handler is executed.
+In both handlers, you have access to the variable <code class="docutils literal notranslate"><span class="pre">log</span></code>, which contains the path to a logfile with the complete Snakemake output.
+Snakemake 3.6.0 adds an <code class="docutils literal notranslate"><span class="pre">``onstart``</span></code> handler, that will be executed before the workflow starts.
+Note that dry-runs do not trigger any of the handlers.</p>
+</div>
+<div class="section" id="rule-dependencies">
+<h2>Rule dependencies<a class="headerlink" href="#rule-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>From verion 2.4.8 on, rules can also refer to the output of other rules in the Snakefile, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">a</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>  <span class="s2">&quot;path/to/input&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/output&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>  <span class="o">...</span>
+
+<span class="n">rule</span> <span class="n">b</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>  <span class="n">rules</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">output</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/output/of/b&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>  <span class="o">...</span>
+</pre></div>
+</div>
+<p>Importantly, be aware that referring to rule a here requires that rule a was defined above rule b in the file, since the object has to be known already.
+This feature also allows to resolve dependencies that are ambiguous when using filenames.</p>
+<p>Note that when the rule you refer to defines multiple output files but you want to require only a subset of those as input for another rule, you should name the output files and refer to them specifically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">a</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>  <span class="s2">&quot;path/to/input&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">a</span> <span class="o">=</span> <span class="s2">&quot;path/to/output&quot;</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;path/to/output2&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>  <span class="o">...</span>
+
+<span class="n">rule</span> <span class="n">b</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>  <span class="n">rules</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">a</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;path/to/output/of/b&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>  <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="handling-ambiguous-rules">
+<span id="snakefiles-ambiguous-rules"></span><h2>Handling Ambiguous Rules<a class="headerlink" href="#handling-ambiguous-rules" title="Permalink to this headline">¶</a></h2>
+<p>When two rules can produce the same output file, snakemake cannot decide per default which one to use. Hence an <code class="docutils literal notranslate"><span class="pre">AmbiguousRuleException</span></code> is thrown.
+Note: ruleorder is not intended to bring rules in the correct execution order (this is solely guided by the names of input and output files you use), it only helps snakemake to decide which rule to use when multiple ones can create the same output file!
+The proposed strategy to deal with such ambiguity is to provide a <code class="docutils literal notranslate"><span class="pre">ruleorder</span></code> for the conflicting rules, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ruleorder</span><span class="p">:</span> <span class="n">rule1</span> <span class="o">&gt;</span> <span class="n">rule2</span> <span class="o">&gt;</span> <span class="n">rule3</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">rule1</span></code> is preferred over <code class="docutils literal notranslate"><span class="pre">rule2</span></code> and <code class="docutils literal notranslate"><span class="pre">rule3</span></code>, and <code class="docutils literal notranslate"><span class="pre">rule2</span></code> is preferred over <code class="docutils literal notranslate"><span class="pre">rule3</span></code>.
+Only if rule1 and rule2 cannot be applied (e.g. due to missing input files), rule3 is used to produce the desired output file.</p>
+<p>Alternatively, rule dependencies (see above) can also resolve ambiguities.</p>
+<p>Another (quick and dirty) possiblity is to tell snakemake to allow ambiguity via a command line option</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --allow-ambiguity
+</pre></div>
+</div>
+<p>such that similar to GNU Make always the first matching rule is used. Here, a warning that summarizes the decision of snakemake is provided at the terminal.</p>
+</div>
+<div class="section" id="local-rules">
+<h2>Local Rules<a class="headerlink" href="#local-rules" title="Permalink to this headline">¶</a></h2>
+<p>When working in a cluster environment, not all rules need to become a job that has to be submitted (e.g. downloading some file, or a target-rule like <cite>all</cite>, see <a class="reference internal" href="#snakefiles-targets"><span class="std std-ref">Targets</span></a>).
+The keyword <cite>localrules</cite> allows to mark a rule as local, so that it is not submitted to the cluster and instead executed on the host node:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">localrules</span><span class="p">:</span> <span class="nb">all</span><span class="p">,</span> <span class="n">foo</span>
+
+<span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="o">...</span>
+
+<span class="n">rule</span> <span class="n">foo</span><span class="p">:</span>
+    <span class="o">...</span>
+
+<span class="n">rule</span> <span class="n">bar</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Here, only jobs from the rule <code class="docutils literal notranslate"><span class="pre">bar</span></code> will be submitted to the cluster, whereas all and foo will be run locally.
+Note that you can use the localrules directive <strong>multiple times</strong>. The result will be the union of all declarations.</p>
+</div>
+<div class="section" id="benchmark-rules">
+<h2>Benchmark Rules<a class="headerlink" href="#benchmark-rules" title="Permalink to this headline">¶</a></h2>
+<p>Since version 3.1, Snakemake provides support for benchmarking the run times of rules.
+This can be used to create complex performance analysis pipelines.
+With the <cite>benchmark</cite> keyword, a rule can be declared to store a benchmark of its code into the specified location. E.g. the rule</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">benchmark_command</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/input.{sample}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/output.{sample}.txt&quot;</span>
+    <span class="n">benchmark</span><span class="p">:</span>
+        <span class="s2">&quot;benchmarks/somecommand/{sample}.tsv&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>benchmarks the CPU and wall clock time of the command <code class="docutils literal notranslate"><span class="pre">somecommand</span></code> for the given output and input files.
+For this, the shell or run body of the rule is executed on that data, and all run times are stored into the given benchmark tsv file (which will contain a tab-separated table of run times and memory usage in MiB).
+Per default, Snakemake executes the job once, generating one run time.
+However, the benchmark file can be annotated with the desired number of repeats, e.g.,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">benchmark_command</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/input.{sample}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;path/to/output.{sample}.txt&quot;</span>
+    <span class="n">benchmark</span><span class="p">:</span>
+        <span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;benchmarks/somecommand/{sample}.tsv&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand {input} {output}&quot;</span>
+</pre></div>
+</div>
+<p>will instruct Snakemake to run each job of this rule three times and store all measurements in the benchmark file.
+The resulting tsv file can be used as input for other rules, just like any other output file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that benchmarking is only possible in a reliable fashion for subprocesses (thus for tasks run through the <code class="docutils literal notranslate"><span class="pre">shell</span></code>, <code class="docutils literal notranslate"><span class="pre">script</span></code>, and <code class="docutils literal notranslate"><span class="pre">wrapper</span></code> directive).
+In the <code class="docutils literal notranslate"><span class="pre">run</span></code> block, the variable <code class="docutils literal notranslate"><span class="pre">bench_record</span></code> is available that you can pass to <code class="docutils literal notranslate"><span class="pre">shell()</span></code> as <code class="docutils literal notranslate"><span class="pre">bench_record=bench_record</span></code>.
+When using <code class="docutils literal notranslate"><span class="pre">shell(...,</span> <span class="pre">bench_record=bench_record)</span></code>, the maximum of all measurements of all <code class="docutils literal notranslate"><span class="pre">shell()</span></code> calls will be used but the running time of the rule execution including any Python code.</p>
+</div>
+</div>
+<div class="section" id="defining-groups-for-execution">
+<span id="snakefiles-grouping"></span><h2>Defining groups for execution<a class="headerlink" href="#defining-groups-for-execution" title="Permalink to this headline">¶</a></h2>
+<p>From Snakemake 5.0 on, it is possible to assign rules to groups.
+Such groups will be executed together in <strong>cluster</strong> or <strong>cloud mode</strong>, as a so-called <strong>group job</strong>, i.e., all jobs of a particular group will be submitted at once, to the same computing node.
+By this, queueing and execution time can be safed, in particular if one or several short-running rules are involved.
+When executing locally, group definitions are ignored.</p>
+<p>Groups can be defined via the <code class="docutils literal notranslate"><span class="pre">group</span></code> keyword, e.g.,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+
+<span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;test.out&quot;</span>
+
+
+<span class="n">rule</span> <span class="n">a</span><span class="p">:</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;a/{sample}.out&quot;</span>
+    <span class="n">group</span><span class="p">:</span> <span class="s2">&quot;mygroup&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;touch {output}&quot;</span>
+
+
+<span class="n">rule</span> <span class="n">b</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;a/{sample}.out&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;b/{sample}.out&quot;</span>
+    <span class="n">group</span><span class="p">:</span> <span class="s2">&quot;mygroup&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;touch {output}&quot;</span>
+
+
+<span class="n">rule</span> <span class="n">c</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;b/{sample}.out&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">samples</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;test.out&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;touch {output}&quot;</span>
+</pre></div>
+</div>
+<p>Here, jobs from rule <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> end up in one group <code class="docutils literal notranslate"><span class="pre">mygroup</span></code>, whereas jobs from rule <code class="docutils literal notranslate"><span class="pre">c</span></code> are executed separately.
+Note that Snakemake always determines a <strong>connected subgraph</strong> with the same group id to be a <strong>group job</strong>.
+Here, this means that, e.g., the jobs creating <code class="docutils literal notranslate"><span class="pre">a/1.out</span></code> and <code class="docutils literal notranslate"><span class="pre">b/1.out</span></code> will be in one group, and the jobs creating <code class="docutils literal notranslate"><span class="pre">a/2.out</span></code> and <code class="docutils literal notranslate"><span class="pre">b/2.out</span></code> will be in a separate group.
+However, if we would add <code class="docutils literal notranslate"><span class="pre">group:</span> <span class="pre">&quot;mygroup&quot;</span></code> to rule <code class="docutils literal notranslate"><span class="pre">c</span></code>, all jobs would end up in a single group, including the one spawned from rule <code class="docutils literal notranslate"><span class="pre">c</span></code>, because <code class="docutils literal notranslate"><span class="pre">c</span></code> connects all the other jobs.</p>
+</div>
+<div class="section" id="piped-output">
+<h2>Piped output<a class="headerlink" href="#piped-output" title="Permalink to this headline">¶</a></h2>
+<p>From Snakemake 5.0 on, it is possible to mark output files as pipes, via the <code class="docutils literal notranslate"><span class="pre">pipe</span></code> flag, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;test.{i}.out&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+
+<span class="n">rule</span> <span class="n">a</span><span class="p">:</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="n">pipe</span><span class="p">(</span><span class="s2">&quot;test.{i}.txt&quot;</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;for i in {{0..2}}; do echo {wildcards.i} &gt;&gt; {output}; done&quot;</span>
+
+
+<span class="n">rule</span> <span class="n">b</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;test.{i}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;test.{i}.out&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;grep {wildcards.i} &lt; {input} &gt; {output}&quot;</span>
+</pre></div>
+</div>
+<p>If an output file is marked to be a pipe, then Snakemake will first create a <a class="reference external" href="https://en.wikipedia.org/wiki/Named_pipe">named pipe</a> with the given name and then execute the creating job simultaneously with the consuming job, inside a <strong>group job</strong> (see above).
+This works in all execution modes, local, cluster, and cloud.
+Naturally, a pipe output may only have a single consumer.
+It is possible to combine explicit group definition as above with pipe outputs.
+Thereby, pipe jobs can live within, or (automatically) extend existing groups.
+However, the two jobs connected by a pipe may not exist in conflicting groups.</p>
+</div>
+<div class="section" id="data-dependent-conditional-execution">
+<span id="snakefiles-checkpoints"></span><h2>Data-dependent conditional execution<a class="headerlink" href="#data-dependent-conditional-execution" title="Permalink to this headline">¶</a></h2>
+<p>From Snakemake 5.4 on, conditional reevaluation of the DAG of jobs based on the content outputs is possible.
+The key idea is that rules can be declared as checkpoints, e.g.,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">checkpoint</span> <span class="n">somestep</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;samples/{sample}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;somestep/{sample}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;somecommand {input} &gt; {output}&quot;</span>
+</pre></div>
+</div>
+<p>Snakemake allows to re-evaluate the DAG after the successful execution of every job spawned from a checkpoint.
+For this, every checkpoint is registered by its name in a globally available <code class="docutils literal notranslate"><span class="pre">checkpoints</span></code> object.
+The <code class="docutils literal notranslate"><span class="pre">checkpoints</span></code> object can be accessed by <a class="reference internal" href="#snakefiles-input-functions"><span class="std std-ref">input functions</span></a>.
+Assuming that the checkpoint is named <code class="docutils literal notranslate"><span class="pre">somestep</span></code> as above, the output files for a particular job can be retrieved with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">checkpoints</span><span class="o">.</span><span class="n">somestep</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">output</span>
+</pre></div>
+</div>
+<p>Thereby, the <code class="docutils literal notranslate"><span class="pre">get</span></code> method throws <code class="docutils literal notranslate"><span class="pre">snakemake.exceptions.IncompleteCheckpointException</span></code> if the checkpoint has not yet been executed for these particular wildcard value(s).
+Inside an input function, the exception will be automatically handled by Snakemake, and leads to a re-evaluation after the checkpoint has been successfully passed.</p>
+<p>To illustrate the possibilities of this mechanism, consider the following complete example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># a target rule to define the desired final output</span>
+<span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;aggregated/a.txt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;aggregated/b.txt&quot;</span>
+
+
+<span class="c1"># the checkpoint that shall trigger re-evaluation of the DAG</span>
+<span class="n">checkpoint</span> <span class="n">somestep</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;samples/{sample}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;somestep/{sample}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="c1"># simulate some output vale</span>
+        <span class="s2">&quot;echo {wildcards.sample} &gt; somestep/{wildcards.sample}.txt&quot;</span>
+
+
+<span class="c1"># intermediate rule</span>
+<span class="n">rule</span> <span class="n">intermediate</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;somestep/{sample}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;post/{sample}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;touch {output}&quot;</span>
+
+
+<span class="c1"># alternative intermediate rule</span>
+<span class="n">rule</span> <span class="n">alt_intermediate</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;somestep/{sample}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;alt/{sample}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;touch {output}&quot;</span>
+
+
+<span class="c1"># input function for the rule aggregate</span>
+<span class="k">def</span> <span class="nf">aggregate_input</span><span class="p">(</span><span class="n">wildcards</span><span class="p">):</span>
+    <span class="c1"># decision based on content of output file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">checkpoints</span><span class="o">.</span><span class="n">somestep</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">wildcards</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;post/{sample}.txt&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;alt/{sample}.txt&quot;</span>
+
+
+<span class="n">rule</span> <span class="n">aggregate</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">aggregate_input</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;aggregated/{sample}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;touch {output}&quot;</span>
+</pre></div>
+</div>
+<p>As can be seen, the rule aggregate uses an input function.
+Inside the function, we first retrieve the output files of the checkpoint <code class="docutils literal notranslate"><span class="pre">somestep</span></code> with the wildcards, passing through the value of the wildcard sample.
+Upon execution, if the checkpoint is not yet complete, Snakemake will record <code class="docutils literal notranslate"><span class="pre">somestep</span></code> as a direct dependency of the rule <code class="docutils literal notranslate"><span class="pre">aggregate</span></code>.
+Once <code class="docutils literal notranslate"><span class="pre">somestep</span></code> has finished for a given sample, the input function will automatically be re-evaluated and the method <code class="docutils literal notranslate"><span class="pre">get</span></code> will no longer return an exception.
+Instead, the output file will be opened, and depending on its contents either <code class="docutils literal notranslate"><span class="pre">&quot;post/{sample}.txt&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;alt/{sample}.txt&quot;</span></code> will be returned by the input function.
+This way, the DAG becomes conditional on some produced data.</p>
+<p>It is also possible to use checkpoints for cases where the output files are unknown before execution.
+A typical example is a clustering process with an unknown number of clusters, where each cluster shall be saved into a separate file.
+Consider the following example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># a target rule to define the desired final output</span>
+<span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;aggregated/a.txt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;aggregated/b.txt&quot;</span>
+
+
+<span class="c1"># the checkpoint that shall trigger re-evaluation of the DAG</span>
+<span class="n">checkpoint</span> <span class="n">clustering</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;samples/{sample}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="n">clusters</span><span class="o">=</span><span class="n">directory</span><span class="p">(</span><span class="s2">&quot;clustering/{sample}&quot;</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;mkdir clustering/{wildcards.sample}; &quot;</span>
+        <span class="s2">&quot;for i in 1 2 3; do echo $i &gt; clustering/{wildcards.sample}/$i.txt; done&quot;</span>
+
+
+<span class="c1"># an intermediate rule</span>
+<span class="n">rule</span> <span class="n">intermediate</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;clustering/{sample}/{i}.txt&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;post/{sample}/{i}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;cp {input} {output}&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">aggregate_input</span><span class="p">(</span><span class="n">wildcards</span><span class="p">):</span>
+    <span class="n">checkpoint_output</span> <span class="o">=</span> <span class="n">checkpoints</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">wildcards</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;post/{sample}/{i}.txt&quot;</span><span class="p">,</span>
+           <span class="n">sample</span><span class="o">=</span><span class="n">wildcards</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span>
+           <span class="n">i</span><span class="o">=</span><span class="n">glob_wildcards</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checkpoint_output</span><span class="p">,</span> <span class="s2">&quot;{i}.txt&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">i</span><span class="p">)</span>
+
+
+<span class="c1"># an aggregation over all produced clusters</span>
+<span class="n">rule</span> <span class="n">aggregate</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">aggregate_input</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;aggregated/{sample}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;cat {input} &gt; {output}&quot;</span>
+</pre></div>
+</div>
+<p>Here, our checkpoint simulates a clustering.
+We pretend that the number of clusters is unknown beforehand.
+Hence, the checkpoint only defines an output <code class="docutils literal notranslate"><span class="pre">directory</span></code>.
+The rule <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> again uses the <code class="docutils literal notranslate"><span class="pre">checkpoints</span></code> object to retrieve the output of the checkpoint.
+This time, instead of explicitly writing</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">checkpoints</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">wildcards</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>we use the shorthand</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">checkpoints</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">wildcards</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>which automatically unpacks the wildcards as keyword arguments (this is standard python argument unpacking).
+If the checkpoint has not yet been executed, accessing <code class="docutils literal notranslate"><span class="pre">checkpoints.clustering.get(**wildcards)</span></code> ensure that Snakemake records the checkpoint as a direct dependency of the rule <code class="docutils literal notranslate"><span class="pre">aggregate</span></code>.
+Upon completion of the checkpoint, the input function is re-evaluated, and the code beyond its first line is executed.
+Here, we retrieve the values of the wildcard <code class="docutils literal notranslate"><span class="pre">i</span></code> based on all files named <code class="docutils literal notranslate"><span class="pre">{i}.txt</span></code> in the output directory of the checkpoint.
+These values are then used to expand the pattern <code class="docutils literal notranslate"><span class="pre">&quot;post/{sample}/{i}.txt&quot;</span></code>, such that the rule <code class="docutils literal notranslate"><span class="pre">intermediate</span></code> is executed for each of the determined clusters.</p>
+<p>This mechanism can be used to replace the use of the <a class="reference internal" href="#snakefiles-dynamic-files"><span class="std std-ref">dynamic-flag</span></a> which will be deprecated in Snakemake 6.0.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="writing_snakefiles.html" class="btn btn-neutral float-left" title="Writing Workflows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

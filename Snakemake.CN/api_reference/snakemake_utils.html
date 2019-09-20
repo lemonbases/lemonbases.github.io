@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Additional utils &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Internal API" href="internal/modules.html" />
+    <link rel="prev" title="The Snakemake API" href="snakemake.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Additional utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api_reference/snakemake_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snakemake.utils">
+<span id="additional-utils"></span><span id="utils-api"></span><h1>Additional utils<a class="headerlink" href="#module-snakemake.utils" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="snakemake.utils.AlwaysQuotedFormatter">
+<em class="property">class </em><code class="descclassname">snakemake.utils.</code><code class="descname">AlwaysQuotedFormatter</code><span class="sig-paren">(</span><em>quote_func=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#AlwaysQuotedFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.AlwaysQuotedFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass of QuotedFormatter that always quotes.</p>
+<p>Usage is identical to QuotedFormatter, except that it <em>always</em>
+acts like “q” was appended to the format spec.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.utils.QuotedFormatter">
+<em class="property">class </em><code class="descclassname">snakemake.utils.</code><code class="descname">QuotedFormatter</code><span class="sig-paren">(</span><em>quote_func=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#QuotedFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.QuotedFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass of string.Formatter that supports quoting.</p>
+<p>Using this formatter, any field can be quoted after formatting by
+appending “q” to its format string. By default, shell quoting is
+performed using “shlex.quote”, but you can pass a different
+quote_func to the constructor. The quote_func simply has to take a
+string argument and return a new string representing the quoted
+form of the input string.</p>
+<p>Note that if an element after formatting is the empty string, it
+will not be quoted.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.R">
+<code class="descclassname">snakemake.utils.</code><code class="descname">R</code><span class="sig-paren">(</span><em>code</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#R"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.R" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute R code.</p>
+<p>This is deprecated in favor of the <code class="docutils literal notranslate"><span class="pre">script</span></code> directive.
+This function executes the R code given as a string.
+The function requires rpy2 to be installed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>code</strong> (<em>str</em>) – R code to be executed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.utils.SequenceFormatter">
+<em class="property">class </em><code class="descclassname">snakemake.utils.</code><code class="descname">SequenceFormatter</code><span class="sig-paren">(</span><em>separator=' '</em>, <em>element_formatter=&lt;string.Formatter object&gt;</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#SequenceFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.SequenceFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>string.Formatter subclass with special behavior for sequences.</p>
+<p>This class delegates formatting of individual elements to another
+formatter object. Non-list objects are formatted by calling the
+delegate formatter’s “format_field” method. List-like objects
+(list, tuple, set, frozenset) are formatted by formatting each
+element of the list according to the specified format spec using
+the delegate formatter and then joining the resulting strings with
+a separator (space by default).</p>
+<dl class="method">
+<dt id="snakemake.utils.SequenceFormatter.format_element">
+<code class="descname">format_element</code><span class="sig-paren">(</span><em>elem</em>, <em>format_spec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#SequenceFormatter.format_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.SequenceFormatter.format_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a single element</p>
+<p>For sequences, this is called once for each element in a
+sequence. For anything else, it is called on the entire
+object. It is intended to be overridden in subclases.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.argvquote">
+<code class="descclassname">snakemake.utils.</code><code class="descname">argvquote</code><span class="sig-paren">(</span><em>arg</em>, <em>force=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#argvquote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.argvquote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an argument quoted in such a way that that CommandLineToArgvW
+on Windows will return the argument string unchanged.
+This is the same thing Popen does when supplied with an list of arguments.
+Arguments in a command line should be separated by spaces; this
+function does not add these spaces. This implementation follows the
+suggestions outlined here:
+<a class="reference external" href="https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/">https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.available_cpu_count">
+<code class="descclassname">snakemake.utils.</code><code class="descname">available_cpu_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#available_cpu_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.available_cpu_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of available virtual or physical CPUs on this system.
+The number of available CPUs can be smaller than the total number of CPUs
+when the cpuset(7) mechanism is in use, as is the case on some cluster
+systems.</p>
+<p>Adapted from <a class="reference external" href="http://stackoverflow.com/a/1006301/715090">http://stackoverflow.com/a/1006301/715090</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.format">
+<code class="descclassname">snakemake.utils.</code><code class="descname">format</code><span class="sig-paren">(</span><em>_pattern</em>, <em>*args</em>, <em>stepout=1</em>, <em>_quote_all=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a pattern in Snakemake style.</p>
+<p>This means that keywords embedded in braces are replaced by any variable
+values that are available in the current namespace.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.linecount">
+<code class="descclassname">snakemake.utils.</code><code class="descname">linecount</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#linecount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.linecount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of lines of given file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – the path to the file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.listfiles">
+<code class="descclassname">snakemake.utils.</code><code class="descname">listfiles</code><span class="sig-paren">(</span><em>pattern</em>, <em>restriction=None</em>, <em>omit_value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#listfiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.listfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield a tuple of existing filepaths for the given pattern.</p>
+<p>Wildcard values are yielded as the second tuple item.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pattern</strong> (<em>str</em>) – a filepattern. Wildcards are specified in snakemake syntax, e.g. “{id}.txt”</li>
+<li><strong>restriction</strong> (<em>dict</em>) – restrict to wildcard values given in this dictionary</li>
+<li><strong>omit_value</strong> (<em>str</em>) – wildcard value to omit</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first last"><em>tuple</em> – The next file matching the pattern, and the corresponding wildcards object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.makedirs">
+<code class="descclassname">snakemake.utils.</code><code class="descname">makedirs</code><span class="sig-paren">(</span><em>dirnames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#makedirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.makedirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively create the given directory or directories without
+reporting errors if they are present.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.min_version">
+<code class="descclassname">snakemake.utils.</code><code class="descname">min_version</code><span class="sig-paren">(</span><em>version</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#min_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.min_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Require minimum snakemake version, raise workflow error if not met.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.read_job_properties">
+<code class="descclassname">snakemake.utils.</code><code class="descname">read_job_properties</code><span class="sig-paren">(</span><em>jobscript</em>, <em>prefix='# properties'</em>, <em>pattern=re.compile('# properties = (.*)')</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#read_job_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.read_job_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the job properties defined in a snakemake jobscript.</p>
+<p>This function is a helper for writing custom wrappers for the
+snakemake –cluster functionality. Applying this function to a
+jobscript will return a dict containing information about the job.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.report">
+<code class="descclassname">snakemake.utils.</code><code class="descname">report</code><span class="sig-paren">(</span><em>text</em>, <em>path</em>, <em>stylesheet='/root/tmp/snakemake/snakemake/report.css'</em>, <em>defaultenc='utf8'</em>, <em>template=None</em>, <em>metadata=None</em>, <em>**files</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an HTML report using python docutils.</p>
+<p>This is deprecated in favor of the –report flag.</p>
+<p>Attention: This function needs Python docutils to be installed for the
+python installation you use with Snakemake.</p>
+<p>All keywords not listed below are intepreted as paths to files that shall
+be embedded into the document. They keywords will be available as link
+targets in the text. E.g. append a file as keyword arg via F1=input[0]
+and put a download link in the text like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">==============</span>
+<span class="s1">Report for ...</span>
+<span class="s1">==============</span>
+
+<span class="s1">Some text. A link to an embedded file: F1_.</span>
+
+<span class="s1">Further text.</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">outputpath</span><span class="p">,</span> <span class="n">F1</span><span class="o">=</span><span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">Instead</span> <span class="n">of</span> <span class="n">specifying</span> <span class="n">each</span> <span class="nb">file</span> <span class="k">as</span> <span class="n">a</span> <span class="n">keyword</span> <span class="n">arg</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">also</span> <span class="n">expand</span>
+<span class="n">the</span> <span class="nb">input</span> <span class="n">of</span> <span class="n">your</span> <span class="n">rule</span> <span class="k">if</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">completely</span> <span class="n">named</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">:</span>
+
+<span class="n">report</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">Some text...</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">outputpath</span><span class="p">,</span> <span class="o">**</span><span class="nb">input</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<em>str</em>) – The “restructured text” as it is expected by python docutils.</li>
+<li><strong>path</strong> (<em>str</em>) – The path to the desired output file</li>
+<li><strong>stylesheet</strong> (<em>str</em>) – An optional path to a css file that defines the style of the document. This defaults to &lt;your snakemake install&gt;/report.css. Use the default to get a hint how to create your own.</li>
+<li><strong>defaultenc</strong> (<em>str</em>) – The encoding that is reported to the browser for embedded text files, defaults to utf8.</li>
+<li><strong>template</strong> (<em>str</em>) – An optional path to a docutils HTML template.</li>
+<li><strong>metadata</strong> (<em>str</em>) – E.g. an optional author name or email address.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.simplify_path">
+<code class="descclassname">snakemake.utils.</code><code class="descname">simplify_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#simplify_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.simplify_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a simplified version of the given path.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.update_config">
+<code class="descclassname">snakemake.utils.</code><code class="descname">update_config</code><span class="sig-paren">(</span><em>config</em>, <em>overwrite_config</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#update_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.update_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively update dictionary config with overwrite_config.</p>
+<p>See
+<a class="reference external" href="http://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth">http://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth</a>
+for details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>config</strong> (<em>dict</em>) – dictionary to update</li>
+<li><strong>overwrite_config</strong> (<em>dict</em>) – dictionary whose items will overwrite those in config</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.utils.validate">
+<code class="descclassname">snakemake.utils.</code><code class="descname">validate</code><span class="sig-paren">(</span><em>data</em>, <em>schema</em>, <em>set_default=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snakemake/utils.html#validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.utils.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate data with JSON schema at given path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>object</em>) – data to validate. Can be a config dict or a pandas data frame.</li>
+<li><strong>schema</strong> (<em>str</em>) – Path to JSON schema used for validation. The schema can also be
+in YAML format. If validating a pandas data frame, the schema has to
+describe a row record (i.e., a dict with column names as keys pointing
+to row values). See <a class="reference external" href="http://json-schema.org">http://json-schema.org</a>. The path is interpreted
+relative to the Snakefile when this function is called.</li>
+<li><strong>set_default</strong> (<em>bool</em>) – set default values defined in schema. See
+<a class="reference external" href="http://python-jsonschema.readthedocs.io/en/latest/faq/">http://python-jsonschema.readthedocs.io/en/latest/faq/</a> for more
+information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="internal/modules.html" class="btn btn-neutral float-right" title="Internal API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="snakemake.html" class="btn btn-neutral float-left" title="The Snakemake API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

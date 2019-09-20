@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configuration &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modularization" href="modularization.html" />
+    <link rel="prev" title="Rules" href="rules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#standard-configuration">Standard Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabular-configuration">Tabular configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cluster-configuration">Cluster Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-working-directory">Configure Working Directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snakefiles/configuration.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration">
+<span id="snakefiles-configuration"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Snakemake allows you to use configuration files for making your workflows more flexible and also for abstracting away direct dependencies to a fixed HPC cluster scheduler.</p>
+<div class="section" id="standard-configuration">
+<span id="snakefiles-standard-configuration"></span><h2>Standard Configuration<a class="headerlink" href="#standard-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Snakemake directly supports the configuration of your workflow.
+A configuration is provided as a JSON or YAML file and can be loaded with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">configfile</span><span class="p">:</span> <span class="s2">&quot;path/to/config.json&quot;</span>
+</pre></div>
+</div>
+<p>The config file can be used to define a dictionary of configuration parameters and their values.
+In the workflow, the configuration is accessible via the global variable <cite>config</cite>, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;{sample}.{param}.output.pdf&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">],</span> <span class="n">param</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;yourparam&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>If the <cite>configfile</cite> statement is not used, the config variable provides an empty array.
+In addition to the <cite>configfile</cite> statement, config values can be overwritten via the command line or the <a class="reference internal" href="../api_reference/snakemake.html#api-reference-snakemake"><span class="std std-ref">The Snakemake API</span></a>, e.g.:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --config <span class="nv">yourparam</span><span class="o">=</span><span class="m">1</span>.5
+</pre></div>
+</div>
+<p>Further, you can manually alter the config dictionary using any Python code <strong>outside</strong> of your rules. Changes made from within a rule won’t be seen from other rules.
+Finally, you can use the <cite>–configfile</cite> command line argument to overwrite values from the <cite>configfile</cite> statement.
+Note that any values parsed into the <cite>config</cite> dictionary with any of above mechanisms are merged, i.e., all keys defined via a <cite>configfile</cite>
+statement, or the <cite>–configfile</cite> and <cite>–config</cite> command line arguments will end up in the final <cite>config</cite> dictionary, but if two methods define the same key, command line
+overwrites the <cite>configfile</cite> statement.</p>
+<p>For adding config placeholders into a shell command, Python string formatting syntax requires you to leave out the quotes around the key name, like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shell</span><span class="p">:</span>
+    <span class="s2">&quot;mycommand {config[foo]} ...&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tabular-configuration">
+<h2>Tabular configuration<a class="headerlink" href="#tabular-configuration" title="Permalink to this headline">¶</a></h2>
+<p>It is usually advisable to complement YAML based configuration (see above) by a sheet based approach for meta-data that is of tabular form. For example, such
+a sheet can contain per-sample information.
+With the <a class="reference external" href="https://pandas.pydata.org/">Pandas library</a> such data can be read and used with minimal overhead, e.g.,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s2">&quot;samples.tsv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;samples&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>reads in a table <code class="docutils literal notranslate"><span class="pre">samples.tsv</span></code> in TSV format and makes every record accessible by the sample name.
+For details, see the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_table.html?highlight=read_table#pandas-read-table">Pandas documentation</a>.
+A fully working real-world example containing both types of configuration can be found <a class="reference external" href="https://github.com/snakemake-workflows/rna-seq-star-deseq2">here</a>.</p>
+</div>
+<div class="section" id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
+<p>With Snakemake 5.1, it is possible to validate both types of configuration via <a class="reference external" href="http://json-schema.org">JSON schemas</a>.
+The function <code class="docutils literal notranslate"><span class="pre">snakemake.utils.validate</span></code> takes a loaded configuration (a config dictionary or a Pandas data frame) and validates it with a given JSON schema.
+Thereby, the schema can be provided in JSON or YAML format. Also, by using the defaults property it is possible to populate entries with default values. See <a class="reference external" href="https://python-jsonschema.readthedocs.io/en/latest/faq/">jsonschema FAQ on setting default values</a> for details.
+In case of the data frame, the schema should model the record that is expected in each row of the data frame.
+In the following example,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">snakemake.utils</span> <span class="kn">import</span> <span class="n">validate</span>
+
+<span class="n">configfile</span><span class="p">:</span> <span class="s2">&quot;config.yaml&quot;</span>
+<span class="n">validate</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;config.schema.yaml&quot;</span><span class="p">)</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">validate</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="s2">&quot;samples.schema.yaml&quot;</span><span class="p">)</span>
+
+
+<span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;test.{sample}.txt&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">samples</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+
+<span class="n">rule</span> <span class="n">a</span><span class="p">:</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="s2">&quot;test.{sample}.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;touch {output}&quot;</span>
+</pre></div>
+</div>
+<p>the schema for validating the samples data frame looks like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">$schema</span><span class="p">:</span> <span class="s">&quot;http://json-schema.org/draft-06/schema#&quot;</span>
+<span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">an entry in the sample sheet</span>
+<span class="nt">properties</span><span class="p">:</span>
+  <span class="nt">sample</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sample name/identifier</span>
+  <span class="nt">condition</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sample condition that will be compared during differential expression analysis (e.g. a treatment, a tissue time, a disease)</span>
+  <span class="nt">case</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean that indicates if sample is case or control</span>
+
+<span class="nt">required</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sample</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">condition</span>
+</pre></div>
+</div>
+<p>Here, in case the case column is missing, the validate function will
+populate it with True for all entries.</p>
+</div>
+<div class="section" id="cluster-configuration">
+<span id="snakefiles-cluster-configuration"></span><h2>Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Snakemake supports a separate configuration file for execution on a cluster.
+A cluster config file allows you to specify cluster submission parameters outside the Snakefile.
+The cluster config is a JSON- or YAML-formatted file that contains objects that match names of rules in the Snakefile.
+The parameters in the cluster config are then accessed by the <code class="docutils literal notranslate"><span class="pre">cluster.*</span></code> wildcard when you are submitting jobs.
+Note that a workflow shall never depend on a cluster configuration, because this would limit its portability.
+Therefore, it is also not intended to access the cluster configuration from <strong>within</strong> the workflow.</p>
+<p>For example, say that you have the following Snakefile:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;input1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;input2.txt&quot;</span>
+
+<span class="n">rule</span> <span class="n">compute1</span><span class="p">:</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;input1.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;touch input1.txt&quot;</span>
+
+<span class="n">rule</span> <span class="n">compute2</span><span class="p">:</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;input2.txt&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;touch input2.txt&quot;</span>
+</pre></div>
+</div>
+<p>This Snakefile can then be configured by a corresponding cluster config, say “cluster.json”:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;__default__&quot;</span> <span class="p">:</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;account&quot;</span> <span class="p">:</span> <span class="s2">&quot;my account&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;time&quot;</span> <span class="p">:</span> <span class="s2">&quot;00:15:00&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;n&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;partition&quot;</span> <span class="p">:</span> <span class="s2">&quot;core&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;compute1&quot;</span> <span class="p">:</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;time&quot;</span> <span class="p">:</span> <span class="s2">&quot;00:20:00&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Any string in the cluster configuration can be formatted in the same way as shell commands, e.g. <code class="docutils literal notranslate"><span class="pre">{rule}.{wildcards.sample}</span></code> is formatted to <code class="docutils literal notranslate"><span class="pre">a.xy</span></code> if the rulename is <code class="docutils literal notranslate"><span class="pre">a</span></code> and the wildcard value is <code class="docutils literal notranslate"><span class="pre">xy</span></code>.
+Here <code class="docutils literal notranslate"><span class="pre">__default__</span></code> is a special object that specifies default parameters, these will be inherited by the other configuration objects. The <code class="docutils literal notranslate"><span class="pre">compute1</span></code> object here changes the <code class="docutils literal notranslate"><span class="pre">time</span></code> parameter, but keeps the other parameters from <code class="docutils literal notranslate"><span class="pre">__default__</span></code>. The rule <code class="docutils literal notranslate"><span class="pre">compute2</span></code> does not have any configuration, and will therefore use the default configuration. You can then run the Snakefile with the following command on a SLURM system.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake -j <span class="m">999</span> --cluster-config cluster.json --cluster <span class="s2">&quot;sbatch -A {cluster.account} -p {cluster.partition} -n {cluster.n}  -t {cluster.time}&quot;</span>
+</pre></div>
+</div>
+<p>For cluster systems using LSF/BSUB, a cluster config may look like this:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;__default__&quot;</span> <span class="p">:</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;queue&quot;</span>     <span class="p">:</span> <span class="s2">&quot;medium_priority&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;nCPUs&quot;</span>     <span class="p">:</span> <span class="s2">&quot;16&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;memory&quot;</span>    <span class="p">:</span> <span class="mi">20000</span><span class="p">,</span>
+        <span class="nt">&quot;resources&quot;</span> <span class="p">:</span> <span class="s2">&quot;\&quot;select[mem&gt;20000] rusage[mem=20000] span[hosts=1]\&quot;&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;name&quot;</span>      <span class="p">:</span> <span class="s2">&quot;JOBNAME.{rule}.{wildcards}&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;output&quot;</span>    <span class="p">:</span> <span class="s2">&quot;logs/cluster/{rule}.{wildcards}.out&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;error&quot;</span>     <span class="p">:</span> <span class="s2">&quot;logs/cluster/{rule}.{wildcards}.err&quot;</span>
+    <span class="p">},</span>
+
+
+    <span class="nt">&quot;trimming_PE&quot;</span> <span class="p">:</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;memory&quot;</span>    <span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
+        <span class="nt">&quot;resources&quot;</span> <span class="p">:</span> <span class="s2">&quot;\&quot;select[mem&gt;30000] rusage[mem=30000] span[hosts=1]\&quot;&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The advantage of this setup is that it is already pretty general by exploiting the wildcard possibilities that Snakemake provides via <code class="docutils literal notranslate"><span class="pre">{rule}</span></code> and <code class="docutils literal notranslate"><span class="pre">{wildcards}</span></code>. So job names, output and error files all have reasonable and trackable default names, only the directies (<code class="docutils literal notranslate"><span class="pre">logs/cluster</span></code>) and job names (<code class="docutils literal notranslate"><span class="pre">JOBNAME</span></code>) have to adjusted accordingly.
+If a rule named <code class="docutils literal notranslate"><span class="pre">bamCoverage</span></code> is executed with the wildcard <code class="docutils literal notranslate"><span class="pre">basename</span> <span class="pre">=</span> <span class="pre">sample1</span></code>, for example, the output and error files will be <code class="docutils literal notranslate"><span class="pre">bamCoverage.basename=sample1.out</span></code> and <code class="docutils literal notranslate"><span class="pre">bamCoverage.basename=sample1.err</span></code>, respectively.</p>
+</div>
+<div class="section" id="configure-working-directory">
+<h2>Configure Working Directory<a class="headerlink" href="#configure-working-directory" title="Permalink to this headline">¶</a></h2>
+<p>All paths in the snakefile are interpreted relative to the directory snakemake is executed in. This behaviour can be overridden by specifying a workdir in the snakefile:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">workdir</span><span class="p">:</span> <span class="s2">&quot;path/to/workdir&quot;</span>
+</pre></div>
+</div>
+<p>Usually, it is preferred to only set the working directory via the command line, because above directive limits the portability of Snakemake workflows.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modularization.html" class="btn btn-neutral float-right" title="Modularization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rules.html" class="btn btn-neutral float-left" title="Rules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Additional features &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Short tutorial" href="short.html" />
+    <link rel="prev" title="Advanced: Decorating the example workflow" href="advanced.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">Snakemake Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html">Basics: An example workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html">Advanced: Decorating the example workflow</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Additional features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#benchmarking">Benchmarking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modularization">Modularization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#exercise">Exercise</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-deployment-of-software-dependencies">Automatic deployment of software dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tool-wrappers">Tool wrappers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cluster-execution">Cluster execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-cluster-status">Using –cluster-status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraining-wildcards">Constraining wildcards</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="tutorial.html">Snakemake Tutorial</a> &raquo;</li>
+        
+      <li>Additional features</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorial/additional_features.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="additional-features">
+<h1>Additional features<a class="headerlink" href="#additional-features" title="Permalink to this headline">¶</a></h1>
+<p>In the following, we introduce some features that are beyond the scope of above example workflow.
+For details and even more features, see <a class="reference internal" href="../snakefiles/writing_snakefiles.html#user-manual-writing-snakefiles"><span class="std std-ref">Writing Workflows</span></a>, <a class="reference internal" href="../project_info/faq.html#project-info-faq"><span class="std std-ref">Frequently Asked Questions</span></a> and the command line help (<code class="docutils literal notranslate"><span class="pre">snakemake</span> <span class="pre">--help</span></code>).</p>
+<div class="section" id="benchmarking">
+<h2>Benchmarking<a class="headerlink" href="#benchmarking" title="Permalink to this headline">¶</a></h2>
+<p>With the <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> directive, Snakemake can be instructed to <strong>measure the wall clock time of a job</strong>.
+We activate benchmarking for the rule <code class="docutils literal notranslate"><span class="pre">bwa_map</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">bwa_map</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="s2">&quot;data/genome.fa&quot;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">wildcards</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">][</span><span class="n">wildcards</span><span class="o">.</span><span class="n">sample</span><span class="p">]</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="n">temp</span><span class="p">(</span><span class="s2">&quot;mapped_reads/{sample}.bam&quot;</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">:</span>
+        <span class="n">rg</span><span class="o">=</span><span class="s2">&quot;@RG</span><span class="se">\t</span><span class="s2">ID:{sample}</span><span class="se">\t</span><span class="s2">SM:{sample}&quot;</span>
+    <span class="n">log</span><span class="p">:</span>
+        <span class="s2">&quot;logs/bwa_mem/{sample}.log&quot;</span>
+    <span class="n">benchmark</span><span class="p">:</span>
+        <span class="s2">&quot;benchmarks/{sample}.bwa.benchmark.txt&quot;</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;(bwa mem -R &#39;{params.rg}&#39; -t {threads} {input} | &quot;</span>
+        <span class="s2">&quot;samtools view -Sb - &gt; {output}) 2&gt; {log}&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> directive takes a string that points to the file where benchmarking results shall be stored.
+Similar to output files, the path can contain wildcards (it must be the same wildcards as in the output files).
+When a job derived from the rule is executed, Snakemake will measure the wall clock time and memory usage (in MiB) and store it in the file in tab-delimited format.
+It is possible to repeat a benchmark multiple times in order to get a sense for the variability of the measurements.
+This can be done by annotating the benchmark file, e.g., with <code class="docutils literal notranslate"><span class="pre">repeat(&quot;benchmarks/{sample}.bwa.benchmark.txt&quot;,</span> <span class="pre">3)</span></code> Snakemake can be told to run the job three times.
+The repeated measurements occur as subsequent lines in the tab-delimited benchmark file.</p>
+</div>
+<div class="section" id="modularization">
+<h2>Modularization<a class="headerlink" href="#modularization" title="Permalink to this headline">¶</a></h2>
+<p>In order to re-use building blocks or simply to structure large workflows, it is sometimes reasonable to <strong>split a workflow into modules</strong>.
+For this, Snakemake provides the <code class="docutils literal notranslate"><span class="pre">include</span></code> directive to include another Snakefile into the current one, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">include</span><span class="p">:</span> <span class="s2">&quot;path/to/other.snakefile&quot;</span>
+</pre></div>
+</div>
+<p>Alternatively, Snakemake allows to <strong>define sub-workflows</strong>.
+A sub-workflow refers to a working directory with a complete Snakemake workflow.
+Output files of that sub-workflow can be used in the current Snakefile.
+When executing, Snakemake ensures that the output files of the sub-workflow are up-to-date before executing the current workflow.
+This mechanism is particularly useful when you want to extend a previous analysis without modifying it.
+For details about sub-workflows, see the <a class="reference internal" href="../snakefiles/modularization.html#snakefiles-sub-workflows"><span class="std std-ref">documentation</span></a>.</p>
+<div class="section" id="exercise">
+<h3>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Put the read mapping related rules into a separate Snakefile and use the <code class="docutils literal notranslate"><span class="pre">include</span></code> directive to make them available in our example workflow again.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="automatic-deployment-of-software-dependencies">
+<span id="tutorial-conda"></span><h2>Automatic deployment of software dependencies<a class="headerlink" href="#automatic-deployment-of-software-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>In order to get a fully reproducible data analysis, it is not sufficient to
+be able to execute each step and document all used parameters.
+The used software tools and libraries have to be documented as well.
+In this tutorial, you have already seen how <a class="reference external" href="http://conda.pydata.org">Conda</a> can be used to specify an
+isolated software environment for a whole workflow. With Snakemake, you can
+go one step further and specify Conda environments per rule.
+This way, you can even make use of conflicting software versions (e.g. combine
+Python 2 with Python 3).</p>
+<p>In our example, instead of using an external environment we can specify
+environments per rule, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">samtools_index</span><span class="p">:</span>
+  <span class="nb">input</span><span class="p">:</span>
+      <span class="s2">&quot;sorted_reads/{sample}.bam&quot;</span>
+  <span class="n">output</span><span class="p">:</span>
+      <span class="s2">&quot;sorted_reads/{sample}.bam.bai&quot;</span>
+  <span class="n">conda</span><span class="p">:</span>
+      <span class="s2">&quot;envs/samtools.yaml&quot;</span>
+  <span class="n">shell</span><span class="p">:</span>
+      <span class="s2">&quot;samtools index {input}&quot;</span>
+</pre></div>
+</div>
+<p>with <code class="docutils literal notranslate"><span class="pre">envs/samtools.yaml</span></code> defined as</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bioconda</span>
+<span class="nt">dependencies</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">samtools =1.9</span>
+</pre></div>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Note</p>
+<p class="last">The conda directive does not work in combination with <code class="docutils literal notranslate"><span class="pre">run</span></code> blocks, because
+they have to share their Python environment with the surrounding snakefile.</p>
+</div>
+<p>When Snakemake is executed with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">snakemake --use-conda</span>
+</pre></div>
+</div>
+<p>it will automatically create required environments and
+activate them before a job is executed.
+It is best practice to specify at least the <a class="reference external" href="http://semver.org/">major and minor version</a> of any packages
+in the environment definition. Specifying environments per rule in this way has two
+advantages.
+First, the workflow definition also documents all used software versions.
+Second, a workflow can be re-executed (without admin rights)
+on a vanilla system, without installing any
+prerequisites apart from Snakemake and <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a>.</p>
+</div>
+<div class="section" id="tool-wrappers">
+<h2>Tool wrappers<a class="headerlink" href="#tool-wrappers" title="Permalink to this headline">¶</a></h2>
+<p>In order to simplify the utilization of popular tools, Snakemake provides a
+repository of so-called wrappers
+(the <a class="reference external" href="https://snakemake-wrappers.readthedocs.io">Snakemake wrapper repository</a>).
+A wrapper is a short script that wraps (typically)
+a command line application and makes it directly addressable from within Snakemake.
+For this, Snakemake provides the <code class="docutils literal notranslate"><span class="pre">wrapper</span></code> directive that can be used instead of
+<code class="docutils literal notranslate"><span class="pre">shell</span></code>, <code class="docutils literal notranslate"><span class="pre">script</span></code>, or <code class="docutils literal notranslate"><span class="pre">run</span></code>.
+For example, the rule <code class="docutils literal notranslate"><span class="pre">bwa_map</span></code> could alternatively look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">bwa_mem</span><span class="p">:</span>
+  <span class="nb">input</span><span class="p">:</span>
+      <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;data/genome.fa&quot;</span><span class="p">,</span>
+      <span class="n">sample</span><span class="o">=</span><span class="k">lambda</span> <span class="n">wildcards</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">][</span><span class="n">wildcards</span><span class="o">.</span><span class="n">sample</span><span class="p">]</span>
+  <span class="n">output</span><span class="p">:</span>
+      <span class="n">temp</span><span class="p">(</span><span class="s2">&quot;mapped_reads/{sample}.bam&quot;</span><span class="p">)</span>
+  <span class="n">log</span><span class="p">:</span>
+      <span class="s2">&quot;logs/bwa_mem/{sample}.log&quot;</span>
+  <span class="n">params</span><span class="p">:</span>
+      <span class="s2">&quot;-R &#39;@RG</span><span class="se">\t</span><span class="s2">ID:{sample}</span><span class="se">\t</span><span class="s2">SM:{sample}&#39;&quot;</span>
+  <span class="n">threads</span><span class="p">:</span> <span class="mi">8</span>
+  <span class="n">wrapper</span><span class="p">:</span>
+      <span class="s2">&quot;0.15.3/bio/bwa/mem&quot;</span>
+</pre></div>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Note</p>
+<p class="last">Updates to the Snakemake wrapper repository are automatically tested via
+<a class="reference external" href="https://en.wikipedia.org/wiki/Continuous_integration">continuous integration</a>.</p>
+</div>
+<p>The wrapper directive expects a (partial) URL that points to a wrapper in the repository.
+These can be looked up in the corresponding <a class="reference external" href="https://snakemake-wrappers.readthedocs.io">database</a>.
+The first part of the URL is a Git version tag. Upon invocation, Snakemake
+will automatically download the requested version of the wrapper.
+Furthermore, in combination with <code class="docutils literal notranslate"><span class="pre">--use-conda</span></code> (see <a class="reference internal" href="#tutorial-conda"><span class="std std-ref">Automatic deployment of software dependencies</span></a>),
+the required software will be automatically deployed before execution.</p>
+</div>
+<div class="section" id="cluster-execution">
+<h2>Cluster execution<a class="headerlink" href="#cluster-execution" title="Permalink to this headline">¶</a></h2>
+<p>By default, Snakemake executes jobs on the local machine it is invoked on.
+Alternatively, it can execute jobs in <strong>distributed environments, e.g., compute clusters or batch systems</strong>.
+If the nodes share a common file system, Snakemake supports three alternative execution modes.</p>
+<p>In cluster environments, compute jobs are usually submitted as shell scripts via commands like <code class="docutils literal notranslate"><span class="pre">qsub</span></code>.
+Snakemake provides a <strong>generic mode</strong> to execute on such clusters.
+By invoking Snakemake with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --cluster qsub --jobs <span class="m">100</span>
+</pre></div>
+</div>
+<p>each job will be compiled into a shell script that is submitted with the given command (here <code class="docutils literal notranslate"><span class="pre">qsub</span></code>).
+The <code class="docutils literal notranslate"><span class="pre">--jobs</span></code> flag limits the number of concurrently submitted jobs to 100.
+This basic mode assumes that the submission command returns immediately after submitting the job.
+Some clusters allow to run the submission command in <strong>synchronous mode</strong>, such that it waits until the job has been executed.
+In such cases, we can invoke e.g.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --cluster-sync <span class="s2">&quot;qsub -sync yes&quot;</span> --jobs <span class="m">100</span>
+</pre></div>
+</div>
+<p>The specified submission command can also be <strong>decorated with additional parameters taken from the submitted job</strong>.
+For example, the number of used threads can be accessed in braces similarly to the formatting of shell commands, e.g.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --cluster <span class="s2">&quot;qsub -pe threaded {threads}&quot;</span> --jobs <span class="m">100</span>
+</pre></div>
+</div>
+<p>Alternatively, Snakemake can use the Distributed Resource Management Application API (<a class="reference external" href="http://www.drmaa.org">DRMAA</a>).
+This API provides a common interface to control various resource management systems.
+The <strong>DRMAA support</strong> can be activated by invoking Snakemake as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake --drmaa --jobs <span class="m">100</span>
+</pre></div>
+</div>
+<p>If available, <strong>DRMAA is preferable over the generic cluster modes</strong> because it provides better control and error handling.
+To support additional cluster specific parametrization, a Snakefile can be complemented by a <a class="reference internal" href="../snakefiles/configuration.html#snakefiles-cluster-configuration"><span class="std std-ref">Cluster Configuration</span></a> file.</p>
+</div>
+<div class="section" id="using-cluster-status">
+<h2>Using –cluster-status<a class="headerlink" href="#using-cluster-status" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you need specific detection to determine if a cluster job completed successfully, failed or is still running.
+Error detection with <code class="docutils literal notranslate"><span class="pre">--cluster</span></code> can be improved for edge cases such as timeouts and jobs exceeding memory that are silently terminated by
+the queueing system.
+This can be achieved with the <code class="docutils literal notranslate"><span class="pre">--cluster-status</span></code> option. This takes as input a script and passes a job id as first argument.</p>
+<p>The following (simplified) script detects the job status on a given SLURM cluster (&gt;= 14.03.0rc1 is required for <code class="docutils literal notranslate"><span class="pre">--parsable</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">jobid</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s2">&quot;sacct -j </span><span class="si">%s</span><span class="s2"> --format State --noheader | head -1 | awk &#39;{print $1}&#39;&quot;</span> <span class="o">%</span> <span class="n">jobid</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+<span class="n">running_status</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PENDING&quot;</span><span class="p">,</span> <span class="s2">&quot;CONFIGURING&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPLETING&quot;</span><span class="p">,</span> <span class="s2">&quot;RUNNING&quot;</span><span class="p">,</span> <span class="s2">&quot;SUSPENDED&quot;</span><span class="p">]</span>
+<span class="k">if</span> <span class="s2">&quot;COMPLETED&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s2">&quot;success&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span> <span class="ow">in</span> <span class="n">output</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">running_status</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="s2">&quot;running&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s2">&quot;failed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To use this script call snakemake similar to below, where <code class="docutils literal notranslate"><span class="pre">status.py</span></code> is the script above.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> snakemake all --cluster <span class="s2">&quot;sbatch --cpus-per-task=1 --parsable&quot;</span> --cluster-status ./status.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="constraining-wildcards">
+<h2>Constraining wildcards<a class="headerlink" href="#constraining-wildcards" title="Permalink to this headline">¶</a></h2>
+<p>Snakemake uses regular expressions to match output files to input files and determine dependencies between the jobs.
+Sometimes it is useful to constrain the values a wildcard can have.
+This can be achieved by adding a regular expression that describes the set of allowed wildcard values.
+For example, the wildcard <code class="docutils literal notranslate"><span class="pre">sample</span></code> in the output file <code class="docutils literal notranslate"><span class="pre">&quot;sorted_reads/{sample}.bam&quot;</span></code> can be constrained to only allow alphanumeric sample names as <code class="docutils literal notranslate"><span class="pre">&quot;sorted_reads/{sample,[A-Za-z0-9]+}.bam&quot;</span></code>.
+Constraints may be defined per rule or globally using the <code class="docutils literal notranslate"><span class="pre">wildcard_constraints</span></code> keyword, as demonstrated in <a class="reference internal" href="../snakefiles/rules.html#snakefiles-wildcards"><span class="std std-ref">Wildcards</span></a>.
+This mechanism helps to solve two kinds of ambiguity.</p>
+<ul class="simple">
+<li>It can help to avoid ambiguous rules, i.e. two or more rules that can be applied to generate the same output file. Other ways of handling ambiguous rules are described in the Section <a class="reference internal" href="../snakefiles/rules.html#snakefiles-ambiguous-rules"><span class="std std-ref">Handling Ambiguous Rules</span></a>.</li>
+<li>It can help to guide the regular expression based matching so that wildcards are assigned to the right parts of a file name. Consider the output file <code class="docutils literal notranslate"><span class="pre">{sample}.{group}.txt</span></code> and assume that the target file is <code class="docutils literal notranslate"><span class="pre">A.1.normal.txt</span></code>. It is not clear whether <code class="docutils literal notranslate"><span class="pre">dataset=&quot;A.1&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">group=&quot;normal&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">dataset=&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">group=&quot;1.normal&quot;</span></code> is the right assignment. Here, constraining the dataset wildcard by <code class="docutils literal notranslate"><span class="pre">{sample,[A-Z]+}.{group}</span></code> solves the problem.</li>
+</ul>
+<p>When dealing with ambiguous rules, it is best practice to first try to solve the ambiguity by using a proper file structure, for example, by separating the output files of different steps in different directories.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="short.html" class="btn btn-neutral float-right" title="Short tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="advanced.html" class="btn btn-neutral float-left" title="Advanced: Decorating the example workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

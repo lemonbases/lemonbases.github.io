@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snakemake.report package &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Citing and Citations" href="../../project_info/citations.html" />
+    <link rel="prev" title="snakemake.remote package" href="snakemake.remote.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Internal API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="snakemake.html">snakemake package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="snakemake.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="snakemake.remote.html">snakemake.remote package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">snakemake.report package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.benchmark">snakemake.benchmark module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.checkpoints">snakemake.checkpoints module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.common">snakemake.common module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.conda">snakemake.conda module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.cwl">snakemake.cwl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.dag">snakemake.dag module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.decorators">snakemake.decorators module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.exceptions">snakemake.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.executors">snakemake.executors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#snakemake-gui-module">snakemake.gui module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.io">snakemake.io module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.jobs">snakemake.jobs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.logging">snakemake.logging module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.output_index">snakemake.output_index module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.parser">snakemake.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.persistence">snakemake.persistence module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.rules">snakemake.rules module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.scheduler">snakemake.scheduler module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.script">snakemake.script module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.shell">snakemake.shell module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.singularity">snakemake.singularity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.stats">snakemake.stats module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.utils">snakemake.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.workflow">snakemake.workflow module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake.wrapper">snakemake.wrapper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snakemake.html#module-snakemake">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">Internal API</a> &raquo;</li>
+        
+          <li><a href="snakemake.html">snakemake package</a> &raquo;</li>
+        
+      <li>snakemake.report package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_reference/internal/snakemake.report.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="snakemake-report-package">
+<h1>snakemake.report package<a class="headerlink" href="#snakemake-report-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-snakemake.report">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-snakemake.report" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="snakemake.report.Category">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">Category</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#Category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.report.ConfigfileRecord">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">ConfigfileRecord</code><span class="sig-paren">(</span><em>configfile</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#ConfigfileRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.ConfigfileRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="snakemake.report.ConfigfileRecord.code">
+<code class="descname">code</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#ConfigfileRecord.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.ConfigfileRecord.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.report.EmbeddedFigure">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">EmbeddedFigure</code><span class="sig-paren">(</span><em>name</em>, <em>arguments</em>, <em>options</em>, <em>content</em>, <em>lineno</em>, <em>content_offset</em>, <em>block_text</em>, <em>state</em>, <em>state_machine</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#EmbeddedFigure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.EmbeddedFigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">docutils.parsers.rst.directives.images.Figure</span></code>, <a class="reference internal" href="#snakemake.report.EmbeddedMixin" title="snakemake.report.EmbeddedMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">snakemake.report.EmbeddedMixin</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.report.EmbeddedImage">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">EmbeddedImage</code><span class="sig-paren">(</span><em>name</em>, <em>arguments</em>, <em>options</em>, <em>content</em>, <em>lineno</em>, <em>content_offset</em>, <em>block_text</em>, <em>state</em>, <em>state_machine</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#EmbeddedImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.EmbeddedImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">docutils.parsers.rst.directives.images.Image</span></code>, <a class="reference internal" href="#snakemake.report.EmbeddedMixin" title="snakemake.report.EmbeddedMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">snakemake.report.EmbeddedMixin</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.report.EmbeddedMixin">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">EmbeddedMixin</code><a class="reference internal" href="../../_modules/snakemake/report.html#EmbeddedMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.EmbeddedMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Replaces the URI of a directive with a base64-encoded version.</p>
+<p>Useful for embedding images/figures in reports.</p>
+<dl class="method">
+<dt id="snakemake.report.EmbeddedMixin.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#EmbeddedMixin.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.EmbeddedMixin.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image.run() handles most of the</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.report.FileRecord">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">FileRecord</code><span class="sig-paren">(</span><em>path</em>, <em>job</em>, <em>caption</em>, <em>env</em>, <em>category</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#FileRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.FileRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="snakemake.report.FileRecord.icon">
+<em class="property">property </em><code class="descname">icon</code><a class="headerlink" href="#snakemake.report.FileRecord.icon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snakemake.report.FileRecord.is_img">
+<em class="property">property </em><code class="descname">is_img</code><a class="headerlink" href="#snakemake.report.FileRecord.is_img" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snakemake.report.FileRecord.is_table">
+<em class="property">property </em><code class="descname">is_table</code><a class="headerlink" href="#snakemake.report.FileRecord.is_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snakemake.report.FileRecord.is_text">
+<em class="property">property </em><code class="descname">is_text</code><a class="headerlink" href="#snakemake.report.FileRecord.is_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snakemake.report.FileRecord.name">
+<em class="property">property </em><code class="descname">name</code><a class="headerlink" href="#snakemake.report.FileRecord.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snakemake.report.FileRecord.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>env</em>, <em>rst_links</em>, <em>categories</em>, <em>files</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#FileRecord.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.FileRecord.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.report.JobRecord">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">JobRecord</code><a class="reference internal" href="../../_modules/snakemake/report.html#JobRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.JobRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snakemake.report.RuleRecord">
+<em class="property">class </em><code class="descclassname">snakemake.report.</code><code class="descname">RuleRecord</code><span class="sig-paren">(</span><em>job</em>, <em>job_rec</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#RuleRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.RuleRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="snakemake.report.RuleRecord.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>job_rec</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#RuleRecord.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.RuleRecord.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snakemake.report.RuleRecord.code">
+<code class="descname">code</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#RuleRecord.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.RuleRecord.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.report.auto_report">
+<code class="descclassname">snakemake.report.</code><code class="descname">auto_report</code><span class="sig-paren">(</span><em>dag</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#auto_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.auto_report" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snakemake.report.data_uri">
+<code class="descclassname">snakemake.report.</code><code class="descname">data_uri</code><span class="sig-paren">(</span><em>data</em>, <em>filename</em>, <em>encoding='utf8'</em>, <em>mime='text/plain'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#data_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.data_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Craft a base64 data URI from file with proper encoding and mimetype.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.report.data_uri_from_file">
+<code class="descclassname">snakemake.report.</code><code class="descname">data_uri_from_file</code><span class="sig-paren">(</span><em>file</em>, <em>defaultenc='utf8'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#data_uri_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.data_uri_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Craft a base64 data URI from file with proper encoding and mimetype.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="snakemake.report.get_resource_as_string">
+<code class="descclassname">snakemake.report.</code><code class="descname">get_resource_as_string</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#get_resource_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.get_resource_as_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snakemake.report.mime_from_file">
+<code class="descclassname">snakemake.report.</code><code class="descname">mime_from_file</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#mime_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.mime_from_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snakemake.report.report">
+<code class="descclassname">snakemake.report.</code><code class="descname">report</code><span class="sig-paren">(</span><em>text</em>, <em>path</em>, <em>stylesheet='/root/tmp/snakemake/snakemake/report/report.css'</em>, <em>defaultenc='utf8'</em>, <em>template=None</em>, <em>metadata=None</em>, <em>**files</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.report" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snakemake.report.rulegraph_d3_spec">
+<code class="descclassname">snakemake.report.</code><code class="descname">rulegraph_d3_spec</code><span class="sig-paren">(</span><em>dag</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/snakemake/report.html#rulegraph_d3_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snakemake.report.rulegraph_d3_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../project_info/citations.html" class="btn btn-neutral float-right" title="Citing and Citations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="snakemake.remote.html" class="btn btn-neutral float-left" title="snakemake.remote package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

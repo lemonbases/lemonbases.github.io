@@ -1,0 +1,1386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snakemake.workflow &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../snakemake.html">snakemake</a> &raquo;</li>
+        
+      <li>snakemake.workflow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snakemake.workflow</h1><div class="highlight"><pre>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Johannes Köster&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2015, Johannes Köster&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;koester@jimmy.harvard.edu&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">filterfalse</span><span class="p">,</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">attrgetter</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">snakemake.logging</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">format_resources</span><span class="p">,</span> <span class="n">format_resource_names</span>
+<span class="kn">from</span> <span class="nn">snakemake.rules</span> <span class="k">import</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">Ruleorder</span><span class="p">,</span> <span class="n">RuleProxy</span>
+<span class="kn">from</span> <span class="nn">snakemake.exceptions</span> <span class="k">import</span> <span class="n">RuleException</span><span class="p">,</span> <span class="n">CreateRuleException</span><span class="p">,</span> \
+    <span class="n">UnknownRuleException</span><span class="p">,</span> <span class="n">NoRulesException</span><span class="p">,</span> <span class="n">print_exception</span><span class="p">,</span> <span class="n">WorkflowError</span>
+<span class="kn">from</span> <span class="nn">snakemake.shell</span> <span class="k">import</span> <span class="n">shell</span>
+<span class="kn">from</span> <span class="nn">snakemake.dag</span> <span class="k">import</span> <span class="n">DAG</span>
+<span class="kn">from</span> <span class="nn">snakemake.scheduler</span> <span class="k">import</span> <span class="n">JobScheduler</span>
+<span class="kn">from</span> <span class="nn">snakemake.parser</span> <span class="k">import</span> <span class="n">parse</span>
+<span class="kn">import</span> <span class="nn">snakemake.io</span>
+<span class="kn">from</span> <span class="nn">snakemake.io</span> <span class="k">import</span> <span class="n">protected</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">temporary</span><span class="p">,</span> <span class="n">ancient</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">expand</span><span class="p">,</span> <span class="n">dynamic</span><span class="p">,</span> <span class="n">glob_wildcards</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">not_iterable</span><span class="p">,</span> <span class="n">touch</span><span class="p">,</span> <span class="n">unpack</span><span class="p">,</span> <span class="n">local</span><span class="p">,</span> <span class="n">pipe</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">report</span>
+<span class="kn">from</span> <span class="nn">snakemake.persistence</span> <span class="k">import</span> <span class="n">Persistence</span>
+<span class="kn">from</span> <span class="nn">snakemake.utils</span> <span class="k">import</span> <span class="n">update_config</span>
+<span class="kn">from</span> <span class="nn">snakemake.script</span> <span class="k">import</span> <span class="n">script</span>
+<span class="kn">from</span> <span class="nn">snakemake.wrapper</span> <span class="k">import</span> <span class="n">wrapper</span>
+<span class="kn">from</span> <span class="nn">snakemake.cwl</span> <span class="k">import</span> <span class="n">cwl</span>
+<span class="kn">import</span> <span class="nn">snakemake.wrapper</span>
+<span class="kn">from</span> <span class="nn">snakemake.common</span> <span class="k">import</span> <span class="n">Mode</span>
+<span class="kn">from</span> <span class="nn">snakemake.utils</span> <span class="k">import</span> <span class="n">simplify_path</span>
+<span class="kn">from</span> <span class="nn">snakemake.checkpoints</span> <span class="k">import</span> <span class="n">Checkpoint</span><span class="p">,</span> <span class="n">Checkpoints</span>
+<span class="kn">from</span> <span class="nn">snakemake.resources</span> <span class="k">import</span> <span class="n">DefaultResources</span>
+
+
+<div class="viewcode-block" id="Workflow"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow">[docs]</a><span class="k">class</span> <span class="nc">Workflow</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">snakefile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">jobscript</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">overwrite_shellcmd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">overwrite_config</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span>
+                 <span class="n">overwrite_workdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">overwrite_configfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">overwrite_clusterconfig</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span>
+                 <span class="n">config_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">use_conda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">conda_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">use_singularity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">singularity_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">singularity_args</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">shadow_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">mode</span><span class="o">=</span><span class="n">Mode</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+                 <span class="n">wrapper_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">printshellcmds</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">restart_times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">attempt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">default_remote_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">default_remote_prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">run_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">default_resources</span><span class="o">=</span><span class="nb">dict</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the controller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first_rule</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_workdir</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_workdir</span> <span class="o">=</span> <span class="n">overwrite_workdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workdir_init</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ruleorder</span> <span class="o">=</span> <span class="n">Ruleorder</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_localrules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linemaps</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rule_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included_stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jobscript</span> <span class="o">=</span> <span class="n">jobscript</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_resources</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">globals</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subworkflows</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_shellcmd</span> <span class="o">=</span> <span class="n">overwrite_shellcmd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_config</span> <span class="o">=</span> <span class="n">overwrite_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_configfile</span> <span class="o">=</span> <span class="n">overwrite_configfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_clusterconfig</span> <span class="o">=</span> <span class="n">overwrite_clusterconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_args</span> <span class="o">=</span> <span class="n">config_args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">immediate_submit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onsuccess</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">log</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onerror</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">log</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onstart</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">log</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wildcard_constraints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rulecount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_conda</span> <span class="o">=</span> <span class="n">use_conda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conda_prefix</span> <span class="o">=</span> <span class="n">conda_prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_singularity</span> <span class="o">=</span> <span class="n">use_singularity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">singularity_prefix</span> <span class="o">=</span> <span class="n">singularity_prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">singularity_args</span> <span class="o">=</span> <span class="n">singularity_args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shadow_prefix</span> <span class="o">=</span> <span class="n">shadow_prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_singularity_img</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrapper_prefix</span> <span class="o">=</span> <span class="n">wrapper_prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printshellcmds</span> <span class="o">=</span> <span class="n">printshellcmds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restart_times</span> <span class="o">=</span> <span class="n">restart_times</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attempt</span> <span class="o">=</span> <span class="n">attempt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_remote_provider</span> <span class="o">=</span> <span class="n">default_remote_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_remote_prefix</span> <span class="o">=</span> <span class="n">default_remote_prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configfiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_local</span> <span class="o">=</span> <span class="n">run_local</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_text</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">default_resources</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_resources</span> <span class="o">=</span> <span class="n">default_resources</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># only _cores and _nodes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_resources</span> <span class="o">=</span> <span class="n">DefaultResources</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">iocache</span> <span class="o">=</span> <span class="n">snakemake</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">IOCache</span><span class="p">()</span>
+
+        <span class="k">global</span> <span class="n">config</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overwrite_config</span><span class="p">)</span>
+
+        <span class="k">global</span> <span class="n">cluster_config</span>
+        <span class="n">cluster_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overwrite_clusterconfig</span><span class="p">)</span>
+
+        <span class="k">global</span> <span class="n">rules</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="n">Rules</span><span class="p">()</span>
+        <span class="k">global</span> <span class="n">checkpoints</span>
+        <span class="n">checkpoints</span> <span class="o">=</span> <span class="n">Checkpoints</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Workflow.get_sources"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.get_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">norm_rule_relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">rule</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="c1"># get registered sources</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="p">:</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">script</span><span class="p">:</span>
+                <span class="n">script_path</span> <span class="o">=</span> <span class="n">norm_rule_relpath</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">script</span><span class="p">,</span> <span class="n">rule</span><span class="p">)</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">script_path</span><span class="p">)</span>
+                <span class="n">script_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">script_path</span><span class="p">)</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                             <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">script_dir</span><span class="p">)</span>
+                             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">conda_env</span><span class="p">:</span>
+                <span class="n">env_path</span> <span class="o">=</span> <span class="n">norm_rule_relpath</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">conda_env</span><span class="p">,</span> <span class="n">rule</span><span class="p">)</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">env_path</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">configfiles</span><span class="p">:</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="c1"># get git-managed files</span>
+        <span class="c1"># TODO allow a manifest file as alternative</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;ls-files&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">],</span>
+                                          <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;fatal: not a git repository&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unable to retrieve additional files from git. &quot;</span>
+                               <span class="s2">&quot;This is not a git repository.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;Error executing git:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">()))</span>
+
+        <span class="k">return</span> <span class="n">files</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subworkflows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subworkflows</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">concrete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">file</span>
+            <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">rule</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">contains_wildcard</span><span class="p">()</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Workflow.check"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">clause</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ruleorder</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">rulename</span> <span class="ow">in</span> <span class="n">clause</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rule</span><span class="p">(</span><span class="n">rulename</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">UnknownRuleException</span><span class="p">(</span>
+                        <span class="n">rulename</span><span class="p">,</span>
+                        <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;Error in ruleorder definition.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.add_rule"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.add_rule">[docs]</a>    <span class="k">def</span> <span class="nf">add_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snakefile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a rule.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rule</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">CreateRuleException</span><span class="p">(</span>
+                <span class="s2">&quot;The name </span><span class="si">{}</span><span class="s2"> is already used by another rule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="n">Rule</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="n">lineno</span><span class="p">,</span> <span class="n">snakefile</span><span class="o">=</span><span class="n">snakefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">[</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">rule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rule_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_rule</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">first_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">name</span></div>
+
+<div class="viewcode-block" id="Workflow.is_rule"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.is_rule">[docs]</a>    <span class="k">def</span> <span class="nf">is_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return True if name is the name of a rule.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        name -- a name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span></div>
+
+<div class="viewcode-block" id="Workflow.get_rule"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.get_rule">[docs]</a>    <span class="k">def</span> <span class="nf">get_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get rule by name.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        name -- the name of the rule</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoRulesException</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownRuleException</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Workflow.list_rules"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.list_rules">[docs]</a>    <span class="k">def</span> <span class="nf">list_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">only_targets</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span>
+        <span class="k">if</span> <span class="n">only_targets</span><span class="p">:</span>
+            <span class="n">rules</span> <span class="o">=</span> <span class="n">filterfalse</span><span class="p">(</span><span class="n">Rule</span><span class="o">.</span><span class="n">has_wildcards</span><span class="p">,</span> <span class="n">rules</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">rule_info</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="n">rule</span><span class="o">.</span><span class="n">docstring</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.list_resources"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.list_resources">[docs]</a>    <span class="k">def</span> <span class="nf">list_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span>
+            <span class="n">resource</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span> <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">rule</span><span class="o">.</span><span class="n">resources</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">resource</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;_cores _nodes&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.is_local"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.is_local">[docs]</a>    <span class="k">def</span> <span class="nf">is_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rule</span><span class="o">.</span><span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_localrules</span> <span class="ow">or</span> <span class="n">rule</span><span class="o">.</span><span class="n">norun</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.check_localrules"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.check_localrules">[docs]</a>    <span class="k">def</span> <span class="nf">check_localrules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">undefined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_localrules</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">undefined</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;localrules directive specifies rules that are not &quot;</span>
+                           <span class="s2">&quot;present in the Snakefile:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                               <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="n">undefined</span><span class="p">))))</span></div>
+
+<div class="viewcode-block" id="Workflow.execute"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">targets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">touch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">cores</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">nodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">local_cores</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">forcetargets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">forceall</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">forcerun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">until</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">omit_from</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">prioritytargets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">keepgoing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">printshellcmds</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">printreason</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">printdag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">cluster</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cluster_sync</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">jobname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">immediate_submit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">ignore_ambiguity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">printrulegraph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">printd3dag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">drmaa</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">drmaa_log_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">kubernetes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">kubernetes_envvars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">container_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">stats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">force_incomplete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">ignore_incomplete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">list_version_changes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">list_code_changes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">list_input_changes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">list_params_changes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">list_untracked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">list_conda_envs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">summary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">archive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">delete_all_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">delete_temp_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">detailed_summary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">latency_wait</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">wait_for_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">nolock</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">unlock</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">resources</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">notemp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">nodeps</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">cleanup_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cleanup_conda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">cleanup_shadow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">subsnakemake</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">updated_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">keep_target_files</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">keep_shadow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">keep_remote_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">allowed_rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">max_jobs_per_second</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">max_status_checks_per_second</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">greediness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                <span class="n">no_hooks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">force_use_threads</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">create_envs_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">assume_shared_fs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">cluster_status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">report</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">export_cwl</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_localrules</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_resources</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">resources</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">resources</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_resources</span><span class="p">[</span><span class="s2">&quot;_cores&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cores</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_resources</span><span class="p">[</span><span class="s2">&quot;_nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">immediate_submit</span> <span class="o">=</span> <span class="n">immediate_submit</span>
+
+        <span class="k">def</span> <span class="nf">rules</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">,</span> <span class="nb">filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_rule</span><span class="p">,</span> <span class="n">items</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">keep_target_files</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">filterfalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_rule</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+                <span class="n">relpath</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="n">relpath</span><span class="p">,</span> <span class="n">filterfalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_rule</span><span class="p">,</span> <span class="n">items</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">targets</span><span class="p">:</span>
+            <span class="n">targets</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">first_rule</span>
+                       <span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_rule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">prioritytargets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prioritytargets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">forcerun</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">forcerun</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">until</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">until</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">omit_from</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">omit_from</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="n">priorityrules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">rules</span><span class="p">(</span><span class="n">prioritytargets</span><span class="p">))</span>
+        <span class="n">priorityfiles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">prioritytargets</span><span class="p">))</span>
+        <span class="n">forcerules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">rules</span><span class="p">(</span><span class="n">forcerun</span><span class="p">))</span>
+        <span class="n">forcefiles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">forcerun</span><span class="p">))</span>
+        <span class="n">untilrules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">rules</span><span class="p">(</span><span class="n">until</span><span class="p">))</span>
+        <span class="n">untilfiles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">until</span><span class="p">))</span>
+        <span class="n">omitrules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">rules</span><span class="p">(</span><span class="n">omit_from</span><span class="p">))</span>
+        <span class="n">omitfiles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">omit_from</span><span class="p">))</span>
+        <span class="n">targetrules</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">rules</span><span class="p">(</span><span class="n">targets</span><span class="p">),</span>
+                                <span class="n">filterfalse</span><span class="p">(</span><span class="n">Rule</span><span class="o">.</span><span class="n">has_wildcards</span><span class="p">,</span> <span class="n">priorityrules</span><span class="p">),</span>
+                                <span class="n">filterfalse</span><span class="p">(</span><span class="n">Rule</span><span class="o">.</span><span class="n">has_wildcards</span><span class="p">,</span> <span class="n">forcerules</span><span class="p">),</span>
+                                <span class="n">filterfalse</span><span class="p">(</span><span class="n">Rule</span><span class="o">.</span><span class="n">has_wildcards</span><span class="p">,</span> <span class="n">untilrules</span><span class="p">)))</span>
+        <span class="n">targetfiles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">targets</span><span class="p">),</span> <span class="n">priorityfiles</span><span class="p">,</span> <span class="n">forcefiles</span><span class="p">,</span> <span class="n">untilfiles</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">forcetargets</span><span class="p">:</span>
+            <span class="n">forcefiles</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">targetfiles</span><span class="p">)</span>
+            <span class="n">forcerules</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">targetrules</span><span class="p">)</span>
+
+        <span class="n">rules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span>
+        <span class="k">if</span> <span class="n">allowed_rules</span><span class="p">:</span>
+            <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span><span class="n">rule</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span> <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">allowed_rules</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">wait_for_files</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">snakemake</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">wait_for_files</span><span class="p">(</span><span class="n">wait_for_files</span><span class="p">,</span>
+                                            <span class="n">latency_wait</span><span class="o">=</span><span class="n">latency_wait</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span>
+            <span class="n">dryrun</span><span class="o">=</span><span class="n">dryrun</span><span class="p">,</span>
+            <span class="n">targetfiles</span><span class="o">=</span><span class="n">targetfiles</span><span class="p">,</span>
+            <span class="n">targetrules</span><span class="o">=</span><span class="n">targetrules</span><span class="p">,</span>
+            <span class="c1"># when cleaning up conda, we should enforce all possible jobs</span>
+            <span class="c1"># since their envs shall not be deleted</span>
+            <span class="n">forceall</span><span class="o">=</span><span class="n">forceall</span> <span class="ow">or</span> <span class="n">cleanup_conda</span><span class="p">,</span>
+            <span class="n">forcefiles</span><span class="o">=</span><span class="n">forcefiles</span><span class="p">,</span>
+            <span class="n">forcerules</span><span class="o">=</span><span class="n">forcerules</span><span class="p">,</span>
+            <span class="n">priorityfiles</span><span class="o">=</span><span class="n">priorityfiles</span><span class="p">,</span>
+            <span class="n">priorityrules</span><span class="o">=</span><span class="n">priorityrules</span><span class="p">,</span>
+            <span class="n">untilfiles</span><span class="o">=</span><span class="n">untilfiles</span><span class="p">,</span>
+            <span class="n">untilrules</span><span class="o">=</span><span class="n">untilrules</span><span class="p">,</span>
+            <span class="n">omitfiles</span><span class="o">=</span><span class="n">omitfiles</span><span class="p">,</span>
+            <span class="n">omitrules</span><span class="o">=</span><span class="n">omitrules</span><span class="p">,</span>
+            <span class="n">ignore_ambiguity</span><span class="o">=</span><span class="n">ignore_ambiguity</span><span class="p">,</span>
+            <span class="n">force_incomplete</span><span class="o">=</span><span class="n">force_incomplete</span><span class="p">,</span>
+            <span class="n">ignore_incomplete</span><span class="o">=</span><span class="n">ignore_incomplete</span> <span class="ow">or</span> <span class="n">printdag</span> <span class="ow">or</span> <span class="n">printrulegraph</span><span class="p">,</span>
+            <span class="n">notemp</span><span class="o">=</span><span class="n">notemp</span><span class="p">,</span>
+            <span class="n">keep_remote_local</span><span class="o">=</span><span class="n">keep_remote_local</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span> <span class="o">=</span> <span class="n">Persistence</span><span class="p">(</span>
+            <span class="n">nolock</span><span class="o">=</span><span class="n">nolock</span><span class="p">,</span>
+            <span class="n">dag</span><span class="o">=</span><span class="n">dag</span><span class="p">,</span>
+            <span class="n">conda_prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conda_prefix</span><span class="p">,</span>
+            <span class="n">singularity_prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">singularity_prefix</span><span class="p">,</span>
+            <span class="n">shadow_prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shadow_prefix</span><span class="p">,</span>
+            <span class="n">warn_only</span><span class="o">=</span><span class="n">dryrun</span> <span class="ow">or</span> <span class="n">printrulegraph</span> <span class="ow">or</span> <span class="n">printdag</span> <span class="ow">or</span> <span class="n">summary</span> <span class="ow">or</span> <span class="n">archive</span> <span class="ow">or</span>
+            <span class="n">list_version_changes</span> <span class="ow">or</span> <span class="n">list_code_changes</span> <span class="ow">or</span> <span class="n">list_input_changes</span> <span class="ow">or</span>
+            <span class="n">list_params_changes</span> <span class="ow">or</span> <span class="n">list_untracked</span> <span class="ow">or</span> <span class="n">delete_all_output</span> <span class="ow">or</span> <span class="n">delete_temp_output</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cleanup_metadata</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cleanup_metadata</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">cleanup_metadata</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building DAG of jobs...&quot;</span><span class="p">)</span>
+        <span class="n">dag</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">dag</span><span class="o">.</span><span class="n">update_checkpoint_dependencies</span><span class="p">()</span>
+        <span class="c1"># check incomplete has to run BEFORE any call to postprocess</span>
+        <span class="n">dag</span><span class="o">.</span><span class="n">check_incomplete</span><span class="p">()</span>
+        <span class="n">dag</span><span class="o">.</span><span class="n">check_dynamic</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">unlock</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">cleanup_locks</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unlocking working directory.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error: Unlocking the directory </span><span class="si">{}</span><span class="s2"> failed. Maybe &quot;</span>
+                             <span class="s2">&quot;you don&#39;t have the permissions?&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Error: Directory cannot be locked. Please make &quot;</span>
+                <span class="s2">&quot;sure that no other Snakemake process is trying to create &quot;</span>
+                <span class="s2">&quot;the same files in the following directory:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;If you are sure that no other &quot;</span>
+                <span class="s2">&quot;instances of snakemake are running on this directory, &quot;</span>
+                <span class="s2">&quot;the remaining lock was likely caused by a kill signal or &quot;</span>
+                <span class="s2">&quot;a power loss. It can be removed with &quot;</span>
+                <span class="s2">&quot;the --unlock argument.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">cleanup_shadow</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">cleanup_shadow</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subworkflows</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">printdag</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">printrulegraph</span><span class="p">:</span>
+            <span class="c1"># backup globals</span>
+            <span class="n">globals_backup</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">globals</span><span class="p">)</span>
+            <span class="c1"># execute subworkflows</span>
+            <span class="k">for</span> <span class="n">subworkflow</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subworkflows</span><span class="p">:</span>
+                <span class="n">subworkflow_targets</span> <span class="o">=</span> <span class="n">subworkflow</span><span class="o">.</span><span class="n">targets</span><span class="p">(</span><span class="n">dag</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Files requested from subworkflow:</span><span class="se">\n</span><span class="s2">    </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subworkflow_targets</span><span class="p">)))</span>
+                <span class="n">updated</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">subworkflow_targets</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="s2">&quot;Executing subworkflow </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subworkflow</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">subsnakemake</span><span class="p">(</span><span class="n">subworkflow</span><span class="o">.</span><span class="n">snakefile</span><span class="p">,</span>
+                                        <span class="n">workdir</span><span class="o">=</span><span class="n">subworkflow</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span>
+                                        <span class="n">targets</span><span class="o">=</span><span class="n">subworkflow_targets</span><span class="p">,</span>
+                                        <span class="n">configfile</span><span class="o">=</span><span class="n">subworkflow</span><span class="o">.</span><span class="n">configfile</span><span class="p">,</span>
+                                        <span class="n">updated_files</span><span class="o">=</span><span class="n">updated</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                    <span class="n">dag</span><span class="o">.</span><span class="n">updated_subworkflow_files</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">subworkflow</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                                                         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">updated</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Subworkflow </span><span class="si">{}</span><span class="s2">: Nothing to be done.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">subworkflow</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subworkflows</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Executing main workflow.&quot;</span><span class="p">)</span>
+            <span class="c1"># rescue globals</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">globals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">globals_backup</span><span class="p">)</span>
+
+        <span class="n">dag</span><span class="o">.</span><span class="n">postprocess</span><span class="p">()</span>
+        <span class="c1"># deactivate IOCache such that from now on we always get updated</span>
+        <span class="c1"># size, existence and mtime information</span>
+        <span class="c1"># ATTENTION: this may never be removed without really good reason.</span>
+        <span class="c1"># Otherwise weird things may happen.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iocache</span><span class="o">.</span><span class="n">deactivate</span><span class="p">()</span>
+        <span class="c1"># clear and deactivate persistence cache, from now on we want to see updates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">deactivate_cache</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">nodeps</span><span class="p">:</span>
+            <span class="n">missing_input</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">targetjobs</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">input</span>
+                             <span class="k">if</span> <span class="n">dag</span><span class="o">.</span><span class="n">needrun</span><span class="p">(</span><span class="n">job</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">missing_input</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;Dependency resolution disabled (--nodeps) &quot;</span>
+                    <span class="s2">&quot;but missing input &quot;</span>
+                    <span class="s2">&quot;files detected. If this happens on a cluster, please make sure &quot;</span>
+                    <span class="s2">&quot;that you handle the dependencies yourself or turn of &quot;</span>
+                    <span class="s2">&quot;--immediate-submit. Missing input files:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_input</span><span class="p">)))</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">updated_files</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">needrun_jobs</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">export_cwl</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">snakemake.cwl</span> <span class="k">import</span> <span class="n">dag_to_cwl</span>
+            <span class="kn">import</span> <span class="nn">json</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">export_cwl</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cwl</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dag_to_cwl</span><span class="p">(</span><span class="n">dag</span><span class="p">),</span> <span class="n">cwl</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">report</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">snakemake.report</span> <span class="k">import</span> <span class="n">auto_report</span>
+            <span class="n">auto_report</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">report</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">printd3dag</span><span class="p">:</span>
+            <span class="n">dag</span><span class="o">.</span><span class="n">d3dag</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">printdag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">dag</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">printrulegraph</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">rule_dot</span><span class="p">())</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">detailed_summary</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">archive</span><span class="p">:</span>
+            <span class="n">dag</span><span class="o">.</span><span class="n">archive</span><span class="p">(</span><span class="n">archive</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">delete_all_output</span><span class="p">:</span>
+            <span class="n">dag</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">only_temp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="n">dryrun</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">delete_temp_output</span><span class="p">:</span>
+            <span class="n">dag</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">only_temp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="n">dryrun</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">list_version_changes</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">version_changed</span><span class="p">,</span> <span class="n">dag</span><span class="o">.</span><span class="n">jobs</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">list_code_changes</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">code_changed</span><span class="p">,</span> <span class="n">dag</span><span class="o">.</span><span class="n">jobs</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">jobs</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">outputs_older_than_script</span><span class="p">()))</span>
+            <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">list_input_changes</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">input_changed</span><span class="p">,</span> <span class="n">dag</span><span class="o">.</span><span class="n">jobs</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">list_params_changes</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">params_changed</span><span class="p">,</span> <span class="n">dag</span><span class="o">.</span><span class="n">jobs</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">list_untracked</span><span class="p">:</span>
+            <span class="n">dag</span><span class="o">.</span><span class="n">list_untracked</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_singularity</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">assume_shared_fs</span><span class="p">:</span>
+                <span class="n">dag</span><span class="o">.</span><span class="n">pull_singularity_imgs</span><span class="p">(</span><span class="n">dryrun</span><span class="o">=</span><span class="n">dryrun</span> <span class="ow">or</span> <span class="n">list_conda_envs</span><span class="p">,</span>
+                                          <span class="n">quiet</span><span class="o">=</span><span class="n">list_conda_envs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_conda</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">assume_shared_fs</span><span class="p">:</span>
+                <span class="n">dag</span><span class="o">.</span><span class="n">create_conda_envs</span><span class="p">(</span><span class="n">dryrun</span><span class="o">=</span><span class="n">dryrun</span> <span class="ow">or</span> <span class="n">list_conda_envs</span> <span class="ow">or</span> <span class="n">cleanup_conda</span><span class="p">,</span>
+                                      <span class="n">quiet</span><span class="o">=</span><span class="n">list_conda_envs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">create_envs_only</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+
+
+        <span class="k">if</span> <span class="n">list_conda_envs</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;environment&quot;</span><span class="p">,</span> <span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">conda_env</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">jobs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">env</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">simplify_path</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">file</span><span class="p">),</span>
+                          <span class="n">env</span><span class="o">.</span><span class="n">singularity_img_url</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                          <span class="n">simplify_path</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
+                          <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">cleanup_conda</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="o">.</span><span class="n">cleanup_conda</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">scheduler</span> <span class="o">=</span> <span class="n">JobScheduler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dag</span><span class="p">,</span> <span class="n">cores</span><span class="p">,</span>
+                                 <span class="n">local_cores</span><span class="o">=</span><span class="n">local_cores</span><span class="p">,</span>
+                                 <span class="n">dryrun</span><span class="o">=</span><span class="n">dryrun</span><span class="p">,</span>
+                                 <span class="n">touch</span><span class="o">=</span><span class="n">touch</span><span class="p">,</span>
+                                 <span class="n">cluster</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span>
+                                 <span class="n">cluster_status</span><span class="o">=</span><span class="n">cluster_status</span><span class="p">,</span>
+                                 <span class="n">cluster_config</span><span class="o">=</span><span class="n">cluster_config</span><span class="p">,</span>
+                                 <span class="n">cluster_sync</span><span class="o">=</span><span class="n">cluster_sync</span><span class="p">,</span>
+                                 <span class="n">jobname</span><span class="o">=</span><span class="n">jobname</span><span class="p">,</span>
+                                 <span class="n">max_jobs_per_second</span><span class="o">=</span><span class="n">max_jobs_per_second</span><span class="p">,</span>
+                                 <span class="n">max_status_checks_per_second</span><span class="o">=</span><span class="n">max_status_checks_per_second</span><span class="p">,</span>
+                                 <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">,</span>
+                                 <span class="n">keepgoing</span><span class="o">=</span><span class="n">keepgoing</span><span class="p">,</span>
+                                 <span class="n">drmaa</span><span class="o">=</span><span class="n">drmaa</span><span class="p">,</span>
+                                 <span class="n">drmaa_log_dir</span><span class="o">=</span><span class="n">drmaa_log_dir</span><span class="p">,</span>
+                                 <span class="n">kubernetes</span><span class="o">=</span><span class="n">kubernetes</span><span class="p">,</span>
+                                 <span class="n">kubernetes_envvars</span><span class="o">=</span><span class="n">kubernetes_envvars</span><span class="p">,</span>
+                                 <span class="n">container_image</span><span class="o">=</span><span class="n">container_image</span><span class="p">,</span>
+                                 <span class="n">printreason</span><span class="o">=</span><span class="n">printreason</span><span class="p">,</span>
+                                 <span class="n">printshellcmds</span><span class="o">=</span><span class="n">printshellcmds</span><span class="p">,</span>
+                                 <span class="n">latency_wait</span><span class="o">=</span><span class="n">latency_wait</span><span class="p">,</span>
+                                 <span class="n">greediness</span><span class="o">=</span><span class="n">greediness</span><span class="p">,</span>
+                                 <span class="n">force_use_threads</span><span class="o">=</span><span class="n">force_use_threads</span><span class="p">,</span>
+                                 <span class="n">assume_shared_fs</span><span class="o">=</span><span class="n">assume_shared_fs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dag</span><span class="p">):</span>
+                <span class="n">shell_exec</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">get_executable</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">shell_exec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using shell: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shell_exec</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">cluster</span> <span class="ow">or</span> <span class="n">cluster_sync</span> <span class="ow">or</span> <span class="n">drmaa</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">resources_info</span><span class="p">(</span>
+                        <span class="s2">&quot;Provided cluster nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">resources_info</span><span class="p">(</span><span class="s2">&quot;Provided cores: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cores</span><span class="p">))</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">resources_info</span><span class="p">(</span><span class="s2">&quot;Rules claiming more threads &quot;</span>
+                                          <span class="s2">&quot;will be scaled down.&quot;</span><span class="p">)</span>
+
+                <span class="n">provided_resources</span> <span class="o">=</span> <span class="n">format_resources</span><span class="p">(</span><span class="n">resources</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">provided_resources</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">resources_info</span><span class="p">(</span>
+                        <span class="s2">&quot;Provided resources: &quot;</span> <span class="o">+</span> <span class="n">provided_resources</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_local</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">group</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Group jobs: inactive (local execution)&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_conda</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">conda_env</span>
+                                              <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Conda environments: ignored&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_singularity</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">singularity_img</span>
+                                                    <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Singularity containers: ignored&quot;</span><span class="p">)</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">run_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">stats</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Nothing to be done.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># the dryrun case</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dag</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">run_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">stats</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Nothing to be done.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
+                <span class="c1"># in case of dryrun and quiet, just print above info and exit</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">no_hooks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_onstart</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">get_logfile</span><span class="p">())</span>
+
+        <span class="n">success</span> <span class="o">=</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">schedule</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dryrun</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dag</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">run_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">stats</span><span class="p">()))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;This was a dry-run (flag -n). The order of jobs &quot;</span>
+                            <span class="s2">&quot;does not reflect the order of execution.&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">remove_logfile</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">stats</span><span class="p">:</span>
+                    <span class="n">scheduler</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">logfile_hint</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">no_hooks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_onsuccess</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">get_logfile</span><span class="p">())</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">no_hooks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_onerror</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">get_logfile</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">logfile_hint</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_basedir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Basedir of currently parsed Snakefile.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">included_stack</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">included_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+<div class="viewcode-block" id="Workflow.include"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.include">[docs]</a>    <span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span>
+                <span class="n">overwrite_first_rule</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">print_compilation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">overwrite_shellcmd</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Include a snakefile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check if snakefile is a path to the filesystem</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">included_stack</span><span class="p">:</span>
+                <span class="n">snakefile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_basedir</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">)</span>
+            <span class="c1"># Could still be an url if relative import was used</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span><span class="p">:</span>
+                <span class="n">snakefile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span>
+        <span class="c1"># else it could be an url.</span>
+        <span class="c1"># at least we don&#39;t want to modify the path for clarity.</span>
+
+        <span class="k">if</span> <span class="n">snakefile</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Multiple include of </span><span class="si">{}</span><span class="s2"> ignored&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">snakefile</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span>
+
+        <span class="k">global</span> <span class="n">workflow</span>
+
+        <span class="n">workflow</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="n">first_rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_rule</span>
+        <span class="n">code</span><span class="p">,</span> <span class="n">linemap</span><span class="p">,</span> <span class="n">rulecount</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span>
+                                         <span class="n">overwrite_shellcmd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">overwrite_shellcmd</span><span class="p">,</span>
+                                         <span class="n">rulecount</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rulecount</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rulecount</span> <span class="o">=</span> <span class="n">rulecount</span>
+
+        <span class="k">if</span> <span class="n">print_compilation</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+        <span class="c1"># insert the current directory into sys.path</span>
+        <span class="c1"># this allows to import modules from the workflow directory</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">snakefile</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">linemaps</span><span class="p">[</span><span class="n">snakefile</span><span class="p">]</span> <span class="o">=</span> <span class="n">linemap</span>
+        <span class="n">exec</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">globals</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite_first_rule</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">first_rule</span> <span class="o">=</span> <span class="n">first_rule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Workflow.onstart"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.onstart">[docs]</a>    <span class="k">def</span> <span class="nf">onstart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register onstart function.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onstart</span> <span class="o">=</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="Workflow.onsuccess"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.onsuccess">[docs]</a>    <span class="k">def</span> <span class="nf">onsuccess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register onsuccess function.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onsuccess</span> <span class="o">=</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="Workflow.onerror"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.onerror">[docs]</a>    <span class="k">def</span> <span class="nf">onerror</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register onerror function.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onerror</span> <span class="o">=</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="Workflow.global_wildcard_constraints"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.global_wildcard_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">global_wildcard_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">content</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register global wildcard constraints.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wildcard_constraints</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="c1"># update all rules so far</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">update_wildcard_constraints</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Workflow.workdir"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.workdir">[docs]</a>    <span class="k">def</span> <span class="nf">workdir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workdir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register workdir.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_workdir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">workdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_workdir</span> <span class="o">=</span> <span class="n">workdir</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">workdir</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.configfile"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.configfile">[docs]</a>    <span class="k">def</span> <span class="nf">configfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Update the global config with data from the given file. &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configfiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">snakemake</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">load_configfile</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="n">update_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">update_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_config</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.report"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.report">[docs]</a>    <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Define a global report description in .rst format.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_text</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_basedir</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">config</span>
+        <span class="k">return</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="Workflow.ruleorder"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.ruleorder">[docs]</a>    <span class="k">def</span> <span class="nf">ruleorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">rulenames</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ruleorder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">rulenames</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.subworkflow"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.subworkflow">[docs]</a>    <span class="k">def</span> <span class="nf">subworkflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">snakefile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">workdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">configfile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Take absolute path of config file, because it is relative to current</span>
+        <span class="c1"># workdir, which could be changed for the subworkflow.</span>
+        <span class="k">if</span> <span class="n">configfile</span><span class="p">:</span>
+            <span class="n">configfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">configfile</span><span class="p">)</span>
+        <span class="n">sw</span> <span class="o">=</span> <span class="n">Subworkflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">workdir</span><span class="p">,</span> <span class="n">configfile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subworkflows</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sw</span><span class="o">.</span><span class="n">target</span></div>
+
+<div class="viewcode-block" id="Workflow.localrules"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.localrules">[docs]</a>    <span class="k">def</span> <span class="nf">localrules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">rulenames</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_localrules</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">rulenames</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Workflow.rule"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.rule">[docs]</a>    <span class="k">def</span> <span class="nf">rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snakefile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">)</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rule</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">rule</span><span class="o">.</span><span class="n">is_checkpoint</span> <span class="o">=</span> <span class="n">checkpoint</span>
+
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wildcard_constraints</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">set_wildcard_constraints</span><span class="p">(</span><span class="o">*</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">wildcard_constraints</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">wildcard_constraints</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="o">*</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="o">*</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">*</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="c1"># handle default resources</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_resources</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">resources</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_resources</span><span class="o">.</span><span class="n">parsed</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">threads</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">threads</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">RuleException</span><span class="p">(</span><span class="s2">&quot;Threads value has to be an integer or a callable.&quot;</span><span class="p">,</span>
+                                        <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s2">&quot;_cores&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">threads</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shadow_depth</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shadow_depth</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;shallow&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span> <span class="s2">&quot;minimal&quot;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">RuleException</span><span class="p">(</span>
+                        <span class="s2">&quot;Shadow must either be &#39;minimal&#39;, &#39;shallow&#39;, &#39;full&#39;, &quot;</span>
+                        <span class="s2">&quot;or True (equivalent to &#39;full&#39;)&quot;</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shadow_depth</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">rule</span><span class="o">.</span><span class="n">shadow_depth</span> <span class="o">=</span> <span class="s1">&#39;full&#39;</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">&quot;Shadow is set to True in rule </span><span class="si">{}</span><span class="s2"> (equivalent to &#39;full&#39;). It&#39;s encouraged to use the more explicit options &#39;minimal|shallow|full&#39; instead.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rule</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">rule</span><span class="o">.</span><span class="n">shadow_depth</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shadow_depth</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">resources</span><span class="p">:</span>
+                <span class="n">args</span><span class="p">,</span> <span class="n">resources</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">resources</span>
+                <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">RuleException</span><span class="p">(</span><span class="s2">&quot;Resources have to be named.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">callable</span><span class="p">(</span><span class="n">r</span><span class="p">),</span>
+                               <span class="n">resources</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span>
+                    <span class="k">raise</span> <span class="n">RuleException</span><span class="p">(</span>
+                        <span class="s2">&quot;Resources values have to be integers or callables&quot;</span><span class="p">,</span>
+                        <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resources</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">priority</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">priority</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span>
+                    <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">priority</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                    <span class="k">raise</span> <span class="n">RuleException</span><span class="p">(</span><span class="s2">&quot;Priority values have to be numeric.&quot;</span><span class="p">,</span>
+                                        <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">priority</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">version</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">log</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">set_log</span><span class="p">(</span><span class="o">*</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">log</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">log</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">message</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">benchmark</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">benchmark</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_local</span> <span class="ow">and</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">group</span>
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wrapper</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_conda</span><span class="p">:</span>
+                    <span class="n">rule</span><span class="o">.</span><span class="n">conda_env</span> <span class="o">=</span> <span class="n">snakemake</span><span class="o">.</span><span class="n">wrapper</span><span class="o">.</span><span class="n">get_conda_env</span><span class="p">(</span>
+                        <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wrapper</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapper_prefix</span><span class="p">)</span>
+                <span class="c1"># TODO retrieve suitable singularity image</span>
+
+            <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">conda_env</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_conda</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">script</span> <span class="ow">or</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wrapper</span> <span class="ow">or</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shellcmd</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">RuleException</span><span class="p">(</span><span class="s2">&quot;Conda environments are only allowed &quot;</span>
+                        <span class="s2">&quot;with shell, script, or wrapper directives &quot;</span>
+                        <span class="s2">&quot;(not with run).&quot;</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">conda_env</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span>
+                        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">conda_env</span><span class="p">)):</span>
+                    <span class="n">ruleinfo</span><span class="o">.</span><span class="n">conda_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_basedir</span><span class="p">,</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">conda_env</span><span class="p">)</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">conda_env</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">conda_env</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_singularity</span><span class="p">:</span>
+                <span class="n">invalid_rule</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">script</span> <span class="ow">or</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wrapper</span> <span class="ow">or</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shellcmd</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">singularity_img</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">invalid_rule</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">RuleException</span><span class="p">(</span><span class="s2">&quot;Singularity directive is only allowed &quot;</span>
+                            <span class="s2">&quot;with shell, script or wrapper directives &quot;</span>
+                            <span class="s2">&quot;(not with run).&quot;</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+                    <span class="n">rule</span><span class="o">.</span><span class="n">singularity_img</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">singularity_img</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_singularity_img</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">invalid_rule</span><span class="p">:</span>
+                        <span class="c1"># skip rules with run directive</span>
+                        <span class="n">rule</span><span class="o">.</span><span class="n">singularity_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_singularity_img</span>
+
+            <span class="n">rule</span><span class="o">.</span><span class="n">norun</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">norun</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">docstring</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">docstring</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">run_func</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">func</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">shellcmd</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shellcmd</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">script</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wrapper</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">cwl</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">cwl</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">restart_times</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">restart_times</span>
+            <span class="n">rule</span><span class="o">.</span><span class="n">basedir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_basedir</span>
+
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="s2">&quot;__</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="n">ruleinfo</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">func</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span> <span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">RuleProxy</span><span class="p">(</span><span class="n">rule</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">checkpoint</span><span class="p">:</span>
+                <span class="n">checkpoints</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span><span class="o">.</span><span class="n">func</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.docstring"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.docstring">[docs]</a>    <span class="k">def</span> <span class="nf">docstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">docstring</span> <span class="o">=</span> <span class="n">string</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.input"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.input">[docs]</a>    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="o">**</span><span class="n">kwpaths</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">kwpaths</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.output"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="o">**</span><span class="n">kwpaths</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">kwpaths</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.params"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.params">[docs]</a>    <span class="k">def</span> <span class="nf">params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwparams</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">kwparams</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.wildcard_constraints"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.wildcard_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">wildcard_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">wildcard_constraints</span><span class="p">,</span> <span class="o">**</span><span class="n">kwwildcard_constraints</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wildcard_constraints</span> <span class="o">=</span> <span class="p">(</span><span class="n">wildcard_constraints</span><span class="p">,</span> <span class="n">kwwildcard_constraints</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.message"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.message">[docs]</a>    <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.benchmark"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.benchmark">[docs]</a>    <span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">benchmark</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="n">benchmark</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.conda"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.conda">[docs]</a>    <span class="k">def</span> <span class="nf">conda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conda_env</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">conda_env</span> <span class="o">=</span> <span class="n">conda_env</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.singularity"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.singularity">[docs]</a>    <span class="k">def</span> <span class="nf">singularity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">singularity_img</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">singularity_img</span> <span class="o">=</span> <span class="n">singularity_img</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.global_singularity"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.global_singularity">[docs]</a>    <span class="k">def</span> <span class="nf">global_singularity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">singularity_img</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_singularity_img</span> <span class="o">=</span> <span class="n">singularity_img</span></div>
+
+<div class="viewcode-block" id="Workflow.threads"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.threads">[docs]</a>    <span class="k">def</span> <span class="nf">threads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threads</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="n">threads</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.shadow"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.shadow">[docs]</a>    <span class="k">def</span> <span class="nf">shadow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shadow_depth</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shadow_depth</span> <span class="o">=</span> <span class="n">shadow_depth</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.resources"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.resources">[docs]</a>    <span class="k">def</span> <span class="nf">resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">resources</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">resources</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">resources</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.priority"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.priority">[docs]</a>    <span class="k">def</span> <span class="nf">priority</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">priority</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.version"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.version">[docs]</a>    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.group"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.group">[docs]</a>    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.log"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">logs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwlogs</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="p">(</span><span class="n">logs</span><span class="p">,</span> <span class="n">kwlogs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.shellcmd"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.shellcmd">[docs]</a>    <span class="k">def</span> <span class="nf">shellcmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">shellcmd</span> <span class="o">=</span> <span class="n">cmd</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.script"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.script">[docs]</a>    <span class="k">def</span> <span class="nf">script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="n">script</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.wrapper"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.wrapper">[docs]</a>    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrapper</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.cwl"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.cwl">[docs]</a>    <span class="k">def</span> <span class="nf">cwl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwl</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">cwl</span> <span class="o">=</span> <span class="n">cwl</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.norun"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.norun">[docs]</a>    <span class="k">def</span> <span class="nf">norun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">ruleinfo</span><span class="p">):</span>
+            <span class="n">ruleinfo</span><span class="o">.</span><span class="n">norun</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">ruleinfo</span>
+
+        <span class="k">return</span> <span class="n">decorate</span></div>
+
+<div class="viewcode-block" id="Workflow.run"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Workflow.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RuleInfo</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_empty_decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span></div>
+
+
+<div class="viewcode-block" id="RuleInfo"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.RuleInfo">[docs]</a><span class="k">class</span> <span class="nc">RuleInfo</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shellcmd</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norun</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conda_env</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">singularity_img</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wildcard_constraints</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shadow_depth</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resources</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docstring</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cwl</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Subworkflow"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Subworkflow">[docs]</a><span class="k">class</span> <span class="nc">Subworkflow</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">workdir</span><span class="p">,</span> <span class="n">configfile</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span> <span class="o">=</span> <span class="n">workflow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_snakefile</span> <span class="o">=</span> <span class="n">snakefile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_workdir</span> <span class="o">=</span> <span class="n">workdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configfile</span> <span class="o">=</span> <span class="n">configfile</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">snakefile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snakefile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;Snakefile&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snakefile</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">_snakefile</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snakefile</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">workdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">workdir</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workdir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workdir</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">workdir</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span>
+                                                <span class="n">workdir</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">workdir</span>
+
+<div class="viewcode-block" id="Subworkflow.target"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Subworkflow.target">[docs]</a>    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">not_iterable</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">paths</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="p">(</span><span class="n">path</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                         <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">flag</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;subworkflow&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Subworkflow.targets"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Subworkflow.targets">[docs]</a>    <span class="k">def</span> <span class="nf">targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dag</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
+            <span class="c1"># do not adjust absolute targets outside of workdir</span>
+            <span class="k">return</span> <span class="n">f</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">jobs</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">subworkflow_input</span>
+                <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">subworkflow_input</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Rules"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.Rules">[docs]</a><span class="k">class</span> <span class="nc">Rules</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; A namespace for rules so that they can be accessed via dot notation. &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="srcdir"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.workflow.srcdir">[docs]</a><span class="k">def</span> <span class="nf">srcdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the absolute path, relative to the source directory of the current Snakefile.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">workflow</span><span class="o">.</span><span class="n">included_stack</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">workflow</span><span class="o">.</span><span class="n">included_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">path</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

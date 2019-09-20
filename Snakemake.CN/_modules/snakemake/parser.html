@@ -1,0 +1,1027 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snakemake.parser &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../snakemake.html">snakemake</a> &raquo;</li>
+        
+      <li>snakemake.parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snakemake.parser</h1><div class="highlight"><pre>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Johannes Köster&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2015, Johannes Köster&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;koester@jimmy.harvard.edu&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+
+<span class="kn">import</span> <span class="nn">tokenize</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">urllib.error</span> <span class="k">import</span> <span class="n">HTTPError</span><span class="p">,</span> <span class="n">URLError</span><span class="p">,</span> <span class="n">ContentTooShortError</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">TextIOWrapper</span>
+
+<span class="kn">from</span> <span class="nn">snakemake.exceptions</span> <span class="k">import</span> <span class="n">WorkflowError</span>
+<span class="kn">from</span> <span class="nn">snakemake.common</span> <span class="k">import</span> <span class="n">escape_backslash</span>
+
+<span class="n">dd</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span>
+
+<span class="n">INDENT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+
+
+<div class="viewcode-block" id="is_newline"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_newline">[docs]</a><span class="k">def</span> <span class="nf">is_newline</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">newline_tokens</span><span class="o">=</span><span class="nb">set</span><span class="p">((</span><span class="n">tokenize</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">NL</span><span class="p">))):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">newline_tokens</span></div>
+
+
+<div class="viewcode-block" id="is_indent"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_indent">[docs]</a><span class="k">def</span> <span class="nf">is_indent</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">INDENT</span></div>
+
+
+<div class="viewcode-block" id="is_dedent"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_dedent">[docs]</a><span class="k">def</span> <span class="nf">is_dedent</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">DEDENT</span></div>
+
+
+<div class="viewcode-block" id="is_op"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_op">[docs]</a><span class="k">def</span> <span class="nf">is_op</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">OP</span></div>
+
+
+<div class="viewcode-block" id="is_greater"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_greater">[docs]</a><span class="k">def</span> <span class="nf">is_greater</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">is_op</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;&gt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="is_comma"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_comma">[docs]</a><span class="k">def</span> <span class="nf">is_comma</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">is_op</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;,&quot;</span></div>
+
+
+<div class="viewcode-block" id="is_name"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_name">[docs]</a><span class="k">def</span> <span class="nf">is_name</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">NAME</span></div>
+
+
+<div class="viewcode-block" id="is_colon"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_colon">[docs]</a><span class="k">def</span> <span class="nf">is_colon</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">is_op</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span></div>
+
+
+<div class="viewcode-block" id="is_comment"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_comment">[docs]</a><span class="k">def</span> <span class="nf">is_comment</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">COMMENT</span></div>
+
+
+<div class="viewcode-block" id="is_string"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_string">[docs]</a><span class="k">def</span> <span class="nf">is_string</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">STRING</span></div>
+
+
+<div class="viewcode-block" id="is_eof"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.is_eof">[docs]</a><span class="k">def</span> <span class="nf">is_eof</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">ENDMARKER</span></div>
+
+
+<div class="viewcode-block" id="lineno"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.lineno">[docs]</a><span class="k">def</span> <span class="nf">lineno</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="StopAutomaton"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.StopAutomaton">[docs]</a><span class="k">class</span> <span class="nc">StopAutomaton</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span></div>
+
+
+<div class="viewcode-block" id="TokenAutomaton"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.TokenAutomaton">[docs]</a><span class="k">class</span> <span class="nc">TokenAutomaton</span><span class="p">:</span>
+
+    <span class="n">subautomata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span> <span class="o">=</span> <span class="n">snakefile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_indent</span> <span class="o">=</span> <span class="n">base_indent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">was_indented</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lasttoken</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dedent</span> <span class="o">=</span> <span class="n">dedent</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dedent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dedent</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">effective_indent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_indent</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">dedent</span>
+
+<div class="viewcode-block" id="TokenAutomaton.indentation"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.TokenAutomaton.indentation">[docs]</a>    <span class="k">def</span> <span class="nf">indentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_indent</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_dedent</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_indent</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">was_indented</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="TokenAutomaton.consume"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.TokenAutomaton.consume">[docs]</a>    <span class="k">def</span> <span class="nf">consume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indentation</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">orig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lasttoken</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
+                        <span class="k">yield</span> <span class="n">INDENT</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_indent</span><span class="p">,</span> <span class="n">orig</span>
+                    <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="n">orig</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lasttoken</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="k">except</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">TokenError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;()&#39;&#39;&quot;</span><span class="p">),</span> <span class="n">token</span>
+                <span class="p">)</span>  <span class="c1"># TODO the inferred line number seems to be wrong sometimes</span></div>
+
+<div class="viewcode-block" id="TokenAutomaton.error"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.TokenAutomaton.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span>
+                          <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">lineno</span><span class="p">(</span><span class="n">token</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TokenAutomaton.subautomaton"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.TokenAutomaton.subautomaton">[docs]</a>    <span class="k">def</span> <span class="nf">subautomaton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">automaton</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subautomata</span><span class="p">[</span><span class="n">automaton</span><span class="p">](</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">base_indent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base_indent</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span><span class="p">,</span>
+            <span class="n">dedent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dedent</span><span class="p">,</span>
+            <span class="n">root</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="KeywordState"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState">[docs]</a><span class="k">class</span> <span class="nc">KeywordState</span><span class="p">(</span><span class="n">TokenAutomaton</span><span class="p">):</span>
+
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span>
+                         <span class="n">base_indent</span><span class="o">=</span><span class="n">base_indent</span><span class="p">,</span>
+                         <span class="n">dedent</span><span class="o">=</span><span class="n">dedent</span><span class="p">,</span>
+                         <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colon</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">):]</span>
+
+<div class="viewcode-block" id="KeywordState.end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;)&quot;</span></div>
+
+<div class="viewcode-block" id="KeywordState.decorate_end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState.decorate_end">[docs]</a>    <span class="k">def</span> <span class="nf">decorate_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="n">token</span></div>
+
+<div class="viewcode-block" id="KeywordState.colon"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState.colon">[docs]</a>    <span class="k">def</span> <span class="nf">colon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_colon</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Colon expected after keyword </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyword</span><span class="p">),</span>
+                       <span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KeywordState.is_block_end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState.is_block_end">[docs]</a>    <span class="k">def</span> <span class="nf">is_block_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_eof</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KeywordState.block"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState.block">[docs]</a>    <span class="k">def</span> <span class="nf">block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lasttoken</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">and</span> <span class="n">is_comment</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="c1"># ignore lines containing only comments</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_block_end</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">token_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decorate_end</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="n">token_</span>
+            <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">token</span>
+            <span class="k">raise</span> <span class="n">StopAutomaton</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_newline</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="n">is_indent</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_dedent</span><span class="p">(</span><span class="n">token</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">is_comment</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_content</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">t</span></div>
+
+<div class="viewcode-block" id="KeywordState.yield_indent"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState.yield_indent">[docs]</a>    <span class="k">def</span> <span class="nf">yield_indent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span></div>
+
+<div class="viewcode-block" id="KeywordState.block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.KeywordState.block_content">[docs]</a>    <span class="k">def</span> <span class="nf">block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span></div></div>
+
+
+<div class="viewcode-block" id="GlobalKeywordState"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.GlobalKeywordState">[docs]</a><span class="k">class</span> <span class="nc">GlobalKeywordState</span><span class="p">(</span><span class="n">KeywordState</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalKeywordState.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.GlobalKeywordState.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;workflow.</span><span class="si">{keyword}</span><span class="s2">(&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyword</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">keyword</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DecoratorKeywordState"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.DecoratorKeywordState">[docs]</a><span class="k">class</span> <span class="nc">DecoratorKeywordState</span><span class="p">(</span><span class="n">KeywordState</span><span class="p">):</span>
+    <span class="n">decorator</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DecoratorKeywordState.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.DecoratorKeywordState.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;@workflow.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decorator</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">yield</span> <span class="s2">&quot;def __</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">):&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decorator</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DecoratorKeywordState.end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.DecoratorKeywordState.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="RuleKeywordState"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.RuleKeywordState">[docs]</a><span class="k">class</span> <span class="nc">RuleKeywordState</span><span class="p">(</span><span class="n">KeywordState</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span>
+                 <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">rulename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span>
+                         <span class="n">base_indent</span><span class="o">=</span><span class="n">base_indent</span><span class="p">,</span>
+                         <span class="n">dedent</span><span class="o">=</span><span class="n">dedent</span><span class="p">,</span>
+                         <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rulename</span> <span class="o">=</span> <span class="n">rulename</span>
+
+<div class="viewcode-block" id="RuleKeywordState.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.RuleKeywordState.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">yield</span> <span class="s2">&quot;@workflow.</span><span class="si">{keyword}</span><span class="s2">(&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyword</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">keyword</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SubworkflowKeywordState"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.SubworkflowKeywordState">[docs]</a><span class="k">class</span> <span class="nc">SubworkflowKeywordState</span><span class="p">(</span><span class="n">KeywordState</span><span class="p">):</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;Subworkflow&quot;</span>
+
+<div class="viewcode-block" id="SubworkflowKeywordState.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.SubworkflowKeywordState.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;, </span><span class="si">{keyword}</span><span class="s2">=&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyword</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">keyword</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SubworkflowKeywordState.end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.SubworkflowKeywordState.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># no end needed</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">()</span></div></div>
+
+<span class="c1"># Global keyword states</span>
+
+
+<div class="viewcode-block" id="Include"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Include">[docs]</a><span class="k">class</span> <span class="nc">Include</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Workdir"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Workdir">[docs]</a><span class="k">class</span> <span class="nc">Workdir</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Configfile"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Configfile">[docs]</a><span class="k">class</span> <span class="nc">Configfile</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Report"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Report">[docs]</a><span class="k">class</span> <span class="nc">Report</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Ruleorder"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Ruleorder">[docs]</a><span class="k">class</span> <span class="nc">Ruleorder</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+<div class="viewcode-block" id="Ruleorder.block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Ruleorder.block_content">[docs]</a>    <span class="k">def</span> <span class="nf">block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_greater</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">token</span>
+        <span class="k">elif</span> <span class="n">is_name</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">),</span> <span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Expected a descending order of rule names, &#39;</span>
+                       <span class="s1">&#39;e.g. rule1 &gt; rule2 &gt; rule3 ...&#39;</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GlobalWildcardConstraints"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.GlobalWildcardConstraints">[docs]</a><span class="k">class</span> <span class="nc">GlobalWildcardConstraints</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;global_wildcard_constraints&quot;</span></div>
+
+
+<div class="viewcode-block" id="GlobalSingularity"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.GlobalSingularity">[docs]</a><span class="k">class</span> <span class="nc">GlobalSingularity</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;global_singularity&quot;</span></div>
+
+
+<span class="c1"># subworkflows</span>
+
+<div class="viewcode-block" id="SubworkflowSnakefile"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.SubworkflowSnakefile">[docs]</a><span class="k">class</span> <span class="nc">SubworkflowSnakefile</span><span class="p">(</span><span class="n">SubworkflowKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SubworkflowWorkdir"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.SubworkflowWorkdir">[docs]</a><span class="k">class</span> <span class="nc">SubworkflowWorkdir</span><span class="p">(</span><span class="n">SubworkflowKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SubworkflowConfigfile"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.SubworkflowConfigfile">[docs]</a><span class="k">class</span> <span class="nc">SubworkflowConfigfile</span><span class="p">(</span><span class="n">SubworkflowKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Subworkflow"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Subworkflow">[docs]</a><span class="k">class</span> <span class="nc">Subworkflow</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+
+    <span class="n">subautomata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">snakefile</span><span class="o">=</span><span class="n">SubworkflowSnakefile</span><span class="p">,</span>
+                       <span class="n">workdir</span><span class="o">=</span><span class="n">SubworkflowWorkdir</span><span class="p">,</span>
+                       <span class="n">configfile</span><span class="o">=</span><span class="n">SubworkflowConfigfile</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span>
+                         <span class="n">base_indent</span><span class="o">=</span><span class="n">base_indent</span><span class="p">,</span>
+                         <span class="n">dedent</span><span class="o">=</span><span class="n">dedent</span><span class="p">,</span>
+                         <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_snakefile</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_workdir</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">primary_token</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Subworkflow.end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Subworkflow.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_snakefile</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_workdir</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;A subworkflow needs either a path to a Snakefile or to a workdir.&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">primary_token</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="s2">&quot;)&quot;</span></div>
+
+<div class="viewcode-block" id="Subworkflow.name"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Subworkflow.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_name</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s2">&quot;workflow.subworkflow(&#39;</span><span class="si">{name}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">),</span> <span class="n">token</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">is_colon</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">primary_token</span> <span class="o">=</span> <span class="n">token</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Expected name after subworkflow keyword.&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Subworkflow.block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Subworkflow.block_content">[docs]</a>    <span class="k">def</span> <span class="nf">block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_name</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;snakefile&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">has_snakefile</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;workdir&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">has_workdir</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subautomaton</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">)</span><span class="o">.</span><span class="n">consume</span><span class="p">():</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected keyword </span><span class="si">{}</span><span class="s2"> in &quot;</span>
+                           <span class="s2">&quot;subworkflow definition&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">),</span>
+                           <span class="n">token</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">StopAutomaton</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">indentation</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">token</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+        <span class="k">elif</span> <span class="n">is_comment</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">token</span>
+            <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span>
+        <span class="k">elif</span> <span class="n">is_string</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="c1"># ignore docstring</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Expecting subworkflow keyword, comment or docstrings &quot;</span>
+                       <span class="s2">&quot;inside a subworkflow definition.&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Localrules"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Localrules">[docs]</a><span class="k">class</span> <span class="nc">Localrules</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+<div class="viewcode-block" id="Localrules.block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Localrules.block_content">[docs]</a>    <span class="k">def</span> <span class="nf">block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_comma</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">token</span>
+        <span class="k">elif</span> <span class="n">is_name</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">),</span> <span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Expected a comma separated list of rules that shall &#39;</span>
+                       <span class="s1">&#39;not be executed by the cluster command.&#39;</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div></div>
+
+<span class="c1"># Rule keyword states</span>
+
+
+<div class="viewcode-block" id="Input"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Input">[docs]</a><span class="k">class</span> <span class="nc">Input</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Output"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Output">[docs]</a><span class="k">class</span> <span class="nc">Output</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Params"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Params">[docs]</a><span class="k">class</span> <span class="nc">Params</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Threads"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Threads">[docs]</a><span class="k">class</span> <span class="nc">Threads</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Shadow"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Shadow">[docs]</a><span class="k">class</span> <span class="nc">Shadow</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Resources"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Resources">[docs]</a><span class="k">class</span> <span class="nc">Resources</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Priority"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Priority">[docs]</a><span class="k">class</span> <span class="nc">Priority</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Version"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Version">[docs]</a><span class="k">class</span> <span class="nc">Version</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Log"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Log">[docs]</a><span class="k">class</span> <span class="nc">Log</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Benchmark"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Benchmark">[docs]</a><span class="k">class</span> <span class="nc">Benchmark</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Conda"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Conda">[docs]</a><span class="k">class</span> <span class="nc">Conda</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Singularity"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Singularity">[docs]</a><span class="k">class</span> <span class="nc">Singularity</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="WildcardConstraints"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.WildcardConstraints">[docs]</a><span class="k">class</span> <span class="nc">WildcardConstraints</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;wildcard_constraints&quot;</span></div>
+
+
+<div class="viewcode-block" id="Run"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Run">[docs]</a><span class="k">class</span> <span class="nc">Run</span><span class="p">(</span><span class="n">RuleKeywordState</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">rulename</span><span class="p">,</span>
+                 <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span>
+                         <span class="n">base_indent</span><span class="o">=</span><span class="n">base_indent</span><span class="p">,</span>
+                         <span class="n">dedent</span><span class="o">=</span><span class="n">dedent</span><span class="p">,</span>
+                         <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rulename</span> <span class="o">=</span> <span class="n">rulename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Run.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Run.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;@workflow.run&quot;</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;def __rule_</span><span class="si">{rulename}</span><span class="s2">(input, output, params, wildcards, threads, &quot;</span>
+               <span class="s2">&quot;resources, log, version, rule, conda_env, singularity_img, &quot;</span>
+               <span class="s2">&quot;singularity_args, use_singularity, bench_record, jobid, &quot;</span>
+               <span class="s2">&quot;is_shell, bench_iteration, shadow_dir):&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="n">rulename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rulename</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rulename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="o">.</span><span class="n">rulecount</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Run.end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Run.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Run.block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Run.block_content">[docs]</a>    <span class="k">def</span> <span class="nf">block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span></div>
+
+<div class="viewcode-block" id="Run.is_block_end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Run.is_block_end">[docs]</a>    <span class="k">def</span> <span class="nf">is_block_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span>
+                             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_eof</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="AbstractCmd"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd">[docs]</a><span class="k">class</span> <span class="nc">AbstractCmd</span><span class="p">(</span><span class="n">Run</span><span class="p">):</span>
+
+    <span class="n">overwrite_cmd</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">start_func</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">end_func</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">rulename</span><span class="p">,</span>
+                 <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span> <span class="n">rulename</span><span class="p">,</span>
+                         <span class="n">base_indent</span><span class="o">=</span><span class="n">base_indent</span><span class="p">,</span>
+                         <span class="n">dedent</span><span class="o">=</span><span class="n">dedent</span><span class="p">,</span>
+                         <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_cmd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">block_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_block_content</span>
+
+<div class="viewcode-block" id="AbstractCmd.is_block_end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd.is_block_end">[docs]</a>    <span class="k">def</span> <span class="nf">is_block_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_eof</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AbstractCmd.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_func</span>
+            <span class="k">yield</span> <span class="s2">&quot;(&quot;</span></div>
+
+<div class="viewcode-block" id="AbstractCmd.args"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd.args">[docs]</a>    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield from</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="AbstractCmd.end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the end is detected. So we can savely reset the indent to zero here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">yield</span> <span class="s2">&quot;)&quot;</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">t</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">yield</span> <span class="n">INDENT</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_func</span>
+        <span class="k">yield</span> <span class="s2">&quot;(&quot;</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">yield</span> <span class="s2">&quot;)&quot;</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">end</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+<div class="viewcode-block" id="AbstractCmd.decorate_end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd.decorate_end">[docs]</a>    <span class="k">def</span> <span class="nf">decorate_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># no block after shell keyword</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Command must be given as string after the shell keyword.&quot;</span><span class="p">,</span>
+                <span class="n">token</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span></div>
+
+<div class="viewcode-block" id="AbstractCmd.block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd.block_content">[docs]</a>    <span class="k">def</span> <span class="nf">block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span></div>
+
+<div class="viewcode-block" id="AbstractCmd.overwrite_block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.AbstractCmd.overwrite_block_content">[docs]</a>    <span class="k">def</span> <span class="nf">overwrite_block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overwrite_cmd</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">token</span></div></div>
+
+
+<div class="viewcode-block" id="Shell"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Shell">[docs]</a><span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="n">AbstractCmd</span><span class="p">):</span>
+    <span class="n">start_func</span> <span class="o">=</span> <span class="s2">&quot;@workflow.shellcmd&quot;</span>
+    <span class="n">end_func</span> <span class="o">=</span> <span class="s2">&quot;shell&quot;</span>
+
+<div class="viewcode-block" id="Shell.args"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Shell.args">[docs]</a>    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;, bench_record=bench_record, bench_iteration=bench_iteration&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="Script"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Script">[docs]</a><span class="k">class</span> <span class="nc">Script</span><span class="p">(</span><span class="n">AbstractCmd</span><span class="p">):</span>
+    <span class="n">start_func</span> <span class="o">=</span> <span class="s2">&quot;@workflow.script&quot;</span>
+    <span class="n">end_func</span> <span class="o">=</span> <span class="s2">&quot;script&quot;</span>
+
+<div class="viewcode-block" id="Script.args"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Script.args">[docs]</a>    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># basedir</span>
+        <span class="k">yield</span> <span class="s1">&#39;, &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">escape_backslash</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
+        <span class="c1"># other args</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;, input, output, params, wildcards, threads, resources, log, &quot;</span>
+               <span class="s2">&quot;config, rule, conda_env, singularity_img, singularity_args, &quot;</span>
+               <span class="s2">&quot;bench_record, jobid, bench_iteration, shadow_dir&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Wrapper"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Wrapper">[docs]</a><span class="k">class</span> <span class="nc">Wrapper</span><span class="p">(</span><span class="n">Script</span><span class="p">):</span>
+    <span class="n">start_func</span> <span class="o">=</span> <span class="s2">&quot;@workflow.wrapper&quot;</span>
+    <span class="n">end_func</span> <span class="o">=</span> <span class="s2">&quot;wrapper&quot;</span>
+
+<div class="viewcode-block" id="Wrapper.args"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Wrapper.args">[docs]</a>    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;, input, output, params, wildcards, threads, resources, log, &quot;</span>
+               <span class="s2">&quot;config, rule, conda_env, singularity_img, singularity_args, &quot;</span>
+               <span class="s2">&quot;bench_record, workflow.wrapper_prefix, jobid, bench_iteration, &quot;</span>
+               <span class="s2">&quot;shadow_dir&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CWL"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.CWL">[docs]</a><span class="k">class</span> <span class="nc">CWL</span><span class="p">(</span><span class="n">Script</span><span class="p">):</span>
+    <span class="n">start_func</span> <span class="o">=</span> <span class="s2">&quot;@workflow.cwl&quot;</span>
+    <span class="n">end_func</span> <span class="o">=</span> <span class="s2">&quot;cwl&quot;</span>
+
+<div class="viewcode-block" id="CWL.args"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.CWL.args">[docs]</a>    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># basedir</span>
+        <span class="k">yield</span> <span class="s1">&#39;, &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">escape_backslash</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
+        <span class="c1"># other args</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;, input, output, params, wildcards, threads, resources, log, &quot;</span>
+               <span class="s2">&quot;config, rule, use_singularity, bench_record, jobid&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Rule"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Rule">[docs]</a><span class="k">class</span> <span class="nc">Rule</span><span class="p">(</span><span class="n">GlobalKeywordState</span><span class="p">):</span>
+    <span class="n">subautomata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">Input</span><span class="p">,</span>
+                       <span class="n">output</span><span class="o">=</span><span class="n">Output</span><span class="p">,</span>
+                       <span class="n">params</span><span class="o">=</span><span class="n">Params</span><span class="p">,</span>
+                       <span class="n">threads</span><span class="o">=</span><span class="n">Threads</span><span class="p">,</span>
+                       <span class="n">resources</span><span class="o">=</span><span class="n">Resources</span><span class="p">,</span>
+                       <span class="n">priority</span><span class="o">=</span><span class="n">Priority</span><span class="p">,</span>
+                       <span class="n">version</span><span class="o">=</span><span class="n">Version</span><span class="p">,</span>
+                       <span class="n">log</span><span class="o">=</span><span class="n">Log</span><span class="p">,</span>
+                       <span class="n">message</span><span class="o">=</span><span class="n">Message</span><span class="p">,</span>
+                       <span class="n">benchmark</span><span class="o">=</span><span class="n">Benchmark</span><span class="p">,</span>
+                       <span class="n">conda</span><span class="o">=</span><span class="n">Conda</span><span class="p">,</span>
+                       <span class="n">singularity</span><span class="o">=</span><span class="n">Singularity</span><span class="p">,</span>
+                       <span class="n">wildcard_constraints</span><span class="o">=</span><span class="n">WildcardConstraints</span><span class="p">,</span>
+                       <span class="n">shadow</span><span class="o">=</span><span class="n">Shadow</span><span class="p">,</span>
+                       <span class="n">group</span><span class="o">=</span><span class="n">Group</span><span class="p">,</span>
+                       <span class="n">run</span><span class="o">=</span><span class="n">Run</span><span class="p">,</span>
+                       <span class="n">shell</span><span class="o">=</span><span class="n">Shell</span><span class="p">,</span>
+                       <span class="n">script</span><span class="o">=</span><span class="n">Script</span><span class="p">,</span>
+                       <span class="n">wrapper</span><span class="o">=</span><span class="n">Wrapper</span><span class="p">,</span>
+                       <span class="n">cwl</span><span class="o">=</span><span class="n">CWL</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span>
+                         <span class="n">base_indent</span><span class="o">=</span><span class="n">base_indent</span><span class="p">,</span>
+                         <span class="n">dedent</span><span class="o">=</span><span class="n">dedent</span><span class="p">,</span>
+                         <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rulename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="o">.</span><span class="n">rulecount</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="Rule.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Rule.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aux</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;@workflow.rule(name=</span><span class="si">{rulename}</span><span class="s2">, lineno=</span><span class="si">{lineno}</span><span class="s2">, &quot;</span>
+               <span class="s2">&quot;snakefile=&#39;</span><span class="si">{snakefile}</span><span class="s2">&#39;</span><span class="si">{aux}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="n">rulename</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rulename</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rulename</span> <span class="ow">is</span>
+                             <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+                   <span class="n">lineno</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span>
+                   <span class="n">snakefile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span><span class="p">),</span>
+                   <span class="n">aux</span><span class="o">=</span><span class="n">aux</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Rule.end"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Rule.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;@workflow.norun()&quot;</span>
+            <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subautomaton</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">rulename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rulename</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">t</span>
+            <span class="c1"># the end is detected.</span>
+            <span class="c1"># So we can savely reset the indent to zero here</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">yield</span> <span class="n">INDENT</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="s2">&quot;pass&quot;</span></div>
+
+<div class="viewcode-block" id="Rule.name"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Rule.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_name</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rulename</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span>
+        <span class="k">elif</span> <span class="n">is_colon</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">snakefile</span><span class="o">.</span><span class="n">lines</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Expected name or colon after rule keyword.&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Rule.block_content"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Rule.block_content">[docs]</a>    <span class="k">def</span> <span class="nf">block_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_name</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;run&quot;</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;shell&quot;</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;script&quot;</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;wrapper&quot;</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;cwl&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                            <span class="s2">&quot;Multiple run or shell keywords in rule </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">rulename</span><span class="p">),</span> <span class="n">token</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No rule keywords allowed after &quot;</span>
+                                     <span class="s2">&quot;run/shell/script/wrapper/cwl in &quot;</span>
+                                     <span class="s2">&quot;rule </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rulename</span><span class="p">),</span> <span class="n">token</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subautomaton</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span>
+                                           <span class="n">rulename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rulename</span><span class="p">)</span><span class="o">.</span><span class="n">consume</span><span class="p">():</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected keyword </span><span class="si">{}</span><span class="s2"> in &quot;</span>
+                           <span class="s2">&quot;rule definition&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">),</span> <span class="n">token</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">StopAutomaton</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">indentation</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">token</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+        <span class="k">elif</span> <span class="n">is_comment</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">token</span>
+            <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span>
+        <span class="k">elif</span> <span class="n">is_string</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">token</span>
+            <span class="k">yield</span> <span class="s2">&quot;@workflow.docstring(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">),</span> <span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Expecting rule keyword, comment or docstrings &quot;</span>
+                       <span class="s2">&quot;inside a rule definition.&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dedent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span></div>
+
+
+<div class="viewcode-block" id="Checkpoint"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Checkpoint">[docs]</a><span class="k">class</span> <span class="nc">Checkpoint</span><span class="p">(</span><span class="n">Rule</span><span class="p">):</span>
+<div class="viewcode-block" id="Checkpoint.start"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Checkpoint.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield from</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">aux</span><span class="o">=</span><span class="s2">&quot;, checkpoint=True&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="OnSuccess"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.OnSuccess">[docs]</a><span class="k">class</span> <span class="nc">OnSuccess</span><span class="p">(</span><span class="n">DecoratorKeywordState</span><span class="p">):</span>
+    <span class="n">decorator</span> <span class="o">=</span> <span class="s2">&quot;onsuccess&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="OnError"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.OnError">[docs]</a><span class="k">class</span> <span class="nc">OnError</span><span class="p">(</span><span class="n">DecoratorKeywordState</span><span class="p">):</span>
+    <span class="n">decorator</span> <span class="o">=</span> <span class="s2">&quot;onerror&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="OnStart"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.OnStart">[docs]</a><span class="k">class</span> <span class="nc">OnStart</span><span class="p">(</span><span class="n">DecoratorKeywordState</span><span class="p">):</span>
+    <span class="n">decorator</span> <span class="o">=</span> <span class="s2">&quot;onstart&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Python"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Python">[docs]</a><span class="k">class</span> <span class="nc">Python</span><span class="p">(</span><span class="n">TokenAutomaton</span><span class="p">):</span>
+
+    <span class="n">subautomata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">Include</span><span class="p">,</span>
+                       <span class="n">workdir</span><span class="o">=</span><span class="n">Workdir</span><span class="p">,</span>
+                       <span class="n">configfile</span><span class="o">=</span><span class="n">Configfile</span><span class="p">,</span>
+                       <span class="n">report</span><span class="o">=</span><span class="n">Report</span><span class="p">,</span>
+                       <span class="n">ruleorder</span><span class="o">=</span><span class="n">Ruleorder</span><span class="p">,</span>
+                       <span class="n">rule</span><span class="o">=</span><span class="n">Rule</span><span class="p">,</span>
+                       <span class="n">checkpoint</span><span class="o">=</span><span class="n">Checkpoint</span><span class="p">,</span>
+                       <span class="n">subworkflow</span><span class="o">=</span><span class="n">Subworkflow</span><span class="p">,</span>
+                       <span class="n">localrules</span><span class="o">=</span><span class="n">Localrules</span><span class="p">,</span>
+                       <span class="n">onsuccess</span><span class="o">=</span><span class="n">OnSuccess</span><span class="p">,</span>
+                       <span class="n">onerror</span><span class="o">=</span><span class="n">OnError</span><span class="p">,</span>
+                       <span class="n">onstart</span><span class="o">=</span><span class="n">OnStart</span><span class="p">,</span>
+                       <span class="n">wildcard_constraints</span><span class="o">=</span><span class="n">GlobalWildcardConstraints</span><span class="p">,</span>
+                       <span class="n">singularity</span><span class="o">=</span><span class="n">GlobalSingularity</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snakefile</span><span class="p">,</span> <span class="n">base_indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dedent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">snakefile</span><span class="p">,</span>
+                         <span class="n">base_indent</span><span class="o">=</span><span class="n">base_indent</span><span class="p">,</span>
+                         <span class="n">dedent</span><span class="o">=</span><span class="n">dedent</span><span class="p">,</span>
+                         <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">python</span>
+
+<div class="viewcode-block" id="Python.python"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Python.python">[docs]</a>    <span class="k">def</span> <span class="nf">python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">is_indent</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_dedent</span><span class="p">(</span><span class="n">token</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lasttoken</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">lasttoken</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subautomaton</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">)</span><span class="o">.</span><span class="n">consume</span><span class="p">():</span>
+                        <span class="k">yield</span> <span class="n">t</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span>
+                <span class="k">except</span> <span class="n">StopAutomaton</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">indentation</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">python</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">token</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">t</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">token</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">token</span></div></div>
+
+
+<div class="viewcode-block" id="Snakefile"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.Snakefile">[docs]</a><span class="k">class</span> <span class="nc">Snakefile</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">rulecount</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">TextIOWrapper</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
+                                          <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">URLError</span><span class="p">,</span> <span class="n">ContentTooShortError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;Failed to open </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">generate_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rulecount</span> <span class="o">=</span> <span class="n">rulecount</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="format_tokens"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.format_tokens">[docs]</a><span class="k">def</span> <span class="nf">format_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    <span class="n">t_</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t_</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">isspace</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">t_</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="s2">&quot; &quot;</span>
+        <span class="k">yield</span> <span class="n">t</span>
+        <span class="n">t_</span> <span class="o">=</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="parse"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.parser.parse">[docs]</a><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">overwrite_shellcmd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rulecount</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">Shell</span><span class="o">.</span><span class="n">overwrite_cmd</span> <span class="o">=</span> <span class="n">overwrite_shellcmd</span>
+    <span class="k">with</span> <span class="n">Snakefile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">rulecount</span><span class="o">=</span><span class="n">rulecount</span><span class="p">)</span> <span class="k">as</span> <span class="n">snakefile</span><span class="p">:</span>
+        <span class="n">automaton</span> <span class="o">=</span> <span class="n">Python</span><span class="p">(</span><span class="n">snakefile</span><span class="p">)</span>
+        <span class="n">linemap</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">compilation</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">orig_token</span> <span class="ow">in</span> <span class="n">automaton</span><span class="o">.</span><span class="n">consume</span><span class="p">():</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">lineno</span><span class="p">(</span><span class="n">orig_token</span><span class="p">)</span>
+            <span class="n">linemap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                <span class="n">snakefile</span><span class="o">.</span><span class="n">lines</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">snakefile</span><span class="o">.</span><span class="n">lines</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+            <span class="n">snakefile</span><span class="o">.</span><span class="n">lines</span> <span class="o">+=</span> <span class="n">t</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">compilation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">compilation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">format_tokens</span><span class="p">(</span><span class="n">compilation</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">linemap</span><span class="p">:</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">linemap</span><span class="p">)</span>
+            <span class="n">linemap</span><span class="p">[</span><span class="n">last</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">linemap</span><span class="p">[</span><span class="n">last</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">compilation</span><span class="p">,</span> <span class="n">linemap</span><span class="p">,</span> <span class="n">snakefile</span><span class="o">.</span><span class="n">rulecount</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

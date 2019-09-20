@@ -1,0 +1,430 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snakemake.remote.HTTP &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../snakemake.html">snakemake</a> &raquo;</li>
+        
+          <li><a href="../remote.html">snakemake.remote</a> &raquo;</li>
+        
+      <li>snakemake.remote.HTTP</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snakemake.remote.HTTP</h1><div class="highlight"><pre>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Christopher Tomkins-Tinch&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2015, Christopher Tomkins-Tinch&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;tomkinsc@broadinstitute.org&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">email.utils</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+<span class="c1"># module-specific</span>
+<span class="kn">from</span> <span class="nn">snakemake.remote</span> <span class="k">import</span> <span class="n">AbstractRemoteProvider</span><span class="p">,</span> <span class="n">DomainObject</span>
+<span class="kn">from</span> <span class="nn">snakemake.exceptions</span> <span class="k">import</span> <span class="n">HTTPFileException</span><span class="p">,</span> <span class="n">WorkflowError</span>
+<span class="kn">from</span> <span class="nn">snakemake.logging</span> <span class="k">import</span> <span class="n">logger</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># third-party modules</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;The Python 3 package &#39;requests&#39; &quot;</span> <span class="o">+</span>
+        <span class="s2">&quot;must be installed to use HTTP(S) remote() file functionality. </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="o">.</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RemoteProvider"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteProvider">[docs]</a><span class="k">class</span> <span class="nc">RemoteProvider</span><span class="p">(</span><span class="n">AbstractRemoteProvider</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">keep_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stay_on_remote</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RemoteProvider</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">keep_local</span><span class="o">=</span><span class="n">keep_local</span><span class="p">,</span> <span class="n">stay_on_remote</span><span class="o">=</span><span class="n">stay_on_remote</span><span class="p">,</span> <span class="n">is_default</span><span class="o">=</span><span class="n">is_default</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">default_protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The protocol that is prepended to the path when no protocol is specified.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;https://&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">available_protocols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of valid protocols for this remote provider.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="s1">&#39;https://&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="RemoteProvider.remote"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteProvider.remote">[docs]</a>    <span class="k">def</span> <span class="nf">remote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">insecure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Iterable</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Invalid type (</span><span class="si">{}</span><span class="s1">) passed to remote: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^(https?)://.+&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">protocol</span><span class="p">,</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">protocol</span> <span class="o">==</span> <span class="s1">&#39;https&#39;</span> <span class="ow">and</span> <span class="n">insecure</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s1">&#39;insecure=True cannot be used with a https:// url&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">protocol</span> <span class="o">==</span> <span class="s1">&#39;http&#39;</span> <span class="ow">and</span> <span class="n">insecure</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s1">&#39;insecure=False cannot be used with a http:// url&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">insecure</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;http://&#39;</span> <span class="o">+</span> <span class="n">file</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;https://&#39;</span> <span class="o">+</span> <span class="n">file</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">RemoteProvider</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">remote</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RemoteObject"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject">[docs]</a><span class="k">class</span> <span class="nc">RemoteObject</span><span class="p">(</span><span class="n">DomainObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This is a class to interact with an HTTP server.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">keep_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_request_string</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RemoteObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">keep_local</span><span class="o">=</span><span class="n">keep_local</span><span class="p">,</span> <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="n">allow_redirects</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">additional_request_string</span> <span class="o">=</span> <span class="n">additional_request_string</span>
+
+    <span class="c1"># === Implementations of abstract class members ===</span>
+
+<div class="viewcode-block" id="RemoteObject.httpr"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject.httpr">[docs]</a>    <span class="nd">@contextmanager</span> <span class="c1">#makes this a context manager. after &#39;yield&#39; is __exit__()</span>
+    <span class="k">def</span> <span class="nf">httpr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verb</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># if args have been provided to remote(), use them over those given to RemoteProvider()</span>
+        <span class="n">args_to_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">args</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">args_to_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
+
+        <span class="c1"># use kwargs passed in to remote() to override those given to the RemoteProvider()</span>
+        <span class="c1"># default to the host and port given as part of the file, falling back to one specified</span>
+        <span class="c1"># as a kwarg to remote() or the RemoteProvider (overriding the latter with the former if both)</span>
+        <span class="n">kwargs_to_use</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;auth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">kwargs_to_use</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">kwargs_to_use</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="c1"># Check that in case authentication kwargs are provided, they are either (&quot;username&quot;, &quot;password&quot;) combination</span>
+        <span class="c1"># or &quot;auth&quot;, but not both.</span>
+        <span class="k">if</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;auth&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Authentication accepts either username and password or requests.auth object&quot;</span><span class="p">)</span>
+        <span class="c1"># If &quot;username&quot; and &quot;password&quot; kwargs are provided, use those to construct a tuple for &quot;auth&quot;. Neither</span>
+        <span class="c1"># requests.head() nor requests.get() accept them as-is.</span>
+        <span class="k">if</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]:</span>
+            <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;auth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">],</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">])</span>
+        <span class="c1"># Delete &quot;username&quot; and &quot;password&quot; from kwargs</span>
+        <span class="k">del</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">kwargs_to_use</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remote_file</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_request_string</span>
+
+        <span class="k">if</span> <span class="n">verb</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="n">args_to_use</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_to_use</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verb</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="n">args_to_use</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_to_use</span><span class="p">)</span>
+
+        <span class="k">yield</span> <span class="n">r</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RemoteObject.exists"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matched_address</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">httpr</span><span class="p">(</span><span class="n">verb</span><span class="o">=</span><span class="s2">&quot;HEAD&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">httpr</span><span class="p">:</span>
+                <span class="c1"># if a file redirect was found</span>
+                <span class="k">if</span> <span class="n">httpr</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">308</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">HTTPFileException</span><span class="p">(</span><span class="s2">&quot;The file specified appears to have been moved (HTTP </span><span class="si">%s</span><span class="s2">), check the URL or try adding &#39;allow_redirects=True&#39; to the remote() file object: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">httpr</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">httpr</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">httpr</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HTTPFileException</span><span class="p">(</span><span class="s2">&quot;The file cannot be parsed as an HTTP path in form &#39;host:port/abs/path/to/file&#39;: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_file</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="RemoteObject.mtime"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject.mtime">[docs]</a>    <span class="k">def</span> <span class="nf">mtime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">httpr</span><span class="p">(</span><span class="n">verb</span><span class="o">=</span><span class="s2">&quot;HEAD&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">httpr</span><span class="p">:</span>
+
+                <span class="n">file_mtime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_header_item</span><span class="p">(</span><span class="n">httpr</span><span class="p">,</span> <span class="s2">&quot;last-modified&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;HTTP last-modified: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_mtime</span><span class="p">))</span>
+
+                <span class="n">epochTime</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="k">if</span> <span class="n">file_mtime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">modified_tuple</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">parsedate_tz</span><span class="p">(</span><span class="n">file_mtime</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">modified_tuple</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;HTTP last-modified not in RFC2822 format: `</span><span class="si">{}</span><span class="s2">`&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_mtime</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">epochTime</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">mktime_tz</span><span class="p">(</span><span class="n">modified_tuple</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">epochTime</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HTTPFileException</span><span class="p">(</span><span class="s2">&quot;The file does not seem to exist remotely: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">remote_file</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="RemoteObject.size"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">httpr</span><span class="p">(</span><span class="n">verb</span><span class="o">=</span><span class="s2">&quot;HEAD&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">httpr</span><span class="p">:</span>
+
+                <span class="n">content_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_header_item</span><span class="p">(</span><span class="n">httpr</span><span class="p">,</span> <span class="s2">&quot;content-size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+                <span class="k">return</span> <span class="n">content_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iofile</span><span class="o">.</span><span class="n">size_local</span></div>
+
+<div class="viewcode-block" id="RemoteObject.download"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_dest_dirs</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">httpr</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">httpr</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="c1"># Find out if the source file is gzip compressed in order to keep</span>
+                <span class="c1"># compression intact after the download.</span>
+                <span class="c1"># Per default requests decompresses .gz files.</span>
+                <span class="c1"># More detials can be found here: https://stackoverflow.com/questions/25749345/how-to-download-gz-files-with-requests-in-python-without-decoding-it?noredirect=1&amp;lq=1</span>
+                <span class="c1"># Since data transferred with HTTP compression need to be decompressed automatically</span>
+                <span class="c1"># check the header and decode if the content is encoded.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">httpr</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-Encoding&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;gzip&quot;</span><span class="p">:</span>
+                    <span class="c1"># Decode non-gzipped sourcefiles automatically.</span>
+                    <span class="c1"># This is needed to decompress uncompressed files that are compressed</span>
+                    <span class="c1"># for the transfer by HTTP compression.</span>
+                    <span class="n">httpr</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">decode_content</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># if the destination path does not exist</span>
+                <span class="k">if</span> <span class="n">make_dest_dirs</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">httpr</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span> <span class="c1"># ensure flush to disk</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">HTTPFileException</span><span class="p">(</span><span class="s2">&quot;The file does not seem to exist remotely: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">remote_file</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="RemoteObject.upload"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject.upload">[docs]</a>    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">HTTPFileException</span><span class="p">(</span><span class="s2">&quot;Upload is not permitted for the HTTP remote provider. Is an output set to HTTP.remote()?&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteObject.get_header_item"><a class="viewcode-back" href="../../../api_reference/internal/snakemake.remote.html#snakemake.remote.HTTP.RemoteObject.get_header_item">[docs]</a>    <span class="k">def</span> <span class="nf">get_header_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">httpr</span><span class="p">,</span> <span class="n">header_name</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Since HTTP header capitalization may differ, this returns</span>
+<span class="sd">            a header value regardless of case</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">header_value</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">httpr</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">header_name</span><span class="p">:</span>
+                <span class="n">header_value</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">header_value</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">HTTPFileException</span><span class="p">(</span><span class="s2">&quot;The HTTP Remote Provider does not currently support list-based operations like glob_wildcards().&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

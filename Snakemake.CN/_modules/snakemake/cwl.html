@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snakemake.cwl &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../snakemake.html">snakemake</a> &raquo;</li>
+        
+      <li>snakemake.cwl</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snakemake.cwl</h1><div class="highlight"><pre>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Johannes Köster&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2018, Johannes Köster&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;johannes.koester@uni-due.de&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">pathname2url</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+
+<span class="kn">from</span> <span class="nn">snakemake.utils</span> <span class="k">import</span> <span class="nb">format</span>
+<span class="kn">from</span> <span class="nn">snakemake.logging</span> <span class="k">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">snakemake.exceptions</span> <span class="k">import</span> <span class="n">WorkflowError</span>
+<span class="kn">from</span> <span class="nn">snakemake.shell</span> <span class="k">import</span> <span class="n">shell</span>
+<span class="kn">from</span> <span class="nn">snakemake.common</span> <span class="k">import</span> <span class="n">get_container_image</span><span class="p">,</span> <span class="n">Mode</span>
+<span class="kn">from</span> <span class="nn">snakemake.io</span> <span class="k">import</span> <span class="n">is_flagged</span>
+
+
+<div class="viewcode-block" id="cwl"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.cwl.cwl">[docs]</a><span class="k">def</span> <span class="nf">cwl</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">basedir</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">wildcards</span><span class="p">,</span> <span class="n">threads</span><span class="p">,</span> <span class="n">resources</span><span class="p">,</span>
+        <span class="n">log</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">rulename</span><span class="p">,</span> <span class="n">use_singularity</span><span class="p">,</span> <span class="n">bench_record</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load cwl from the given basedir + path and execute it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;cwltool&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;&#39;cwltool&#39; must be in PATH in order to execute cwl directive.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;file://&quot;</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;file:&quot;</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;file://&quot;</span> <span class="o">+</span> <span class="n">path</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">stepout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;file://&quot;</span><span class="p">):</span>
+        <span class="n">sourceurl</span> <span class="o">=</span> <span class="s2">&quot;file:&quot;</span> <span class="o">+</span> <span class="n">pathname2url</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sourceurl</span> <span class="o">=</span> <span class="n">path</span>
+
+    <span class="k">def</span> <span class="nf">file_spec</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">file_spec</span><span class="p">(</span><span class="n">f_</span><span class="p">)</span> <span class="k">for</span> <span class="n">f_</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
+
+    <span class="n">inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">inputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">file_spec</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">input</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+    <span class="n">inputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">p</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+    <span class="n">inputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">f</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+    <span class="n">inputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">f</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">log</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;--singularity&quot;</span> <span class="k">if</span> <span class="n">use_singularity</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">input_file</span><span class="p">)</span>
+        <span class="n">input_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;cwltool </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">sourceurl</span><span class="p">,</span> <span class="n">input_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">shell</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">bench_record</span><span class="o">=</span><span class="n">bench_record</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="job_to_cwl"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.cwl.job_to_cwl">[docs]</a><span class="k">def</span> <span class="nf">job_to_cwl</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">dag</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a job with its dependencies to a CWL workflow step.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">dynamic_output</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;Dynamic output is not supported by CWL conversion.&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;All output files have to be relative to the &quot;</span>
+                                <span class="s2">&quot;working directory.&quot;</span><span class="p">)</span>
+
+    <span class="n">get_output_id</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">job</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="s2">&quot;#main/job-</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">jobid</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+    <span class="n">dep_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">o</span><span class="p">:</span> <span class="n">get_output_id</span><span class="p">(</span><span class="n">dep</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">dep</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">dependencies</span><span class="p">[</span><span class="n">job</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                      <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dep</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+                      <span class="k">if</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">files</span><span class="p">}</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">input</span> <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dep_ids</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">conda_env_file</span><span class="p">:</span>
+        <span class="n">files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">conda_env_file</span><span class="p">))</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_output_id</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+           <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">output</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">workdir_entry</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;??inputs.input_files[</span><span class="si">{}</span><span class="s2">].location??&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_directory</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;Directory&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;basename&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">),</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">location</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;basename&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">),</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">location</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="s2">&quot;$(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">outer_entry</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">entry</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;??&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;??&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">outer_entry</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">outer_entry</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="p">{</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;Directory&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;basename&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span>
+                <span class="s2">&quot;listing&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">entry</span><span class="p">]</span>
+            <span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">entry</span>
+
+    <span class="k">if</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">targetjobs</span><span class="p">:</span>
+        <span class="c1"># TODO this maps output files into the cwd after the workflow is complete.</span>
+        <span class="c1"># We need to find a way to define subdirectories though. Otherwise,</span>
+        <span class="c1"># there can be name clashes, and it will also become very crowded.</span>
+        <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;outputSource&quot;</span><span class="p">:</span> <span class="s2">&quot;#main/job-</span><span class="si">{}</span><span class="s2">/output_files&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">jobid</span><span class="p">),</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;#main/output/job-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">jobid</span><span class="p">)</span>
+        <span class="p">})</span>
+
+
+    <span class="n">cwl</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;run&quot;</span><span class="p">:</span> <span class="s2">&quot;#snakemake-job&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;requirements&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;InitialWorkDirRequirement&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;listing&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                    <span class="s2">&quot;writable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">&quot;entry&quot;</span><span class="p">:</span> <span class="n">workdir_entry</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                <span class="p">}</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span>
+                                        <span class="n">files</span><span class="p">,</span>
+                                        <span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">dependencies</span><span class="p">[</span><span class="n">job</span><span class="p">]</span>
+                                          <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">dep</span><span class="o">.</span><span class="n">output</span><span class="p">)))</span>
+                <span class="p">]</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;cores&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">job</span><span class="o">.</span><span class="n">threads</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;target_files&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">job</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">plainstrings</span><span class="p">()</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">job</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;out&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;output_files&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;#main/job-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">jobid</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">f</span><span class="p">}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">],</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;#main/input/job-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">jobid</span><span class="p">)</span>
+        <span class="p">})</span>
+
+
+    <span class="n">input_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">input_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#main/input/job-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">jobid</span><span class="p">))</span>
+    <span class="n">input_files</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+        <span class="s2">&quot;#main/job-</span><span class="si">{}</span><span class="s2">/output_files&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dep</span><span class="o">.</span><span class="n">jobid</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">dependencies</span><span class="p">[</span><span class="n">job</span><span class="p">])</span>
+
+    <span class="n">cwl</span><span class="p">[</span><span class="s2">&quot;in&quot;</span><span class="p">][</span><span class="s2">&quot;input_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">input_files</span><span class="p">,</span>
+        <span class="s2">&quot;linkMerge&quot;</span><span class="p">:</span> <span class="s2">&quot;merge_flattened&quot;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">cwl</span></div>
+
+
+<div class="viewcode-block" id="dag_to_cwl"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.cwl.dag_to_cwl">[docs]</a><span class="k">def</span> <span class="nf">dag_to_cwl</span><span class="p">(</span><span class="n">dag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a given DAG to a CWL workflow, which is returned as JSON object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">snakemake_cwl</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;CommandLineTool&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;#snakemake-job&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Snakemake job executor&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hints&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;dockerPull&quot;</span><span class="p">:</span> <span class="n">get_container_image</span><span class="p">(),</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;DockerRequirement&quot;</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;baseCommand&quot;</span><span class="p">:</span> <span class="s2">&quot;snakemake&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;requirements&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;ResourceRequirement&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;coresMin&quot;</span><span class="p">:</span> <span class="s2">&quot;$(inputs.cores)&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;--force&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--keep-target-files&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--keep-remote&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--force-use-threads&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--wrapper-prefix&quot;</span><span class="p">,</span> <span class="n">dag</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">wrapper_prefix</span><span class="p">,</span>
+            <span class="s2">&quot;--notemp&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--use-conda&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-hooks&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--nolock&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">Mode</span><span class="o">.</span><span class="n">subprocess</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;snakefile&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">snakefile</span><span class="p">)</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;inputBinding&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;--snakefile&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;sources&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;File[]&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">f</span>
+                    <span class="p">}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">get_sources</span><span class="p">()</span>
+                <span class="p">]</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;cores&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;inputBinding&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;--cores&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string[]?&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;inputBinding&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;--allowed-rules&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;input_files&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;File[]&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;target_files&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string[]?&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;inputBinding&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="mi">0</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;output_files&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="s2">&quot;File&quot;</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;outputBinding&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;glob&quot;</span><span class="p">:</span> <span class="s2">&quot;$(inputs.target_files)&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">groups</span> <span class="o">=</span> <span class="n">dag</span><span class="o">.</span><span class="n">get_jobs_or_groups</span><span class="p">()</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">dag_cwl</span> <span class="o">=</span> <span class="p">[</span><span class="n">job_to_cwl</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">dag</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+               <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;cwlVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;v1.0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;$graph&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="n">snakemake_cwl</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;Workflow&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;requirements&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;InlineJavascriptRequirement&quot;</span><span class="p">:</span> <span class="p">{},</span>
+                    <span class="s2">&quot;MultipleInputFeatureRequirement&quot;</span><span class="p">:</span> <span class="p">{}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="n">dag_cwl</span><span class="p">,</span>
+                <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="n">inputs</span><span class="p">,</span>
+                <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="n">outputs</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;#main&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

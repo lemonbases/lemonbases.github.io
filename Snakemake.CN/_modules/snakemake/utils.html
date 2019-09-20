@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snakemake.utils &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/history.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_info/license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../snakemake.html">snakemake</a> &raquo;</li>
+        
+      <li>snakemake.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snakemake.utils</h1><div class="highlight"><pre>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Johannes Köster&quot;</span>
+<span class="n">__contributors__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Per Unneberg&quot;</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2015, Johannes Köster&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;koester@jimmy.harvard.edu&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span>
+
+<span class="kn">from</span> <span class="nn">snakemake.io</span> <span class="k">import</span> <span class="n">regex</span><span class="p">,</span> <span class="n">Namedlist</span><span class="p">,</span> <span class="n">Wildcards</span><span class="p">,</span> <span class="n">_load_configfile</span>
+<span class="kn">from</span> <span class="nn">snakemake.logging</span> <span class="k">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">snakemake.exceptions</span> <span class="k">import</span> <span class="n">WorkflowError</span>
+<span class="kn">import</span> <span class="nn">snakemake</span>
+
+
+<div class="viewcode-block" id="validate"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.validate">[docs]</a><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">set_default</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validate data with JSON schema at given path.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (object): data to validate. Can be a config dict or a pandas data frame.</span>
+<span class="sd">        schema (str): Path to JSON schema used for validation. The schema can also be</span>
+<span class="sd">            in YAML format. If validating a pandas data frame, the schema has to</span>
+<span class="sd">            describe a row record (i.e., a dict with column names as keys pointing</span>
+<span class="sd">            to row values). See http://json-schema.org. The path is interpreted</span>
+<span class="sd">            relative to the Snakefile when this function is called.</span>
+<span class="sd">        set_default (bool): set default values defined in schema. See</span>
+<span class="sd">            http://python-jsonschema.readthedocs.io/en/latest/faq/ for more</span>
+<span class="sd">            information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">jsonschema</span>
+        <span class="kn">from</span> <span class="nn">jsonschema</span> <span class="k">import</span> <span class="n">validators</span><span class="p">,</span> <span class="n">RefResolver</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;The Python 3 package jsonschema must be installed &quot;</span>
+                            <span class="s2">&quot;in order to use the validate directive.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">schema</span><span class="p">):</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span>
+        <span class="c1"># if workflow object is not available this has not been started from a workflow</span>
+        <span class="k">if</span> <span class="s2">&quot;workflow&quot;</span> <span class="ow">in</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_globals</span><span class="p">:</span>
+            <span class="n">workflow</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_globals</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">]</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">workflow</span><span class="o">.</span><span class="n">current_basedir</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+    <span class="n">schemafile</span> <span class="o">=</span> <span class="n">schema</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">_load_configfile</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s2">&quot;Schema&quot;</span><span class="p">)</span>
+    <span class="n">resolver</span> <span class="o">=</span> <span class="n">RefResolver</span><span class="p">(</span>
+        <span class="n">urljoin</span><span class="p">(</span><span class="s1">&#39;file:&#39;</span><span class="p">,</span> <span class="n">schemafile</span><span class="p">),</span> <span class="n">schema</span><span class="p">,</span>
+        <span class="n">handlers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">uri</span><span class="p">:</span> <span class="n">_load_configfile</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;^file://&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">uri</span><span class="p">))})</span>
+
+    <span class="c1"># Taken from http://python-jsonschema.readthedocs.io/en/latest/faq/</span>
+    <span class="k">def</span> <span class="nf">extend_with_default</span><span class="p">(</span><span class="n">validator_class</span><span class="p">):</span>
+        <span class="n">validate_properties</span> <span class="o">=</span> <span class="n">validator_class</span><span class="o">.</span><span class="n">VALIDATORS</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">set_defaults</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+            <span class="k">for</span> <span class="nb">property</span><span class="p">,</span> <span class="n">subschema</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;default&quot;</span> <span class="ow">in</span> <span class="n">subschema</span><span class="p">:</span>
+                    <span class="n">instance</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">property</span><span class="p">,</span> <span class="n">subschema</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">])</span>
+
+            <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">validate_properties</span><span class="p">(</span>
+                    <span class="n">validator</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">error</span>
+
+        <span class="k">return</span> <span class="n">validators</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">validator_class</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">set_defaults</span><span class="p">},</span>
+        <span class="p">)</span>
+
+    <span class="n">Validator</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">Validator</span><span class="o">.</span><span class="n">META_SCHEMA</span><span class="p">[</span><span class="s1">&#39;$schema&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">schema</span><span class="p">[</span><span class="s1">&#39;$schema&#39;</span><span class="p">]:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No validator found for JSON Schema version identifier &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schema</span><span class="p">[</span><span class="s1">&#39;$schema&#39;</span><span class="p">]))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Defaulting to validator for JSON Schema version &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Validator</span><span class="o">.</span><span class="n">META_SCHEMA</span><span class="p">[</span><span class="s1">&#39;$schema&#39;</span><span class="p">]))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Note that schema file may not be validated correctly.&quot;</span><span class="p">)</span>
+    <span class="n">DefaultValidator</span> <span class="o">=</span> <span class="n">extend_with_default</span><span class="p">(</span><span class="n">Validator</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+            <span class="n">recordlist</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">)):</span>
+                    <span class="n">record</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">v</span><span class="p">)}</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">set_default</span><span class="p">:</span>
+                            <span class="n">DefaultValidator</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="n">resolver</span><span class="p">)</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+                            <span class="n">recordlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">jsonschema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="n">resolver</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span>
+                            <span class="s2">&quot;Error validating row </span><span class="si">{}</span><span class="s2"> of data frame.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+                            <span class="n">e</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">set_default</span><span class="p">:</span>
+                    <span class="n">newdata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">recordlist</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                    <span class="n">newcol</span> <span class="o">=</span> <span class="o">~</span><span class="n">newdata</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+                    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">newdata</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">newcol</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                        <span class="n">data</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">newdata</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">col</span><span class="p">])</span>
+                        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">return</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;Unsupported data type for validation.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">set_default</span><span class="p">:</span>
+                <span class="n">DefaultValidator</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="n">resolver</span><span class="p">)</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">jsonschema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="n">resolver</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span><span class="s2">&quot;Error validating config file.&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="simplify_path"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.simplify_path">[docs]</a><span class="k">def</span> <span class="nf">simplify_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a simplified version of the given path.&quot;&quot;&quot;</span>
+    <span class="n">relpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">relpath</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;../../&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">relpath</span></div>
+
+
+<div class="viewcode-block" id="linecount"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.linecount">[docs]</a><span class="k">def</span> <span class="nf">linecount</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the number of lines of given file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): the path to the file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">f</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="listfiles"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.listfiles">[docs]</a><span class="k">def</span> <span class="nf">listfiles</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">restriction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">omit_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yield a tuple of existing filepaths for the given pattern.</span>
+
+<span class="sd">    Wildcard values are yielded as the second tuple item.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pattern (str):       a filepattern. Wildcards are specified in snakemake syntax, e.g. &quot;{id}.txt&quot;</span>
+<span class="sd">        restriction (dict):  restrict to wildcard values given in this dictionary</span>
+<span class="sd">        omit_value (str):    wildcard value to omit</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        tuple: The next file matching the pattern, and the corresponding wildcards object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+    <span class="n">first_wildcard</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;{[^{]&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">first_wildcard</span><span class="p">:</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pattern</span><span class="p">[:</span><span class="n">first_wildcard</span><span class="o">.</span><span class="n">start</span><span class="p">()])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dirname</span><span class="p">:</span>
+            <span class="n">dirname</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">(</span><span class="n">pattern</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dirpath</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">wildcards</span> <span class="o">=</span> <span class="n">Namedlist</span><span class="p">(</span><span class="n">fromdict</span><span class="o">=</span><span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">restriction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">invalid</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">omit_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">wildcards</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                                  <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">restriction</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">invalid</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">f</span><span class="p">,</span> <span class="n">wildcards</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">f</span><span class="p">,</span> <span class="n">wildcards</span></div>
+
+
+<div class="viewcode-block" id="makedirs"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.makedirs">[docs]</a><span class="k">def</span> <span class="nf">makedirs</span><span class="p">(</span><span class="n">dirnames</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recursively create the given directory or directories without</span>
+<span class="sd">    reporting errors if they are present.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dirnames</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">dirnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">dirnames</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">dirnames</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="report"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.report">[docs]</a><span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span>
+           <span class="n">stylesheet</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;report.css&quot;</span><span class="p">),</span>
+           <span class="n">defaultenc</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span>
+           <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+           <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">files</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an HTML report using python docutils.</span>
+
+<span class="sd">    This is deprecated in favor of the --report flag.</span>
+
+<span class="sd">    Attention: This function needs Python docutils to be installed for the</span>
+<span class="sd">    python installation you use with Snakemake.</span>
+
+<span class="sd">    All keywords not listed below are intepreted as paths to files that shall</span>
+<span class="sd">    be embedded into the document. They keywords will be available as link</span>
+<span class="sd">    targets in the text. E.g. append a file as keyword arg via F1=input[0]</span>
+<span class="sd">    and put a download link in the text like this:</span>
+
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        report(&#39;&#39;&#39;</span>
+<span class="sd">        ==============</span>
+<span class="sd">        Report for ...</span>
+<span class="sd">        ==============</span>
+
+<span class="sd">        Some text. A link to an embedded file: F1_.</span>
+
+<span class="sd">        Further text.</span>
+<span class="sd">        &#39;&#39;&#39;, outputpath, F1=input[0])</span>
+
+<span class="sd">        Instead of specifying each file as a keyword arg, you can also expand</span>
+<span class="sd">        the input of your rule if it is completely named, e.g.:</span>
+
+<span class="sd">        report(&#39;&#39;&#39;</span>
+<span class="sd">        Some text...</span>
+<span class="sd">        &#39;&#39;&#39;, outputpath, **input)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str):         The &quot;restructured text&quot; as it is expected by python docutils.</span>
+<span class="sd">        path (str):         The path to the desired output file</span>
+<span class="sd">        stylesheet (str):   An optional path to a css file that defines the style of the document. This defaults to &lt;your snakemake install&gt;/report.css. Use the default to get a hint how to create your own.</span>
+<span class="sd">        defaultenc (str):   The encoding that is reported to the browser for embedded text files, defaults to utf8.</span>
+<span class="sd">        template (str):     An optional path to a docutils HTML template.</span>
+<span class="sd">        metadata (str):     E.g. an optional author name or email address.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">snakemake.report</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span>
+            <span class="s2">&quot;Python 3 package docutils needs to be installed to use the report function.&quot;</span><span class="p">)</span>
+    <span class="n">snakemake</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span>
+                            <span class="n">stylesheet</span><span class="o">=</span><span class="n">stylesheet</span><span class="p">,</span>
+                            <span class="n">defaultenc</span><span class="o">=</span><span class="n">defaultenc</span><span class="p">,</span>
+                            <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
+                            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="o">**</span><span class="n">files</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="R"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.R">[docs]</a><span class="k">def</span> <span class="nf">R</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute R code.</span>
+
+<span class="sd">    This is deprecated in favor of the ``script`` directive.</span>
+<span class="sd">    This function executes the R code given as a string.</span>
+<span class="sd">    The function requires rpy2 to be installed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        code (str): R code to be executed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">rpy2.robjects</span> <span class="k">as</span> <span class="nn">robjects</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Python 3 package rpy2 needs to be installed to use the R function.&quot;</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">code</span><span class="p">),</span> <span class="n">stepout</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SequenceFormatter"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.SequenceFormatter">[docs]</a><span class="k">class</span> <span class="nc">SequenceFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;string.Formatter subclass with special behavior for sequences.</span>
+
+<span class="sd">    This class delegates formatting of individual elements to another</span>
+<span class="sd">    formatter object. Non-list objects are formatted by calling the</span>
+<span class="sd">    delegate formatter&#39;s &quot;format_field&quot; method. List-like objects</span>
+<span class="sd">    (list, tuple, set, frozenset) are formatted by formatting each</span>
+<span class="sd">    element of the list according to the specified format spec using</span>
+<span class="sd">    the delegate formatter and then joining the resulting strings with</span>
+<span class="sd">    a separator (space by default).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">element_formatter</span><span class="o">=</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(),</span>
+                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">separator</span> <span class="o">=</span> <span class="n">separator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_formatter</span> <span class="o">=</span> <span class="n">element_formatter</span>
+
+<div class="viewcode-block" id="SequenceFormatter.format_element"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.SequenceFormatter.format_element">[docs]</a>    <span class="k">def</span> <span class="nf">format_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format a single element</span>
+
+<span class="sd">        For sequences, this is called once for each element in a</span>
+<span class="sd">        sequence. For anything else, it is called on the entire</span>
+<span class="sd">        object. It is intended to be overridden in subclases.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_formatter</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SequenceFormatter.format_field"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.utils.SequenceFormatter.format_field">[docs]</a>    <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Wildcards</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span>
+                            <span class="nb">sorted</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_element</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
+                                       <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_element</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="QuotedFormatter"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.QuotedFormatter">[docs]</a><span class="k">class</span> <span class="nc">QuotedFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subclass of string.Formatter that supports quoting.</span>
+
+<span class="sd">    Using this formatter, any field can be quoted after formatting by</span>
+<span class="sd">    appending &quot;q&quot; to its format string. By default, shell quoting is</span>
+<span class="sd">    performed using &quot;shlex.quote&quot;, but you can pass a different</span>
+<span class="sd">    quote_func to the constructor. The quote_func simply has to take a</span>
+<span class="sd">    string argument and return a new string representing the quoted</span>
+<span class="sd">    form of the input string.</span>
+
+<span class="sd">    Note that if an element after formatting is the empty string, it</span>
+<span class="sd">    will not be quoted.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quote_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">quote_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">quote_func</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">quote</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">ON_WINDOWS</span> <span class="k">else</span> <span class="n">argvquote</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quote_func</span> <span class="o">=</span> <span class="n">quote_func</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="QuotedFormatter.format_field"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.utils.QuotedFormatter.format_field">[docs]</a>    <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="n">do_quote</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">do_quote</span><span class="p">:</span>
+            <span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">formatted</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">do_quote</span> <span class="ow">and</span> <span class="n">formatted</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">formatted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quote_func</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">formatted</span></div></div>
+
+
+<div class="viewcode-block" id="AlwaysQuotedFormatter"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.AlwaysQuotedFormatter">[docs]</a><span class="k">class</span> <span class="nc">AlwaysQuotedFormatter</span><span class="p">(</span><span class="n">QuotedFormatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subclass of QuotedFormatter that always quotes.</span>
+
+<span class="sd">    Usage is identical to QuotedFormatter, except that it *always*</span>
+<span class="sd">    acts like &quot;q&quot; was appended to the format spec.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AlwaysQuotedFormatter.format_field"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.utils.AlwaysQuotedFormatter.format_field">[docs]</a>    <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">):</span>
+            <span class="n">format_spec</span> <span class="o">+=</span> <span class="s2">&quot;q&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="format"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.format">[docs]</a><span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="n">_pattern</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">stepout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">_quote_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Format a pattern in Snakemake style.</span>
+
+<span class="sd">    This means that keywords embedded in braces are replaced by any variable</span>
+<span class="sd">    values that are available in the current namespace.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span>
+    <span class="k">while</span> <span class="n">stepout</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_back</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_back</span>
+        <span class="n">stepout</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">f_globals</span><span class="p">)</span>
+    <span class="c1"># add local variables from calling rule/function</span>
+    <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;self&quot;</span> <span class="ow">in</span> <span class="n">variables</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="c1"># self is the first arg of fmt.format as well. Not removing it would</span>
+        <span class="c1"># cause a multiple values error on Python &lt;=3.4.2.</span>
+        <span class="k">del</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;self&quot;</span><span class="p">]</span>
+    <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="n">SequenceFormatter</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_quote_all</span><span class="p">:</span>
+        <span class="n">fmt</span><span class="o">.</span><span class="n">element_formatter</span> <span class="o">=</span> <span class="n">AlwaysQuotedFormatter</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fmt</span><span class="o">.</span><span class="n">element_formatter</span> <span class="o">=</span> <span class="n">QuotedFormatter</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_pattern</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">variables</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;The name </span><span class="si">{}</span><span class="s2"> is unknown in this context. Please &quot;</span>
+                        <span class="s2">&quot;make sure that you defined that variable. &quot;</span>
+                        <span class="s2">&quot;Also note that braces not used for variable access &quot;</span>
+                        <span class="s2">&quot;have to be escaped by repeating them, &quot;</span>
+                        <span class="s2">&quot;i.e. {{{{print $1}}}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="Unformattable"><a class="viewcode-back" href="../../api_reference/internal/snakemake.html#snakemake.utils.Unformattable">[docs]</a><span class="k">class</span> <span class="nc">Unformattable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errormsg</span><span class="o">=</span><span class="s2">&quot;This cannot be used for formatting&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errormsg</span> <span class="o">=</span> <span class="n">errormsg</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">errormsg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="read_job_properties"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.read_job_properties">[docs]</a><span class="k">def</span> <span class="nf">read_job_properties</span><span class="p">(</span><span class="n">jobscript</span><span class="p">,</span>
+                        <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;# properties&quot;</span><span class="p">,</span>
+                        <span class="n">pattern</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;# properties = (.*)&quot;</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Read the job properties defined in a snakemake jobscript.</span>
+
+<span class="sd">    This function is a helper for writing custom wrappers for the</span>
+<span class="sd">    snakemake --cluster functionality. Applying this function to a</span>
+<span class="sd">    jobscript will return a dict containing information about the job.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">jobscript</span><span class="p">)</span> <span class="k">as</span> <span class="n">jobscript</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">jobscript</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="min_version"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.min_version">[docs]</a><span class="k">def</span> <span class="nf">min_version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Require minimum snakemake version, raise workflow error if not met.&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">pkg_resources</span>
+    <span class="k">if</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">parse_version</span><span class="p">(</span>
+        <span class="n">snakemake</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">parse_version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">WorkflowError</span><span class="p">(</span>
+            <span class="s2">&quot;Expecting Snakemake version </span><span class="si">{}</span><span class="s2"> or higher.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="update_config"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.update_config">[docs]</a><span class="k">def</span> <span class="nf">update_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">overwrite_config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recursively update dictionary config with overwrite_config.</span>
+
+<span class="sd">    See</span>
+<span class="sd">    http://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth</span>
+<span class="sd">    for details.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      config (dict): dictionary to update</span>
+<span class="sd">      overwrite_config (dict): dictionary whose items will overwrite those in config</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Mapping</span><span class="p">)):</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_update</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="n">_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">overwrite_config</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="available_cpu_count"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.available_cpu_count">[docs]</a><span class="k">def</span> <span class="nf">available_cpu_count</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the number of available virtual or physical CPUs on this system.</span>
+<span class="sd">    The number of available CPUs can be smaller than the total number of CPUs</span>
+<span class="sd">    when the cpuset(7) mechanism is in use, as is the case on some cluster</span>
+<span class="sd">    systems.</span>
+
+<span class="sd">    Adapted from http://stackoverflow.com/a/1006301/715090</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/proc/self/status&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?m)^Cpus_allowed:\s*(.*)$&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">res</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="argvquote"><a class="viewcode-back" href="../../api_reference/snakemake_utils.html#snakemake.utils.argvquote">[docs]</a><span class="k">def</span> <span class="nf">argvquote</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns an argument quoted in such a way that that CommandLineToArgvW</span>
+<span class="sd">    on Windows will return the argument string unchanged.</span>
+<span class="sd">    This is the same thing Popen does when supplied with an list of arguments.</span>
+<span class="sd">    Arguments in a command line should be separated by spaces; this</span>
+<span class="sd">    function does not add these spaces. This implementation follows the</span>
+<span class="sd">    suggestions outlined here:</span>
+<span class="sd">    https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">c</span> <span class="ow">in</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39; </span><span class="se">\t\n\v</span><span class="s1">&quot;&#39;</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">arg</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_backslashes</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cmdline</span> <span class="o">=</span> <span class="s1">&#39;&quot;&#39;</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">:</span>
+                <span class="c1"># first count the number of current backslashes</span>
+                <span class="n">n_backslashes</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+                <span class="c1"># Escape all backslashes and the following double quotation mark</span>
+                <span class="n">cmdline</span> <span class="o">+=</span> <span class="p">(</span><span class="n">n_backslashes</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># backslashes are not special here</span>
+                <span class="n">cmdline</span> <span class="o">+=</span> <span class="n">n_backslashes</span> <span class="o">*</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span>
+            <span class="n">n_backslashes</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">cmdline</span> <span class="o">+=</span> <span class="n">c</span>
+        <span class="c1"># Escape all backslashes, but let the terminating</span>
+        <span class="c1"># double quotation mark we add below be interpreted</span>
+        <span class="c1"># as a metacharacter</span>
+        <span class="n">cmdline</span> <span class="o">+=</span> <span class="o">+</span><span class="n">n_backslashes</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span>
+        <span class="k">return</span> <span class="n">cmdline</span></div>
+
+
+
+<span class="n">ON_WINDOWS</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

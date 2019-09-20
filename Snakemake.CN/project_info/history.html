@@ -1,0 +1,1398 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Change Log &mdash; Snakemake 5.6.0+8.g89bc383.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx-argparse.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Credits" href="authors.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Snakemake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.6.0+8.g89bc383.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/tutorial.html">Snakemake Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/short.html">Short tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Executing workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../executable.html">Executing Snakemake</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Defining workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/writing_snakefiles.html">Writing Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/modularization.html">Modularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/remote_files.html">Remote files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/deployment.html">Distribution and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snakefiles/reporting.html">Reports</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake.html">The Snakemake API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/snakemake_utils.html">Additional utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/internal/modules.html">Internal API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Info</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing and Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more_resources.html">More Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">[5.6.0] - 2019-09-06</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changed">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#added">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">[5.5.4] - 2019-07-21</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">[5.5.3] - 2019-07-11</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">[5.5.2] - 2019-06-25</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">[5.5.1] - 2019-06-18</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">[5.5.0] - 2019-05-31</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">[5.4.5] - 2019-04-12</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">[5.4.4] - 2019-03-22</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">[5.4.3] - 2019-03-11</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id18">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">[5.4.2] - 2019-02-15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id20">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">[5.4.1] - 2019-02-14</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">[5.4.0] - 2018-12-18</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id25">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">[5.3.1] - 2018-12-06</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id27">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id28">[5.3.0] - 2018-09-18</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id29">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id31">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id32">[5.2.4] - 2018-09-10</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id33">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id34">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id35">[5.2.2] - 2018-08-01</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id36">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id37">[5.2.0] - 2018-06-28</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id38">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id39">[5.1.5] - 2018-06-24</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id40">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id41">[5.1.4] - 2018-05-28</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id42">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id43">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id44">[5.1.3] - 2018-05-22</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id45">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id46">[5.1.2] - 2018-05-18</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id47">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id48">[5.1.0] - 2018-05-17</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id49">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id50">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id51">[5.0.0] - 2018-05-11</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id52">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id53">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id54">[4.8.1] - 2018-04-25</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id55">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id56">[4.8.0] - 2018-03-13</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id57">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id58">[4.7.0] - 2018-02-19</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id59">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id60">[4.6.0] - 2018-02-06</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id61">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id62">[4.5.1] - 2018-02-01</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id63">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id64">[4.5.0] - 2018-01-18</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id65">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id66">[4.4.0] - 2017-12-21</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id67">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id68">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id69">[4.3.1] - 2017-11-16</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id70">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id71">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id72">[4.3.0] - 2017-10-27</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id73">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id74">[4.2.0] - 2017-10-10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id75">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id76">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id77">[4.1.0] - 2017-09-26</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id78">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id79">[4.0.0] - 2017-07-24</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id80">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id81">[3.13.3] - 2017-06-23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id82">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id83">[3.13.2] - 2017-06-20</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id84">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id85">[3.13.1] - 2017-06-20</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id86">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id87">[3.13.0] - 2017-06-12</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id88">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id89">[3.12.0] - 2017-05-09</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id90">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id91">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id92">[3.11.2] - 2017-03-15</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id93">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id94">[3.11.1] - 2017-03-14</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id95">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id96">[3.11.0] - 2017-03-08</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id97">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id98">[3.10.2] - 2017-02-28</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id99">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id100">[3.10.0] - 2017-01-18</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id101">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id102">[3.9.1] - 2016-12-23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id103">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id104">[3.9.0] - 2016-11-15</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id105">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id106">[3.8.2] - 2016-09-23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id107">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id108">[3.8.1] - 2016-09-14</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id109">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id110">[3.8.0] - 2016-08-26</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id111">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id112">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id113">[3.7.1] - 2016-05-16</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id114">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id115">[3.7.0] - 2016-05-05</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id116">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id117">[3.6.1] - 2016-04-08</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id118">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id119">[3.6.0] - 2016-03-10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id120">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id121">[3.5.5] - 2016-01-23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id122">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id123">[3.5.4] - 2015-12-04</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id124">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id125">[3.5.3] - 2015-11-24</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id126">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id127">[3.5.2] - 2015-11-24</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id128">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id129">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id130">[3.4.2] - 2015-09-12</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id131">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id132">[3.4.1] - 2015-08-05</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id133">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id134">[3.4] - 2015-07-18</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id135">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id136">Changed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Snakemake</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Change Log</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/project_info/history.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="change-log">
+<span id="changelog"></span><h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>[5.6.0] - 2019-09-06<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fix compatibility with latest singularity versions.</li>
+<li>Various bug fixes (e.g. in cluster error handling, remote providers, kubernetes backend).</li>
+</ul>
+</div>
+<div class="section" id="added">
+<h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Add –default-resources flag, that allows to define default resources for jobs (e.g. mem_mb, disk_mb), see <a class="reference external" href="https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources">docs</a>.</li>
+<li>Accept <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> as a synonym of <code class="docutils literal notranslate"><span class="pre">--dryrun</span></code>. Other Snakemake options are similarly hyphenated, so other documentation now refers to <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> but both (and also <code class="docutils literal notranslate"><span class="pre">-n</span></code>) will always be accepted equivalently.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>[5.5.4] - 2019-07-21<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Changed<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Reports now automatically include workflow code and configuration for improved transparency.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>[5.5.3] - 2019-07-11<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h3>Changed<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Various bug fixes.</li>
+<li>Polished reports.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>[5.5.2] - 2019-06-25<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h3>Changed<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Various minor bug fixes in reports.</li>
+<li>Speed improvements when using checkpoints.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>[5.5.1] - 2019-06-18<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h3>Changed<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Improved report interface. In particular for large files.</li>
+<li>Small TSV tables are automatically rendered as HTML with datatables.</li>
+<li>Be more permissive with Snakefile choices: allow “Snakefile”, “snakefile”, “workflow/Snakefile”, “workflow/snakefile”.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>[5.5.0] - 2019-05-31<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h3>Added<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Script directives now also support Julia.</li>
+</ul>
+</div>
+<div class="section" id="id12">
+<h3>Changed<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Various small bug fixes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id13">
+<h2>[5.4.5] - 2019-04-12<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id14">
+<h3>Changed<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed a bug with pipe output.</li>
+<li>Cleaned up error output.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id15">
+<h2>[5.4.4] - 2019-03-22<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id16">
+<h3>Changed<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Vastly improved performance of HTML reports generated with –report, via a more efficient encoding of dara-uri based download links.</li>
+<li>Tighter layout, plus thumbnails and a lightbox for graphical results in HTML reports.</li>
+<li>Bug fix for pipe groups.</li>
+<li>Updated docs.</li>
+<li>Better error handling in DRMAA executor.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id17">
+<h2>[5.4.3] - 2019-03-11<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id18">
+<h3>Changed<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>More robust handling of conda environment activation that should work with all setups where the conda is available when starting snakemake.</li>
+<li>Fixed bugs on windows.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id19">
+<h2>[5.4.2] - 2019-02-15<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id20">
+<h3>Changed<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed a bug where git module cannot be imported from wrapper.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id21">
+<h2>[5.4.1] - 2019-02-14<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id22">
+<h3>Added<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Warning when R script is used in combination with conda and R_LIBS environment variable is set. This can cause unexpected results and should be avoided.</li>
+</ul>
+</div>
+<div class="section" id="id23">
+<h3>Changed<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Improved quoting of paths in conda commands.</li>
+<li>Fixed various issues with checkpoints.</li>
+<li>Improved error messages when combining groups with cluster config.</li>
+<li>Fixed bugs in group implementation.</li>
+<li>Fixed singularity in combination with shadow.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id24">
+<h2>[5.4.0] - 2018-12-18<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id25">
+<h3>Added<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Snakemake now allows for data-dependent conditional re-evaluation of the job DAG via checkpoints. This feature also deprecates the <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> flag. See <a class="reference external" href="https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#data-dependent-conditional-execution">the docs</a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id26">
+<h2>[5.3.1] - 2018-12-06<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id27">
+<h3>Changed<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Various fixed bugs and papercuts, e.g., in group handling, kubernetes execution, singularity support, wrapper and script usage, benchmarking, schema validation.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id28">
+<h2>[5.3.0] - 2018-09-18<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id29">
+<h3>Added<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Snakemake workflows can now be exported to CWL via the flag
+–export-cwl, see <a class="reference external" href="https://snakemake.readthedocs.io/en/stable/executable.html">the docs</a>.</li>
+</ul>
+</div>
+<div class="section" id="id31">
+<h3>Changed<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed bug in script and wrapper execution when using
+<code class="docutils literal notranslate"><span class="pre">--use-singularity</span> <span class="pre">--use-conda</span></code>.</li>
+<li>Add host argument to S3RemoteProvider.</li>
+<li>Various minor bug fixes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id32">
+<h2>[5.2.4] - 2018-09-10<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id33">
+<h3>Added<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>New command line flag –shadow-prefix</li>
+</ul>
+</div>
+<div class="section" id="id34">
+<h3>Changed<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed permission issue when using the script directive. This is a breaking change
+for scripts referring to files relative to the script directory (see the
+<a class="reference external" href="https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#external-scripts">docs</a>).</li>
+<li>Fixed various minor bugs and papercuts.</li>
+<li>Allow URL to local git repo with wrapper directive
+(<code class="docutils literal notranslate"><span class="pre">git+file:///path/to/your/repo/path_to_file&#64;&#64;version</span></code>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id35">
+<h2>[5.2.2] - 2018-08-01<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id36">
+<h3>Changed<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Always print timestamps, removed the –timestamps CLI option.</li>
+<li>more robust detection of conda command</li>
+<li>Fixed bug in RMarkdown script execution.</li>
+<li>Fixed a bug in detection of group jobs.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id37">
+<h2>[5.2.0] - 2018-06-28<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id38">
+<h3>Changed<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Directory outputs have to marked with <code class="docutils literal notranslate"><span class="pre">directory</span></code>. This ensures
+proper handling of timestamps and cleanup. This is a breaking change.
+Implemented by Rasmus Ågren.</li>
+<li>Fixed kubernetes tests, fixed kubernetes volume handling. Implemented
+by Andrew Schriefer.</li>
+<li>jinja2 and networkx are not optional dependencies when installing via
+pip.</li>
+<li>When conda or singularity directives are used and the corresponding
+CLI flags are not specified, the user is notified at the beginning of
+the log output.</li>
+<li>Fixed numerous small bugs and papercuts and extended documentation.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id39">
+<h2>[5.1.5] - 2018-06-24<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id40">
+<h3>Changed<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>fixed missing version info in docker image.</li>
+<li>several minor fixes to EGA support.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id41">
+<h2>[5.1.4] - 2018-05-28<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id42">
+<h3>Added<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Allow <code class="docutils literal notranslate"><span class="pre">category</span></code> to be set.</li>
+</ul>
+</div>
+<div class="section" id="id43">
+<h3>Changed<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Various cosmetic changes to reports.</li>
+<li>Fixed encoding issues in reports.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id44">
+<h2>[5.1.3] - 2018-05-22<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id45">
+<h3>Changed<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed various bugs in job groups, shadow directive, singularity
+directive, and more.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id46">
+<h2>[5.1.2] - 2018-05-18<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id47">
+<h3>Changed<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed a bug in the report stylesheet.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id48">
+<h2>[5.1.0] - 2018-05-17<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id49">
+<h3>Added<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A new framework for self-contained HTML reports, including results,
+statistics and topology information. In future releases this will be
+further extended.</li>
+<li>A new utility snakemake.utils.validate() which allows to validate
+config and pandas data frames using JSON schemas.</li>
+<li>Two new flags –cleanup-shadow and –cleanup-conda to clean up old
+unused conda and shadow data.</li>
+</ul>
+</div>
+<div class="section" id="id50">
+<h3>Changed<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Benchmark repeats are now specified inside the workflow via a new
+flag repeat().</li>
+<li>Command line interface help has been refactored into groups for
+better readability.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id51">
+<h2>[5.0.0] - 2018-05-11<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id52">
+<h3>Added<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Group jobs for reduced queuing and network overhead, in particular
+with short running jobs.</li>
+<li>Output files can be marked as pipes, such that producing and
+consuming job are executed simultaneously and interfomation is
+transferred directly without using disk.</li>
+<li>Command line flags to clean output files.</li>
+<li>Command line flag to list files in working directory that are not
+tracked by Snakemake.</li>
+</ul>
+</div>
+<div class="section" id="id53">
+<h3>Changed<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fix of –default-remote-prefix in case of input functions returning
+lists or dicts.</li>
+<li>Scheduler no longer prefers jobs with many downstream jobs.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id54">
+<h2>[4.8.1] - 2018-04-25<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id55">
+<h3>Added<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Allow URLs for the conda directive. # Changed</li>
+<li>Various minor updates in the docs.</li>
+<li>Several bug fixes with remote file handling.</li>
+<li>Fix ImportError occuring with script directive.</li>
+<li>Use latest singularity.</li>
+<li>Improved caching for file existence checks. We first check existence
+of parent directories and cache these results. By this, large parts
+of the generated FS tree can be pruned if files are not yet present.
+If files are present, the overhead is minimal, since the checks for
+the parents are cached.</li>
+<li>Various minor bug fixes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id56">
+<h2>[4.8.0] - 2018-03-13<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id57">
+<h3>Added<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Integration with CWL: the <code class="docutils literal notranslate"><span class="pre">cwl</span></code> directive allows to use CWL tool
+definitions in addition to shell commands or Snakemake wrappers.</li>
+<li>A global <code class="docutils literal notranslate"><span class="pre">singularity</span></code> directive allows to define a global
+singularity container to be used for all rules that don’t specify
+their own.</li>
+<li>Singularity and Conda can now be combined. This can be used to
+specify the operating system (via singularity), and the software
+stack (via conda), without the overhead of creating specialized
+container images for workflows or tasks.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id58">
+<h2>[4.7.0] - 2018-02-19<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id59">
+<h3>Changed<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Speedups when calculating dry-runs.</li>
+<li>Speedups for workflows with many rules when calculating the DAG.</li>
+<li>Accept SIGTERM to gracefully finish all running jobs and exit.</li>
+<li>Various minor bug fixes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id60">
+<h2>[4.6.0] - 2018-02-06<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id61">
+<h3>Changed<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Log files can now be used as input files for other rules.</li>
+<li>Adapted to changes in Kubernetes client API.</li>
+<li>Fixed minor issues in –archive option.</li>
+<li>Search path order in scripts was changed to fix a bug with leaked
+packages from root env when using script directive together with
+conda.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id62">
+<h2>[4.5.1] - 2018-02-01<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id63">
+<h3>Added<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Input and output files can now tag pathlib objects. # ## Changed</li>
+<li>Various minor bug fixes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id64">
+<h2>[4.5.0] - 2018-01-18<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id65">
+<h3>Added<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>iRODS remote provider # ## Changed</li>
+<li>Bug fix in shell usage of scripts and wrappers.</li>
+<li>Bug fixes for cluster execution, –immediate-submit and subworkflows.</li>
+</ul>
+</div>
+<div class="section" id="id66">
+<h3>[4.4.0] - 2017-12-21<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id67">
+<h3>Added<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A new shadow mode (minimal) that only symlinks input files has been
+added.</li>
+</ul>
+</div>
+<div class="section" id="id68">
+<h3>Changed<a class="headerlink" href="#id68" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The default shell is now bash on linux and macOS. If bash is not
+installed, we fall back to sh. Previously, Snakemake used the default
+shell of the user, which defeats the purpose of portability. If the
+developer decides so, the shell can be always overwritten using
+shell.executable().</li>
+<li>Snakemake now requires Singularity 2.4.1 at least (only when running
+with –use-singularity).</li>
+<li>HTTP remote provider no longer automatically unpacks gzipped files.</li>
+<li>Fixed various smaller bugs.</li>
+</ul>
+</div>
+<div class="section" id="id69">
+<h3>[4.3.1] - 2017-11-16<a class="headerlink" href="#id69" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id70">
+<h3>Added<a class="headerlink" href="#id70" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>List all conda environments with their location on disk via
+–list-conda-envs.</li>
+</ul>
+</div>
+<div class="section" id="id71">
+<h3>Changed<a class="headerlink" href="#id71" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Do not clean up shadow on dry-run.</li>
+<li>Allow R wrappers.</li>
+</ul>
+</div>
+<div class="section" id="id72">
+<h3>[4.3.0] - 2017-10-27<a class="headerlink" href="#id72" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id73">
+<h3>Added<a class="headerlink" href="#id73" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>GridFTP remote provider. This is a specialization of the GFAL remote
+provider that uses globus-url-copy to download or upload files. # ##
+Changed</li>
+<li>Scheduling and execution mechanisms have undergone a major revision
+that removes several potential (but rare) deadlocks.</li>
+<li>Several bugs and corner cases of the singularity support have been
+fixed.</li>
+<li>Snakemake now requires singularity 2.4 at least.</li>
+</ul>
+</div>
+<div class="section" id="id74">
+<h3>[4.2.0] - 2017-10-10<a class="headerlink" href="#id74" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id75">
+<h3>Added<a class="headerlink" href="#id75" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Support for executing jobs in per-rule singularity images. This is
+meant as an alternative to the conda directive (see docs), providing
+even more guarantees for reproducibility.</li>
+</ul>
+</div>
+<div class="section" id="id76">
+<h3>Changed<a class="headerlink" href="#id76" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>In cluster mode, jobs that are still running after Snakemake has been
+killed are automatically resumed.</li>
+<li>Various fixes to GFAL remote provider.</li>
+<li>Fixed –summary and –list-code-changes.</li>
+<li>Many other small bug fixes.</li>
+</ul>
+</div>
+<div class="section" id="id77">
+<h3>[4.1.0] - 2017-09-26<a class="headerlink" href="#id77" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id78">
+<h3>Added<a class="headerlink" href="#id78" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Support for configuration profiles. Profiles allow to specify default
+options, e.g., a cluster submission command. They can be used via
+‘snakemake –profile myprofile’. See the docs for details.</li>
+<li>GFAL remote provider. This allows to use GridFTP, SRM and any other
+protocol supported by GFAL for remote input and output files.</li>
+<li>Added –cluster-status flag that allows to specify a command that
+returns jobs status. # ## Changed</li>
+<li>The scheduler now tries to get rid of the largest temp files first.</li>
+<li>The Docker image used for kubernetes support can now be configured at
+the command line.</li>
+<li>Rate-limiting for cluster interaction has been unified.</li>
+<li>S3 remote provider uses boto3.</li>
+<li>Resource functions can now use an additional <code class="docutils literal notranslate"><span class="pre">attempt</span></code> parameter,
+that contains the number of times this job has already been tried.</li>
+<li>Various minor fixes.</li>
+</ul>
+</div>
+<div class="section" id="id79">
+<h3>[4.0.0] - 2017-07-24<a class="headerlink" href="#id79" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id80">
+<h3>Added<a class="headerlink" href="#id80" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Cloud computing support via Kubernetes. Snakemake workflows can be
+executed transparently in the cloud, while storing input and output
+files within the cloud storage (e.g. S3 or Google Storage). I.e.,
+this feature does not need a shared filesystem between the cloud
+notes, and thereby makes the setup really simple.</li>
+<li>WebDAV remote file support: Snakemake can now read and write from
+WebDAV. Hence, it can now, e.g., interact with Nextcloud or Owncloud.</li>
+<li>Support for default remote providers: define a remote provider to
+implicitly use for all input and output files.</li>
+<li>Added an option to only create conda environments instead of
+executing the workflow. # ## Changed</li>
+<li>The number of files used for the metadata tracking of Snakemake
+(e.g., code, params, input changes) in the .snakemake directory has
+been reduced by a factor of 10, which should help with NFS and IO
+bottlenecks. This is a breaking change in the sense that Snakemake
+4.x won’t see the metadata of workflows executed with Snakemake 3.x.
+However, old metadata won’t be overwritten, so that you can always go
+back and check things by installing an older version of Snakemake
+again.</li>
+<li>The google storage (GS) remote provider has been changed to use the
+google SDK. This is a breaking change, since the remote provider
+invocation has been simplified (see docs).</li>
+<li>Due to WebDAV support (which uses asyncio), Snakemake now requires
+Python 3.5 at least.</li>
+<li>Various minor bug fixes (e.g. for dynamic output files).</li>
+</ul>
+</div>
+<div class="section" id="id81">
+<h3>[3.13.3] - 2017-06-23<a class="headerlink" href="#id81" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id82">
+<h3>Changed<a class="headerlink" href="#id82" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fix a followup bug in Namedlist where a single item was not returned
+as string.</li>
+</ul>
+</div>
+<div class="section" id="id83">
+<h3>[3.13.2] - 2017-06-20<a class="headerlink" href="#id83" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id84">
+<h3>Changed<a class="headerlink" href="#id84" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The –wrapper-prefix flag now also affects where the corresponding
+environment definition is fetched from.</li>
+<li>Fix bug where empty output file list was recognized as containing
+duplicates (issue #574).</li>
+</ul>
+</div>
+<div class="section" id="id85">
+<h3>[3.13.1] - 2017-06-20<a class="headerlink" href="#id85" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id86">
+<h3>Changed<a class="headerlink" href="#id86" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fix –conda-prefix to be passed to all jobs.</li>
+<li>Fix cleanup issue with scripts that fail to download.</li>
+</ul>
+</div>
+<div class="section" id="id87">
+<h3>[3.13.0] - 2017-06-12<a class="headerlink" href="#id87" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id88">
+<h3>Added<a class="headerlink" href="#id88" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>An NCBI remote provider. By this, you can seamlessly integrate any
+NCBI resouce (reference genome, gene/protein sequences, …) as input
+file. # ## Changed</li>
+<li>Snakemake now detects if automatically generated conda environments
+have to be recreated because the workflow has been moved to a new
+path.</li>
+<li>Remote functionality has been made more robust, in particular to
+avoid race conditions.</li>
+<li><code class="docutils literal notranslate"><span class="pre">--config</span></code> parameter evaluation has been fixed for non-string
+types.</li>
+<li>The Snakemake docker container is now based on the official debian
+image.</li>
+</ul>
+</div>
+<div class="section" id="id89">
+<h3>[3.12.0] - 2017-05-09<a class="headerlink" href="#id89" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id90">
+<h3>Added<a class="headerlink" href="#id90" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Support for RMarkdown (.Rmd) in script directives.</li>
+<li>New option –debug-dag that prints all decisions while building the
+DAG of jobs. This helps to debug problems like cycles or unexpected
+MissingInputExceptions.</li>
+<li>New option –conda-prefix to specify the place where conda
+environments are stored.</li>
+</ul>
+</div>
+<div class="section" id="id91">
+<h3>Changed<a class="headerlink" href="#id91" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Benchmark files now also include the maximal RSS and VMS size of the
+Snakemake process and all sub processes.</li>
+<li>Speedup conda environment creation.</li>
+<li>Allow specification of DRMAA log dir.</li>
+<li>Pass cluster config to subworkflow.</li>
+</ul>
+</div>
+<div class="section" id="id92">
+<h3>[3.11.2] - 2017-03-15<a class="headerlink" href="#id92" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id93">
+<h3>Changed<a class="headerlink" href="#id93" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed fix handling of local URIs with the wrapper directive.</li>
+</ul>
+</div>
+<div class="section" id="id94">
+<h3>[3.11.1] - 2017-03-14<a class="headerlink" href="#id94" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id95">
+<h3>Changed<a class="headerlink" href="#id95" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>–touch ignores missing files</li>
+<li>Fixed handling of local URIs with the wrapper directive.</li>
+</ul>
+</div>
+<div class="section" id="id96">
+<h3>[3.11.0] - 2017-03-08<a class="headerlink" href="#id96" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id97">
+<h3>Added<a class="headerlink" href="#id97" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Param functions can now also refer to threads. # ## Changed</li>
+<li>Improved tutorial and docs.</li>
+<li>Made conda integration more robust.</li>
+<li>None is converted to NULL in R scripts.</li>
+</ul>
+</div>
+<div class="section" id="id98">
+<h3>[3.10.2] - 2017-02-28<a class="headerlink" href="#id98" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id99">
+<h3>Changed<a class="headerlink" href="#id99" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Improved config file handling and merging.</li>
+<li>Output files can be referred in params functions (i.e. lambda
+wildcards, output: …)</li>
+<li>Improved conda-environment creation.</li>
+<li>Jobs are cached, leading to reduced memory footprint.</li>
+<li>Fixed subworkflow handling in input functions.</li>
+</ul>
+</div>
+<div class="section" id="id100">
+<h3>[3.10.0] - 2017-01-18<a class="headerlink" href="#id100" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id101">
+<h3>Added<a class="headerlink" href="#id101" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Workflows can now be archived to a tarball with
+<code class="docutils literal notranslate"><span class="pre">snakemake</span> <span class="pre">--archive</span> <span class="pre">my-workflow.tar.gz</span></code>. The archive contains all
+input files, source code versioned with git and all software packages
+that are defined via conda environments. Hence, the archive allows to
+fully reproduce a workflow on a different machine. Such an archive
+can be uploaded to Zenodo, such that your workflow is secured in a
+self-contained, executable way for the future. # ## Changed</li>
+<li>Improved logging.</li>
+<li>Reduced memory footprint.</li>
+<li>Added a flag to automatically unpack the output of input functions.</li>
+<li>Improved handling of HTTP redirects with remote files.</li>
+<li>Improved exception handling with DRMAA.</li>
+<li>Scripts referred by the script directive can now use locally defined
+external python modules.</li>
+</ul>
+</div>
+<div class="section" id="id102">
+<h3>[3.9.1] - 2016-12-23<a class="headerlink" href="#id102" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id103">
+<h3>Added<a class="headerlink" href="#id103" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Jobs can be restarted upon failure (–restart-times). # ## Changed</li>
+<li>The docs have been restructured and improved. Now available under
+snakemake.readthedocs.org.</li>
+<li>Changes in scripts show up with –list-code-changes.</li>
+<li>Duplicate output files now cause an error.</li>
+<li>Various bug fixes.</li>
+</ul>
+</div>
+<div class="section" id="id104">
+<h3>[3.9.0] - 2016-11-15<a class="headerlink" href="#id104" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id105">
+<h3>Added<a class="headerlink" href="#id105" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Ability to define isolated conda software environments (YAML) per
+rule. Environments will be deployed by Snakemake upon workflow
+execution.</li>
+<li>Command line argument –wrapper-prefix in order to overwrite the
+default URL for looking up wrapper scripts. # ## Changed</li>
+<li>–summary now displays the log files correspoding to each output
+file.</li>
+<li>Fixed hangups when using run directive and a large number of jobs</li>
+<li>Fixed pickling errors with anonymous rules and run directive.</li>
+<li>Various small bug fixes</li>
+</ul>
+</div>
+<div class="section" id="id106">
+<h3>[3.8.2] - 2016-09-23<a class="headerlink" href="#id106" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id107">
+<h3>Changed<a class="headerlink" href="#id107" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Add missing import in rules.py.</li>
+<li>Use threading only in cluster jobs.</li>
+</ul>
+</div>
+<div class="section" id="id108">
+<h3>[3.8.1] - 2016-09-14<a class="headerlink" href="#id108" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id109">
+<h3>Changed<a class="headerlink" href="#id109" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Snakemake now warns when using relative paths starting with “./”.</li>
+<li>The option -R now also accepts an empty list of arguments.</li>
+<li>Bug fix when handling benchmark directive.</li>
+<li>Jobscripts exit with code 1 in case of failure. This should improve
+the error messages of cluster system.</li>
+<li>Fixed a bug in SFTP remote provider.</li>
+</ul>
+</div>
+<div class="section" id="id110">
+<h3>[3.8.0] - 2016-08-26<a class="headerlink" href="#id110" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id111">
+<h3>Added<a class="headerlink" href="#id111" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Wildcards can now be constrained by rule and globally via the new
+<code class="docutils literal notranslate"><span class="pre">wildcard_constraints</span></code> directive (see the
+<a class="reference external" href="https://bitbucket.org/snakemake/snakemake/wiki/Documentation#markdown-header-wildcards">docs</a>).</li>
+<li>Subworkflows now allow to overwrite their config file via the
+configfile directive in the calling Snakefile.</li>
+<li>A method <code class="docutils literal notranslate"><span class="pre">log_fmt_shell</span></code> in the snakemake proxy object that is
+available in scripts and wrappers allows to obtain a formatted string
+to redirect logging output from STDOUT or STDERR.</li>
+<li>Functions given to resources can now optionally contain an additional
+argument <code class="docutils literal notranslate"><span class="pre">input</span></code> that refers to the input files.</li>
+<li>Functions given to params can now optionally contain additional
+arguments <code class="docutils literal notranslate"><span class="pre">input</span></code> (see above) and <code class="docutils literal notranslate"><span class="pre">resources</span></code>. The latter refers
+to the resources.</li>
+<li>It is now possible to let items in shell commands be automatically
+quoted (see the
+<a class="reference external" href="https://bitbucket.org/snakemake/snakemake/wiki/Documentation#markdown-header-rules">docs</a>).
+This is usefull when dealing with filenames that contain whitespaces.</li>
+</ul>
+</div>
+<div class="section" id="id112">
+<h3>Changed<a class="headerlink" href="#id112" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Snakemake now deletes output files before job exection. Further, it
+touches output files after job execution. This solves various
+problems with slow NFS filesystems.</li>
+<li>A bug was fixed that caused dynamic output rules to be executed
+multiple times when forcing their execution with -R.</li>
+<li>A bug causing double uploads with remote files was fixed. Various
+additional bug fixes related to remote files.</li>
+<li>Various minor bug fixes.</li>
+</ul>
+</div>
+<div class="section" id="id113">
+<h3>[3.7.1] - 2016-05-16<a class="headerlink" href="#id113" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id114">
+<h3>Changed<a class="headerlink" href="#id114" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed a missing import of the multiprocessing module.</li>
+</ul>
+</div>
+<div class="section" id="id115">
+<h3>[3.7.0] - 2016-05-05<a class="headerlink" href="#id115" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id116">
+<h3>Added<a class="headerlink" href="#id116" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The entries in <code class="docutils literal notranslate"><span class="pre">resources</span></code> and the <code class="docutils literal notranslate"><span class="pre">threads</span></code> job attribute can
+now be callables that must return <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</li>
+<li>Multiple <code class="docutils literal notranslate"><span class="pre">--cluster-config</span></code> arguments can be given to the Snakemake
+command line. Later one override earlier ones.</li>
+<li>In the API, multiple <code class="docutils literal notranslate"><span class="pre">cluster_config</span></code> paths can be given as a list,
+alternatively to the previous behaviour of expecting one string for
+this parameter.</li>
+<li>When submitting cluster jobs (either through <code class="docutils literal notranslate"><span class="pre">--cluster</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--drmaa</span></code>), you can now use <code class="docutils literal notranslate"><span class="pre">--max-jobs-per-second</span></code> to limit the
+number of jobs being submitted (also available through Snakemake
+API). Some cluster installations have problems with too many jobs per
+second.</li>
+<li>Wildcard values are now printed upon job execution in addition to
+input and output files. # ## Changed</li>
+<li>Fixed a bug with HTTP remote providers.</li>
+</ul>
+</div>
+<div class="section" id="id117">
+<h3>[3.6.1] - 2016-04-08<a class="headerlink" href="#id117" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id118">
+<h3>Changed<a class="headerlink" href="#id118" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Work around missing RecursionError in Python &lt; 3.5</li>
+<li>Improved conversion of numpy and pandas data structures to R scripts.</li>
+<li>Fixed locking of working directory.</li>
+</ul>
+</div>
+<div class="section" id="id119">
+<h3>[3.6.0] - 2016-03-10<a class="headerlink" href="#id119" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id120">
+<h3>Added<a class="headerlink" href="#id120" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>onstart handler, that allows to add code that shall be only executed
+before the actual workflow execution (not on dryrun).</li>
+<li>Parameters defined in the cluster config file are now accessible in
+the job properties under the key “cluster”.</li>
+<li>The wrapper directive can be considered stable. # ## Changed</li>
+<li>Allow to use rule/job parameters with braces notation in cluster
+config.</li>
+<li>Show a proper error message in case of recursion errors.</li>
+<li>Remove non-empty temp dirs.</li>
+<li>Don’t set the process group of Snakemake in order to allow kill
+signals from parent processes to be propagated.</li>
+<li>Fixed various corner case bugs.</li>
+<li>The params directive no longer converts a list <code class="docutils literal notranslate"><span class="pre">l</span></code> implicitly to
+<code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">&quot;.join(l)</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="id121">
+<h3>[3.5.5] - 2016-01-23<a class="headerlink" href="#id121" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id122">
+<h3>Added<a class="headerlink" href="#id122" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>New experimental wrapper directive, which allows to refer to
+re-usable <a class="reference external" href="https://bitbucket.org/snakemake/snakemake/wiki/Documentation#markdown-header-wrappers">wrapper
+scripts</a>.
+Wrappers are provided in the <a class="reference external" href="https://bitbucket.org/snakemake/snakemake-wrappers">Snakemake Wrapper
+Repository</a>.</li>
+<li>David Koppstein implemented two new command line options to constrain
+the execution of the DAG of job to sub-DAGs (–until and
+–omit-from). # ## Changed</li>
+<li>Fixed various bugs, e.g. with shadow jobs and –latency-wait.</li>
+</ul>
+</div>
+<div class="section" id="id123">
+<h3>[3.5.4] - 2015-12-04<a class="headerlink" href="#id123" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id124">
+<h3>Changed<a class="headerlink" href="#id124" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The params directive now fully supports non-string parameters.
+Several bugs in the remote support were fixed.</li>
+</ul>
+</div>
+<div class="section" id="id125">
+<h3>[3.5.3] - 2015-11-24<a class="headerlink" href="#id125" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id126">
+<h3>Changed<a class="headerlink" href="#id126" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The missing remote module was added to the package.</li>
+</ul>
+</div>
+<div class="section" id="id127">
+<h3>[3.5.2] - 2015-11-24<a class="headerlink" href="#id127" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id128">
+<h3>Added<a class="headerlink" href="#id128" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Support for easy integration of external R and Python scripts via the
+new <a class="reference external" href="https://bitbucket.org/snakemake/snakemake/wiki/Documentation#markdown-header-external-scripts">script
+directive</a>.</li>
+<li>Chris Tomkins-Tinch has implemented support for remote files:
+Snakemake can now handle input and output files from Amazon S3,
+Google Storage, FTP, SFTP, HTTP and Dropbox.</li>
+<li>Simon Ye has implemented support for sandboxing jobs with <a class="reference external" href="https://bitbucket.org/snakemake/snakemake/wiki/Documentation#markdown-header-shadow-rules">shadow
+rules</a>.</li>
+</ul>
+</div>
+<div class="section" id="id129">
+<h3>Changed<a class="headerlink" href="#id129" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Manuel Holtgrewe has fixed dynamic output files in combination with
+multiple wildcards.</li>
+<li>It is now possible to add suffixes to all shell commands with
+shell.suffix(“mysuffix”).</li>
+<li>Job execution has been refactored to spawn processes only when
+necessary, resolving several problems in combination with huge
+workflows consisting of thousands of jobs and reducing the memory
+footprint.</li>
+<li>In order to reflect the new collaborative development model,
+Snakemake has moved from my personal bitbucket account to
+<a class="reference external" href="http://snakemake.bitbucket.org">http://snakemake.bitbucket.org</a>.</li>
+</ul>
+</div>
+<div class="section" id="id130">
+<h3>[3.4.2] - 2015-09-12<a class="headerlink" href="#id130" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id131">
+<h3>Changed<a class="headerlink" href="#id131" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Willem Ligtenberg has reduced the memory usage of Snakemake.</li>
+<li>Per Unneberg has improved config file handling to provide a more
+intuitive overwrite behavior.</li>
+<li>Simon Ye has improved the test suite of Snakemake and helped with
+setting up continuous integration via Codeship.</li>
+<li>The cluster implementation has been rewritten to use only a single
+thread to wait for jobs. This avoids failures with large numbers of
+jobs.</li>
+<li>Benchmarks are now writing tab-delimited text files instead of JSON.</li>
+<li>Snakemake now always requires to set the number of jobs with -j when
+in cluster mode. Set this to a high value if your cluster does not
+have restrictions.</li>
+<li>The Snakemake Conda package has been moved to the bioconda channel.</li>
+<li>The handling of Symlinks was improved, which made a switch to Python
+3.3 as the minimum required Python version necessary.</li>
+</ul>
+</div>
+<div class="section" id="id132">
+<h3>[3.4.1] - 2015-08-05<a class="headerlink" href="#id132" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id133">
+<h3>Changed<a class="headerlink" href="#id133" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>This release fixes a bug that caused named input or output files to
+always be returned as lists instead of single files.</li>
+</ul>
+</div>
+<div class="section" id="id134">
+<h3>[3.4] - 2015-07-18<a class="headerlink" href="#id134" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id135">
+<h3>Added<a class="headerlink" href="#id135" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>This release adds support for executing jobs on clusters in
+synchronous mode (e.g. qsub -sync). Thanks to David Alexander for
+implementing this.</li>
+<li>There is now vim syntax highlighting support (thanks to Jay
+Hesselberth).</li>
+<li>Snakemake is now available as Conda package.</li>
+</ul>
+</div>
+<div class="section" id="id136">
+<h3>Changed<a class="headerlink" href="#id136" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Lots of bugs have been fixed. Thanks go to e.g. David Koppstein,
+Marcel Martin, John Huddleston and Tao Wen for helping with useful
+reports and debugging.</li>
+</ul>
+<p>See
+<a class="reference external" href="https://bitbucket.org/snakemake/snakemake/wiki/News-Archive">here</a>
+for older changes.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="authors.html" class="btn btn-neutral float-left" title="Credits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2016, Johannes Koester
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
