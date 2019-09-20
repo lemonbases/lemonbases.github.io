@@ -3,11 +3,914 @@
   <channel>
     <title>Lemonbase的博客</title>
     <description>碱基吃柠檬，人面桃花相映红，生物信息工作者</description>
-    <link>//</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 01 Aug 2019 22:45:21 +0800</pubDate>
-    <lastBuildDate>Thu, 01 Aug 2019 22:45:21 +0800</lastBuildDate>
+    <link>http://localhost:4000//</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Fri, 20 Sep 2019 19:22:01 +0800</pubDate>
+    <lastBuildDate>Fri, 20 Sep 2019 19:22:01 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>常见生物数据格式01--FASTA/FASTQ</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;我们不生产数据，只是数据的搬运工。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在进行生物数据分析之前，有必要先了解一下常见的生物数据格式，不然可能会犯一些意料不到的错误。&lt;/p&gt;
+
+&lt;p&gt;常见的生物数据格式有：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;FASTA&lt;/li&gt;
+  &lt;li&gt;FASTQ&lt;/li&gt;
+  &lt;li&gt;GFF/GTF/BED/…&lt;/li&gt;
+  &lt;li&gt;VCF&lt;/li&gt;
+  &lt;li&gt;SAM/BAM&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H7e8b085c89fa49f1b33602844981ce21D.png&quot; alt=&quot;ngs_map_read_file_formats.png&quot; style=&quot;zoom:36%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;fasta&quot;&gt;FASTA&lt;/h3&gt;
+
+&lt;p&gt;记录DNA/Protein序列的文本格式，其由两部分组成:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;描述行，以&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt;起始，记录序列ID，名称或注释信息&lt;/li&gt;
+  &lt;li&gt;序列数据，一般为大写格式
+    &lt;pre&gt;&lt;code class=&quot;language-{bash,eval=FALSE,echo=TRUE}&quot;&gt;&amp;gt;gi|31563518|ref|NP_852610.1| microtubule-associated proteins 1A/1B light chain 3A isoform b [Homo sapiens]
+MKMRFFSSPCGKAAVDPADRCKEVQQIRDQHPSKIPVIIERYKGEKQLPVLDKTKFLVPDHVNMSELVKI
+IRRRLQLNPTQAFFLLVNQHSMVSVSTPIADIYEQEKDEDGFLYMVYASQETFGFIRENE
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;p&gt;有些从Ensembl下载的基因组数据中，序列中包含小写字母或&lt;code class=&quot;highlighter-rouge&quot;&gt;N&lt;/code&gt;，这是因为基因组文件中包含大量的重复序列，&lt;code class=&quot;highlighter-rouge&quot;&gt;soft-mask&lt;/code&gt;将重复序列从大写字母表示转化为小写字母表示；&lt;code class=&quot;highlighter-rouge&quot;&gt;hard-mask&lt;/code&gt;将重复序列转化为&lt;code class=&quot;highlighter-rouge&quot;&gt;N&lt;/code&gt;s。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;fastq&quot;&gt;FASTQ&lt;/h3&gt;
+
+&lt;p&gt;记录测序序列及其质量得分的文本格式，序列与质量得分用单个ASCII字符表示。&lt;/p&gt;
+
+&lt;p&gt;Phred64编码格式，碱基质量值为字符的十进制ASCII码减去64&lt;/p&gt;
+
+&lt;p&gt;Phred32编码格式，碱基质量值为字符的十进制ASCII码减去32&lt;/p&gt;
+
+&lt;p&gt;通常一个序列由4行组成：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;以&lt;code class=&quot;highlighter-rouge&quot;&gt;@&lt;/code&gt;开头，之后为序列的ID及描述信息(与fasta格式的描述行类似);&lt;/li&gt;
+  &lt;li&gt;序列信息;&lt;/li&gt;
+  &lt;li&gt;以&lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;开头，之后可以再加上序列的ID及描述信息(可选);&lt;/li&gt;
+  &lt;li&gt;质量得分，与第二行长度相同。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-{bash,eval=FALSE,echo=TRUE}&quot;&gt;@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;CCCCCCC65
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;illumina序列标识符&quot;&gt;Illumina序列标识符&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-{bash,eval=FALSE,echo=TRUE}&quot;&gt;@HWUSI-EAS100R:6:73:941:1973#0/1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;HWUSI-EAS100R&lt;/th&gt;
+      &lt;th&gt;the unique instrument name&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;flowcell lane&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;73&lt;/td&gt;
+      &lt;td&gt;tile number within the flowcell lane&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;941&lt;/td&gt;
+      &lt;td&gt;‘x’-coordinate of the cluster within the tile&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1973&lt;/td&gt;
+      &lt;td&gt;‘y’-coordinate of the cluster within the tile&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;#0&lt;/td&gt;
+      &lt;td&gt;index number for a multiplexed sample (0 for no indexing)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;/1&lt;/td&gt;
+      &lt;td&gt;the member of a pair, /1 or /2 &lt;em&gt;(paired-end or mate-pair reads only)&lt;/em&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Illumina 1.4之后multiplex ID使用&lt;code class=&quot;highlighter-rouge&quot;&gt;#NNNNNN&lt;/code&gt;替代&lt;code class=&quot;highlighter-rouge&quot;&gt;#0&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;#NNNNNN&lt;/code&gt;为sequence of the multiplex tag。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-{bash,eval=FALSE,echo=TRUE}&quot;&gt;@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;EAS139&lt;/th&gt;
+      &lt;th&gt;the unique instrument name&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;136&lt;/td&gt;
+      &lt;td&gt;the run id&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FC706VJ&lt;/td&gt;
+      &lt;td&gt;the flowcell id&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;flowcell lane&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2104&lt;/td&gt;
+      &lt;td&gt;tile number within the flowcell lane&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;15343&lt;/td&gt;
+      &lt;td&gt;‘x’-coordinate of the cluster within the tile&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;197393&lt;/td&gt;
+      &lt;td&gt;‘y’-coordinate of the cluster within the tile&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;the member of a pair, 1 or 2 &lt;em&gt;(paired-end or mate-pair reads only)&lt;/em&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt;Y if the read is filtered, N otherwise&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;18&lt;/td&gt;
+      &lt;td&gt;0 when none of the control bits are on, otherwise it is an even number&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ATCACG&lt;/td&gt;
+      &lt;td&gt;index sequence&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;最近版本的Illumina输出格式为：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-{bash,eval=FALSE,echo=TRUE}&quot;&gt;@EAS139:136:FC706VJ:2:2104:15343:197393 1:N:18:1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;质量score计算&quot;&gt;质量Score计算&lt;/h4&gt;
+
+&lt;p&gt;测序仪测序是根据荧光信号强弱给出参考测序错误概率(probability that the corresponding base call is incorrect,P)。&lt;/p&gt;
+
+&lt;p&gt;Sanger使用：$Q_{sanger}=-10*\log_{10}P$，其也称为Phred质量得分&lt;/p&gt;
+
+&lt;p&gt;Solexa(Illumina Genome Analyzer)使用：$Q_{solexa-prioor to v.1.3}=-10*\log_{10}\frac{P}{1-P}$&lt;/p&gt;
+
+&lt;p&gt;二者区别如下图所示：&lt;img src=&quot;https://ae01.alicdn.com/kf/Hd03b095bd3af48e89488dd3cb9b22bcfp.png&quot; alt=&quot;Probability_metrics.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;质量得分编码&quot;&gt;质量得分编码&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H471cbf9fc82a44e686bd043effab413dA.png&quot; alt=&quot;score_encoding.png&quot; style=&quot;zoom:75%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;检测编码类型&quot;&gt;检测编码类型&lt;/h4&gt;
+
+&lt;p&gt;通过上图，可以做类似这种决策树：&lt;/p&gt;
+
+&lt;p&gt;包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;J&lt;/code&gt;：Illumina 1.8+ Phred33&lt;/li&gt;
+  &lt;li&gt;不包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;J&lt;/code&gt;：Sanger Phred33&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;不包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;：Solexa Phred64&lt;/li&gt;
+  &lt;li&gt;不包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;，包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;：Illumina1.3 Phred64&lt;/li&gt;
+  &lt;li&gt;不包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;，不包含字符&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;：Illumina1.5 Phred64&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以使用Github的&lt;a href=&quot;https://github.com/brentp/bio-playground/blob/master/reads-utils/guess-encoding.py&quot;&gt;guess-encoding.py&lt;/a&gt;来进行判断&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;gunzip&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; file.fastq.gz | &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NR % 4 == 0'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 1000000 | python guess-encoding.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 19 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/19/biodata-format01.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/19/biodata-format01.html</guid>
+        
+        <category>生物数据格式</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>关于我们</title>
+        <description>&lt;h3 id=&quot;我们是谁&quot;&gt;我们是谁？&lt;/h3&gt;
+
+&lt;video width=&quot;auto&quot; height=&quot;500&quot; controls=&quot;controls&quot;&gt;
+  &lt;source src=&quot;/assets/img/aboutus.mp4&quot; type=&quot;video/mp4&quot; /&gt;
+&lt;/video&gt;
+
+&lt;h3 id=&quot;我们要做什么&quot;&gt;我们要做什么？&lt;/h3&gt;
+
+&lt;p&gt;随着人类对生命科学领域的探索加深，数据大爆炸的时代已然来临，传统的分析方法和分析手段，已经不能完美适配当下的数据规模。生物信息学是以计算机计算分析与传统生物学研究相结合形成的交叉学科，从人类基因组计划到精准医疗，从肠道微生物的分析研究到单细胞分析，或多或少都能看到生物信息学的影子。&lt;/p&gt;
+
+&lt;p&gt;然而有好多刚刚接触生物信息学领域的小伙伴在生物分析时候，常常会遇到下列情况：迷茫，我该如何搭建分析环境；纠结，我该选用哪些工具组合来达成我的目标；怀疑，最终的分析结果。。靠谱吗。&lt;/p&gt;
+
+&lt;p&gt;这里，我们将和大家一起学习大佬是如何处理分析数据的，如何绘制精美绝伦的Figure，甚至如何去开发简单的生物工具或者分析代码，希望和大家共同学习共同进步。&lt;/p&gt;
+
+&lt;h3 id=&quot;尾声&quot;&gt;尾声&lt;/h3&gt;
+
+&lt;p&gt;小时候的你是不是也曾怀揣过不切实际的梦想&lt;/p&gt;
+
+&lt;p&gt;也许是成为一名宇航员&lt;/p&gt;
+
+&lt;p&gt;也许是一名科学家&lt;/p&gt;
+
+&lt;p&gt;亦或是一名人民警察&lt;/p&gt;
+
+&lt;p&gt;而我&lt;/p&gt;
+
+&lt;p&gt;在高中毕业那年&lt;/p&gt;
+
+&lt;p&gt;选择了生命科学&lt;/p&gt;
+
+&lt;p&gt;那年我自信满满&lt;/p&gt;
+
+&lt;p&gt;那年我满怀期待&lt;/p&gt;
+
+&lt;p&gt;那年我相信前辈所说的&lt;/p&gt;
+
+&lt;p&gt;“21世纪是生物的时代”&lt;/p&gt;
+
+&lt;p&gt;呵呵&lt;/p&gt;
+
+&lt;p&gt;无法解决的难题，让我彻夜难眠&lt;/p&gt;
+
+&lt;p&gt;繁冗无序的工作，让我身心俱疲&lt;/p&gt;
+
+&lt;p&gt;来自各方的压力，让我举步维艰&lt;/p&gt;
+
+&lt;p&gt;为什么别人可以只是955&lt;/p&gt;
+
+&lt;p&gt;为什么我们做着不平凡的工作&lt;/p&gt;
+
+&lt;p&gt;却难以维持平凡的生活&lt;/p&gt;
+
+&lt;p&gt;有多少人中途离我而去&lt;/p&gt;
+
+&lt;p&gt;想伸手，却那么无力&lt;/p&gt;
+
+&lt;p&gt;在回宿舍的路上披星戴月&lt;/p&gt;
+
+&lt;p&gt;因为孤独恐惧而无助的抱着肩膀哭泣&lt;/p&gt;
+
+&lt;p&gt;所以&lt;/p&gt;
+
+&lt;p&gt;到底是什么让你&lt;/p&gt;
+
+&lt;p&gt;还能这么坚持努力？&lt;/p&gt;
+
+&lt;p&gt;仅在此处&lt;/p&gt;
+
+&lt;p&gt;致敬在科研岗位上默默付出的你&lt;/p&gt;
+
+&lt;p&gt;我知道&lt;/p&gt;
+
+&lt;p&gt;你的不容易&lt;/p&gt;
+
+&lt;p&gt;2019，我们在路上&lt;/p&gt;
+</description>
+        <pubDate>Thu, 19 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/19/about-us.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/19/about-us.html</guid>
+        
+        <category>thoughts</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux基础-04目录管理</title>
+        <description>&lt;p&gt;这里需要了解&lt;code class=&quot;highlighter-rouge&quot;&gt;绝对路径&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;相对路径&lt;/code&gt;两个概念。&lt;/p&gt;
+
+&lt;p&gt;&lt;span&gt;&lt;font color=&quot;red&quot;&gt;绝对路径&lt;/font&gt;： 从根目录&lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt;写起，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/bin&lt;/code&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span&gt;&lt;font color=&quot;red&quot;&gt;相对路径&lt;/font&gt;： 基于当前位置的路径表示，&lt;code class=&quot;highlighter-rouge&quot;&gt;.&lt;/code&gt;表示当前目录，&lt;code class=&quot;highlighter-rouge&quot;&gt;..&lt;/code&gt;表示当前目录的父目录，双点符可以联用向上切换目录，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;../Downloads&lt;/code&gt;表示上一层目录中的Downloads文件夹&lt;/span&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;ls-显示目录内容&quot;&gt;ls 显示目录内容&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;目录名]
+&lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; : 全部文件，连同隐藏文件&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;开头为.的文件&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;一起列出来
+&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; : 仅列出目录本身，而不是列出目录内的文件数据
+&lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; : 长列表输出
+&lt;span class=&quot;nt&quot;&gt;--help&lt;/span&gt;： 查看更多参数的帮助文档
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;比如：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;learn-linux@learnlinux-PC:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls
+&lt;/span&gt;Desktop  Documents  Downloads  examples.desktop  Music  Pictures  Public  Templates  Videos
+learn-linux@learnlinux-PC:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
+total 100
+drwxr-xr-x 17 learn-linux learn-linux 4096 9月  17 10:11 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwxr-xr-x  3 root        root        4096 9月  16 13:42 ..
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;  1 learn-linux learn-linux 1871 9月  17 09:01 .bash_history
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 learn-linux learn-linux  220 9月  16 13:42 .bash_logout
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 learn-linux learn-linux 3771 9月  16 13:42 .bashrc
+drwx------ 14 learn-linux learn-linux 4096 9月  16 14:53 .cache
+drwx------ 11 learn-linux learn-linux 4096 9月  16 13:48 .config
+drwxr-xr-x  3 learn-linux learn-linux 4096 9月  16 13:51 Desktop
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Documents
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Downloads
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 learn-linux learn-linux 8980 9月  16 13:42 examples.desktop
+drwx------  3 learn-linux learn-linux 4096 9月  16 13:52 .gnupg
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;  1 learn-linux learn-linux 2076 9月  16 14:43 .ICEauthority
+drwx------  3 learn-linux learn-linux 4096 9月  16 13:46 .local
+drwx------  5 learn-linux learn-linux 4096 9月  16 13:56 .mozilla
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Music
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Pictures
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 learn-linux learn-linux  807 9月  16 13:42 .profile
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Public
+drwx------  2 learn-linux learn-linux 4096 9月  16 13:52 .ssh
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Templates
+drwx------  5 learn-linux learn-linux 4096 9月  16 14:01 .thunderbird
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Videos
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ls&lt;/code&gt;命令输出的列表默认按照字母顺序，&lt;code class=&quot;highlighter-rouge&quot;&gt;ls&lt;/code&gt;可以&lt;font color=&quot;red&quot;&gt;结合多个参数&lt;/font&gt;使用，上面示例长列表中每一行都包括关于文件的下述信息:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;文件类型，目录(d)、文件(-)，字符型文件(c)或块设备(b)；&lt;/li&gt;
+  &lt;li&gt;文件权限(参见之后章节)；&lt;/li&gt;
+  &lt;li&gt;文件的硬链接综述；&lt;/li&gt;
+  &lt;li&gt;文件属主的用户名；&lt;/li&gt;
+  &lt;li&gt;文件属组的组名；&lt;/li&gt;
+  &lt;li&gt;文件大小（默认字节为单位）&lt;/li&gt;
+  &lt;li&gt;文件上一次修改时间&lt;/li&gt;
+  &lt;li&gt;文件名/目录名&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;同时，&lt;code class=&quot;highlighter-rouge&quot;&gt;ls&lt;/code&gt;可以和通配符联用，筛选输出列表&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;?&lt;/code&gt; 代表1个字符；&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt; 代表0或多个字符&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[a-z]&lt;/code&gt; 指定字母范围为a-z&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;比如：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ld&lt;/span&gt; D&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+drwxr-xr-x 3 learn-linux learn-linux 4096 9月  16 13:51 Desktop
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Documents
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Downloads
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ld&lt;/span&gt; D[h-z]&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Documents
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Downloads
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;cd-切换目录&quot;&gt;cd 切换目录&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;destination
+&lt;span class=&quot;c&quot;&gt;# e.g.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;## 绝对路径&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/bin/
+&lt;span class=&quot;c&quot;&gt;## 相对路径&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ../../etc
+&lt;span class=&quot;c&quot;&gt;## 回到家目录（一键回城）&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;destination&lt;/code&gt;为目标目录路径，可使用绝对路径或相对路径表示&lt;/p&gt;
+
+&lt;h3 id=&quot;pwd-打印当前目录&quot;&gt;pwd 打印当前目录&lt;/h3&gt;
+
+&lt;p&gt;在使用Linux系统进行命令行操作时，需要经常在不同目录间切换，使用&lt;code class=&quot;highlighter-rouge&quot;&gt;pwd&lt;/code&gt;可以迅速显示当前工作目录。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;learn-linux@learnlinux-PC:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/bin
+learn-linux@learnlinux-PC:/usr/bin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;
+/usr/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;mkdir-创建新目录&quot;&gt;mkdir 创建新目录&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; New_Dir
+&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; : 创建多级目录
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;rmdir-删除空目录&quot;&gt;rmdir 删除空目录&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;rmdir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Dir
+&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ： 删除多级空目录
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当目录不为空时，上诉命令会运行失败，可使用下文的&lt;code class=&quot;highlighter-rouge&quot;&gt;rm&lt;/code&gt;命令进行递归删除。&lt;/p&gt;
+
+&lt;h3 id=&quot;tree-展示目录&quot;&gt;tree 展示目录&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tree&lt;/code&gt;可能没有默认安装在Linux发行版中，在后续的教程中，我们将学习如何安装软件。这里为了展示方面，只显示3层子目录&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;learn-linux@learnlinux-PC:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;tree &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 3
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+├── Desktop
+│   └── vmware-tools-distrib
+│       ├── bin
+│       ├── caf
+│       ├── doc
+│       ├── etc
+│       ├── FILES
+│       ├── INSTALL
+│       ├── installer
+│       ├── lib
+│       ├── vgauth
+│       ├── vmware-install.pl
+│       └── vmware-install.real.pl
+├── Documents
+├── Downloads
+├── examples.desktop
+├── Music
+├── Pictures
+├── Public
+├── Templates
+└── Videos
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 19 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/19/Linux-basic-04directory-operation.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/19/Linux-basic-04directory-operation.html</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux基础-03目录结构</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;Linux核心思想：一切皆文件，统一的名字空间 (unified namespace)：表现形式是文件系统 (filesystem) 的路径；统一的访问接口 (unified interface)：表现形式是 read/write 等标准函数。 – 知乎用户Rio&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;linux系统目录结构&quot;&gt;Linux系统目录结构&lt;/h3&gt;
+
+&lt;p&gt;熟悉Windows操作系统的人可能会注意到，Linux在路径名中不使用驱动器盘符，即没有所谓的C盘，D盘；Linux只包含一个根（root）目录的树状结构。&lt;/p&gt;
+
+&lt;p&gt;而且Linux使用正斜线&lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt;划分目录，而Windows使用反斜线&lt;code class=&quot;highlighter-rouge&quot;&gt;\&lt;/code&gt;，Linux中的反斜线用来标识转义字符。&lt;/p&gt;
+
+&lt;p&gt;下图为Linux树状目录结构示意图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H3bd73bdbc67d49e9932584f84b44821et.png&quot; alt=&quot;filesystem-tree.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hdbb5ae099d0242fe826aea75faba8dbfL.png&quot; alt=&quot;file-system&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;其中：&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/bin&lt;/code&gt;：bin是Binary的缩写，存放着最经常使用的命令；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/boot&lt;/code&gt;：存放启动Linux的核心文件，包括一些链接文件及镜像文件；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev&lt;/code&gt;：dev是Device的缩写，存放Linux的外部设备，在Linux中访问设备的方式和访问文件的方式是相同的；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc&lt;/code&gt;：系统配置文件目录；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/home&lt;/code&gt;：用户的主目录，Linux中每个用户都有自己的一个目录，通常该目录名为用户登录账号名；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/lib&lt;/code&gt;：存放系统最基本的动态链接共享库，作用类似于Windows中的DLL文件。几乎所有的应用程序都需要用到这些共享库；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/root&lt;/code&gt;：系统管理员目录，超级权限的用户主目录；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/tmp&lt;/code&gt;：存放临时文件；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/usr&lt;/code&gt;：用户的很多应用程序和文件都放在该目录下，类似Windows下的Program files目录；&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/var&lt;/code&gt;： 可变目录，存放经常变化的文件，比如日志文件。&lt;/p&gt;
+
+&lt;h3 id=&quot;认识你的机器&quot;&gt;认识你的机器&lt;/h3&gt;
+
+&lt;h4 id=&quot;系统版本和处理器架构&quot;&gt;系统版本和处理器架构&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;uname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+Linux learnlinux-PC 5.0.0-23-generic &lt;span class=&quot;c&quot;&gt;#24~18.04.1-Ubuntu SMP Mon Jul 29 16:12:28 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;内核名称： Linux&lt;/li&gt;
+  &lt;li&gt;主机名：learnlinux-PC&lt;/li&gt;
+  &lt;li&gt;操作系统发行编号：5.0.0-23-generic&lt;/li&gt;
+  &lt;li&gt;操作系统版本：#24~18.04.1-Ubuntu SMP Mon Jul 29 16:12:28 UTC 2019&lt;/li&gt;
+  &lt;li&gt;处理器类型：x86_64&lt;/li&gt;
+  &lt;li&gt;硬件平台：x86_64&lt;/li&gt;
+  &lt;li&gt;操作系统名称：GNU/Linux&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;内存大小&quot;&gt;内存大小&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;free &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;
+              total        used        free      shared  buff/cache   available
+Mem:           1966        1160         180          14         625         624
+Swap:           947         243         703
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;系统总内存为：1966Mb 近似为 2Gb，和创建虚拟机时相同&lt;/p&gt;
+
+&lt;h4 id=&quot;硬盘空间&quot;&gt;硬盘空间&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;
+
+Filesystem      Size  Used Avail Use% Mounted on
+udev            960M     0  960M   0% /dev
+tmpfs           197M  1.8M  195M   1% /run
+/dev/sda1        20G  6.3G   13G  34% /
+tmpfs           984M     0  984M   0% /dev/shm
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs           984M     0  984M   0% /sys/fs/cgroup
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;显示所有挂载设备的当前磁盘空间使用情况&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;df&lt;/code&gt;命令查看哪块磁盘存储空间快没了后，使用&lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt;命令显示指定目录(默认为当前目录)的磁盘使用情况&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;du&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--max-depth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+
+4.0K	./Public
+23M	./.cache
+8.0K	./Desktop
+164K	./.config
+4.0K	./Downloads
+4.0K	./Music
+4.0K	./Videos
+1.5M	./.local
+4.0K	./Pictures
+4.0K	./Templates
+13M	./.thunderbird
+19M	./.mozilla
+4.0K	./.ssh
+16K	./.gnupg
+4.0K	./Documents
+56M	&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-h&lt;/code&gt;表示&lt;code class=&quot;highlighter-rouge&quot;&gt;human read&lt;/code&gt;，以K, M, G作为单位，&lt;code class=&quot;highlighter-rouge&quot;&gt;--max-depth=1&lt;/code&gt;表示当前目录的各个子目录所使用的空间&lt;/p&gt;
+
+&lt;h4 id=&quot;cpu信息&quot;&gt;CPU信息&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;less /etc/cpuinfo
+&lt;span class=&quot;c&quot;&gt;# 或者&lt;/span&gt;
+lscpu
+
+Architecture:        x86_64
+CPU op-mode&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:      32-bit, 64-bit
+Byte Order:          Little Endian
+CPU&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:              2
+On-line CPU&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; list: 0,1
+Thread&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; per core:  1
+Core&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; per socket:  2
+Socket&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:           1
+NUMA node&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:        1
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               94
+Model name:          Intel&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;R&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Core&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;TM&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; i7-6700 CPU @ 3.40GHz
+Stepping:            3
+CPU MHz:             3408.109
+BogoMIPS:            6816.21
+Virtualization:      VT-x
+Hypervisor vendor:   VMware
+Virtualization &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;: full
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            256K
+L3 cache:            8192K
+NUMA node0 CPU&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:   0,1
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti tpr_shadow vnmi ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 invpcid rtm rdseed adx smap xsaveopt dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 18 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/18/Linux-basic-03directory-structure.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/18/Linux-basic-03directory-structure.html</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux基础-02环境搭建</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;工欲善其事，必先利其器。在开始学习Linux前，首先配置Linux环境。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这里我们介绍两种方式：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用VMware创建虚拟机，然后在虚拟机上安装Linux系统，这里以Ubuntu-18.04为例&lt;/li&gt;
+  &lt;li&gt;使用Win10的WSL（Windows Subsystem for Linux）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;MAC的同学可以直接使用自带的工具&lt;code class=&quot;highlighter-rouge&quot;&gt;Terminal&lt;/code&gt;来学习基本的Linux命令&lt;/p&gt;
+
+&lt;font color=&quot;red&quot;&gt;本篇教程截图较多，流量预警&lt;/font&gt;
+
+&lt;h3 id=&quot;vmware--ubuntu-1804&quot;&gt;VMware + Ubuntu-18.04&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;软件准备&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;VMware Workstation Player 15 :  &lt;a href=&quot;https://www.vmware.com/products/workstation-player/workstation-player-evaluation.html&quot;&gt;https://www.vmware.com/products/workstation-player/workstation-player-evaluation.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ubuntu-18.04镜像地址：&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;清华镜像：&lt;a href=&quot;https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04/&quot;&gt;https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04/&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;网易镜像：&lt;a href=&quot;https://mirrors.163.com/ubuntu-releases/18.04/&quot;&gt;https://mirrors.163.com/ubuntu-releases/18.04/&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;开启CPU虚拟化支持&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;开机界面F2或F10进行&lt;code class=&quot;highlighter-rouge&quot;&gt;BIOS&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;Configuration&lt;/code&gt;选项或&lt;code class=&quot;highlighter-rouge&quot;&gt;Security&lt;/code&gt;选项将Virtualization &lt;code class=&quot;highlighter-rouge&quot;&gt;Enabled&lt;/code&gt;，保存BIOS设置，重启计算机。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hc45aed45bc404482b35eca1d1574cf00q.png&quot; alt=&quot;bios_virtualization.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;安装Ubuntu-18.04&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;选择创建新的虚拟机&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H1523e4f5dc8e42bdae8c693956a9f4049.png&quot; alt=&quot;install-01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hccc07f36f645468186a21678282d4d0aQ.png&quot; alt=&quot;install-02&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Heba76e36841846e9b2144d18da6fcca1S.png&quot; alt=&quot;install-03&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Ha7e79d56c5c24d59923d1f95106b8beex.png&quot; alt=&quot;install-04&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hea27d5142a4a4a6d98048cfc41a6bfe5r.png&quot; alt=&quot;install-05&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hdd60b056cc0c4317ae2d72ba782fa447W.png&quot; alt=&quot;install-06&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hf8136c65fd9448d4998ede27fd9acdf0I.png&quot; alt=&quot;install-07&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;根据个人电脑配置选择虚拟机的硬件配置&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H835c9f55c82948c1acd94f8a0555ce687.png&quot; alt=&quot;install-08&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H1cb721a518944fef898fffec7a7bed381.png&quot; alt=&quot;install-09&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H3d547094b86f4da0896af46e321b772fY.png&quot; alt=&quot;install-10&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hcfdccffa8e0d458fae0ec42351b66ad2W.png&quot; alt=&quot;install-11&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hfa25456ef6a74ff7bfa358a7ec3e29cby.png&quot; alt=&quot;install-12&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H7cc512a4268f43a8a9e70a406caae9a1M.png&quot; alt=&quot;install-13&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H88d253a92d90429b9d2443f0abf6ff2aH.png&quot; alt=&quot;install-14&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H0a027b2e50174da3be1287c9c3c40dacA.png&quot; alt=&quot;install-15&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Ha29d669c924e498d9f002c1b6114e0985.png&quot; alt=&quot;install-16&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H903297333fb94e678418a396e505af3d8.png&quot; alt=&quot;install-17&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hb5fb449e657a4b74857641c2f110b35cs.png&quot; alt=&quot;install-18&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;安装VmTools&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;VMware Tools 是用于增强虚拟机的客户机操作系统性能并改进虚拟机管理的实用程序套件。如果不在客户机操作系统中安装 VMware Tools，客户机性能将缺少重要的功能。安装 VMware Tools 会避免出现以下问题或改进性能：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;视频分辨率低&lt;/li&gt;
+  &lt;li&gt;色深不足&lt;/li&gt;
+  &lt;li&gt;网速显示错误&lt;/li&gt;
+  &lt;li&gt;鼠标移动受限&lt;/li&gt;
+  &lt;li&gt;不能复制、粘贴和拖放文件&lt;/li&gt;
+  &lt;li&gt;没有声音&lt;/li&gt;
+  &lt;li&gt;提供创建客户机操作系统静默快照的能力&lt;/li&gt;
+  &lt;li&gt;将客户机操作系统中的时间与主机上的时间保持同步&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H5c5ddb32f7974d5ab59f676dd0c3e7c95.png&quot; alt=&quot;vmtools-01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H24703a981cc440be9f93811f21fe6123N.png&quot; alt=&quot;vmtools-02&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H7257c387ed784ce6bf103392e75f34a1Y.png&quot; alt=&quot;vmtools-03&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hfe3daba8b6b141d891365d6c6caeb5d9J.png&quot; alt=&quot;vmtools-04&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Ha48f5b2c3af64a56bc0c2170d9ba5d78p.png&quot; alt=&quot;vmtools-05&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H6b1bce0d9afb4aefa86b9ab6426d4338j.png&quot; alt=&quot;vmtools-06&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;win10中wsl安装&quot;&gt;Win10中WSL安装&lt;/h3&gt;
+
+&lt;p&gt;控制面板-&amp;gt;程序和功能-&amp;gt;启用或关闭Windows功能-&amp;gt;勾选 适用于Linux的Windows子系统&lt;/p&gt;
+
+&lt;p&gt;重启电脑后，打开应用商城搜索“WSL”，根据自己需求选择安装一个或多个Linux系统，第一次运行需要等待安装并设置用户名、密码。还可以在cmd中通过&lt;code class=&quot;highlighter-rouge&quot;&gt;wsl&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;bash&lt;/code&gt;运行WSL。&lt;/p&gt;
+
+&lt;p&gt;本小节安装较为简单，因此没有给出相应截图，见谅&amp;gt; &amp;lt;&lt;/p&gt;
+
+&lt;h3 id=&quot;关机和重启&quot;&gt;关机和重启&lt;/h3&gt;
+
+&lt;p&gt;首先我们学习一下命令行关机重启命令。&lt;/p&gt;
+
+&lt;p&gt;大多数Linux发行版的默认shell都是GNU bash shell，其能提供对Linux系统的交互式访问。启动&lt;code class=&quot;highlighter-rouge&quot;&gt;Terminal&lt;/code&gt;后，会看到shell CLI提示符&lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#Ubuntu&lt;/span&gt;
+learn-linux@learnlinux-PC:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#CentOS&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;learn-linux@learnlinux-PC ~]&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;提示符中还显示了当前用户ID&lt;code class=&quot;highlighter-rouge&quot;&gt;learn-linux&lt;/code&gt;，系统名为&lt;code class=&quot;highlighter-rouge&quot;&gt;learnlinux-PC&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;关机命令：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;shutdown &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt; now
+halt
+poweroff
+init 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;重启命令：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reboot
+shutdown &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; now
+init 6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Tue, 17 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/17/Linux-basic-02environment.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/17/Linux-basic-02environment.html</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux基础-01简介</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;Linux与生物信息学&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;起源&quot;&gt;起源&lt;/h3&gt;
+
+&lt;p&gt;Linux内核最初只是由芬兰人Linus Torvalds于1991年在赫尔辛基大学时出于个人爱好而编写的。其是一套免费试用和自由传播的类Unix操作系统，基于POSIX和UNIX的多用户、多任务、支持多线程和多CPU的操作系统。Linux能运行主要的UNIX工具软件、应用程序和网络协议。其支持32位和64位硬件。其继承了Unix以网络为核心的设计思想，是一个性能稳定的多用户网络操作系统。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H13fc9d2471e74575881c5d964618dea6j.png&quot; alt=&quot;linux_logo.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;发行版&quot;&gt;发行版&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H8dca6c0c7d8543b0b8aa0ceb57da1b87E.png&quot; alt=&quot;operating_system&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Linux 发行版及通常所说的”Linux操作系统”，由一些组织、团体、公司或者个人制作并发行。Linux内核主要作为Linux发行版的一部分而使用。&lt;/p&gt;
+
+&lt;p&gt;目前正在积极开发中的发行版超过300个，最普遍被使用的发行版约12个。目前市面上较知名的发行版有：Ubuntu， RedHat，CentOS，Debain，Fedora等。&lt;/p&gt;
+
+&lt;p&gt;一个典型的发行版包括：Linux内核，GNU库和各种系统工具，命令行Shell，图形界面地城的X窗口和上层的桌面环境等。桌面环境有如KDE或GNOME等，并包含数千种应用软件。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H4b1217b95c03434f9738339a3314faa02.png&quot; alt=&quot;linux_distribution_timeline&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;应用领域&quot;&gt;应用领域&lt;/h3&gt;
+
+&lt;p&gt;今天各种场合都有使用各种Linux发行版，从嵌入式设备到超级计算机，并且在服务器领域确定了定位，通常服务器使用LAMP（Linux + Apache + MySQL + PHP） 或 LNMP（Linux + Nginx + MySQL + PHP）组合，目前Linux不仅在家庭与企业中使用，并且在政府中也很受欢迎。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;个人电脑&lt;/li&gt;
+  &lt;li&gt;服务器、主机和超级计算机&lt;/li&gt;
+  &lt;li&gt;嵌入式设备&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;与windows比较&quot;&gt;与Windows比较&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;比较&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Windows&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Linux&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;界面&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;界面统一，外壳程序固定，所有Windows程序菜单几乎一致，快捷键也几乎相同&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;图形界面风格依发布版不同而不同，可能互不兼容。GNU/Linux的终端机从UNIX传承下来，基本命令和操作方法也几乎一致&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;驱动程序&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;驱动程序丰富，版本更新频繁。默认安装程序里面一般包含该版本发布时流行的驱动程序，之后所处的新硬件驱动依赖于硬件产商提供。对于一些老硬件，如果没有了原配的驱动有时很难支持。另外，有时硬件产商未提供所需版本的Windows下的驱动，也比较头痛。&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;由志愿者开发，Linux核心开发小组发布，很多硬件产商基于版权考虑并未提供驱动程序，尽管多数无须手动安装，但是设计安装则相对复杂，使得新用户面对驱动程序问题会一筹莫展。但是在开源开发模式下，许多老硬件也容易找到驱动。HP、Indel、AMD等硬件产商逐步不同程度支持开源驱动，问题正在得到缓解。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;使用&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;使用比较简单，容易入门。图形化界面对没有计算机背景知识的用户使用十分有利。&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;图形界面使用简单，容易上手。命令行界面需要学习才能掌握&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;学习&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;系统构造复杂，变化频繁，且知识、技能淘汰快，深入学习困难&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;系统构造简单、稳定，且知识、技能传承性好，深入学习相对容易&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;软件&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;每一种特定功能可能都需要商业软件的支持，需要购买相应的授权&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;大部分软件都可以自由获取，同样功能的软件选择较少&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;生物信息学与linux应用&quot;&gt;生物信息学与Linux应用&lt;/h3&gt;
+
+&lt;font color=&quot;red&quot;&gt;为什么选择Linux/Unix平台作为生物信息学研究的主要平台&lt;/font&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;生物信息学的一个重要研究目标是是生物数据分析，尤其是未来生物学研究的特点是大量大规模测序数据的产生。2019年9月9日，华大智造研制的超高通量基因测序仪–&lt;em&gt;DNBSEQ-T7&lt;/em&gt;，其日产数据量可达&lt;font color=&quot;red&quot;&gt;6T&lt;/font&gt;.&lt;/li&gt;
+  &lt;li&gt;Windows的窗口化软件适合可视化小规模运算，支持鼠标操作，但缺乏对大数据的支持，可定制性差；Windows Shell的使用体验差，没有完善的命令；远程功能不够好；目前Win10支持Ubuntu子系统，包含基本的命令行操作，类似虚拟机，有兴趣的同学可以尝试一下~&lt;/li&gt;
+  &lt;li&gt;Linux具备大数据高性能支持，shell可编程能力强；包含大量生物信息学软件包和脚本；&lt;font color=&quot;red&quot;&gt;可定制性高&lt;/font&gt;；支持轻量化的远程交互；开源，对生物数据分析来说是最好的平台。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;软件/平台名称&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BioLinux&lt;/td&gt;
+      &lt;td&gt;强大的生物信息学分析平台，基于Linux的免费操作系统，整合了大量生物信息学软件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BioPerl&lt;/td&gt;
+      &lt;td&gt;整合大量生物学数据处理模块的Perl语言工具包&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BioPython&lt;/td&gt;
+      &lt;td&gt;整合大量生物学数据处理模块的的Python语言工具包&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Bioconductor&lt;/td&gt;
+      &lt;td&gt;整合大量生物学数据处理软件包的R语言软件库&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;EMBOSS&lt;/td&gt;
+      &lt;td&gt;欧洲分子生物学开源软件套装，用于序列数据处理及分子生物学研究&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Mothur&lt;/td&gt;
+      &lt;td&gt;16s RNA数据分析&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BLAST+&lt;/td&gt;
+      &lt;td&gt;本地BLAST软件，建库及序列比对&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TopHat，Cufflinks等&lt;/td&gt;
+      &lt;td&gt;转录组测序数据分析工具&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+</description>
+        <pubDate>Mon, 16 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/16/Linux-basic-01introduction.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/16/Linux-basic-01introduction.html</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
     
       <item>
         <title>Hello World</title>
@@ -24,8 +927,8 @@
 &lt;p&gt;碱基吃柠檬，人面桃花相映红。&lt;/p&gt;
 </description>
         <pubDate>Thu, 01 Aug 2019 00:00:00 +0800</pubDate>
-        <link>/2019/08/01/Hello-World.html</link>
-        <guid isPermaLink="true">/2019/08/01/Hello-World.html</guid>
+        <link>http://localhost:4000/2019/08/01/Hello-World.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/08/01/Hello-World.html</guid>
         
         <category>thoughts</category>
         
@@ -137,12 +1040,10 @@ jekyll buld
 &lt;/ul&gt;
 </description>
         <pubDate>Thu, 01 Aug 2019 00:00:00 +0800</pubDate>
-        <link>/2019/08/01/Build-Site.html</link>
-        <guid isPermaLink="true">/2019/08/01/Build-Site.html</guid>
+        <link>http://localhost:4000/2019/08/01/Build-Site.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/08/01/Build-Site.html</guid>
         
-        <category>gitpage</category>
-        
-        <category>jekyll</category>
+        <category>网站运维</category>
         
         
       </item>

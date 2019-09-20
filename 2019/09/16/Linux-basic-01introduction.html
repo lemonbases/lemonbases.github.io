@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux基础-01简介 - Lemonbase的博客</title>
+    <meta name="author"  content="碱基吃柠檬">
+    <meta name="description" content="Linux基础-01简介">
+    <meta name="keywords"  content="Linux">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Linux基础-01简介 - Lemonbase的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2019/09/16/Linux-basic-01introduction.html">
+    <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
+    <meta property="og:site_name" content="Lemonbase的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="true"> <header class="g-header">
+<!--     <div class="">
+      <a href="/"></a>
+    </div> -->
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/resources.html">resources</a></li>
+            
+            <li><a href="/2019/09/19/about-us.html">about</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default post-no-cover"
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Linux" class="post-tag">Linux</a>
+          
+        
+      </div>
+      <h1>Linux基础-01简介</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
+        <time class="post-meta-item" datetime="19-09-16"><i class="iconfont icon-date"></i>16 Sep 2019</time>
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+
+    <article class="markdown-body">
+      <blockquote>
+  <p>Linux与生物信息学</p>
+</blockquote>
+
+<h3 id="起源">起源</h3>
+
+<p>Linux内核最初只是由芬兰人Linus Torvalds于1991年在赫尔辛基大学时出于个人爱好而编写的。其是一套免费试用和自由传播的类Unix操作系统，基于POSIX和UNIX的多用户、多任务、支持多线程和多CPU的操作系统。Linux能运行主要的UNIX工具软件、应用程序和网络协议。其支持32位和64位硬件。其继承了Unix以网络为核心的设计思想，是一个性能稳定的多用户网络操作系统。</p>
+
+<p><img src="https://ae01.alicdn.com/kf/H13fc9d2471e74575881c5d964618dea6j.png" alt="linux_logo.png" /></p>
+
+<h3 id="发行版">发行版</h3>
+
+<p><img src="https://ae01.alicdn.com/kf/H8dca6c0c7d8543b0b8aa0ceb57da1b87E.png" alt="operating_system" /></p>
+
+<p>Linux 发行版及通常所说的”Linux操作系统”，由一些组织、团体、公司或者个人制作并发行。Linux内核主要作为Linux发行版的一部分而使用。</p>
+
+<p>目前正在积极开发中的发行版超过300个，最普遍被使用的发行版约12个。目前市面上较知名的发行版有：Ubuntu， RedHat，CentOS，Debain，Fedora等。</p>
+
+<p>一个典型的发行版包括：Linux内核，GNU库和各种系统工具，命令行Shell，图形界面地城的X窗口和上层的桌面环境等。桌面环境有如KDE或GNOME等，并包含数千种应用软件。</p>
+
+<p><img src="https://ae01.alicdn.com/kf/H4b1217b95c03434f9738339a3314faa02.png" alt="linux_distribution_timeline" /></p>
+
+<h3 id="应用领域">应用领域</h3>
+
+<p>今天各种场合都有使用各种Linux发行版，从嵌入式设备到超级计算机，并且在服务器领域确定了定位，通常服务器使用LAMP（Linux + Apache + MySQL + PHP） 或 LNMP（Linux + Nginx + MySQL + PHP）组合，目前Linux不仅在家庭与企业中使用，并且在政府中也很受欢迎。</p>
+
+<ul>
+  <li>个人电脑</li>
+  <li>服务器、主机和超级计算机</li>
+  <li>嵌入式设备</li>
+</ul>
+
+<h3 id="与windows比较">与Windows比较</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>比较</th>
+      <th style="text-align: left">Windows</th>
+      <th style="text-align: left">Linux</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>界面</td>
+      <td style="text-align: left">界面统一，外壳程序固定，所有Windows程序菜单几乎一致，快捷键也几乎相同</td>
+      <td style="text-align: left">图形界面风格依发布版不同而不同，可能互不兼容。GNU/Linux的终端机从UNIX传承下来，基本命令和操作方法也几乎一致</td>
+    </tr>
+    <tr>
+      <td>驱动程序</td>
+      <td style="text-align: left">驱动程序丰富，版本更新频繁。默认安装程序里面一般包含该版本发布时流行的驱动程序，之后所处的新硬件驱动依赖于硬件产商提供。对于一些老硬件，如果没有了原配的驱动有时很难支持。另外，有时硬件产商未提供所需版本的Windows下的驱动，也比较头痛。</td>
+      <td style="text-align: left">由志愿者开发，Linux核心开发小组发布，很多硬件产商基于版权考虑并未提供驱动程序，尽管多数无须手动安装，但是设计安装则相对复杂，使得新用户面对驱动程序问题会一筹莫展。但是在开源开发模式下，许多老硬件也容易找到驱动。HP、Indel、AMD等硬件产商逐步不同程度支持开源驱动，问题正在得到缓解。</td>
+    </tr>
+    <tr>
+      <td>使用</td>
+      <td style="text-align: left">使用比较简单，容易入门。图形化界面对没有计算机背景知识的用户使用十分有利。</td>
+      <td style="text-align: left">图形界面使用简单，容易上手。命令行界面需要学习才能掌握</td>
+    </tr>
+    <tr>
+      <td>学习</td>
+      <td style="text-align: left">系统构造复杂，变化频繁，且知识、技能淘汰快，深入学习困难</td>
+      <td style="text-align: left">系统构造简单、稳定，且知识、技能传承性好，深入学习相对容易</td>
+    </tr>
+    <tr>
+      <td>软件</td>
+      <td style="text-align: left">每一种特定功能可能都需要商业软件的支持，需要购买相应的授权</td>
+      <td style="text-align: left">大部分软件都可以自由获取，同样功能的软件选择较少</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="生物信息学与linux应用">生物信息学与Linux应用</h3>
+
+<font color="red">为什么选择Linux/Unix平台作为生物信息学研究的主要平台</font>
+
+<ul>
+  <li>生物信息学的一个重要研究目标是是生物数据分析，尤其是未来生物学研究的特点是大量大规模测序数据的产生。2019年9月9日，华大智造研制的超高通量基因测序仪–<em>DNBSEQ-T7</em>，其日产数据量可达<font color="red">6T</font>.</li>
+  <li>Windows的窗口化软件适合可视化小规模运算，支持鼠标操作，但缺乏对大数据的支持，可定制性差；Windows Shell的使用体验差，没有完善的命令；远程功能不够好；目前Win10支持Ubuntu子系统，包含基本的命令行操作，类似虚拟机，有兴趣的同学可以尝试一下~</li>
+  <li>Linux具备大数据高性能支持，shell可编程能力强；包含大量生物信息学软件包和脚本；<font color="red">可定制性高</font>；支持轻量化的远程交互；开源，对生物数据分析来说是最好的平台。</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>软件/平台名称</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BioLinux</td>
+      <td>强大的生物信息学分析平台，基于Linux的免费操作系统，整合了大量生物信息学软件</td>
+    </tr>
+    <tr>
+      <td>BioPerl</td>
+      <td>整合大量生物学数据处理模块的Perl语言工具包</td>
+    </tr>
+    <tr>
+      <td>BioPython</td>
+      <td>整合大量生物学数据处理模块的的Python语言工具包</td>
+    </tr>
+    <tr>
+      <td>Bioconductor</td>
+      <td>整合大量生物学数据处理软件包的R语言软件库</td>
+    </tr>
+    <tr>
+      <td>EMBOSS</td>
+      <td>欧洲分子生物学开源软件套装，用于序列数据处理及分子生物学研究</td>
+    </tr>
+    <tr>
+      <td>Mothur</td>
+      <td>16s RNA数据分析</td>
+    </tr>
+    <tr>
+      <td>BLAST+</td>
+      <td>本地BLAST软件，建库及序列比对</td>
+    </tr>
+    <tr>
+      <td>TopHat，Cufflinks等</td>
+      <td>转录组测序数据分析工具</td>
+    </tr>
+  </tbody>
+</table>
+
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.png" alt="">
+      </div>
+      <div class="author-name" rel="author">碱基吃柠檬</div>
+      <div class="bio">
+        <p>生物信息工作者, 喜欢美好的事物</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="//weibo.com/u/7189209185" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//github.com/lemonbases" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/2019/09/17/Linux-basic-02environment.html" class="read-next-link"></a>
+        <section>
+          <span>Linux基础-02环境搭建</span>
+          <p>  工欲善其事，必先利其器。在开始学习Linux前，首先配置Linux环境。</p>
+        </section>
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/2019/08/01/Hello-World.html" class="read-next-link"></a>
+          <section>
+            <span>Hello World</span>
+            <p>  第一篇博文，Hello World~</p>
+          </section>
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Lemonbase的博客 ©
+  
+  
+  2019
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lemonbases.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+</body>
+
+</html>

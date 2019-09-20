@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux基础-02环境搭建 - Lemonbase的博客</title>
+    <meta name="author"  content="碱基吃柠檬">
+    <meta name="description" content="Linux基础-02环境搭建">
+    <meta name="keywords"  content="Linux">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Linux基础-02环境搭建 - Lemonbase的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2019/09/17/Linux-basic-02environment.html">
+    <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
+    <meta property="og:site_name" content="Lemonbase的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="true"> <header class="g-header">
+<!--     <div class="">
+      <a href="/"></a>
+    </div> -->
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/resources.html">resources</a></li>
+            
+            <li><a href="/2019/09/19/about-us.html">about</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default post-no-cover"
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Linux" class="post-tag">Linux</a>
+          
+        
+      </div>
+      <h1>Linux基础-02环境搭建</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
+        <time class="post-meta-item" datetime="19-09-17"><i class="iconfont icon-date"></i>17 Sep 2019</time>
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+
+    <article class="markdown-body">
+      <blockquote>
+  <p>工欲善其事，必先利其器。在开始学习Linux前，首先配置Linux环境。</p>
+</blockquote>
+
+<p>这里我们介绍两种方式：</p>
+
+<ul>
+  <li>使用VMware创建虚拟机，然后在虚拟机上安装Linux系统，这里以Ubuntu-18.04为例</li>
+  <li>使用Win10的WSL（Windows Subsystem for Linux）</li>
+</ul>
+
+<p>MAC的同学可以直接使用自带的工具<code class="highlighter-rouge">Terminal</code>来学习基本的Linux命令</p>
+
+<font color="red">本篇教程截图较多，流量预警</font>
+
+<h3 id="vmware--ubuntu-1804">VMware + Ubuntu-18.04</h3>
+
+<ol>
+  <li>软件准备</li>
+</ol>
+
+<ul>
+  <li>
+    <p>VMware Workstation Player 15 :  <a href="https://www.vmware.com/products/workstation-player/workstation-player-evaluation.html">https://www.vmware.com/products/workstation-player/workstation-player-evaluation.html</a></p>
+  </li>
+  <li>
+    <p>Ubuntu-18.04镜像地址：</p>
+    <ul>
+      <li>清华镜像：<a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04/</a></li>
+      <li>网易镜像：<a href="https://mirrors.163.com/ubuntu-releases/18.04/">https://mirrors.163.com/ubuntu-releases/18.04/</a></li>
+    </ul>
+  </li>
+</ul>
+
+<ol>
+  <li>开启CPU虚拟化支持</li>
+</ol>
+
+<p>开机界面F2或F10进行<code class="highlighter-rouge">BIOS</code>，<code class="highlighter-rouge">Configuration</code>选项或<code class="highlighter-rouge">Security</code>选项将Virtualization <code class="highlighter-rouge">Enabled</code>，保存BIOS设置，重启计算机。</p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hc45aed45bc404482b35eca1d1574cf00q.png" alt="bios_virtualization.png" /></p>
+
+<ol>
+  <li>安装Ubuntu-18.04</li>
+</ol>
+
+<ul>
+  <li>选择创建新的虚拟机</li>
+</ul>
+
+<p><img src="https://ae01.alicdn.com/kf/H1523e4f5dc8e42bdae8c693956a9f4049.png" alt="install-01" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hccc07f36f645468186a21678282d4d0aQ.png" alt="install-02" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Heba76e36841846e9b2144d18da6fcca1S.png" alt="install-03" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Ha7e79d56c5c24d59923d1f95106b8beex.png" alt="install-04" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hea27d5142a4a4a6d98048cfc41a6bfe5r.png" alt="install-05" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hdd60b056cc0c4317ae2d72ba782fa447W.png" alt="install-06" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hf8136c65fd9448d4998ede27fd9acdf0I.png" alt="install-07" /></p>
+
+<ul>
+  <li>根据个人电脑配置选择虚拟机的硬件配置</li>
+</ul>
+
+<p><img src="https://ae01.alicdn.com/kf/H835c9f55c82948c1acd94f8a0555ce687.png" alt="install-08" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H1cb721a518944fef898fffec7a7bed381.png" alt="install-09" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H3d547094b86f4da0896af46e321b772fY.png" alt="install-10" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hcfdccffa8e0d458fae0ec42351b66ad2W.png" alt="install-11" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hfa25456ef6a74ff7bfa358a7ec3e29cby.png" alt="install-12" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H7cc512a4268f43a8a9e70a406caae9a1M.png" alt="install-13" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H88d253a92d90429b9d2443f0abf6ff2aH.png" alt="install-14" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H0a027b2e50174da3be1287c9c3c40dacA.png" alt="install-15" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Ha29d669c924e498d9f002c1b6114e0985.png" alt="install-16" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H903297333fb94e678418a396e505af3d8.png" alt="install-17" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hb5fb449e657a4b74857641c2f110b35cs.png" alt="install-18" /></p>
+
+<ol>
+  <li>安装VmTools</li>
+</ol>
+
+<p>VMware Tools 是用于增强虚拟机的客户机操作系统性能并改进虚拟机管理的实用程序套件。如果不在客户机操作系统中安装 VMware Tools，客户机性能将缺少重要的功能。安装 VMware Tools 会避免出现以下问题或改进性能：</p>
+
+<ul>
+  <li>视频分辨率低</li>
+  <li>色深不足</li>
+  <li>网速显示错误</li>
+  <li>鼠标移动受限</li>
+  <li>不能复制、粘贴和拖放文件</li>
+  <li>没有声音</li>
+  <li>提供创建客户机操作系统静默快照的能力</li>
+  <li>将客户机操作系统中的时间与主机上的时间保持同步</li>
+</ul>
+
+<p><img src="https://ae01.alicdn.com/kf/H5c5ddb32f7974d5ab59f676dd0c3e7c95.png" alt="vmtools-01" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H24703a981cc440be9f93811f21fe6123N.png" alt="vmtools-02" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H7257c387ed784ce6bf103392e75f34a1Y.png" alt="vmtools-03" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hfe3daba8b6b141d891365d6c6caeb5d9J.png" alt="vmtools-04" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Ha48f5b2c3af64a56bc0c2170d9ba5d78p.png" alt="vmtools-05" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/H6b1bce0d9afb4aefa86b9ab6426d4338j.png" alt="vmtools-06" /></p>
+
+<h3 id="win10中wsl安装">Win10中WSL安装</h3>
+
+<p>控制面板-&gt;程序和功能-&gt;启用或关闭Windows功能-&gt;勾选 适用于Linux的Windows子系统</p>
+
+<p>重启电脑后，打开应用商城搜索“WSL”，根据自己需求选择安装一个或多个Linux系统，第一次运行需要等待安装并设置用户名、密码。还可以在cmd中通过<code class="highlighter-rouge">wsl</code>或<code class="highlighter-rouge">bash</code>运行WSL。</p>
+
+<p>本小节安装较为简单，因此没有给出相应截图，见谅&gt; &lt;</p>
+
+<h3 id="关机和重启">关机和重启</h3>
+
+<p>首先我们学习一下命令行关机重启命令。</p>
+
+<p>大多数Linux发行版的默认shell都是GNU bash shell，其能提供对Linux系统的交互式访问。启动<code class="highlighter-rouge">Terminal</code>后，会看到shell CLI提示符<code class="highlighter-rouge">$</code>：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Ubuntu</span>
+learn-linux@learnlinux-PC:~<span class="err">$</span>
+<span class="c">#CentOS</span>
+<span class="o">[</span>learn-linux@learnlinux-PC ~]<span class="err">$</span>
+</code></pre></div></div>
+
+<p>提示符中还显示了当前用户ID<code class="highlighter-rouge">learn-linux</code>，系统名为<code class="highlighter-rouge">learnlinux-PC</code></p>
+
+<ul>
+  <li>关机命令：</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shutdown <span class="nt">-h</span> now
+halt
+poweroff
+init 0
+</code></pre></div></div>
+
+<ul>
+  <li>重启命令：</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>reboot
+shutdown <span class="nt">-r</span> now
+init 6
+</code></pre></div></div>
+
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.png" alt="">
+      </div>
+      <div class="author-name" rel="author">碱基吃柠檬</div>
+      <div class="bio">
+        <p>生物信息工作者, 喜欢美好的事物</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="//weibo.com/u/7189209185" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//github.com/lemonbases" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/2019/09/18/Linux-basic-03directory-structure.html" class="read-next-link"></a>
+        <section>
+          <span>Linux基础-03目录结构</span>
+          <p>  Linux核心思想：一切皆文件，统一的名字空间 (unified namespace)：表现形式是文件系统 (...</p>
+        </section>
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/2019/09/16/Linux-basic-01introduction.html" class="read-next-link"></a>
+          <section>
+            <span>Linux基础-01简介</span>
+            <p>  Linux与生物信息学</p>
+          </section>
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Lemonbase的博客 ©
+  
+  
+  2019
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lemonbases.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+</body>
+
+</html>

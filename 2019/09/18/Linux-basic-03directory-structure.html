@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux基础-03目录结构 - Lemonbase的博客</title>
+    <meta name="author"  content="碱基吃柠檬">
+    <meta name="description" content="Linux基础-03目录结构">
+    <meta name="keywords"  content="Linux">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Linux基础-03目录结构 - Lemonbase的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2019/09/18/Linux-basic-03directory-structure.html">
+    <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
+    <meta property="og:site_name" content="Lemonbase的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="true"> <header class="g-header">
+<!--     <div class="">
+      <a href="/"></a>
+    </div> -->
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/resources.html">resources</a></li>
+            
+            <li><a href="/2019/09/19/about-us.html">about</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default post-no-cover"
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Linux" class="post-tag">Linux</a>
+          
+        
+      </div>
+      <h1>Linux基础-03目录结构</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
+        <time class="post-meta-item" datetime="19-09-18"><i class="iconfont icon-date"></i>18 Sep 2019</time>
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+
+    <article class="markdown-body">
+      <blockquote>
+  <p>Linux核心思想：一切皆文件，统一的名字空间 (unified namespace)：表现形式是文件系统 (filesystem) 的路径；统一的访问接口 (unified interface)：表现形式是 read/write 等标准函数。 – 知乎用户Rio</p>
+</blockquote>
+
+<h3 id="linux系统目录结构">Linux系统目录结构</h3>
+
+<p>熟悉Windows操作系统的人可能会注意到，Linux在路径名中不使用驱动器盘符，即没有所谓的C盘，D盘；Linux只包含一个根（root）目录的树状结构。</p>
+
+<p>而且Linux使用正斜线<code class="highlighter-rouge">/</code>划分目录，而Windows使用反斜线<code class="highlighter-rouge">\</code>，Linux中的反斜线用来标识转义字符。</p>
+
+<p>下图为Linux树状目录结构示意图：</p>
+
+<p><img src="https://ae01.alicdn.com/kf/H3bd73bdbc67d49e9932584f84b44821et.png" alt="filesystem-tree.png" /></p>
+
+<p><img src="https://ae01.alicdn.com/kf/Hdbb5ae099d0242fe826aea75faba8dbfL.png" alt="file-system" /></p>
+
+<p>其中：</p>
+
+<p><code class="highlighter-rouge">/bin</code>：bin是Binary的缩写，存放着最经常使用的命令；</p>
+
+<p><code class="highlighter-rouge">/boot</code>：存放启动Linux的核心文件，包括一些链接文件及镜像文件；</p>
+
+<p><code class="highlighter-rouge">/dev</code>：dev是Device的缩写，存放Linux的外部设备，在Linux中访问设备的方式和访问文件的方式是相同的；</p>
+
+<p><code class="highlighter-rouge">/etc</code>：系统配置文件目录；</p>
+
+<p><code class="highlighter-rouge">/home</code>：用户的主目录，Linux中每个用户都有自己的一个目录，通常该目录名为用户登录账号名；</p>
+
+<p><code class="highlighter-rouge">/lib</code>：存放系统最基本的动态链接共享库，作用类似于Windows中的DLL文件。几乎所有的应用程序都需要用到这些共享库；</p>
+
+<p><code class="highlighter-rouge">/root</code>：系统管理员目录，超级权限的用户主目录；</p>
+
+<p><code class="highlighter-rouge">/tmp</code>：存放临时文件；</p>
+
+<p><code class="highlighter-rouge">/usr</code>：用户的很多应用程序和文件都放在该目录下，类似Windows下的Program files目录；</p>
+
+<p><code class="highlighter-rouge">/var</code>： 可变目录，存放经常变化的文件，比如日志文件。</p>
+
+<h3 id="认识你的机器">认识你的机器</h3>
+
+<h4 id="系统版本和处理器架构">系统版本和处理器架构</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">uname</span> <span class="nt">-a</span>
+Linux learnlinux-PC 5.0.0-23-generic <span class="c">#24~18.04.1-Ubuntu SMP Mon Jul 29 16:12:28 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux</span>
+</code></pre></div></div>
+
+<ul>
+  <li>内核名称： Linux</li>
+  <li>主机名：learnlinux-PC</li>
+  <li>操作系统发行编号：5.0.0-23-generic</li>
+  <li>操作系统版本：#24~18.04.1-Ubuntu SMP Mon Jul 29 16:12:28 UTC 2019</li>
+  <li>处理器类型：x86_64</li>
+  <li>硬件平台：x86_64</li>
+  <li>操作系统名称：GNU/Linux</li>
+</ul>
+
+<h4 id="内存大小">内存大小</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>free <span class="nt">-m</span>
+              total        used        free      shared  buff/cache   available
+Mem:           1966        1160         180          14         625         624
+Swap:           947         243         703
+</code></pre></div></div>
+
+<p>系统总内存为：1966Mb 近似为 2Gb，和创建虚拟机时相同</p>
+
+<h4 id="硬盘空间">硬盘空间</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">df</span> <span class="nt">-h</span>
+
+Filesystem      Size  Used Avail Use% Mounted on
+udev            960M     0  960M   0% /dev
+tmpfs           197M  1.8M  195M   1% /run
+/dev/sda1        20G  6.3G   13G  34% /
+tmpfs           984M     0  984M   0% /dev/shm
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs           984M     0  984M   0% /sys/fs/cgroup
+</code></pre></div></div>
+
+<p>显示所有挂载设备的当前磁盘空间使用情况</p>
+
+<p>使用<code class="highlighter-rouge">df</code>命令查看哪块磁盘存储空间快没了后，使用<code class="highlighter-rouge">du</code>命令显示指定目录(默认为当前目录)的磁盘使用情况</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">du</span> <span class="nt">-h</span> <span class="nt">--max-depth</span><span class="o">=</span>1
+
+4.0K	./Public
+23M	./.cache
+8.0K	./Desktop
+164K	./.config
+4.0K	./Downloads
+4.0K	./Music
+4.0K	./Videos
+1.5M	./.local
+4.0K	./Pictures
+4.0K	./Templates
+13M	./.thunderbird
+19M	./.mozilla
+4.0K	./.ssh
+16K	./.gnupg
+4.0K	./Documents
+56M	<span class="nb">.</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">-h</code>表示<code class="highlighter-rouge">human read</code>，以K, M, G作为单位，<code class="highlighter-rouge">--max-depth=1</code>表示当前目录的各个子目录所使用的空间</p>
+
+<h4 id="cpu信息">CPU信息</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>less /etc/cpuinfo
+<span class="c"># 或者</span>
+lscpu
+
+Architecture:        x86_64
+CPU op-mode<span class="o">(</span>s<span class="o">)</span>:      32-bit, 64-bit
+Byte Order:          Little Endian
+CPU<span class="o">(</span>s<span class="o">)</span>:              2
+On-line CPU<span class="o">(</span>s<span class="o">)</span> list: 0,1
+Thread<span class="o">(</span>s<span class="o">)</span> per core:  1
+Core<span class="o">(</span>s<span class="o">)</span> per socket:  2
+Socket<span class="o">(</span>s<span class="o">)</span>:           1
+NUMA node<span class="o">(</span>s<span class="o">)</span>:        1
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               94
+Model name:          Intel<span class="o">(</span>R<span class="o">)</span> Core<span class="o">(</span>TM<span class="o">)</span> i7-6700 CPU @ 3.40GHz
+Stepping:            3
+CPU MHz:             3408.109
+BogoMIPS:            6816.21
+Virtualization:      VT-x
+Hypervisor vendor:   VMware
+Virtualization <span class="nb">type</span>: full
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            256K
+L3 cache:            8192K
+NUMA node0 CPU<span class="o">(</span>s<span class="o">)</span>:   0,1
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti tpr_shadow vnmi ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 invpcid rtm rdseed adx smap xsaveopt dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.png" alt="">
+      </div>
+      <div class="author-name" rel="author">碱基吃柠檬</div>
+      <div class="bio">
+        <p>生物信息工作者, 喜欢美好的事物</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="//weibo.com/u/7189209185" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//github.com/lemonbases" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/2019/09/19/Linux-basic-04directory-operation.html" class="read-next-link"></a>
+        <section>
+          <span>Linux基础-04目录管理</span>
+          <p>这里需要了解绝对路径和相对路径两个概念。</p>
+        </section>
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/2019/09/17/Linux-basic-02environment.html" class="read-next-link"></a>
+          <section>
+            <span>Linux基础-02环境搭建</span>
+            <p>  工欲善其事，必先利其器。在开始学习Linux前，首先配置Linux环境。</p>
+          </section>
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Lemonbase的博客 ©
+  
+  
+  2019
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lemonbases.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux基础-04目录管理 - Lemonbase的博客</title>
+    <meta name="author"  content="碱基吃柠檬">
+    <meta name="description" content="Linux基础-04目录管理">
+    <meta name="keywords"  content="Linux">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Linux基础-04目录管理 - Lemonbase的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2019/09/19/Linux-basic-04directory-operation.html">
+    <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
+    <meta property="og:site_name" content="Lemonbase的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="true"> <header class="g-header">
+<!--     <div class="">
+      <a href="/"></a>
+    </div> -->
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/resources.html">resources</a></li>
+            
+            <li><a href="/2019/09/19/about-us.html">about</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default post-no-cover"
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Linux" class="post-tag">Linux</a>
+          
+        
+      </div>
+      <h1>Linux基础-04目录管理</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
+        <time class="post-meta-item" datetime="19-09-19"><i class="iconfont icon-date"></i>19 Sep 2019</time>
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+
+    <article class="markdown-body">
+      <p>这里需要了解<code class="highlighter-rouge">绝对路径</code>和<code class="highlighter-rouge">相对路径</code>两个概念。</p>
+
+<p><span><font color="red">绝对路径</font>： 从根目录<code class="highlighter-rouge">/</code>写起，比如<code class="highlighter-rouge">/usr/bin</code></span></p>
+
+<p><span><font color="red">相对路径</font>： 基于当前位置的路径表示，<code class="highlighter-rouge">.</code>表示当前目录，<code class="highlighter-rouge">..</code>表示当前目录的父目录，双点符可以联用向上切换目录，比如<code class="highlighter-rouge">../Downloads</code>表示上一层目录中的Downloads文件夹</span></p>
+
+<h3 id="ls-显示目录内容">ls 显示目录内容</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="o">[</span><span class="nt">-a</span><span class="o">]</span> <span class="o">[</span>目录名]
+<span class="nt">-a</span> : 全部文件，连同隐藏文件<span class="o">(</span>开头为.的文件<span class="o">)</span>一起列出来
+<span class="nt">-d</span> : 仅列出目录本身，而不是列出目录内的文件数据
+<span class="nt">-l</span> : 长列表输出
+<span class="nt">--help</span>： 查看更多参数的帮助文档
+</code></pre></div></div>
+
+<p>比如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>learn-linux@learnlinux-PC:~<span class="nv">$ </span><span class="nb">ls
+</span>Desktop  Documents  Downloads  examples.desktop  Music  Pictures  Public  Templates  Videos
+learn-linux@learnlinux-PC:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-al</span>
+total 100
+drwxr-xr-x 17 learn-linux learn-linux 4096 9月  17 10:11 <span class="nb">.</span>
+drwxr-xr-x  3 root        root        4096 9月  16 13:42 ..
+<span class="nt">-rw-------</span>  1 learn-linux learn-linux 1871 9月  17 09:01 .bash_history
+<span class="nt">-rw-r--r--</span>  1 learn-linux learn-linux  220 9月  16 13:42 .bash_logout
+<span class="nt">-rw-r--r--</span>  1 learn-linux learn-linux 3771 9月  16 13:42 .bashrc
+drwx------ 14 learn-linux learn-linux 4096 9月  16 14:53 .cache
+drwx------ 11 learn-linux learn-linux 4096 9月  16 13:48 .config
+drwxr-xr-x  3 learn-linux learn-linux 4096 9月  16 13:51 Desktop
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Documents
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Downloads
+<span class="nt">-rw-r--r--</span>  1 learn-linux learn-linux 8980 9月  16 13:42 examples.desktop
+drwx------  3 learn-linux learn-linux 4096 9月  16 13:52 .gnupg
+<span class="nt">-rw-------</span>  1 learn-linux learn-linux 2076 9月  16 14:43 .ICEauthority
+drwx------  3 learn-linux learn-linux 4096 9月  16 13:46 .local
+drwx------  5 learn-linux learn-linux 4096 9月  16 13:56 .mozilla
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Music
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Pictures
+<span class="nt">-rw-r--r--</span>  1 learn-linux learn-linux  807 9月  16 13:42 .profile
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Public
+drwx------  2 learn-linux learn-linux 4096 9月  16 13:52 .ssh
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Templates
+drwx------  5 learn-linux learn-linux 4096 9月  16 14:01 .thunderbird
+drwxr-xr-x  2 learn-linux learn-linux 4096 9月  16 13:47 Videos
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ls</code>命令输出的列表默认按照字母顺序，<code class="highlighter-rouge">ls</code>可以<font color="red">结合多个参数</font>使用，上面示例长列表中每一行都包括关于文件的下述信息:</p>
+
+<ul>
+  <li>文件类型，目录(d)、文件(-)，字符型文件(c)或块设备(b)；</li>
+  <li>文件权限(参见之后章节)；</li>
+  <li>文件的硬链接综述；</li>
+  <li>文件属主的用户名；</li>
+  <li>文件属组的组名；</li>
+  <li>文件大小（默认字节为单位）</li>
+  <li>文件上一次修改时间</li>
+  <li>文件名/目录名</li>
+</ul>
+
+<p>同时，<code class="highlighter-rouge">ls</code>可以和通配符联用，筛选输出列表</p>
+
+<ul>
+  <li><code class="highlighter-rouge">?</code> 代表1个字符；</li>
+  <li><code class="highlighter-rouge">*</code> 代表0或多个字符</li>
+  <li><code class="highlighter-rouge">[a-z]</code> 指定字母范围为a-z</li>
+</ul>
+
+<p>比如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-ld</span> D<span class="k">*</span>
+drwxr-xr-x 3 learn-linux learn-linux 4096 9月  16 13:51 Desktop
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Documents
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Downloads
+<span class="nb">ls</span> <span class="nt">-ld</span> D[h-z]<span class="k">*</span>
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Documents
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  16 13:47 Downloads
+</code></pre></div></div>
+
+<h3 id="cd-切换目录">cd 切换目录</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>destination
+<span class="c"># e.g.</span>
+<span class="c">## 绝对路径</span>
+<span class="nb">cd</span> /usr/bin/
+<span class="c">## 相对路径</span>
+<span class="nb">cd</span> ../../etc
+<span class="c">## 回到家目录（一键回城）</span>
+<span class="nb">cd</span> ~
+<span class="nb">cd</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">destination</code>为目标目录路径，可使用绝对路径或相对路径表示</p>
+
+<h3 id="pwd-打印当前目录">pwd 打印当前目录</h3>
+
+<p>在使用Linux系统进行命令行操作时，需要经常在不同目录间切换，使用<code class="highlighter-rouge">pwd</code>可以迅速显示当前工作目录。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>learn-linux@learnlinux-PC:~<span class="nv">$ </span><span class="nb">cd</span> /usr/bin
+learn-linux@learnlinux-PC:/usr/bin<span class="nv">$ </span><span class="nb">pwd</span>
+/usr/bin
+</code></pre></div></div>
+
+<h3 id="mkdir-创建新目录">mkdir 创建新目录</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="o">[</span><span class="nt">-p</span><span class="o">]</span> New_Dir
+<span class="nt">-p</span> : 创建多级目录
+</code></pre></div></div>
+
+<h3 id="rmdir-删除空目录">rmdir 删除空目录</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rmdir</span> <span class="o">[</span><span class="nt">-p</span><span class="o">]</span> Dir
+<span class="nt">-p</span> ： 删除多级空目录
+</code></pre></div></div>
+
+<p>当目录不为空时，上诉命令会运行失败，可使用下文的<code class="highlighter-rouge">rm</code>命令进行递归删除。</p>
+
+<h3 id="tree-展示目录">tree 展示目录</h3>
+
+<p><code class="highlighter-rouge">tree</code>可能没有默认安装在Linux发行版中，在后续的教程中，我们将学习如何安装软件。这里为了展示方面，只显示3层子目录</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>learn-linux@learnlinux-PC:~<span class="nv">$ </span>tree <span class="nt">-L</span> 3
+<span class="nb">.</span>
+├── Desktop
+│   └── vmware-tools-distrib
+│       ├── bin
+│       ├── caf
+│       ├── doc
+│       ├── etc
+│       ├── FILES
+│       ├── INSTALL
+│       ├── installer
+│       ├── lib
+│       ├── vgauth
+│       ├── vmware-install.pl
+│       └── vmware-install.real.pl
+├── Documents
+├── Downloads
+├── examples.desktop
+├── Music
+├── Pictures
+├── Public
+├── Templates
+└── Videos
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.png" alt="">
+      </div>
+      <div class="author-name" rel="author">碱基吃柠檬</div>
+      <div class="bio">
+        <p>生物信息工作者, 喜欢美好的事物</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="//weibo.com/u/7189209185" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//github.com/lemonbases" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/2019/09/19/about-us.html" class="read-next-link"></a>
+        <section>
+          <span>关于我们</span>
+          <p>我们是谁？</p>
+        </section>
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/2019/09/18/Linux-basic-03directory-structure.html" class="read-next-link"></a>
+          <section>
+            <span>Linux基础-03目录结构</span>
+            <p>  Linux核心思想：一切皆文件，统一的名字空间 (unified namespace)：表现形式是文件系统 (...</p>
+          </section>
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Lemonbase的博客 ©
+  
+  
+  2019
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lemonbases.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+</body>
+
+</html>

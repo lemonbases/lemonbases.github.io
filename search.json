@@ -1,6 +1,42 @@
 [
   
     {
+      "title"    : "常见生物数据格式01--FASTA/FASTQ",
+      "tags"     : "生物数据格式",
+      "url"      : "/2019/09/19/biodata-format01.html"
+    } ,
+  
+    {
+      "title"    : "关于我们",
+      "tags"     : "thoughts",
+      "url"      : "/2019/09/19/about-us.html"
+    } ,
+  
+    {
+      "title"    : "Linux基础-04目录管理",
+      "tags"     : "Linux",
+      "url"      : "/2019/09/19/Linux-basic-04directory-operation.html"
+    } ,
+  
+    {
+      "title"    : "Linux基础-03目录结构",
+      "tags"     : "Linux",
+      "url"      : "/2019/09/18/Linux-basic-03directory-structure.html"
+    } ,
+  
+    {
+      "title"    : "Linux基础-02环境搭建",
+      "tags"     : "Linux",
+      "url"      : "/2019/09/17/Linux-basic-02environment.html"
+    } ,
+  
+    {
+      "title"    : "Linux基础-01简介",
+      "tags"     : "Linux",
+      "url"      : "/2019/09/16/Linux-basic-01introduction.html"
+    } ,
+  
+    {
       "title"    : "Hello World",
       "tags"     : "thoughts",
       "url"      : "/2019/08/01/Hello-World.html"
@@ -8,7 +44,7 @@
   
     {
       "title"    : "jekyll, gitpage搭建博客",
-      "tags"     : "gitpage jekyll",
+      "tags"     : "网站运维",
       "url"      : "/2019/08/01/Build-Site.html"
     } 
   

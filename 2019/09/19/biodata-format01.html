@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见生物数据格式01--FASTA/FASTQ - Lemonbase的博客</title>
+    <meta name="author"  content="碱基吃柠檬">
+    <meta name="description" content="常见生物数据格式01--FASTA/FASTQ">
+    <meta name="keywords"  content="生物数据格式">
+    <!-- Open Graph -->
+    <meta property="og:title" content="常见生物数据格式01--FASTA/FASTQ - Lemonbase的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2019/09/19/biodata-format01.html">
+    <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
+    <meta property="og:site_name" content="Lemonbase的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="true"> <header class="g-header">
+<!--     <div class="">
+      <a href="/"></a>
+    </div> -->
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/resources.html">resources</a></li>
+            
+            <li><a href="/2019/09/19/about-us.html">about</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default post-no-cover"
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#%E7%94%9F%E7%89%A9%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F" class="post-tag">生物数据格式</a>
+          
+        
+      </div>
+      <h1>常见生物数据格式01--FASTA/FASTQ</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
+        <time class="post-meta-item" datetime="19-09-19"><i class="iconfont icon-date"></i>19 Sep 2019</time>
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+
+    <article class="markdown-body">
+      <blockquote>
+  <p>我们不生产数据，只是数据的搬运工。</p>
+</blockquote>
+
+<p>在进行生物数据分析之前，有必要先了解一下常见的生物数据格式，不然可能会犯一些意料不到的错误。</p>
+
+<p>常见的生物数据格式有：</p>
+
+<ul>
+  <li>FASTA</li>
+  <li>FASTQ</li>
+  <li>GFF/GTF/BED/…</li>
+  <li>VCF</li>
+  <li>SAM/BAM</li>
+</ul>
+
+<p><img src="https://ae01.alicdn.com/kf/H7e8b085c89fa49f1b33602844981ce21D.png" alt="ngs_map_read_file_formats.png" style="zoom:36%;" /></p>
+
+<h3 id="fasta">FASTA</h3>
+
+<p>记录DNA/Protein序列的文本格式，其由两部分组成:</p>
+<ul>
+  <li>描述行，以<code class="highlighter-rouge">&gt;</code>起始，记录序列ID，名称或注释信息</li>
+  <li>序列数据，一般为大写格式
+    <pre><code class="language-{bash,eval=FALSE,echo=TRUE}">&gt;gi|31563518|ref|NP_852610.1| microtubule-associated proteins 1A/1B light chain 3A isoform b [Homo sapiens]
+MKMRFFSSPCGKAAVDPADRCKEVQQIRDQHPSKIPVIIERYKGEKQLPVLDKTKFLVPDHVNMSELVKI
+IRRRLQLNPTQAFFLLVNQHSMVSVSTPIADIYEQEKDEDGFLYMVYASQETFGFIRENE
+</code></pre>
+    <p>有些从Ensembl下载的基因组数据中，序列中包含小写字母或<code class="highlighter-rouge">N</code>，这是因为基因组文件中包含大量的重复序列，<code class="highlighter-rouge">soft-mask</code>将重复序列从大写字母表示转化为小写字母表示；<code class="highlighter-rouge">hard-mask</code>将重复序列转化为<code class="highlighter-rouge">N</code>s。</p>
+  </li>
+</ul>
+
+<h3 id="fastq">FASTQ</h3>
+
+<p>记录测序序列及其质量得分的文本格式，序列与质量得分用单个ASCII字符表示。</p>
+
+<p>Phred64编码格式，碱基质量值为字符的十进制ASCII码减去64</p>
+
+<p>Phred32编码格式，碱基质量值为字符的十进制ASCII码减去32</p>
+
+<p>通常一个序列由4行组成：</p>
+
+<ol>
+  <li>以<code class="highlighter-rouge">@</code>开头，之后为序列的ID及描述信息(与fasta格式的描述行类似);</li>
+  <li>序列信息;</li>
+  <li>以<code class="highlighter-rouge">+</code>开头，之后可以再加上序列的ID及描述信息(可选);</li>
+  <li>质量得分，与第二行长度相同。</li>
+</ol>
+
+<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF&gt;&gt;&gt;&gt;&gt;&gt;CCCCCCC65
+</code></pre>
+
+<h4 id="illumina序列标识符">Illumina序列标识符</h4>
+
+<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@HWUSI-EAS100R:6:73:941:1973#0/1
+</code></pre>
+
+<table>
+  <thead>
+    <tr>
+      <th>HWUSI-EAS100R</th>
+      <th>the unique instrument name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>6</td>
+      <td>flowcell lane</td>
+    </tr>
+    <tr>
+      <td>73</td>
+      <td>tile number within the flowcell lane</td>
+    </tr>
+    <tr>
+      <td>941</td>
+      <td>‘x’-coordinate of the cluster within the tile</td>
+    </tr>
+    <tr>
+      <td>1973</td>
+      <td>‘y’-coordinate of the cluster within the tile</td>
+    </tr>
+    <tr>
+      <td>#0</td>
+      <td>index number for a multiplexed sample (0 for no indexing)</td>
+    </tr>
+    <tr>
+      <td>/1</td>
+      <td>the member of a pair, /1 or /2 <em>(paired-end or mate-pair reads only)</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Illumina 1.4之后multiplex ID使用<code class="highlighter-rouge">#NNNNNN</code>替代<code class="highlighter-rouge">#0</code>，<code class="highlighter-rouge">#NNNNNN</code>为sequence of the multiplex tag。</p>
+<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG
+</code></pre>
+
+<table>
+  <thead>
+    <tr>
+      <th>EAS139</th>
+      <th>the unique instrument name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>136</td>
+      <td>the run id</td>
+    </tr>
+    <tr>
+      <td>FC706VJ</td>
+      <td>the flowcell id</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>flowcell lane</td>
+    </tr>
+    <tr>
+      <td>2104</td>
+      <td>tile number within the flowcell lane</td>
+    </tr>
+    <tr>
+      <td>15343</td>
+      <td>‘x’-coordinate of the cluster within the tile</td>
+    </tr>
+    <tr>
+      <td>197393</td>
+      <td>‘y’-coordinate of the cluster within the tile</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>the member of a pair, 1 or 2 <em>(paired-end or mate-pair reads only)</em></td>
+    </tr>
+    <tr>
+      <td>Y</td>
+      <td>Y if the read is filtered, N otherwise</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>0 when none of the control bits are on, otherwise it is an even number</td>
+    </tr>
+    <tr>
+      <td>ATCACG</td>
+      <td>index sequence</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>最近版本的Illumina输出格式为：</p>
+<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@EAS139:136:FC706VJ:2:2104:15343:197393 1:N:18:1
+</code></pre>
+
+<h4 id="质量score计算">质量Score计算</h4>
+
+<p>测序仪测序是根据荧光信号强弱给出参考测序错误概率(probability that the corresponding base call is incorrect,P)。</p>
+
+<p>Sanger使用：$Q_{sanger}=-10*\log_{10}P$，其也称为Phred质量得分</p>
+
+<p>Solexa(Illumina Genome Analyzer)使用：$Q_{solexa-prioor to v.1.3}=-10*\log_{10}\frac{P}{1-P}$</p>
+
+<p>二者区别如下图所示：<img src="https://ae01.alicdn.com/kf/Hd03b095bd3af48e89488dd3cb9b22bcfp.png" alt="Probability_metrics.png" /></p>
+
+<h4 id="质量得分编码">质量得分编码</h4>
+
+<p><img src="https://ae01.alicdn.com/kf/H471cbf9fc82a44e686bd043effab413dA.png" alt="score_encoding.png" style="zoom:75%;" /></p>
+
+<h4 id="检测编码类型">检测编码类型</h4>
+
+<p>通过上图，可以做类似这种决策树：</p>
+
+<p>包含字符<code class="highlighter-rouge">0</code>：</p>
+
+<ul>
+  <li>包含字符<code class="highlighter-rouge">J</code>：Illumina 1.8+ Phred33</li>
+  <li>不包含字符<code class="highlighter-rouge">J</code>：Sanger Phred33</li>
+</ul>
+
+<p>不包含字符<code class="highlighter-rouge">0</code>:</p>
+
+<ul>
+  <li>包含字符<code class="highlighter-rouge">=</code>：Solexa Phred64</li>
+  <li>不包含字符<code class="highlighter-rouge">=</code>，包含字符<code class="highlighter-rouge">A</code>：Illumina1.3 Phred64</li>
+  <li>不包含字符<code class="highlighter-rouge">=</code>，不包含字符<code class="highlighter-rouge">A</code>：Illumina1.5 Phred64</li>
+</ul>
+
+<p>可以使用Github的<a href="https://github.com/brentp/bio-playground/blob/master/reads-utils/guess-encoding.py">guess-encoding.py</a>来进行判断</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">gunzip</span> <span class="nt">-c</span> file.fastq.gz | <span class="nb">awk</span> <span class="s1">'NR % 4 == 0'</span> | <span class="nb">head</span> <span class="nt">-n</span> 1000000 | python guess-encoding.py
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.png" alt="">
+      </div>
+      <div class="author-name" rel="author">碱基吃柠檬</div>
+      <div class="bio">
+        <p>生物信息工作者, 喜欢美好的事物</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="//weibo.com/u/7189209185" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//github.com/lemonbases" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+
+      
+      <div class="read-next-item">
+        <a href="/2019/09/19/about-us.html" class="read-next-link"></a>
+          <section>
+            <span>关于我们</span>
+            <p>我们是谁？</p>
+          </section>
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Lemonbase的博客 ©
+  
+  
+  2019
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lemonbases.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+</body>
+
+</html>
