@@ -5,9 +5,327 @@
     <description>碱基吃柠檬，人面桃花相映红，生物信息工作者</description>
     <link>http://localhost:4000//</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 20 Sep 2019 19:43:53 +0800</pubDate>
-    <lastBuildDate>Fri, 20 Sep 2019 19:43:53 +0800</lastBuildDate>
+    <pubDate>Sat, 21 Sep 2019 22:53:55 +0800</pubDate>
+    <lastBuildDate>Sat, 21 Sep 2019 22:53:55 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Linux基础-06文件权限</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;了解Linux系统下文件权限及管理&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在&lt;a href=&quot;https://lemonbases.github.io/2019/09/19/Linux-basic-04directory-operation.html&quot;&gt;Linux-基础-04目录管理&lt;/a&gt;中，我们学习了&lt;code class=&quot;highlighter-rouge&quot;&gt;ls&lt;/code&gt;命令可以用来显示目录内容。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+
+total 8
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 2 learn-linux learn-linux 19 9月  17 11:41 hl_test.txt
+lrwxrwxrwx 1 learn-linux learn-linux  8 9月  17 11:40 sl_test.txt -&amp;gt; test.txt
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 2 learn-linux learn-linux 19 9月  17 11:41 test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;第一个字段描述文件和目录权限的编码，第一个字符表示对象类型：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt;代表文件&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;d&lt;/code&gt;代表目录&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;l&lt;/code&gt;代表链接&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;代表字符型设备&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt;代表块设备&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt;代表网络设备&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;之后有3组三字符的编码，共9位，每一组定义了3种访问权限：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;r&lt;/code&gt;代表可读&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;w&lt;/code&gt;代表可写&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt;代表可执行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;若没有对应权限，用&lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt;表示。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H88eb0f8a93234430abd2f83cb36c3bd9O.png&quot; alt=&quot;linux-file-permission.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;权限的8进制表示：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;r ：4， w：2，x：1，-：0&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H5e273635b251460a81ceb16e7568c51aM.png&quot; alt=&quot;linux-file-permission-8bits.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;chmod-权限更改&quot;&gt;chmod 权限更改&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;options mode file
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;mode参数可以使用八进制模式或符号模式进行安全设置&lt;/p&gt;
+
+&lt;h4 id=&quot;八进制模式&quot;&gt;八进制模式&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;760 test.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; test.txt
+
+&lt;span class=&quot;nt&quot;&gt;-rwxrw----&lt;/span&gt; 2 learn-linux learn-linux 19 9月  17 11:41 test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;符号模式&quot;&gt;符号模式&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ugoa] &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;+-&lt;span class=&quot;o&quot;&gt;=][&lt;/span&gt;rwx...]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;u：文件所有者&lt;/li&gt;
+  &lt;li&gt;g：同组用户&lt;/li&gt;
+  &lt;li&gt;o：其它用户&lt;/li&gt;
+  &lt;li&gt;a：上述所有&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;后面的符号代表在现有权限基础上增加权限&lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;, 移除权限&lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt;，或将权限设置为后面的值&lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;第三个符号代表设置的权限，常见的为&lt;code class=&quot;highlighter-rouge&quot;&gt;rwx&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;给&lt;code class=&quot;highlighter-rouge&quot;&gt;test.txt&lt;/code&gt;文件的其它用户增加读权限。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;o+r test.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; test.txt
+
+&lt;span class=&quot;nt&quot;&gt;-rwxrw-r--&lt;/span&gt; 2 learn-linux learn-linux 19 9月  17 11:41 test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;改变所属关系&quot;&gt;改变所属关系&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;chown&lt;/code&gt;用于改变文件属主和属主，&lt;code class=&quot;highlighter-rouge&quot;&gt;chgrp&lt;/code&gt;用于改变文件的属组，&lt;code class=&quot;highlighter-rouge&quot;&gt;-R&lt;/code&gt;选项用于递归改变目录及其子文件&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt; test.txt
+
+&lt;span class=&quot;nt&quot;&gt;-rwxrw-r--&lt;/span&gt; 2 learn-linux learn-linux 19 9月  17 11:41 test.txt
+
+&lt;span class=&quot;c&quot;&gt;#将test.txt文件属主更改为root，属组更改为root&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;root:root test.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt; test.txt
+
+&lt;span class=&quot;nt&quot;&gt;-rwxrw-r--&lt;/span&gt; 2 root root 19 9月  17 11:41 test.txt
+
+&lt;span class=&quot;c&quot;&gt;#将test.txt文件属组更改为test&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chgrp &lt;/span&gt;learn-linux test.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt; test.txt
+
+&lt;span class=&quot;nt&quot;&gt;-rwxrw-r--&lt;/span&gt; 2 root learn-linux 19 9月  17 11:41 test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tips：&lt;/p&gt;
+
+&lt;p&gt;当出现&lt;code class=&quot;highlighter-rouge&quot;&gt;Operation not permitted&lt;/code&gt; error时，使用&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo&lt;/code&gt;提升权限。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 21 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/21/Linux-basic-06file-permission.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/21/Linux-basic-06file-permission.html</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux基础-05文件操作</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;Linux常见文件操作&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;touch-创建文件&quot;&gt;touch 创建文件&lt;/h3&gt;
+
+&lt;p&gt;touch可以创建空文件&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;test.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; test.txt 
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux 0 9月  17 10:56 test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;同时touch还可用来改变文件的修改时间，而不改变文件内容&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; examples.desktop 
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux 8980 9月  16 13:42 examples.desktop
+&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;examples.desktop 
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; examples.desktop 
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux 8980 9月  17 10:59 examples.desktop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;mv-移动文件或改名&quot;&gt;mv 移动文件或改名&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-fiu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; 源文件 目标文件
+&lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;: force强制的意思，如果目标文件已经存在，不会询问而直接覆盖
+&lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;: 若目标文件已经存在，询问是否覆盖
+&lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;: 若目标文件已经存在，仅在复制文件比目标文件新的情况下覆盖
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;test.txt Desktop/
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; Desktop/test.txt 
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux 0 9月  17 10:56 Desktop/test.txt
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;Desktop/test.txt Desktop/test2.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; Desktop/test&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux 0 9月  17 10:56 Desktop/test2.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mv&lt;/code&gt;命令可以和通配符联用批量移动文件。&lt;/p&gt;
+
+&lt;h3 id=&quot;cp-复制文件目录&quot;&gt;cp 复制文件/目录&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; 源文件 目标文件
+&lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt;：递归复制目录
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;Desktop/test2.txt Desktop/test.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; Desktop/test&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux 0 9月  17 10:56 Desktop/test2.txt
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux 0 9月  17 11:09 Desktop/test.txt
+
+learn-linux@learnlinux-PC:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; Downloads/ Desktop/
+learn-linux@learnlinux-PC:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; Desktop/
+total 8
+drwxr-xr-x 2 learn-linux learn-linux 4096 9月  17 11:10 Downloads
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux    0 9月  17 10:56 test2.txt
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 learn-linux learn-linux    0 9月  17 11:09 test.txt
+drwxr-xr-x 9 learn-linux learn-linux 4096 8月  26  2016 vmware-tools-distrib
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;同样，&lt;code class=&quot;highlighter-rouge&quot;&gt;cp&lt;/code&gt;命令也可和通配符联用进行批量复制。&lt;/p&gt;
+
+&lt;h3 id=&quot;rm-删除文件目录&quot;&gt;rm 删除文件/目录&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-fir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; 文件或目录
+&lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ： 强制删除
+&lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; ： 互动模式，删除前进行询问
+&lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; ： 递归删除目录
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;font color=&quot;red&quot;&gt;慎用rm，建议使用时加入-i 参数&lt;/font&gt;
+&lt;p&gt;，命令行删除后没有回收站，除非使用磁盘恢复工具。&lt;/p&gt;
+
+&lt;p&gt;删库跑路系列:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/9150e4e5gy1fqhmq0ratwj206c0f8q38.jpg&quot; alt=&quot;http://ww3.sinaimg.cn/large/9150e4e5gy1fqhmq0ratwj206c0f8q38.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;ln-链接文件&quot;&gt;ln 链接文件&lt;/h3&gt;
+
+&lt;p&gt;如果需要维护同一文件的两份或多份副本，除了保存多份单独的物理文件副本之外， 还可以采用保存一份物理文件副本，多个虚拟副本的方法。虚拟副本就称为链接。链接是指向文件真实位置的占位符。Linux有两种不同类型的文件链接：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;硬链接：在Linux系统中，内核为每一个文件分配一个Inode(索引节点)。Linux中多个文件名指向同一索引节点就是硬链接。其会创建读你的虚拟文件，包含原始文件的信息和位置，从根本上是同一个文件。&lt;/li&gt;
+  &lt;li&gt;软链接：又称符号链接，类似Windows下的快捷方式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## 创建软链接&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; test.txt sl_test.txt
+&lt;span class=&quot;c&quot;&gt;## 创建硬链接&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ln &lt;/span&gt;test.txt hl_test.txt
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.txt
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 2 learn-linux learn-linux 19 9月  17 11:41 hl_test.txt
+lrwxrwxrwx 1 learn-linux learn-linux  8 9月  17 11:40 sl_test.txt -&amp;gt; test.txt
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 2 learn-linux learn-linux 19 9月  17 11:41 test.txt
+&lt;span class=&quot;c&quot;&gt;# 查看文件inode&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.txt
+921537 hl_test.txt  921263 sl_test.txt  921537 test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H974114bc58f74b7c889f545a4cb6bf756.png&quot; alt=&quot;硬链接vs软链接&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;file-查看文件类型&quot;&gt;file 查看文件类型&lt;/h3&gt;
+
+&lt;p&gt;在查看文件内容之前，应该先了解文件类型，如果打开二进制文件，屏幕会输出一堆乱码。此时&lt;code class=&quot;highlighter-rouge&quot;&gt;file&lt;/code&gt;命令就非常有用了。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;file test.txt
+test.txt: ASCII text
+
+file sl_test.txt 
+sl_test.txt: symbolic &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;to test.txt
+
+file /bin/ls
+/bin/ls: ELF 64-bit LSB shared object, x86-64, version 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SYSV&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, dynamically linked, interpreter /lib64/l, &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;GNU/Linux 3.2.0, BuildID[sha1]&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;9567f9a28e66f4d7ec4baf31cfbf68d0410f0ae6, stripped
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;查看整个文件&quot;&gt;查看整个文件&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;cat&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; file_name
+&lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; : 显示行号
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cat&lt;/code&gt;将文件中的文本打印输出到屏幕上，对于大型文件而言，文本会一晃而过，不能进行有效控制。下面两个命令可以有效地解决这个问题。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;more&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;more file_name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;more&lt;/code&gt;是个分页工具，一次显示一屏文本，通过&lt;code class=&quot;highlighter-rouge&quot;&gt;空格Space&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;回车Enter&lt;/code&gt;向下翻页，&lt;code class=&quot;highlighter-rouge&quot;&gt;q&lt;/code&gt;退出文档&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;less&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;less&lt;/code&gt;用法和&lt;code class=&quot;highlighter-rouge&quot;&gt;more&lt;/code&gt;类似，其还可以通过上下键滚动，还可以查找文档。&lt;/p&gt;
+
+&lt;h3 id=&quot;查看部分文件&quot;&gt;查看部分文件&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;tail&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;查看文件的“尾部”&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-nf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; file_name
+&lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt;: 指定显示末尾行数，默认为最后10行
+&lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;: 允许在其他进程使用该文件时查看文件的内容，查看日志时非常有用
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;head&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;查看文件的“头部”&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 默认查看文件前10行&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;head &lt;/span&gt;file_name
+&lt;span class=&quot;c&quot;&gt;# 查看文件前5行&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-5&lt;/span&gt;  file_name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;tips&quot;&gt;Tips&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TAB自动补全&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;文件名太长或是命令记忆模糊，可以双击TAB进行补全，可以极大提高工作效率~&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;方向键&lt;code class=&quot;highlighter-rouge&quot;&gt;↑&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;↓&lt;/code&gt;可以调用上次输入命令，或者使用&lt;code class=&quot;highlighter-rouge&quot;&gt;history&lt;/code&gt;查看历史命令&lt;/li&gt;
+  &lt;li&gt;命令参数记不住怎么办？使用&lt;code class=&quot;highlighter-rouge&quot;&gt;man&lt;/code&gt;命令查看手册，妈妈再也不用担心我的学习了~&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;man &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hfaf46b4e37524d1685a6f89259c5fbbah.png&quot; alt=&quot;ls帮助手册&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用空格翻页，或回车逐行查看，&lt;code class=&quot;highlighter-rouge&quot;&gt;q&lt;/code&gt;退出手册帮助。&lt;/p&gt;
+
+&lt;p&gt;而且大多数命令支持&lt;code class=&quot;highlighter-rouge&quot;&gt;--help&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;-help&lt;/code&gt;参数，显示帮助信息。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 20 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/20/Linux-basic-05file-operation.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/20/Linux-basic-05file-operation.html</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
     
       <item>
         <title>常见生物数据格式01--FASTA/FASTQ</title>

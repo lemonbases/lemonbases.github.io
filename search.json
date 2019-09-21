@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "Linux基础-06文件权限",
+      "tags"     : "Linux",
+      "url"      : "/2019/09/21/Linux-basic-06file-permission.html"
+    } ,
+  
+    {
+      "title"    : "Linux基础-05文件操作",
+      "tags"     : "Linux",
+      "url"      : "/2019/09/20/Linux-basic-05file-operation.html"
+    } ,
+  
+    {
       "title"    : "常见生物数据格式01--FASTA/FASTQ",
       "tags"     : "生物数据格式",
       "url"      : "/2019/09/19/biodata-format01.html"
