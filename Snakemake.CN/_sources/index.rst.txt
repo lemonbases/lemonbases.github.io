@@ -79,9 +79,9 @@ Snakemake工作流程本质上是由定义 **规则** 的声明性代码扩展�
 * 有关版本，请参阅 :ref:`Changelog <changelog>` 。
 * 查看 :ref:`常见问题解答（FAQ）<project_info-faq>` 。
 * 如有疑问，请发贴在 `stack overflow <http://stackoverflow.com/questions/tagged/snakemake>`_ 。
-* 使用`邮件列表<https://groups.google.com/forum/#!forum/snakemake>`_与其他Snakemake用户讨论。 **请不要在那里发布问题。使用stack overflow提问题。**
+* 使用 `mailing list <https://groups.google.com/forum/#!forum/snakemake>`_ 与其他Snakemake用户讨论。 **请不要在那里发布问题。使用stack overflow提问题。**
 * 对于错误和新功能请求，请使用 `issue tracker <https://bitbucket.org/snakemake/snakemake/issues>`_ 。
-* 有关贡献，请访问 `bitbucket <https://bitbucket.org/snakemake/snakemake>`_，并阅读 :ref: `guidelines <project_info-contributions>` 。
+* 有关贡献，请访问 `bitbucket <https://bitbucket.org/snakemake/snakemake>`_，并阅读 :ref:`guidelines <project_info-contributions>` 。
 
 --------
 引用
