@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "Linux基础-07用户管理",
+      "tags"     : "Linux",
+      "url"      : "/2019/09/23/Linux-basic-07user-management.html"
+    } ,
+  
+    {
       "title"    : "Linux基础-06文件权限",
       "tags"     : "Linux",
       "url"      : "/2019/09/21/Linux-basic-06file-permission.html"

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux基础-07用户管理 - Lemonbase的博客</title>
+    <meta name="author"  content="碱基吃柠檬">
+    <meta name="description" content="Linux基础-07用户管理">
+    <meta name="keywords"  content="Linux">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Linux基础-07用户管理 - Lemonbase的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2019/09/23/Linux-basic-07user-management.html">
+    <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
+    <meta property="og:site_name" content="Lemonbase的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="true"> <header class="g-header">
+<!--     <div class="">
+      <a href="/"></a>
+    </div> -->
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/resources.html">resources</a></li>
+            
+            <li><a href="/2019/09/19/about-us.html">about</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default post-no-cover"
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Linux" class="post-tag">Linux</a>
+          
+        
+      </div>
+      <h1>Linux基础-07用户管理</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
+        <time class="post-meta-item" datetime="19-09-23"><i class="iconfont icon-date"></i>23 Sep 2019</time>
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+
+    <article class="markdown-body">
+      <p>Linux系统是一个多用户多任务的操作系统，任何一个要使用系统资源的用户，都必须向系统管理员申请一个账号，然后以这个账号的身份进入系统。每个用户账号都拥有一个唯一的用户名和各自的密码。用户在登录时输入正确的用户名和密码，就可以进入系统和自己的主目录。</p>
+
+<h3 id="用户管理">用户管理</h3>
+
+<ul>
+  <li>添加新用户</li>
+</ul>
+
+<p>可以使用<code class="highlighter-rouge">useradd</code>或<code class="highlighter-rouge">adduser</code>创建新用户。注意的是，创建用户需要<code class="highlighter-rouge">管理员权限</code>，可在下面命令先加<code class="highlighter-rouge">sudo</code>，以管理员权限运行。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>useradd 参数与选项
+<span class="nt">-c</span> : comment 指定一段注释性描述
+<span class="nt">-d</span> : 指定用户主目录，如果该目录不存在，则同时使用-m选项，可以创建主目录
+<span class="nt">-g</span> : 指定用户所属的用户组
+<span class="nt">-G</span> : 指定用户所属的附加组
+<span class="nt">-s</span> : 指定用户使用的shell类型
+<span class="nt">-m</span> : 创建用户的HOME目录
+<span class="nt">-M</span> : 不创建用户的HOME目录
+<span class="nt">-p</span> : 为用户账户指定默认密码
+......
+<span class="c"># 创建用户并指定其shell类型为/bin/sh，属于group用户组，也同时属于adm和root，其用户主目录为/home/user</span>
+useradd <span class="nt">-d</span> /home/user <span class="nt">-m</span> <span class="nt">-s</span> /bin/sh <span class="nt">-g</span> group <span class="nt">-G</span> adm,root user
+
+<span class="nb">ls</span> <span class="nt">-al</span> /home/user
+
+drwxr-xr-x 2 user user 4096 9月  18 10:47 <span class="nb">.</span>
+drwxr-xr-x 4 root root 4096 9月  18 10:47 ..
+<span class="nt">-rw-r--r--</span> 1 user user  220 4月   5  2018 .bash_logout
+<span class="nt">-rw-r--r--</span> 1 user user 3771 4月   5  2018 .bashrc
+<span class="nt">-rw-r--r--</span> 1 user user 8980 4月  16  2018 examples.desktop
+<span class="nt">-rw-r--r--</span> 1 user user  807 4月   5  2018 .profile
+</code></pre></div></div>
+
+<p>可以发现<code class="highlighter-rouge">user</code>目录中有一些默认文件，这些是从<code class="highlighter-rouge">/etc/skel</code>中拷贝而来，管理员可以通过更改<code class="highlighter-rouge">/etc/skel</code>的文件，来作为新用户HOME目录的模板。但此时用户没有设置密码，设置密码需要用<code class="highlighter-rouge">passwd</code>命令，</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>passwd 选项 用户名
+<span class="nt">-l</span> : 锁定密码，即禁用账号
+<span class="nt">-u</span> : 解锁密码
+<span class="nt">-d</span> : 使用户无密码
+<span class="nt">-f</span> : 强迫用户下次登录时修改密码
+
+<span class="c"># 超级用户可以 passwd 用户名直接指定任何用户的密码</span>
+passwd user
+
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+</code></pre></div></div>
+
+<p>而<code class="highlighter-rouge">adduser</code>是一个perl脚本，在使用时比<code class="highlighter-rouge">useradd</code>更友好。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>adduser user2
+
+Adding user <span class="sb">`</span>user2<span class="s1">' ...
+Adding new group `user2'</span> <span class="o">(</span>1002<span class="o">)</span> ...
+Adding new user <span class="sb">`</span>user2<span class="s1">' (1002) with group `user2'</span> ...
+Creating home directory <span class="sb">`</span>/home/user2<span class="s1">' ...
+Copying files from `/etc/skel'</span> ...
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information <span class="k">for </span>user2
+Enter the new value, or press ENTER <span class="k">for </span>the default
+	Full Name <span class="o">[]</span>: 
+	Room Number <span class="o">[]</span>: 
+	Work Phone <span class="o">[]</span>: 
+	Home Phone <span class="o">[]</span>: 
+	Other <span class="o">[]</span>: 
+Is the information correct? <span class="o">[</span>Y/n]
+</code></pre></div></div>
+
+<p>这时已经在/home下面创建与用户同名的目录，而且密码也已经设置好了。</p>
+
+<ul>
+  <li>删除用户</li>
+</ul>
+
+<p><code class="highlighter-rouge">userdel</code>命令只删除<code class="highlighter-rouge">/etc/passwd</code>文件中用户信息，及用户不能再通过该账户登录，但不会删除系统中属于该账户的任何文件。如果删除用户的HOME目录及邮件目录，可以加上<code class="highlighter-rouge">-r</code>参数。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 删除用户user，但不删除其家目录及文件;</span>
+userdel user
+<span class="c"># 删除用户user2，其家目录及文件一并删除;</span>
+userdel <span class="nt">-r</span> user2
+<span class="nb">ls</span> <span class="nt">-l</span> /home
+
+drwxr-xr-x 17 learn-linux learn-linux 4096 9月  18 13:30 learn-linux
+drwxr-xr-x  2        1001        1001 4096 9月  18 10:47 user
+</code></pre></div></div>
+
+<ul>
+  <li>修改用户</li>
+</ul>
+
+<p><code class="highlighter-rouge">usermod</code>是用户账户修改工具中最强大的一个，其参数和useradd命令的参数大部分一样，还有一些参数也比较实用：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 将user加入组adm中</span>
+usermod <span class="nt">-G</span> adm user
+<span class="c"># 修改user的用户名为user2</span>
+usermod <span class="nt">-l</span> user2 user
+<span class="c"># 锁定账户user2</span>
+usermod <span class="nt">-L</span> user2
+<span class="c"># 解除账户user2的锁定</span>
+usermod <span class="nt">-U</span> user2
+</code></pre></div></div>
+
+<h3 id="用户组管理">用户组管理</h3>
+
+<p>Linux是多用户系统，当涉及到共享资源的一组用户时，就有了组(group)的概念。组权限会允许多个用户对系统中的对象共享一组共用的权限，正如我们在上一节文件权限中介绍的。</p>
+
+<p>用户账户信息存放在<code class="highlighter-rouge">/etc/passwd</code>中，而组信息存放在<code class="highlighter-rouge">/etc/group</code>。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">head</span> <span class="nt">-n</span> 5 /etc/group
+
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,learn-linux
+</code></pre></div></div>
+
+<p>由组名、组密码、GID（group ID）、组成员四个字段组成。</p>
+
+<ul>
+  <li>创建新组</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>groupadd share
+</code></pre></div></div>
+
+<p>创建新组时，默认没有用户分配到该组，可以使用上文介绍的<code class="highlighter-rouge">usermod</code>来将用户增加到新组</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#将用户user1, user2加入到组share中</span>
+usermod <span class="nt">-G</span> share user1
+usermod <span class="nt">-G</span> share user2
+
+<span class="nb">tail</span> <span class="nt">-n</span> 1 /etc/group
+
+share:x:1004:user1,user2
+</code></pre></div></div>
+
+<p>如果将用户从组中移除，可以使用<code class="highlighter-rouge">gpasswd</code>命令，其可以将用户加入到组中：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gpasswd <span class="o">[</span>option] GROUP
+<span class="nt">-a</span> : 将用户加入到组中
+<span class="nt">-d</span> : 将用户移除组
+
+<span class="c"># 将user1移除share组</span>
+gpasswd <span class="nt">-d</span> user1 share
+
+<span class="nb">tail</span> <span class="nt">-1</span> /etc/group
+
+share:x:1004:user2
+</code></pre></div></div>
+
+<ul>
+  <li>修改组</li>
+</ul>
+
+<p><code class="highlighter-rouge">groupmod</code>可以修改已有组的GID（-g）或组名（-n）</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 将组share重命名为sharing</span>
+groupmod <span class="nt">-n</span> sharing share
+<span class="nb">tail</span> <span class="nt">-l</span> /etc/group
+
+sharing:x:1004:user2
+</code></pre></div></div>
+
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.png" alt="">
+      </div>
+      <div class="author-name" rel="author">碱基吃柠檬</div>
+      <div class="bio">
+        <p>生物信息工作者, 喜欢美好的事物</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="//weibo.com/u/7189209185" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//github.com/lemonbases" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="https://mp.weixin.qq.com/s/gyJItQa4D-FPjZ0-yfSNOw" target="_blank">
+                    <i class="iconfont icon-author"></i>
+                </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+
+      
+      <div class="read-next-item">
+        <a href="/2019/09/21/Linux-basic-06file-permission.html" class="read-next-link"></a>
+          <section>
+            <span>Linux基础-06文件权限</span>
+            <p>  了解Linux系统下文件权限及管理</p>
+          </section>
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Lemonbase的博客 ©
+  
+  
+  2019
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lemonbases.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+</body>
+
+</html>

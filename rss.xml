@@ -5,9 +5,188 @@
     <description>碱基吃柠檬，人面桃花相映红，生物信息工作者</description>
     <link>http://localhost:4000//</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 22 Sep 2019 18:14:01 +0800</pubDate>
-    <lastBuildDate>Sun, 22 Sep 2019 18:14:01 +0800</lastBuildDate>
+    <pubDate>Mon, 23 Sep 2019 23:13:38 +0800</pubDate>
+    <lastBuildDate>Mon, 23 Sep 2019 23:13:38 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Linux基础-07用户管理</title>
+        <description>&lt;p&gt;Linux系统是一个多用户多任务的操作系统，任何一个要使用系统资源的用户，都必须向系统管理员申请一个账号，然后以这个账号的身份进入系统。每个用户账号都拥有一个唯一的用户名和各自的密码。用户在登录时输入正确的用户名和密码，就可以进入系统和自己的主目录。&lt;/p&gt;
+
+&lt;h3 id=&quot;用户管理&quot;&gt;用户管理&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;添加新用户&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;useradd&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;adduser&lt;/code&gt;创建新用户。注意的是，创建用户需要&lt;code class=&quot;highlighter-rouge&quot;&gt;管理员权限&lt;/code&gt;，可在下面命令先加&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo&lt;/code&gt;，以管理员权限运行。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;useradd 参数与选项
+&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; : comment 指定一段注释性描述
+&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; : 指定用户主目录，如果该目录不存在，则同时使用-m选项，可以创建主目录
+&lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; : 指定用户所属的用户组
+&lt;span class=&quot;nt&quot;&gt;-G&lt;/span&gt; : 指定用户所属的附加组
+&lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; : 指定用户使用的shell类型
+&lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; : 创建用户的HOME目录
+&lt;span class=&quot;nt&quot;&gt;-M&lt;/span&gt; : 不创建用户的HOME目录
+&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; : 为用户账户指定默认密码
+......
+&lt;span class=&quot;c&quot;&gt;# 创建用户并指定其shell类型为/bin/sh，属于group用户组，也同时属于adm和root，其用户主目录为/home/user&lt;/span&gt;
+useradd &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; /home/user &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /bin/sh &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; group &lt;span class=&quot;nt&quot;&gt;-G&lt;/span&gt; adm,root user
+
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt; /home/user
+
+drwxr-xr-x 2 user user 4096 9月  18 10:47 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwxr-xr-x 4 root root 4096 9月  18 10:47 ..
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 user user  220 4月   5  2018 .bash_logout
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 user user 3771 4月   5  2018 .bashrc
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 user user 8980 4月  16  2018 examples.desktop
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 user user  807 4月   5  2018 .profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以发现&lt;code class=&quot;highlighter-rouge&quot;&gt;user&lt;/code&gt;目录中有一些默认文件，这些是从&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/skel&lt;/code&gt;中拷贝而来，管理员可以通过更改&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/skel&lt;/code&gt;的文件，来作为新用户HOME目录的模板。但此时用户没有设置密码，设置密码需要用&lt;code class=&quot;highlighter-rouge&quot;&gt;passwd&lt;/code&gt;命令，&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;passwd 选项 用户名
+&lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; : 锁定密码，即禁用账号
+&lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; : 解锁密码
+&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; : 使用户无密码
+&lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; : 强迫用户下次登录时修改密码
+
+&lt;span class=&quot;c&quot;&gt;# 超级用户可以 passwd 用户名直接指定任何用户的密码&lt;/span&gt;
+passwd user
+
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;而&lt;code class=&quot;highlighter-rouge&quot;&gt;adduser&lt;/code&gt;是一个perl脚本，在使用时比&lt;code class=&quot;highlighter-rouge&quot;&gt;useradd&lt;/code&gt;更友好。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;adduser user2
+
+Adding user &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;user2&lt;span class=&quot;s1&quot;&gt;' ...
+Adding new group `user2'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1002&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ...
+Adding new user &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;user2&lt;span class=&quot;s1&quot;&gt;' (1002) with group `user2'&lt;/span&gt; ...
+Creating home directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/home/user2&lt;span class=&quot;s1&quot;&gt;' ...
+Copying files from `/etc/skel'&lt;/span&gt; ...
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;user2
+Enter the new value, or press ENTER &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the default
+	Full Name &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;: 
+	Room Number &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;: 
+	Work Phone &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;: 
+	Home Phone &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;: 
+	Other &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;: 
+Is the information correct? &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Y/n]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这时已经在/home下面创建与用户同名的目录，而且密码也已经设置好了。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;删除用户&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;userdel&lt;/code&gt;命令只删除&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt;文件中用户信息，及用户不能再通过该账户登录，但不会删除系统中属于该账户的任何文件。如果删除用户的HOME目录及邮件目录，可以加上&lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt;参数。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 删除用户user，但不删除其家目录及文件;&lt;/span&gt;
+userdel user
+&lt;span class=&quot;c&quot;&gt;# 删除用户user2，其家目录及文件一并删除;&lt;/span&gt;
+userdel &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; user2
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /home
+
+drwxr-xr-x 17 learn-linux learn-linux 4096 9月  18 13:30 learn-linux
+drwxr-xr-x  2        1001        1001 4096 9月  18 10:47 user
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;修改用户&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;usermod&lt;/code&gt;是用户账户修改工具中最强大的一个，其参数和useradd命令的参数大部分一样，还有一些参数也比较实用：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 将user加入组adm中&lt;/span&gt;
+usermod &lt;span class=&quot;nt&quot;&gt;-G&lt;/span&gt; adm user
+&lt;span class=&quot;c&quot;&gt;# 修改user的用户名为user2&lt;/span&gt;
+usermod &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; user2 user
+&lt;span class=&quot;c&quot;&gt;# 锁定账户user2&lt;/span&gt;
+usermod &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; user2
+&lt;span class=&quot;c&quot;&gt;# 解除账户user2的锁定&lt;/span&gt;
+usermod &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; user2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;用户组管理&quot;&gt;用户组管理&lt;/h3&gt;
+
+&lt;p&gt;Linux是多用户系统，当涉及到共享资源的一组用户时，就有了组(group)的概念。组权限会允许多个用户对系统中的对象共享一组共用的权限，正如我们在上一节文件权限中介绍的。&lt;/p&gt;
+
+&lt;p&gt;用户账户信息存放在&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/passwd&lt;/code&gt;中，而组信息存放在&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/group&lt;/code&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 5 /etc/group
+
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,learn-linux
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;由组名、组密码、GID（group ID）、组成员四个字段组成。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;创建新组&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;groupadd share
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;创建新组时，默认没有用户分配到该组，可以使用上文介绍的&lt;code class=&quot;highlighter-rouge&quot;&gt;usermod&lt;/code&gt;来将用户增加到新组&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#将用户user1, user2加入到组share中&lt;/span&gt;
+usermod &lt;span class=&quot;nt&quot;&gt;-G&lt;/span&gt; share user1
+usermod &lt;span class=&quot;nt&quot;&gt;-G&lt;/span&gt; share user2
+
+&lt;span class=&quot;nb&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 1 /etc/group
+
+share:x:1004:user1,user2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果将用户从组中移除，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;gpasswd&lt;/code&gt;命令，其可以将用户加入到组中：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gpasswd &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;option] GROUP
+&lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; : 将用户加入到组中
+&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; : 将用户移除组
+
+&lt;span class=&quot;c&quot;&gt;# 将user1移除share组&lt;/span&gt;
+gpasswd &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; user1 share
+
+&lt;span class=&quot;nb&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt; /etc/group
+
+share:x:1004:user2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;修改组&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;groupmod&lt;/code&gt;可以修改已有组的GID（-g）或组名（-n）&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 将组share重命名为sharing&lt;/span&gt;
+groupmod &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; sharing share
+&lt;span class=&quot;nb&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /etc/group
+
+sharing:x:1004:user2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Mon, 23 Sep 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/09/23/Linux-basic-07user-management.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/09/23/Linux-basic-07user-management.html</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
     
       <item>
         <title>Linux基础-06文件权限</title>
@@ -1249,119 +1428,6 @@ init 6
         <guid isPermaLink="true">http://localhost:4000/2019/08/01/Hello-World.html</guid>
         
         <category>thoughts</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>jekyll, gitpage搭建博客</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;使用jekyll, gitpage搭建博客&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;gitpage&quot;&gt;Gitpage&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://hw311.me/assets/imgs/Octocat.png&quot; alt=&quot;https://hw311.me/assets/imgs/Octocat.png&quot; /&gt;
-github Pages可以被认为是用户编写的、托管在github上的静态网页。github提供模板，允许站内生成网页，但也允许用户自己编写网页，然后上传。&lt;/p&gt;
-
-&lt;h2 id=&quot;jekyll&quot;&gt;Jekyll&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://hw311.me/assets/imgs/jekyll-logo-light-transparent.png&quot; alt=&quot;https://hw311.me/assets/imgs/jekyll-logo-light-transparent.png&quot; /&gt;
-&lt;a href=&quot;https://jekyllcn.com/&quot;&gt;Jekyll&lt;/a&gt;是一个静态站点生成器，它会根据网页源码生成静态文件。它提供了模板、变量、插件等功能。&lt;/p&gt;
-
-&lt;h2 id=&quot;快速安装&quot;&gt;快速安装&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;1 安装ruby开发环境&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;// for win
-// download Ruby+Devkit exe https://rubyinstaller.org/downloads/
-
-// for ubuntu
-sudo apt-get install ruby-full build-essential zlib1g-dev
-
-// for mac
-// 参考https://www.jekyll.com.cn/docs/installation/macos/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;2 安装 Jekyll及jekyll-paginate&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;gem install jekyll
-gem install jekyll-paginate
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;3 将目标主题&lt;code class=&quot;highlighter-rouge&quot;&gt;clone&lt;/code&gt;到本地&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;git clone https://github.com/kaeyleo/jekyll-theme-H2O.git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;4 进入目录，开启服务&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;jekyll server
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;5 通过&lt;code class=&quot;highlighter-rouge&quot;&gt;127.0.0.1:4000&lt;/code&gt;预览主题&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;博文写作&quot;&gt;博文写作&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;目录树&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;	.
-	├── _config.yml # 配置文件
-	├── _includes # 页面组件方便重用
-	|   ├── footer.html # 页脚
-	|   └── head.html # html文档的头部内容
-	|   └── header.html # 顶部菜单栏
-	|   └── pageNav.html # 文章列表分页组件
-	├── _layouts # 布局模板
-	|   ├── default.html # 默认模板
-	|   └── post.html # 文章页面模板
-	├── _posts # 这里放文章
-	|   └── 2007-02-21-life-on-mars.md # 命名格式：年-月-日-文章标题.md
-	├── _site # Jekyll将源码处理后生成的站点文件，里面的内容可直接发布
-	├── assets # 存放用于线上环境的静态资源，如需修改css和js文件请到dev文件夹
-	|   ├── css # dev文件夹中sass编译后的样式文件
-	|   └── fonts # 字体文件
-	|   └── icons # 图标文件
-	|   └── img #  图片文件
-	|   └── js # dev文件夹中处理后的脚本文件
-	├── dev # 开发文件
-	|   ├── js # 存放脚本源码
-	|   └── sass # 样式源码
-	|       └── app.scss # 整合下面的所有样式文件
-	|       └── base.scss # 引入字体、Reset部分样式
-	|       └── common.scss # 模板的主要样式
-	|       └── helper.scss # 工具样式
-	|       └── layouts.scss # 响应式布局
-	└── gulpfile.js # 自动化任务脚本
-	└── index.html # 模板首页
-	└── tags.html # 标签页面
-	└── 404.html # 404页面
-	└── package.json # 管理项目的依赖项
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;博文的markdown文件存储于&lt;code class=&quot;highlighter-rouge&quot;&gt;_post&lt;/code&gt;文件夹，每篇博文需设置头信息：&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;layout: default
-home-title: lemonbases blog
-description: Hello World
-header-img: assets/img/banner.jpg
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;写作完成后，使用&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-C-like&quot;&gt;jekyll s 
-// or
-jekyll buld
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;生成目标网页&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/kaeyleo/jekyll-theme-H2O&quot;&gt;https://github.com/kaeyleo/jekyll-theme-H2O&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://hw311.me/zh/jekyll/2019/01/21/blog-jekyll-github-pages/&quot;&gt;使用Jekyll和GitHub Pages搭建博客&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/&quot;&gt;Jekyll quickstart&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 01 Aug 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/08/01/Build-Site.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/08/01/Build-Site.html</guid>
-        
-        <category>网站运维</category>
         
         
       </item>
