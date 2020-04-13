@@ -3,11 +3,254 @@
   <channel>
     <title>Lemonbase的博客</title>
     <description>碱基吃柠檬，人面桃花相映红，生物信息工作者</description>
-    <link>http://localhost:4000//</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 23 Sep 2019 23:16:42 +0800</pubDate>
-    <lastBuildDate>Mon, 23 Sep 2019 23:16:42 +0800</lastBuildDate>
-    <generator>Jekyll v3.8.6</generator>
+    <link>//</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Mon, 13 Apr 2020 23:23:02 +0800</pubDate>
+    <lastBuildDate>Mon, 13 Apr 2020 23:23:02 +0800</lastBuildDate>
+    <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>常见生物数据格式02-SAM/BAM</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Sequence Alignment Map (SAM)&lt;/strong&gt; is a text-based format originally for storing biological sequences aligned to a reference sequence developed by Heng Li and Bob Handsaker &lt;em&gt;et al&lt;/em&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;sam文件&quot;&gt;SAM文件&lt;/h3&gt;
+
+&lt;p&gt;Sequence Alignment Map(SAM)存储reads到参考基因组比对信息的文本格式。&lt;/p&gt;
+
+&lt;p&gt;SAM内容分为两部分，分别是注释信息(head section)和比对结果(Alignment section)。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.samformat.info/images/sam_format_annotated_example.5108a0cd.jpg&quot; alt=&quot;https://www.samformat.info/images/sam_format_annotated_example.5108a0cd.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;注释信息&quot;&gt;注释信息&lt;/h4&gt;
+
+&lt;p&gt;注释信息以@开头&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;缩写&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;@HD&lt;/td&gt;
+      &lt;td&gt;VN: 格式版本; SO: 比对排列顺序&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;@SQ&lt;/td&gt;
+      &lt;td&gt;参考序列信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;@RG&lt;/td&gt;
+      &lt;td&gt;Read group信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;@PG&lt;/td&gt;
+      &lt;td&gt;Program, 命令详情&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;@CO&lt;/td&gt;
+      &lt;td&gt;其它补充说明&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;比对结果&quot;&gt;比对结果&lt;/h4&gt;
+
+&lt;p&gt;11个必须字段 + 1个可选字段，字段间TAB分割&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QNAME&lt;/td&gt;
+      &lt;td&gt;FASTQ中的READ ID&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FLAG&lt;/td&gt;
+      &lt;td&gt;位标识符&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RNAME&lt;/td&gt;
+      &lt;td&gt;参考序列名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;POS&lt;/td&gt;
+      &lt;td&gt;1-based比对位置&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MAPQ&lt;/td&gt;
+      &lt;td&gt;比对质量&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CIGAR&lt;/td&gt;
+      &lt;td&gt;简要比对信息表达式(Compact Idiosyncratic Gapped Alignment Report)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RNEXT&lt;/td&gt;
+      &lt;td&gt;配对片段(mate)比对上的参考序列的编号，没有另外的片段，这里是’*‘，同一个片段，用’=’&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;PNEXT&lt;/td&gt;
+      &lt;td&gt;配对片段(mate)比对到参考序列上的第一个碱基位置，若无mate,则为0；&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TLEN&lt;/td&gt;
+      &lt;td&gt;Template的长度，最左边得为正，最右边的为负，中间的不用定义正负，不分区段（single-segment)的比对上，或者不可用时，此处为0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SEQ&lt;/td&gt;
+      &lt;td&gt;reads的序列信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUAL&lt;/td&gt;
+      &lt;td&gt;reads的质量信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Optional fields&lt;/td&gt;
+      &lt;td&gt;可选字段&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;flag位标识符&quot;&gt;FLAG位标识符&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;/*! @abstract the read is paired in sequencing, no matter whether it is mapped in a pair */
+#define BAM_FPAIRED        1
+/*! @abstract the read is mapped in a proper pair */
+#define BAM_FPROPER_PAIR   2
+/*! @abstract the read itself is unmapped; conflictive with BAM_FPROPER_PAIR */
+#define BAM_FUNMAP         4
+/*! @abstract the mate is unmapped */
+#define BAM_FMUNMAP        8
+/*! @abstract the read is mapped to the reverse strand */
+#define BAM_FREVERSE      16
+/*! @abstract the mate is mapped to the reverse strand */
+#define BAM_FMREVERSE     32
+/*! @abstract this is read1 */
+#define BAM_FREAD1        64
+/*! @abstract this is read2 */
+#define BAM_FREAD2       128
+/*! @abstract not primary alignment */
+#define BAM_FSECONDARY   256
+/*! @abstract QC failure */
+#define BAM_FQCFAIL      512
+/*! @abstract optical or PCR duplicate */
+#define BAM_FDUP        1024
+/*! @abstract supplementary alignment */
+#define BAM_FSUPPLEMENTARY 2048
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;位标识符&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;PE双端测序&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Read mapped in proper pair, Read和MATE都比对上，且间距合理&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;Read没有比对上&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;MATE没有比对上&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;16&lt;/td&gt;
+      &lt;td&gt;READ比对到反义链&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;32&lt;/td&gt;
+      &lt;td&gt;MATE比对到反义链&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;64&lt;/td&gt;
+      &lt;td&gt;这条read是read1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;128&lt;/td&gt;
+      &lt;td&gt;这条read是read2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;256&lt;/td&gt;
+      &lt;td&gt;不是主要比对(primary alignment)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;512&lt;/td&gt;
+      &lt;td&gt;QC失败&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1024&lt;/td&gt;
+      &lt;td&gt;PCR重复&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2048&lt;/td&gt;
+      &lt;td&gt;supplementary alignment&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;cigar简要比对信息表达式&quot;&gt;CIGAR简要比对信息表达式&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://pic3.zhimg.com/80/v2-e765bb1b5321f7cdc50a57a28b6fb522_1440w.jpg&quot; alt=&quot;https://pic3.zhimg.com/80/v2-e765bb1b5321f7cdc50a57a28b6fb522_1440w.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://linux-bio.com/wp-content/uploads/2015/06/sam_format_manual_pdf_capture2.png&quot; alt=&quot;http://linux-bio.com/wp-content/uploads/2015/06/sam_format_manual_pdf_capture2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;bam文件&quot;&gt;BAM文件&lt;/h3&gt;
+
+&lt;p&gt;BAM文件是SAM文件的压缩二进制版本，压缩率在5左右。&lt;/p&gt;
+
+&lt;h4 id=&quot;查看bam文件&quot;&gt;查看BAM文件&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;samtools view sample.bam
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;检查bam文件完整性&quot;&gt;检查BAM文件完整性&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;samtools quickcheck sample.bam
+
+&lt;span class=&quot;c&quot;&gt;## or &lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 28 sample.bam | xxd &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;## Output: 1f8b08040000000000ff0600424302001b0003000000000000000000&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;Reference&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.samformat.info/sam-format-flag&quot;&gt;https://www.samformat.info/sam-format-flag&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/SAM_(file_format)&quot;&gt;https://en.wikipedia.org/wiki/SAM_(file_format)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://vip.biotrainee.com/d/162-sam&quot;&gt;https://vip.biotrainee.com/d/162-sam&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Mon, 13 Apr 2020 00:00:00 +0800</pubDate>
+        <link>/2020/04/13/biodata-format02.html</link>
+        <guid isPermaLink="true">/2020/04/13/biodata-format02.html</guid>
+        
+        <category>生物数据格式</category>
+        
+        
+      </item>
     
       <item>
         <title>Linux基础-07用户管理</title>
@@ -180,8 +423,8 @@ sharing:x:1004:user2
 
 </description>
         <pubDate>Mon, 23 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/23/Linux-basic-07user-management.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/23/Linux-basic-07user-management.html</guid>
+        <link>/2019/09/23/Linux-basic-07user-management.html</link>
+        <guid isPermaLink="true">/2019/09/23/Linux-basic-07user-management.html</guid>
         
         <category>Linux</category>
         
@@ -298,8 +541,8 @@ lrwxrwxrwx 1 learn-linux learn-linux  8 9月  17 11:40 sl_test.txt -&amp;gt; tes
 &lt;p&gt;当出现&lt;code class=&quot;highlighter-rouge&quot;&gt;Operation not permitted&lt;/code&gt; error时，使用&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo&lt;/code&gt;提升权限。&lt;/p&gt;
 </description>
         <pubDate>Sat, 21 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/21/Linux-basic-06file-permission.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/21/Linux-basic-06file-permission.html</guid>
+        <link>/2019/09/21/Linux-basic-06file-permission.html</link>
+        <guid isPermaLink="true">/2019/09/21/Linux-basic-06file-permission.html</guid>
         
         <category>Linux</category>
         
@@ -498,8 +741,8 @@ file /bin/ls
 &lt;p&gt;而且大多数命令支持&lt;code class=&quot;highlighter-rouge&quot;&gt;--help&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;-help&lt;/code&gt;参数，显示帮助信息。&lt;/p&gt;
 </description>
         <pubDate>Fri, 20 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/20/Linux-basic-05file-operation.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/20/Linux-basic-05file-operation.html</guid>
+        <link>/2019/09/20/Linux-basic-05file-operation.html</link>
+        <guid isPermaLink="true">/2019/09/20/Linux-basic-05file-operation.html</guid>
         
         <category>Linux</category>
         
@@ -701,8 +944,8 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Thu, 19 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/19/biodata-format01.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/19/biodata-format01.html</guid>
+        <link>/2019/09/19/biodata-format01.html</link>
+        <guid isPermaLink="true">/2019/09/19/biodata-format01.html</guid>
         
         <category>生物数据格式</category>
         
@@ -788,8 +1031,8 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 &lt;p&gt;2019，我们在路上&lt;/p&gt;
 </description>
         <pubDate>Thu, 19 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/19/about-us.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/19/about-us.html</guid>
+        <link>/2019/09/19/about-us.html</link>
+        <guid isPermaLink="true">/2019/09/19/about-us.html</guid>
         
         <category>thoughts</category>
         
@@ -944,8 +1187,8 @@ learn-linux@learnlinux-PC:/usr/bin&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&g
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Thu, 19 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/19/Linux-basic-04directory-operation.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/19/Linux-basic-04directory-operation.html</guid>
+        <link>/2019/09/19/Linux-basic-04directory-operation.html</link>
+        <guid isPermaLink="true">/2019/09/19/Linux-basic-04directory-operation.html</guid>
         
         <category>Linux</category>
         
@@ -1093,8 +1336,8 @@ Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cm
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Wed, 18 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/18/Linux-basic-03directory-structure.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/18/Linux-basic-03directory-structure.html</guid>
+        <link>/2019/09/18/Linux-basic-03directory-structure.html</link>
+        <guid isPermaLink="true">/2019/09/18/Linux-basic-03directory-structure.html</guid>
         
         <category>Linux</category>
         
@@ -1265,8 +1508,8 @@ init 6
 
 </description>
         <pubDate>Tue, 17 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/17/Linux-basic-02environment.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/17/Linux-basic-02environment.html</guid>
+        <link>/2019/09/17/Linux-basic-02environment.html</link>
+        <guid isPermaLink="true">/2019/09/17/Linux-basic-02environment.html</guid>
         
         <category>Linux</category>
         
@@ -1401,33 +1644,10 @@ init 6
 
 </description>
         <pubDate>Mon, 16 Sep 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/09/16/Linux-basic-01introduction.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/09/16/Linux-basic-01introduction.html</guid>
+        <link>/2019/09/16/Linux-basic-01introduction.html</link>
+        <guid isPermaLink="true">/2019/09/16/Linux-basic-01introduction.html</guid>
         
         <category>Linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Hello World</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;第一篇博文，Hello World~&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;说在前面的话&quot;&gt;说在前面的话&lt;/h3&gt;
-
-&lt;p&gt;种一棵树最好的时间是十年前，其次是现在。这对博客来说，依然是如此，done is better than perfect。&lt;/p&gt;
-
-&lt;p&gt;本博客主要以生物信息学技术分享为主，同时分享一些近期的文献以及科研路上的小插曲，记录成长的过程，分享学习的点滴，一起向前冲呀，少年~&lt;/p&gt;
-
-&lt;p&gt;碱基吃柠檬，人面桃花相映红。&lt;/p&gt;
-</description>
-        <pubDate>Thu, 01 Aug 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2019/08/01/Hello-World.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/08/01/Hello-World.html</guid>
-        
-        <category>thoughts</category>
         
         
       </item>

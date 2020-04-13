@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "常见生物数据格式02-SAM/BAM",
+      "tags"     : "生物数据格式",
+      "url"      : "/2020/04/13/biodata-format02.html"
+    } ,
+  
+    {
       "title"    : "Linux基础-07用户管理",
       "tags"     : "Linux",
       "url"      : "/2019/09/23/Linux-basic-07user-management.html"

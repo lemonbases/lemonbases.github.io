@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>常见生物数据格式01--FASTA/FASTQ - Lemonbase的博客</title>
+    <title>常见生物数据格式02-SAM/BAM - Lemonbase的博客</title>
     <meta name="author"  content="碱基吃柠檬">
-    <meta name="description" content="常见生物数据格式01--FASTA/FASTQ">
+    <meta name="description" content="常见生物数据格式02-SAM/BAM">
     <meta name="keywords"  content="生物数据格式">
     <!-- Open Graph -->
-    <meta property="og:title" content="常见生物数据格式01--FASTA/FASTQ - Lemonbase的博客">
+    <meta property="og:title" content="常见生物数据格式02-SAM/BAM - Lemonbase的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="/2019/09/19/biodata-format01.html">
+    <meta property="og:url" content="/2020/04/13/biodata-format02.html">
     <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
     <meta property="og:site_name" content="Lemonbase的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -124,10 +124,10 @@ Author: Ray-Eldath
           
         
       </div>
-      <h1>常见生物数据格式01--FASTA/FASTQ</h1>
+      <h1>常见生物数据格式02-SAM/BAM</h1>
       <div class="post-meta">
         <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
-        <time class="post-meta-item" datetime="19-09-19"><i class="iconfont icon-date"></i>19 Sep 2019</time>
+        <time class="post-meta-item" datetime="20-04-13"><i class="iconfont icon-date"></i>13 Apr 2020</time>
       </div>
     </div>
     
@@ -138,196 +138,236 @@ Author: Ray-Eldath
 
     <article class="markdown-body">
       <blockquote>
-  <p>我们不生产数据，只是数据的搬运工。</p>
+  <p><strong>Sequence Alignment Map (SAM)</strong> is a text-based format originally for storing biological sequences aligned to a reference sequence developed by Heng Li and Bob Handsaker <em>et al</em>.</p>
 </blockquote>
 
-<p>在进行生物数据分析之前，有必要先了解一下常见的生物数据格式，不然可能会犯一些意料不到的错误。</p>
+<h3 id="sam文件">SAM文件</h3>
 
-<p>常见的生物数据格式有：</p>
+<p>Sequence Alignment Map(SAM)存储reads到参考基因组比对信息的文本格式。</p>
 
-<ul>
-  <li>FASTA</li>
-  <li>FASTQ</li>
-  <li>GFF/GTF/BED/…</li>
-  <li>VCF</li>
-  <li>SAM/BAM</li>
-</ul>
+<p>SAM内容分为两部分，分别是注释信息(head section)和比对结果(Alignment section)。</p>
 
-<p><img src="https://ae01.alicdn.com/kf/H7e8b085c89fa49f1b33602844981ce21D.png" alt="ngs_map_read_file_formats.png" style="zoom:36%;" /></p>
+<p><img src="https://www.samformat.info/images/sam_format_annotated_example.5108a0cd.jpg" alt="https://www.samformat.info/images/sam_format_annotated_example.5108a0cd.jpg" /></p>
 
-<h3 id="fasta">FASTA</h3>
+<h4 id="注释信息">注释信息</h4>
 
-<p>记录DNA/Protein序列的文本格式，其由两部分组成:</p>
-<ul>
-  <li>描述行，以<code class="highlighter-rouge">&gt;</code>起始，记录序列ID，名称或注释信息</li>
-  <li>序列数据，一般为大写格式
-    <pre><code class="language-{bash,eval=FALSE,echo=TRUE}">&gt;gi|31563518|ref|NP_852610.1| microtubule-associated proteins 1A/1B light chain 3A isoform b [Homo sapiens]
-MKMRFFSSPCGKAAVDPADRCKEVQQIRDQHPSKIPVIIERYKGEKQLPVLDKTKFLVPDHVNMSELVKI
-IRRRLQLNPTQAFFLLVNQHSMVSVSTPIADIYEQEKDEDGFLYMVYASQETFGFIRENE
-</code></pre>
-    <p>有些从Ensembl下载的基因组数据中，序列中包含小写字母或<code class="highlighter-rouge">N</code>，这是因为基因组文件中包含大量的重复序列，<code class="highlighter-rouge">soft-mask</code>将重复序列从大写字母表示转化为小写字母表示；<code class="highlighter-rouge">hard-mask</code>将重复序列转化为<code class="highlighter-rouge">N</code>s。</p>
-  </li>
-</ul>
-
-<h3 id="fastq">FASTQ</h3>
-
-<p>记录测序序列及其质量得分的文本格式，序列与质量得分用单个ASCII字符表示。</p>
-
-<p>Phred64编码格式，碱基质量值为字符的十进制ASCII码减去64</p>
-
-<p>Phred32编码格式，碱基质量值为字符的十进制ASCII码减去32</p>
-
-<p>通常一个序列由4行组成：</p>
-
-<ol>
-  <li>以<code class="highlighter-rouge">@</code>开头，之后为序列的ID及描述信息(与fasta格式的描述行类似);</li>
-  <li>序列信息;</li>
-  <li>以<code class="highlighter-rouge">+</code>开头，之后可以再加上序列的ID及描述信息(可选);</li>
-  <li>质量得分，与第二行长度相同。</li>
-</ol>
-
-<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@SEQ_ID
-GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
-+
-!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF&gt;&gt;&gt;&gt;&gt;&gt;CCCCCCC65
-</code></pre>
-
-<h4 id="illumina序列标识符">Illumina序列标识符</h4>
-
-<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@HWUSI-EAS100R:6:73:941:1973#0/1
-</code></pre>
+<p>注释信息以@开头</p>
 
 <table>
   <thead>
     <tr>
-      <th>HWUSI-EAS100R</th>
-      <th>the unique instrument name</th>
+      <th>缩写</th>
+      <th>含义</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>6</td>
-      <td>flowcell lane</td>
+      <td>@HD</td>
+      <td>VN: 格式版本; SO: 比对排列顺序</td>
     </tr>
     <tr>
-      <td>73</td>
-      <td>tile number within the flowcell lane</td>
+      <td>@SQ</td>
+      <td>参考序列信息</td>
     </tr>
     <tr>
-      <td>941</td>
-      <td>‘x’-coordinate of the cluster within the tile</td>
+      <td>@RG</td>
+      <td>Read group信息</td>
     </tr>
     <tr>
-      <td>1973</td>
-      <td>‘y’-coordinate of the cluster within the tile</td>
+      <td>@PG</td>
+      <td>Program, 命令详情</td>
     </tr>
     <tr>
-      <td>#0</td>
-      <td>index number for a multiplexed sample (0 for no indexing)</td>
-    </tr>
-    <tr>
-      <td>/1</td>
-      <td>the member of a pair, /1 or /2 <em>(paired-end or mate-pair reads only)</em></td>
+      <td>@CO</td>
+      <td>其它补充说明</td>
     </tr>
   </tbody>
 </table>
 
-<p>Illumina 1.4之后multiplex ID使用<code class="highlighter-rouge">#NNNNNN</code>替代<code class="highlighter-rouge">#0</code>，<code class="highlighter-rouge">#NNNNNN</code>为sequence of the multiplex tag。</p>
-<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG
+<h4 id="比对结果">比对结果</h4>
+
+<p>11个必须字段 + 1个可选字段，字段间TAB分割</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QNAME</td>
+      <td>FASTQ中的READ ID</td>
+    </tr>
+    <tr>
+      <td>FLAG</td>
+      <td>位标识符</td>
+    </tr>
+    <tr>
+      <td>RNAME</td>
+      <td>参考序列名称</td>
+    </tr>
+    <tr>
+      <td>POS</td>
+      <td>1-based比对位置</td>
+    </tr>
+    <tr>
+      <td>MAPQ</td>
+      <td>比对质量</td>
+    </tr>
+    <tr>
+      <td>CIGAR</td>
+      <td>简要比对信息表达式(Compact Idiosyncratic Gapped Alignment Report)</td>
+    </tr>
+    <tr>
+      <td>RNEXT</td>
+      <td>配对片段(mate)比对上的参考序列的编号，没有另外的片段，这里是’*‘，同一个片段，用’=’</td>
+    </tr>
+    <tr>
+      <td>PNEXT</td>
+      <td>配对片段(mate)比对到参考序列上的第一个碱基位置，若无mate,则为0；</td>
+    </tr>
+    <tr>
+      <td>TLEN</td>
+      <td>Template的长度，最左边得为正，最右边的为负，中间的不用定义正负，不分区段（single-segment)的比对上，或者不可用时，此处为0</td>
+    </tr>
+    <tr>
+      <td>SEQ</td>
+      <td>reads的序列信息</td>
+    </tr>
+    <tr>
+      <td>QUAL</td>
+      <td>reads的质量信息</td>
+    </tr>
+    <tr>
+      <td>Optional fields</td>
+      <td>可选字段</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="flag位标识符">FLAG位标识符</h5>
+
+<pre><code class="language-C">/*! @abstract the read is paired in sequencing, no matter whether it is mapped in a pair */
+#define BAM_FPAIRED        1
+/*! @abstract the read is mapped in a proper pair */
+#define BAM_FPROPER_PAIR   2
+/*! @abstract the read itself is unmapped; conflictive with BAM_FPROPER_PAIR */
+#define BAM_FUNMAP         4
+/*! @abstract the mate is unmapped */
+#define BAM_FMUNMAP        8
+/*! @abstract the read is mapped to the reverse strand */
+#define BAM_FREVERSE      16
+/*! @abstract the mate is mapped to the reverse strand */
+#define BAM_FMREVERSE     32
+/*! @abstract this is read1 */
+#define BAM_FREAD1        64
+/*! @abstract this is read2 */
+#define BAM_FREAD2       128
+/*! @abstract not primary alignment */
+#define BAM_FSECONDARY   256
+/*! @abstract QC failure */
+#define BAM_FQCFAIL      512
+/*! @abstract optical or PCR duplicate */
+#define BAM_FDUP        1024
+/*! @abstract supplementary alignment */
+#define BAM_FSUPPLEMENTARY 2048
+
 </code></pre>
 
 <table>
   <thead>
     <tr>
-      <th>EAS139</th>
-      <th>the unique instrument name</th>
+      <th>位标识符</th>
+      <th>含义</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>136</td>
-      <td>the run id</td>
-    </tr>
-    <tr>
-      <td>FC706VJ</td>
-      <td>the flowcell id</td>
+      <td>1</td>
+      <td>PE双端测序</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>flowcell lane</td>
+      <td>Read mapped in proper pair, Read和MATE都比对上，且间距合理</td>
     </tr>
     <tr>
-      <td>2104</td>
-      <td>tile number within the flowcell lane</td>
+      <td>4</td>
+      <td>Read没有比对上</td>
     </tr>
     <tr>
-      <td>15343</td>
-      <td>‘x’-coordinate of the cluster within the tile</td>
+      <td>8</td>
+      <td>MATE没有比对上</td>
     </tr>
     <tr>
-      <td>197393</td>
-      <td>‘y’-coordinate of the cluster within the tile</td>
+      <td>16</td>
+      <td>READ比对到反义链</td>
     </tr>
     <tr>
-      <td>1</td>
-      <td>the member of a pair, 1 or 2 <em>(paired-end or mate-pair reads only)</em></td>
+      <td>32</td>
+      <td>MATE比对到反义链</td>
     </tr>
     <tr>
-      <td>Y</td>
-      <td>Y if the read is filtered, N otherwise</td>
+      <td>64</td>
+      <td>这条read是read1</td>
     </tr>
     <tr>
-      <td>18</td>
-      <td>0 when none of the control bits are on, otherwise it is an even number</td>
+      <td>128</td>
+      <td>这条read是read2</td>
     </tr>
     <tr>
-      <td>ATCACG</td>
-      <td>index sequence</td>
+      <td>256</td>
+      <td>不是主要比对(primary alignment)</td>
+    </tr>
+    <tr>
+      <td>512</td>
+      <td>QC失败</td>
+    </tr>
+    <tr>
+      <td>1024</td>
+      <td>PCR重复</td>
+    </tr>
+    <tr>
+      <td>2048</td>
+      <td>supplementary alignment</td>
     </tr>
   </tbody>
 </table>
 
-<p>最近版本的Illumina输出格式为：</p>
-<pre><code class="language-{bash,eval=FALSE,echo=TRUE}">@EAS139:136:FC706VJ:2:2104:15343:197393 1:N:18:1
-</code></pre>
+<h5 id="cigar简要比对信息表达式">CIGAR简要比对信息表达式</h5>
 
-<h4 id="质量score计算">质量Score计算</h4>
+<p><img src="https://pic3.zhimg.com/80/v2-e765bb1b5321f7cdc50a57a28b6fb522_1440w.jpg" alt="https://pic3.zhimg.com/80/v2-e765bb1b5321f7cdc50a57a28b6fb522_1440w.jpg" /></p>
 
-<p>测序仪测序是根据荧光信号强弱给出参考测序错误概率(probability that the corresponding base call is incorrect,P)。</p>
+<p><img src="http://linux-bio.com/wp-content/uploads/2015/06/sam_format_manual_pdf_capture2.png" alt="http://linux-bio.com/wp-content/uploads/2015/06/sam_format_manual_pdf_capture2.png" /></p>
 
-<p>Sanger使用：$Q_{sanger}=-10*\log_{10}P$，其也称为Phred质量得分</p>
+<h3 id="bam文件">BAM文件</h3>
 
-<p>Solexa(Illumina Genome Analyzer)使用：$Q_{solexa-prioor to v.1.3}=-10*\log_{10}\frac{P}{1-P}$</p>
+<p>BAM文件是SAM文件的压缩二进制版本，压缩率在5左右。</p>
 
-<p>二者区别如下图所示：<img src="https://ae01.alicdn.com/kf/Hd03b095bd3af48e89488dd3cb9b22bcfp.png" alt="Probability_metrics.png" /></p>
+<h4 id="查看bam文件">查看BAM文件</h4>
 
-<h4 id="质量得分编码">质量得分编码</h4>
-
-<p><img src="https://ae01.alicdn.com/kf/H471cbf9fc82a44e686bd043effab413dA.png" alt="score_encoding.png" style="zoom:75%;" /></p>
-
-<h4 id="检测编码类型">检测编码类型</h4>
-
-<p>通过上图，可以做类似这种决策树：</p>
-
-<p>包含字符<code class="highlighter-rouge">0</code>：</p>
-
-<ul>
-  <li>包含字符<code class="highlighter-rouge">J</code>：Illumina 1.8+ Phred33</li>
-  <li>不包含字符<code class="highlighter-rouge">J</code>：Sanger Phred33</li>
-</ul>
-
-<p>不包含字符<code class="highlighter-rouge">0</code>:</p>
-
-<ul>
-  <li>包含字符<code class="highlighter-rouge">=</code>：Solexa Phred64</li>
-  <li>不包含字符<code class="highlighter-rouge">=</code>，包含字符<code class="highlighter-rouge">A</code>：Illumina1.3 Phred64</li>
-  <li>不包含字符<code class="highlighter-rouge">=</code>，不包含字符<code class="highlighter-rouge">A</code>：Illumina1.5 Phred64</li>
-</ul>
-
-<p>可以使用Github的<a href="https://github.com/brentp/bio-playground/blob/master/reads-utils/guess-encoding.py">guess-encoding.py</a>来进行判断</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">gunzip</span> <span class="nt">-c</span> file.fastq.gz | <span class="nb">awk</span> <span class="s1">'NR % 4 == 0'</span> | <span class="nb">head</span> <span class="nt">-n</span> 1000000 | python guess-encoding.py
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>samtools view sample.bam
 </code></pre></div></div>
+
+<h4 id="检查bam文件完整性">检查BAM文件完整性</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>samtools quickcheck sample.bam
+
+<span class="c">## or </span>
+
+<span class="nb">tail</span> <span class="nt">-c</span> 28 sample.bam | xxd <span class="nt">-p</span>
+<span class="c">## Output: 1f8b08040000000000ff0600424302001b0003000000000000000000</span>
+
+</code></pre></div></div>
+
+<h3 id="reference">Reference</h3>
+
+<ol>
+  <li><a href="https://www.samformat.info/sam-format-flag">https://www.samformat.info/sam-format-flag</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/SAM_(file_format)">https://en.wikipedia.org/wiki/SAM_(file_format)</a></li>
+  <li><a href="https://vip.biotrainee.com/d/162-sam">https://vip.biotrainee.com/d/162-sam</a></li>
+</ol>
 
     </article>
 
@@ -373,22 +413,13 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
     </section>
     <section class="post-footer-item read-next">
       
-      <div class="read-next-item">
-        <a href="/2019/09/20/Linux-basic-05file-operation.html" class="read-next-link"></a>
-        <section>
-          <span>Linux基础-05文件操作</span>
-          <p>  Linux常见文件操作</p>
-        </section>
-        
-     </div>
-      
 
       
       <div class="read-next-item">
-        <a href="/2019/09/19/about-us.html" class="read-next-link"></a>
+        <a href="/2019/09/23/Linux-basic-07user-management.html" class="read-next-link"></a>
           <section>
-            <span>关于我们</span>
-            <p>我们是谁？</p>
+            <span>Linux基础-07用户管理</span>
+            <p>Linux系统是一个多用户多任务的操作系统，任何一个要使用系统资源的用户，都必须向系统管理员申请一个账号，然后以这...</p>
           </section>
           
       </div>
