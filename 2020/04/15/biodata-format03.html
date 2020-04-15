@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于我们 - Lemonbase的博客</title>
+    <title>常见生物数据格式03-VCF - Lemonbase的博客</title>
     <meta name="author"  content="碱基吃柠檬">
-    <meta name="description" content="关于我们">
-    <meta name="keywords"  content="thoughts">
+    <meta name="description" content="常见生物数据格式03-VCF">
+    <meta name="keywords"  content="生物数据格式">
     <!-- Open Graph -->
-    <meta property="og:title" content="关于我们 - Lemonbase的博客">
+    <meta property="og:title" content="常见生物数据格式03-VCF - Lemonbase的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="/2019/09/19/about-us.html">
+    <meta property="og:url" content="/2020/04/15/biodata-format03.html">
     <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
     <meta property="og:site_name" content="Lemonbase的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -120,14 +120,14 @@ Author: Ray-Eldath
       <div class="post-tags">
         
           
-            <a href="/tags.html#thoughts" class="post-tag">thoughts</a>
+            <a href="/tags.html#%E7%94%9F%E7%89%A9%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F" class="post-tag">生物数据格式</a>
           
         
       </div>
-      <h1>关于我们</h1>
+      <h1>常见生物数据格式03-VCF</h1>
       <div class="post-meta">
         <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
-        <time class="post-meta-item" datetime="19-09-19"><i class="iconfont icon-date"></i>19 Sep 2019</time>
+        <time class="post-meta-item" datetime="20-04-15"><i class="iconfont icon-date"></i>15 Apr 2020</time>
       </div>
     </div>
     
@@ -137,81 +137,128 @@ Author: Ray-Eldath
     
 
     <article class="markdown-body">
-      <h3 id="我们是谁">我们是谁？</h3>
+      <blockquote>
+  <p>The <strong>Variant Call Format</strong> (<strong>VCF</strong>) specifies the format of a text file used in bioinformatics for storing gene sequence variations.</p>
+</blockquote>
 
-<video width="auto" height="500" controls="controls">
-  <source src="/assets/img/aboutus.mp4" type="video/mp4" />
-</video>
+<h3 id="vcf文件">VCF文件</h3>
 
-<h3 id="我们要做什么">我们要做什么？</h3>
+<p>Variant Call Format(VCF)文件是存储序列变异信息的文本文件，可以表示SNP，插入/缺失，CNV和结构变异。</p>
 
-<p>随着人类对生命科学领域的探索加深，数据大爆炸的时代已然来临，传统的分析方法和分析手段，已经不能完美适配当下的数据规模。生物信息学是以计算机计算分析与传统生物学研究相结合形成的交叉学科，从人类基因组计划到精准医疗，从肠道微生物的分析研究到单细胞分析，或多或少都能看到生物信息学的影子。</p>
+<p>VCF文件可分为两部分：</p>
 
-<p>然而有好多刚刚接触生物信息学领域的小伙伴在生物分析时候，常常会遇到下列情况：迷茫，我该如何搭建分析环境；纠结，我该选用哪些工具组合来达成我的目标；怀疑，最终的分析结果。。靠谱吗。</p>
+<ul>
+  <li>头文件注释信息</li>
+  <li>变异位点信息</li>
+</ul>
 
-<p>这里，我们将和大家一起学习大佬是如何处理分析数据的，如何绘制精美绝伦的Figure，甚至如何去开发简单的生物工具或者分析代码，希望和大家共同学习共同进步。</p>
+<p><img src="https://ae01.alicdn.com/kf/Hc0c88fb1ba5b4bb780c21236532faf02o.png" alt="vcf-format.png" /></p>
 
-<h3 id="尾声">尾声</h3>
+<h4 id="头文件注释信息">头文件注释信息</h4>
 
-<p>小时候的你是不是也曾怀揣过不切实际的梦想</p>
+<p>以<code class="highlighter-rouge">##</code>开头，以key-value键值对的形式记录版本，参考基因组，标签意义等信息</p>
 
-<p>也许是成为一名宇航员</p>
+<p><strong>变异位点信息</strong></p>
 
-<p>也许是一名科学家</p>
+<table>
+  <thead>
+    <tr>
+      <th>列</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>#CHROM</td>
+      <td>参考基因组染色体</td>
+    </tr>
+    <tr>
+      <td>POS</td>
+      <td>变异位置，1-based</td>
+    </tr>
+    <tr>
+      <td>ID</td>
+      <td>变异ID，如dbSNP中的rs number</td>
+    </tr>
+    <tr>
+      <td>REF</td>
+      <td>参考序列</td>
+    </tr>
+    <tr>
+      <td>ALT</td>
+      <td>变异序列</td>
+    </tr>
+    <tr>
+      <td>QUAL</td>
+      <td>变异质量，Phread-scaled，-10 * log prob (ALT is wrong)</td>
+    </tr>
+    <tr>
+      <td>FILTER</td>
+      <td>过滤状态</td>
+    </tr>
+    <tr>
+      <td>INFO</td>
+      <td>变异的详细信息，其TAG在头注释文件有说明</td>
+    </tr>
+    <tr>
+      <td>FORMAT</td>
+      <td>GT:DP</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>亦或是一名人民警察</p>
+<p><strong>INFO</strong></p>
 
-<p>而我</p>
+<ul>
+  <li>AA : ancestral allele</li>
+  <li>AC : allele count in genotypes, for each ALT allele, in the same order as listed</li>
+  <li>AF : allele frequency for each ALT allele in the same order as listed: use this when estimated from primarydata, not called genotypes</li>
+  <li>AN : total number of alleles in called genotypes</li>
+  <li>BQ : RMS base quality at this position</li>
+  <li>CIGAR : cigar string describing how to align an alternate allele to the reference allele</li>
+  <li>DB : dbSNP membership</li>
+  <li>DP : combined depth across samples, e.g. DP=154</li>
+  <li>END : end position of the variant described in this record (for use with symbolic alleles)</li>
+  <li>H2 :  membership in hapmap2</li>
+  <li>H3 :  membership in hapmap3</li>
+  <li>MQ : RMS mapping quality, e.g. MQ=52</li>
+  <li>MQ0 :  Number of MAPQ == 0 reads covering this record</li>
+  <li>NS : Number of samples with data</li>
+  <li>SB : strand bias at this position</li>
+  <li>SOMATIC : indicates that the record is a somatic mutation, for cancer genomics</li>
+  <li>VALIDATED : validated by follow-up experiment</li>
+  <li>1000G : membership in 1000 Genomes</li>
+</ul>
 
-<p>在高中毕业那年</p>
+<p><strong>FORMAT</strong></p>
 
-<p>选择了生命科学</p>
+<ul>
+  <li>GT, genotype, 0 for the reference allele (what is in the REF field),  1 for the first allele listed in ALT, 2 for the second allele list in ALT and so on.
+    <ul>
+      <li>/ : genotype unphased</li>
+      <li>| : genotype phased</li>
+    </ul>
+  </li>
+  <li>DP : read depth at this position for this sample</li>
+  <li>FT : Filter flag</li>
+  <li>GL : Genotype likelihoods</li>
+  <li>GLE: Genotype likelihoods of heterogeneous ploidy</li>
+  <li>PL : phred-scaled genotype likelihoods</li>
+  <li>GP : phred-scaled genotype posterior probabilities</li>
+  <li>HQ : haplotype qualities</li>
+  <li>PS : phase set</li>
+  <li>PQ : phasing quality</li>
+  <li>EC : expected alternate allele counts</li>
+  <li>MQ : RMS mapping quality</li>
+</ul>
 
-<p>那年我自信满满</p>
+<h4 id="reference">Reference</h4>
 
-<p>那年我满怀期待</p>
-
-<p>那年我相信前辈所说的</p>
-
-<p>“21世纪是生物的时代”</p>
-
-<p>呵呵</p>
-
-<p>无法解决的难题，让我彻夜难眠</p>
-
-<p>繁冗无序的工作，让我身心俱疲</p>
-
-<p>来自各方的压力，让我举步维艰</p>
-
-<p>为什么别人可以只是955</p>
-
-<p>为什么我们做着不平凡的工作</p>
-
-<p>却难以维持平凡的生活</p>
-
-<p>有多少人中途离我而去</p>
-
-<p>想伸手，却那么无力</p>
-
-<p>在回宿舍的路上披星戴月</p>
-
-<p>因为孤独恐惧而无助的抱着肩膀哭泣</p>
-
-<p>所以</p>
-
-<p>到底是什么让你</p>
-
-<p>还能这么坚持努力？</p>
-
-<p>仅在此处</p>
-
-<p>致敬在科研岗位上默默付出的你</p>
-
-<p>我知道</p>
-
-<p>你的不容易</p>
-
-<p>2019，我们在路上</p>
+<ol>
+  <li><a href="https://samtools.github.io/hts-specs/VCFv4.2.pdf">https://samtools.github.io/hts-specs/VCFv4.2.pdf</a></li>
+  <li><a href="https://vip.biotrainee.com/d/164-vcf">https://vip.biotrainee.com/d/164-vcf</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/36289359">https://zhuanlan.zhihu.com/p/36289359</a></li>
+</ol>
 
     </article>
 
@@ -257,22 +304,13 @@ Author: Ray-Eldath
     </section>
     <section class="post-footer-item read-next">
       
-      <div class="read-next-item">
-        <a href="/2019/09/19/biodata-format01.html" class="read-next-link"></a>
-        <section>
-          <span>常见生物数据格式01-FASTA/FASTQ</span>
-          <p>  我们不生产数据，只是数据的搬运工。</p>
-        </section>
-        
-     </div>
-      
 
       
       <div class="read-next-item">
-        <a href="/2019/09/19/Linux-basic-04directory-operation.html" class="read-next-link"></a>
+        <a href="/2020/04/13/biodata-format02.html" class="read-next-link"></a>
           <section>
-            <span>Linux基础-04目录管理</span>
-            <p>这里需要了解绝对路径和相对路径两个概念。</p>
+            <span>常见生物数据格式02-SAM/BAM</span>
+            <p>  Sequence Alignment Map (SAM) is a text-based format ori...</p>
           </section>
           
       </div>

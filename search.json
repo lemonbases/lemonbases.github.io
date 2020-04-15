@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "常见生物数据格式03-VCF",
+      "tags"     : "生物数据格式",
+      "url"      : "/2020/04/15/biodata-format03.html"
+    } ,
+  
+    {
       "title"    : "常见生物数据格式02-SAM/BAM",
       "tags"     : "生物数据格式",
       "url"      : "/2020/04/13/biodata-format02.html"
@@ -25,7 +31,7 @@
     } ,
   
     {
-      "title"    : "常见生物数据格式01--FASTA/FASTQ",
+      "title"    : "常见生物数据格式01-FASTA/FASTQ",
       "tags"     : "生物数据格式",
       "url"      : "/2019/09/19/biodata-format01.html"
     } ,

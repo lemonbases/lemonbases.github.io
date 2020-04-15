@@ -5,9 +5,143 @@
     <description>碱基吃柠檬，人面桃花相映红，生物信息工作者</description>
     <link>//</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 13 Apr 2020 23:23:02 +0800</pubDate>
-    <lastBuildDate>Mon, 13 Apr 2020 23:23:02 +0800</lastBuildDate>
+    <pubDate>Wed, 15 Apr 2020 22:42:15 +0800</pubDate>
+    <lastBuildDate>Wed, 15 Apr 2020 22:42:15 +0800</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>常见生物数据格式03-VCF</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;The &lt;strong&gt;Variant Call Format&lt;/strong&gt; (&lt;strong&gt;VCF&lt;/strong&gt;) specifies the format of a text file used in bioinformatics for storing gene sequence variations.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;vcf文件&quot;&gt;VCF文件&lt;/h3&gt;
+
+&lt;p&gt;Variant Call Format(VCF)文件是存储序列变异信息的文本文件，可以表示SNP，插入/缺失，CNV和结构变异。&lt;/p&gt;
+
+&lt;p&gt;VCF文件可分为两部分：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;头文件注释信息&lt;/li&gt;
+  &lt;li&gt;变异位点信息&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/Hc0c88fb1ba5b4bb780c21236532faf02o.png&quot; alt=&quot;vcf-format.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;头文件注释信息&quot;&gt;头文件注释信息&lt;/h4&gt;
+
+&lt;p&gt;以&lt;code class=&quot;highlighter-rouge&quot;&gt;##&lt;/code&gt;开头，以key-value键值对的形式记录版本，参考基因组，标签意义等信息&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;变异位点信息&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;列&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;#CHROM&lt;/td&gt;
+      &lt;td&gt;参考基因组染色体&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;POS&lt;/td&gt;
+      &lt;td&gt;变异位置，1-based&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ID&lt;/td&gt;
+      &lt;td&gt;变异ID，如dbSNP中的rs number&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;REF&lt;/td&gt;
+      &lt;td&gt;参考序列&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ALT&lt;/td&gt;
+      &lt;td&gt;变异序列&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUAL&lt;/td&gt;
+      &lt;td&gt;变异质量，Phread-scaled，-10 * log prob (ALT is wrong)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FILTER&lt;/td&gt;
+      &lt;td&gt;过滤状态&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;INFO&lt;/td&gt;
+      &lt;td&gt;变异的详细信息，其TAG在头注释文件有说明&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FORMAT&lt;/td&gt;
+      &lt;td&gt;GT:DP&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;INFO&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;AA : ancestral allele&lt;/li&gt;
+  &lt;li&gt;AC : allele count in genotypes, for each ALT allele, in the same order as listed&lt;/li&gt;
+  &lt;li&gt;AF : allele frequency for each ALT allele in the same order as listed: use this when estimated from primarydata, not called genotypes&lt;/li&gt;
+  &lt;li&gt;AN : total number of alleles in called genotypes&lt;/li&gt;
+  &lt;li&gt;BQ : RMS base quality at this position&lt;/li&gt;
+  &lt;li&gt;CIGAR : cigar string describing how to align an alternate allele to the reference allele&lt;/li&gt;
+  &lt;li&gt;DB : dbSNP membership&lt;/li&gt;
+  &lt;li&gt;DP : combined depth across samples, e.g. DP=154&lt;/li&gt;
+  &lt;li&gt;END : end position of the variant described in this record (for use with symbolic alleles)&lt;/li&gt;
+  &lt;li&gt;H2 :  membership in hapmap2&lt;/li&gt;
+  &lt;li&gt;H3 :  membership in hapmap3&lt;/li&gt;
+  &lt;li&gt;MQ : RMS mapping quality, e.g. MQ=52&lt;/li&gt;
+  &lt;li&gt;MQ0 :  Number of MAPQ == 0 reads covering this record&lt;/li&gt;
+  &lt;li&gt;NS : Number of samples with data&lt;/li&gt;
+  &lt;li&gt;SB : strand bias at this position&lt;/li&gt;
+  &lt;li&gt;SOMATIC : indicates that the record is a somatic mutation, for cancer genomics&lt;/li&gt;
+  &lt;li&gt;VALIDATED : validated by follow-up experiment&lt;/li&gt;
+  &lt;li&gt;1000G : membership in 1000 Genomes&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;FORMAT&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GT, genotype, 0 for the reference allele (what is in the REF field),  1 for the first allele listed in ALT, 2 for the second allele list in ALT and so on.
+    &lt;ul&gt;
+      &lt;li&gt;/ : genotype unphased&lt;/li&gt;
+      &lt;li&gt;| : genotype phased&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;DP : read depth at this position for this sample&lt;/li&gt;
+  &lt;li&gt;FT : Filter flag&lt;/li&gt;
+  &lt;li&gt;GL : Genotype likelihoods&lt;/li&gt;
+  &lt;li&gt;GLE: Genotype likelihoods of heterogeneous ploidy&lt;/li&gt;
+  &lt;li&gt;PL : phred-scaled genotype likelihoods&lt;/li&gt;
+  &lt;li&gt;GP : phred-scaled genotype posterior probabilities&lt;/li&gt;
+  &lt;li&gt;HQ : haplotype qualities&lt;/li&gt;
+  &lt;li&gt;PS : phase set&lt;/li&gt;
+  &lt;li&gt;PQ : phasing quality&lt;/li&gt;
+  &lt;li&gt;EC : expected alternate allele counts&lt;/li&gt;
+  &lt;li&gt;MQ : RMS mapping quality&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;reference&quot;&gt;Reference&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://samtools.github.io/hts-specs/VCFv4.2.pdf&quot;&gt;https://samtools.github.io/hts-specs/VCFv4.2.pdf&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://vip.biotrainee.com/d/164-vcf&quot;&gt;https://vip.biotrainee.com/d/164-vcf&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/36289359&quot;&gt;https://zhuanlan.zhihu.com/p/36289359&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Wed, 15 Apr 2020 00:00:00 +0800</pubDate>
+        <link>/2020/04/15/biodata-format03.html</link>
+        <guid isPermaLink="true">/2020/04/15/biodata-format03.html</guid>
+        
+        <category>生物数据格式</category>
+        
+        
+      </item>
     
       <item>
         <title>常见生物数据格式02-SAM/BAM</title>
@@ -750,7 +884,7 @@ file /bin/ls
       </item>
     
       <item>
-        <title>常见生物数据格式01--FASTA/FASTQ</title>
+        <title>常见生物数据格式01-FASTA/FASTQ</title>
         <description>&lt;blockquote&gt;
   &lt;p&gt;我们不生产数据，只是数据的搬运工。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1510,142 +1644,6 @@ init 6
         <pubDate>Tue, 17 Sep 2019 00:00:00 +0800</pubDate>
         <link>/2019/09/17/Linux-basic-02environment.html</link>
         <guid isPermaLink="true">/2019/09/17/Linux-basic-02environment.html</guid>
-        
-        <category>Linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Linux基础-01简介</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;Linux与生物信息学&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;起源&quot;&gt;起源&lt;/h3&gt;
-
-&lt;p&gt;Linux内核最初只是由芬兰人Linus Torvalds于1991年在赫尔辛基大学时出于个人爱好而编写的。其是一套免费试用和自由传播的类Unix操作系统，基于POSIX和UNIX的多用户、多任务、支持多线程和多CPU的操作系统。Linux能运行主要的UNIX工具软件、应用程序和网络协议。其支持32位和64位硬件。其继承了Unix以网络为核心的设计思想，是一个性能稳定的多用户网络操作系统。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H13fc9d2471e74575881c5d964618dea6j.png&quot; alt=&quot;linux_logo.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;发行版&quot;&gt;发行版&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H8dca6c0c7d8543b0b8aa0ceb57da1b87E.png&quot; alt=&quot;operating_system&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Linux 发行版及通常所说的”Linux操作系统”，由一些组织、团体、公司或者个人制作并发行。Linux内核主要作为Linux发行版的一部分而使用。&lt;/p&gt;
-
-&lt;p&gt;目前正在积极开发中的发行版超过300个，最普遍被使用的发行版约12个。目前市面上较知名的发行版有：Ubuntu， RedHat，CentOS，Debain，Fedora等。&lt;/p&gt;
-
-&lt;p&gt;一个典型的发行版包括：Linux内核，GNU库和各种系统工具，命令行Shell，图形界面地城的X窗口和上层的桌面环境等。桌面环境有如KDE或GNOME等，并包含数千种应用软件。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://ae01.alicdn.com/kf/H4b1217b95c03434f9738339a3314faa02.png&quot; alt=&quot;linux_distribution_timeline&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;应用领域&quot;&gt;应用领域&lt;/h3&gt;
-
-&lt;p&gt;今天各种场合都有使用各种Linux发行版，从嵌入式设备到超级计算机，并且在服务器领域确定了定位，通常服务器使用LAMP（Linux + Apache + MySQL + PHP） 或 LNMP（Linux + Nginx + MySQL + PHP）组合，目前Linux不仅在家庭与企业中使用，并且在政府中也很受欢迎。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;个人电脑&lt;/li&gt;
-  &lt;li&gt;服务器、主机和超级计算机&lt;/li&gt;
-  &lt;li&gt;嵌入式设备&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;与windows比较&quot;&gt;与Windows比较&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;比较&lt;/th&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;Windows&lt;/th&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;Linux&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;界面&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;界面统一，外壳程序固定，所有Windows程序菜单几乎一致，快捷键也几乎相同&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;图形界面风格依发布版不同而不同，可能互不兼容。GNU/Linux的终端机从UNIX传承下来，基本命令和操作方法也几乎一致&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;驱动程序&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;驱动程序丰富，版本更新频繁。默认安装程序里面一般包含该版本发布时流行的驱动程序，之后所处的新硬件驱动依赖于硬件产商提供。对于一些老硬件，如果没有了原配的驱动有时很难支持。另外，有时硬件产商未提供所需版本的Windows下的驱动，也比较头痛。&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;由志愿者开发，Linux核心开发小组发布，很多硬件产商基于版权考虑并未提供驱动程序，尽管多数无须手动安装，但是设计安装则相对复杂，使得新用户面对驱动程序问题会一筹莫展。但是在开源开发模式下，许多老硬件也容易找到驱动。HP、Indel、AMD等硬件产商逐步不同程度支持开源驱动，问题正在得到缓解。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;使用&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;使用比较简单，容易入门。图形化界面对没有计算机背景知识的用户使用十分有利。&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;图形界面使用简单，容易上手。命令行界面需要学习才能掌握&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;学习&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;系统构造复杂，变化频繁，且知识、技能淘汰快，深入学习困难&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;系统构造简单、稳定，且知识、技能传承性好，深入学习相对容易&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;软件&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;每一种特定功能可能都需要商业软件的支持，需要购买相应的授权&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;大部分软件都可以自由获取，同样功能的软件选择较少&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;生物信息学与linux应用&quot;&gt;生物信息学与Linux应用&lt;/h3&gt;
-
-&lt;font color=&quot;red&quot;&gt;为什么选择Linux/Unix平台作为生物信息学研究的主要平台&lt;/font&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;生物信息学的一个重要研究目标是是生物数据分析，尤其是未来生物学研究的特点是大量大规模测序数据的产生。2019年9月9日，华大智造研制的超高通量基因测序仪–&lt;em&gt;DNBSEQ-T7&lt;/em&gt;，其日产数据量可达&lt;font color=&quot;red&quot;&gt;6T&lt;/font&gt;.&lt;/li&gt;
-  &lt;li&gt;Windows的窗口化软件适合可视化小规模运算，支持鼠标操作，但缺乏对大数据的支持，可定制性差；Windows Shell的使用体验差，没有完善的命令；远程功能不够好；目前Win10支持Ubuntu子系统，包含基本的命令行操作，类似虚拟机，有兴趣的同学可以尝试一下~&lt;/li&gt;
-  &lt;li&gt;Linux具备大数据高性能支持，shell可编程能力强；包含大量生物信息学软件包和脚本；&lt;font color=&quot;red&quot;&gt;可定制性高&lt;/font&gt;；支持轻量化的远程交互；开源，对生物数据分析来说是最好的平台。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;软件/平台名称&lt;/th&gt;
-      &lt;th&gt;描述&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;BioLinux&lt;/td&gt;
-      &lt;td&gt;强大的生物信息学分析平台，基于Linux的免费操作系统，整合了大量生物信息学软件&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;BioPerl&lt;/td&gt;
-      &lt;td&gt;整合大量生物学数据处理模块的Perl语言工具包&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;BioPython&lt;/td&gt;
-      &lt;td&gt;整合大量生物学数据处理模块的的Python语言工具包&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Bioconductor&lt;/td&gt;
-      &lt;td&gt;整合大量生物学数据处理软件包的R语言软件库&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;EMBOSS&lt;/td&gt;
-      &lt;td&gt;欧洲分子生物学开源软件套装，用于序列数据处理及分子生物学研究&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Mothur&lt;/td&gt;
-      &lt;td&gt;16s RNA数据分析&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;BLAST+&lt;/td&gt;
-      &lt;td&gt;本地BLAST软件，建库及序列比对&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TopHat，Cufflinks等&lt;/td&gt;
-      &lt;td&gt;转录组测序数据分析工具&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-</description>
-        <pubDate>Mon, 16 Sep 2019 00:00:00 +0800</pubDate>
-        <link>/2019/09/16/Linux-basic-01introduction.html</link>
-        <guid isPermaLink="true">/2019/09/16/Linux-basic-01introduction.html</guid>
         
         <category>Linux</category>
         
