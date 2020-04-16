@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>常见生物数据格式03-VCF - Lemonbase的博客</title>
+    <title>常见生物数据格式04-HGVS命名规则 - Lemonbase的博客</title>
     <meta name="author"  content="碱基吃柠檬">
-    <meta name="description" content="常见生物数据格式03-VCF">
+    <meta name="description" content="常见生物数据格式04-HGVS命名规则">
     <meta name="keywords"  content="生物数据格式">
     <!-- Open Graph -->
-    <meta property="og:title" content="常见生物数据格式03-VCF - Lemonbase的博客">
+    <meta property="og:title" content="常见生物数据格式04-HGVS命名规则 - Lemonbase的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="/2020/04/15/biodata-format03.html">
+    <meta property="og:url" content="/2020/04/16/biodata-format04.html">
     <meta property="og:description" content="碱基吃柠檬，人面桃花相映红，生物信息工作者">
     <meta property="og:site_name" content="Lemonbase的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -124,10 +124,10 @@ Author: Ray-Eldath
           
         
       </div>
-      <h1>常见生物数据格式03-VCF</h1>
+      <h1>常见生物数据格式04-HGVS命名规则</h1>
       <div class="post-meta">
         <span class="post-meta-item"><i class="iconfont icon-author"></i>柠檬菌</span>
-        <time class="post-meta-item" datetime="20-04-15"><i class="iconfont icon-date"></i>15 Apr 2020</time>
+        <time class="post-meta-item" datetime="20-04-16"><i class="iconfont icon-date"></i>16 Apr 2020</time>
       </div>
     </div>
     
@@ -138,127 +138,46 @@ Author: Ray-Eldath
 
     <article class="markdown-body">
       <blockquote>
-  <p>The <strong>Variant Call Format</strong> (<strong>VCF</strong>) specifies the format of a text file used in bioinformatics for storing gene sequence variations.</p>
+  <p>Human Genome Variation Society(<strong>HGVS</strong>) <strong>nomenclature</strong>, the recommendations for the description of sequence variants.</p>
 </blockquote>
 
-<h3 id="vcf文件">VCF文件</h3>
+<p>柠檬菌在网上看到一篇比较好的HGVS命名规范的介绍，在此分享给大家，当然最好的学习文档还是官方文档啦，想进一步学习的小伙伴可以移步文章末尾的Reference~</p>
 
-<p>Variant Call Format(VCF)文件是存储序列变异信息的文本文件，可以表示SNP，插入/缺失，CNV和结构变异。</p>
+<p>源PPT链接: <a href="https://www.plob.org/article/21236.html">https://www.plob.org/article/21236.html</a></p>
 
-<p>VCF文件可分为两部分：</p>
+<p><img src="https://ae01.alicdn.com/kf/H1772a895c8c34bf29350929c37cf0ba1W.jpg" alt="1.jpg" />
+<img src="https://ae01.alicdn.com/kf/Ha12f22dfdda34458aaa83fa7742c812ax.jpg" alt="2.jpg" />
+<img src="https://ae01.alicdn.com/kf/H9be4244cbaba4e1f9ad91d98501d48a7K.jpg" alt="3.jpg" />
+<img src="https://ae01.alicdn.com/kf/H367ced679aeb482c8cf97209a04119cea.jpg" alt="4.jpg" />
+<img src="https://ae01.alicdn.com/kf/H9033ad5a1c214d0b801e4d88485d98eea.jpg" alt="5.jpg" />
+<img src="https://ae01.alicdn.com/kf/H746ee5a6c9a64f45867296b67f94f9beD.jpg" alt="6.jpg" />
+<img src="https://ae01.alicdn.com/kf/H1f2ca5ebab5140feb426260ecc9920beg.jpg" alt="7.jpg" />
+<img src="https://ae01.alicdn.com/kf/H89e08f8d9038459fb4ea69c33cc9017bN.jpg" alt="8.jpg" />
+<img src="https://ae01.alicdn.com/kf/H8a27a1f2d0ab40ae87a1f229971140af0.jpg" alt="9.jpg" />
+<img src="https://ae01.alicdn.com/kf/H82303bab025e4dfe97292caee5a3f99cL.jpg" alt="10.jpg" />
+<img src="https://ae01.alicdn.com/kf/H336dfbb0d24f49178a1a48e9fa0e92e2R.jpg" alt="11.jpg" />
+<img src="https://ae01.alicdn.com/kf/H79b42054f8f74aee933f5f8b57d458fcB.jpg" alt="12.jpg" />
+<img src="https://ae01.alicdn.com/kf/Hc2a3feac0cdc4034935414a4661d4111P.jpg" alt="13.jpg" />
+<img src="https://ae01.alicdn.com/kf/H0f331425774e441a8f4a108e7c0c22d1o.jpg" alt="14.jpg" />
+<img src="https://ae01.alicdn.com/kf/Hbe4df0255b7147b4b44fefb29eac7a03l.jpg" alt="15.jpg" />
+<img src="https://ae01.alicdn.com/kf/H72b2e6fb6a594332b2c19e1818023661S.jpg" alt="16.jpg" />
+<img src="https://ae01.alicdn.com/kf/Hf259322f89314894872e0b3375e8b476Q.jpg" alt="17.jpg" />
+<img src="https://ae01.alicdn.com/kf/H0d7a50d6fc334f379cd387d4c4480c59o.jpg" alt="18.jpg" />
+<img src="https://ae01.alicdn.com/kf/H2d1f9c71f71046eeba731eaa09783a245.jpg" alt="19.jpg" />
+<img src="https://ae01.alicdn.com/kf/H278f2986bd6445958e3bf3435b420aabM.jpg" alt="20.jpg" />
+<img src="https://ae01.alicdn.com/kf/H2277b248fcdc4e0483160ce9bfa704c5G.jpg" alt="21.jpg" />
+<img src="https://ae01.alicdn.com/kf/Hcbf8d3bd320348368c79632023eba9cbG.jpg" alt="22.jpg" />
+<img src="https://ae01.alicdn.com/kf/Hd815234faa634f8baceafedcd8148174z.jpg" alt="23.jpg" />
+<img src="https://ae01.alicdn.com/kf/Hc1bf0132644c4b5596b8f02714cba2ae0.jpg" alt="24.jpg" />
+<img src="https://ae01.alicdn.com/kf/Hc11e08d7d3a04c6a85097df95ad88cd8G.jpg" alt="25.jpg" /></p>
 
-<ul>
-  <li>头文件注释信息</li>
-  <li>变异位点信息</li>
-</ul>
-
-<p><img src="https://ae01.alicdn.com/kf/Hc0c88fb1ba5b4bb780c21236532faf02o.png" alt="vcf-format.png" /></p>
-
-<h4 id="头文件注释信息">头文件注释信息</h4>
-
-<p>以<code class="highlighter-rouge">##</code>开头，以key-value键值对的形式记录版本，参考基因组，标签意义等信息</p>
-
-<p><strong>变异位点信息</strong></p>
-
-<table>
-  <thead>
-    <tr>
-      <th>列</th>
-      <th>含义</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>#CHROM</td>
-      <td>参考基因组染色体</td>
-    </tr>
-    <tr>
-      <td>POS</td>
-      <td>变异位置，1-based</td>
-    </tr>
-    <tr>
-      <td>ID</td>
-      <td>变异ID，如dbSNP中的rs number</td>
-    </tr>
-    <tr>
-      <td>REF</td>
-      <td>参考序列</td>
-    </tr>
-    <tr>
-      <td>ALT</td>
-      <td>变异序列</td>
-    </tr>
-    <tr>
-      <td>QUAL</td>
-      <td>变异质量，Phread-scaled，-10 * log prob (ALT is wrong)</td>
-    </tr>
-    <tr>
-      <td>FILTER</td>
-      <td>过滤状态</td>
-    </tr>
-    <tr>
-      <td>INFO</td>
-      <td>变异的详细信息，其TAG在头注释文件有说明</td>
-    </tr>
-    <tr>
-      <td>FORMAT</td>
-      <td>GT:DP</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><strong>INFO</strong></p>
+<h3 id="reference">Reference</h3>
 
 <ul>
-  <li>AA : ancestral allele</li>
-  <li>AC : allele count in genotypes, for each ALT allele, in the same order as listed</li>
-  <li>AF : allele frequency for each ALT allele in the same order as listed: use this when estimated from primarydata, not called genotypes</li>
-  <li>AN : total number of alleles in called genotypes</li>
-  <li>BQ : RMS base quality at this position</li>
-  <li>CIGAR : cigar string describing how to align an alternate allele to the reference allele</li>
-  <li>DB : dbSNP membership</li>
-  <li>DP : combined depth across samples, e.g. DP=154</li>
-  <li>END : end position of the variant described in this record (for use with symbolic alleles)</li>
-  <li>H2 :  membership in hapmap2</li>
-  <li>H3 :  membership in hapmap3</li>
-  <li>MQ : RMS mapping quality, e.g. MQ=52</li>
-  <li>MQ0 :  Number of MAPQ == 0 reads covering this record</li>
-  <li>NS : Number of samples with data</li>
-  <li>SB : strand bias at this position</li>
-  <li>SOMATIC : indicates that the record is a somatic mutation, for cancer genomics</li>
-  <li>VALIDATED : validated by follow-up experiment</li>
-  <li>1000G : membership in 1000 Genomes</li>
+  <li><a href="https://varnomen.hgvs.org/recommendations/general/">https://varnomen.hgvs.org/recommendations/general/</a></li>
+  <li><a href="https://onlinelibrary.wiley.com/doi/full/10.1002/humu.22981">HGVS Recommendations for the Description of Sequence Variants: 2016 Update</a></li>
+  <li><a href="https://www.plob.org/article/21236.html">https://www.plob.org/article/21236.html</a></li>
 </ul>
-
-<p><strong>FORMAT</strong></p>
-
-<ul>
-  <li>GT, genotype, 0 for the reference allele (what is in the REF field),  1 for the first allele listed in ALT, 2 for the second allele list in ALT and so on.
-    <ul>
-      <li>/ : genotype unphased</li>
-      <li>| : genotype phased</li>
-    </ul>
-  </li>
-  <li>DP : read depth at this position for this sample</li>
-  <li>FT : Filter flag</li>
-  <li>GL : Genotype likelihoods</li>
-  <li>GLE: Genotype likelihoods of heterogeneous ploidy</li>
-  <li>PL : phred-scaled genotype likelihoods</li>
-  <li>GP : phred-scaled genotype posterior probabilities</li>
-  <li>HQ : haplotype qualities</li>
-  <li>PS : phase set</li>
-  <li>PQ : phasing quality</li>
-  <li>EC : expected alternate allele counts</li>
-  <li>MQ : RMS mapping quality</li>
-</ul>
-
-<h4 id="reference">Reference</h4>
-
-<ol>
-  <li><a href="https://samtools.github.io/hts-specs/VCFv4.2.pdf">https://samtools.github.io/hts-specs/VCFv4.2.pdf</a></li>
-  <li><a href="https://vip.biotrainee.com/d/164-vcf">https://vip.biotrainee.com/d/164-vcf</a></li>
-  <li><a href="https://zhuanlan.zhihu.com/p/36289359">https://zhuanlan.zhihu.com/p/36289359</a></li>
-</ol>
 
     </article>
 
@@ -304,22 +223,13 @@ Author: Ray-Eldath
     </section>
     <section class="post-footer-item read-next">
       
-      <div class="read-next-item">
-        <a href="/2020/04/16/biodata-format04.html" class="read-next-link"></a>
-        <section>
-          <span>常见生物数据格式04-HGVS命名规则</span>
-          <p>  Human Genome Variation Society(HGVS) nomenclature, the ...</p>
-        </section>
-        
-     </div>
-      
 
       
       <div class="read-next-item">
-        <a href="/2020/04/13/biodata-format02.html" class="read-next-link"></a>
+        <a href="/2020/04/15/biodata-format03.html" class="read-next-link"></a>
           <section>
-            <span>常见生物数据格式02-SAM/BAM</span>
-            <p>  Sequence Alignment Map (SAM) is a text-based format ori...</p>
+            <span>常见生物数据格式03-VCF</span>
+            <p>  The Variant Call Format (VCF) specifies the format of a...</p>
           </section>
           
       </div>

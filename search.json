@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "常见生物数据格式04-HGVS命名规则",
+      "tags"     : "生物数据格式",
+      "url"      : "/2020/04/16/biodata-format04.html"
+    } ,
+  
+    {
       "title"    : "常见生物数据格式03-VCF",
       "tags"     : "生物数据格式",
       "url"      : "/2020/04/15/biodata-format03.html"
